@@ -135,15 +135,15 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="http://localhost:1696/api/get-all-programs"
+                  url="/api/get-all-programs"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged>
+                  <template v-slot:isManaged="item">
                     <label class="form-check">
-                      <input class="form-check-input" type="radio" checked="" />
+                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" />
                     </label>
                   </template>
                   <template v-slot:tool="item">
@@ -261,11 +261,10 @@ export default {
 
       name: "",
       year: "",
-      isManaged: {
-        choose: false,
-        id: "",
-      },
+      id: [],
+      
       editprogram: {
+        id: "",
         name: "",
         year: "",
       },

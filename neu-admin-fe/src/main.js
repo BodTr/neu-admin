@@ -14,7 +14,7 @@ import router from './router'
 import { ServerTable } from 'v-tables-3'
 import Toast from "vue-toastification"
 window.axios = axios
-// window.axios.defaults.baseURL = import.meta.env.VUE_APP_API_URL
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 
 const app = createApp(App)
