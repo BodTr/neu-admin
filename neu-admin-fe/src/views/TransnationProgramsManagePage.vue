@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chương trình</h2>
+              <h2 class="page-title">Quản lí TT chương trình liên kết</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -83,25 +83,52 @@
                     ></button>
                   </div>
                   <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <label class="form-label">Tên</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="name"
+                        placeholder="Nhập tên chương trình"
+                      />
+                    </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên</label>
+                        <label class="form-label">Ngôn ngữ</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="name"
-                          placeholder="Nhập tên chương trình"
+                          v-model="language"
+                          placeholder="Nhập ngôn ngữ"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Tên văn bằng</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="degreeName"
+                          placeholder="Nhập tên văn bằng"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm</label>
+                        <label class="form-label">Tên thương hiệu</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập năm"
+                          v-model="degreeType"
+                          placeholder="Nhập tên thương hiệu"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Nơi cấp</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="issuedBy"
+                          placeholder="Nhập nơi cấp"
                         />
                       </div>
                     </div>
@@ -135,17 +162,12 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-programs"
+                  url="/api/get-all-trans-programs"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged="item">
-                    <label class="form-check">
-                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" @change="getIdArray()" />
-                    </label>
-                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -184,25 +206,54 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
+                            <div class="mb-3">
+                              <label class="form-label">Tên</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editProgram.name"
+                                placeholder="Nhập tên chương trình"
+                              />
+                            </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label">Ngôn ngữ</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.name"
-                                  placeholder="Nhập tên chương trình"
+                                  v-model="editProgram.language"
+                                  placeholder="Nhập ngôn ngữ"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Tên văn bằng</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editProgram.degreeName"
+                                  placeholder="Nhập tên văn bằng"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label"
+                                  >Tên thương hiệu</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.year"
-                                  placeholder="Nhập năm"
+                                  v-model="editProgram.degreeType"
+                                  placeholder="Nhập tên thương hiệu"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Nơi cấp</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editProgram.issuedBy"
+                                  placeholder="Nhập nơi cấp"
                                 />
                               </div>
                             </div>
@@ -250,24 +301,31 @@ export default {
   },
   data() {
     return {
-      columns: ["stt", "name", "year", "isManaged", "tool"],
+      columns: ["stt", "name", "language", "degreeType", "degreeName", "issuedBy", "tool"],
       options: {
         headings: {
           name: "Tên chương trình",
           year: "Năm",
-          isManaged: "Chọn quản lí",
+          degreeType: "Tên thương hiệu",
+          degreeName: "Tên văn bằng",
+          issuedBy: "Cấp bởi",
           tool: "Thao tác"
         },
       },
 
       name: "",
-      year: "",
-      id: [],
-      
-      editprogram: {
+      language: "",
+      degreeName: "",
+      degreeType: "",
+      issuedBy: "",
+
+      editProgram: {
         id: "",
         name: "",
-        year: "",
+        language: "",
+        degreeName: "",
+        degreeType: "",
+        issuedBy: "",
       },
     };
   },
@@ -282,11 +340,15 @@ export default {
     async submitForm() {
       const data = {
         name: this.name,
-        year: this.year,
+        language: this.language,
+        degreeName: this.degreeName,
+        degreeType: this.degreeType,
+        issuedBy: this.issuedBy
+
       };
 
       try {
-        const result = await axios.post("/api/create-program", data);
+        const result = await axios.post("/api/create-trans-program", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -307,21 +369,27 @@ export default {
     },
 
     onEdit(item) {
-      this.editprogram.name = item.name;
-      this.editprogram.year = item.year;
-      this.editprogram.id = item._id;
+      this.editProgram.name = item.name;
+      this.editProgram.language = item.language;
+      this.editProgram.degreeName = item.degreeName;
+      this.editProgram.degreeType = item.degreeType;
+      this.editProgram.issuedBy = item.issuedBy;
+      this.editProgram.id = item._id;
 
       // console.log('content', this.content);
     },
 
     async onSubmit() {
       const data = {
-        name: this.editprogram.name,
-        year: this.editprogram.year,
+        name: this.editProgram.name,
+        language: this.editProgram.language,
+        degreeName: this.editProgram.degreeName,
+        degreeType: this.editProgram.degreeType,
+        issuedBy: this.editProgram.issuedBy
       };
       try {
         const result = await axios.put(
-          `/api/edit-program/${this.editprogram.id}`,
+          `/api/edit-trans-program/${this.editProgram.id}`,
           data
         );
 
@@ -345,7 +413,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-program/${item._id}`);
+          const result = await axios.delete(`/api/delete-trans-program/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -355,12 +423,6 @@ export default {
         console.log(error, "delete api catch block error");
       }
     },
-    getIdArray() {
-      const idArr = this.id
-      console.log(idArr, "id Array")
-      localStorage.setItem("idArr", JSON.stringify(idArr))
-
-    }
   },
 };
 </script>

@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chương trình</h2>
+              <h2 class="page-title">Quản lí quyết định phê duyệt</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -35,7 +35,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm quyết định
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm chương trình</h5>
+                    <h5 class="modal-title">Thêm quyết định</h5>
                     <button
                       type="button"
                       class="btn-close"
@@ -85,25 +85,52 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên</label>
+                        <label class="form-label">Tên quyết định</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên chương trình"
+                          placeholder="Nhập tên quyết định"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ngày kí</label>
+                        <input
+                          type="date"
+                          v-model="signDate"
+                          class="form-control"
+                          placeholder="Nhập ngày kí date"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm</label>
+                        <label class="form-label">Số quết định</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập năm"
+                          v-model="number"
+                          placeholder="Nhập số quyết định"
                         />
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Thời hạn hiệu lực</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="expireIn"
+                          placeholder="Nhập thời hạn hiệu lực"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Nội dung quyết định</label>
+                      <textarea
+                        class="form-control"
+                        rows="5"
+                        v-model="detail"
+                        placeholder="Nhập nội dung quyết định"
+                      ></textarea>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -135,17 +162,12 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-programs"
+                  url="/api/get-all-decisions"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged="item">
-                    <label class="form-check">
-                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" @change="getIdArray()" />
-                    </label>
-                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -186,25 +208,56 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label">Tên quyết định</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.name"
-                                  placeholder="Nhập tên chương trình"
+                                  v-model="editDecision.name"
+                                  placeholder="Nhập tên quyết định"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Ngày kí</label>
+                                <input
+                                  type="date"
+                                  v-model="editDecision.signDate"
+                                  class="form-control"
+                                  placeholder="Nhập ngày kí date"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label">Số quết định</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.year"
-                                  placeholder="Nhập năm"
+                                  v-model="editDecision.number"
+                                  placeholder="Nhập số quyết định"
                                 />
                               </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Thời hạn hiệu lực</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editDecision.expireIn"
+                                  placeholder="Nhập thời hạn hiệu lực"
+                                />
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Nội dung quyết định</label
+                              >
+                              <textarea
+                                class="form-control"
+                                rows="5"
+                                v-model="editDecision.detail"
+                                placeholder="Nhập nội dung quyết định"
+                              ></textarea>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -250,24 +303,39 @@ export default {
   },
   data() {
     return {
-      columns: ["stt", "name", "year", "isManaged", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "detail",
+        "number",
+        "signDate",
+        "expireIn",
+        "tool",
+      ],
       options: {
         headings: {
-          name: "Tên chương trình",
-          year: "Năm",
-          isManaged: "Chọn quản lí",
-          tool: "Thao tác"
+          name: "Tên quyết định",
+          detail: "Nội dung quyết định",
+          number: "Quyết định số",
+          signDate: "Ngày kí",
+          expireIn: "Thời hạn hiệu lực",
+          tool: "Thao tác",
         },
       },
 
       name: "",
-      year: "",
-      id: [],
-      
-      editprogram: {
+      detail: "",
+      number: "",
+      signDate: "",
+      expireIn: "",
+
+      editDecision: {
         id: "",
         name: "",
-        year: "",
+        detail: "",
+        number: "",
+        signDate: "",
+        expireIn: "",
       },
     };
   },
@@ -282,11 +350,14 @@ export default {
     async submitForm() {
       const data = {
         name: this.name,
-        year: this.year,
+        detail: this.detail,
+        number: this.number,
+        signDate: this.signDate,
+        expireIn: this.expireIn,
       };
 
       try {
-        const result = await axios.post("/api/create-program", data);
+        const result = await axios.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -307,21 +378,27 @@ export default {
     },
 
     onEdit(item) {
-      this.editprogram.name = item.name;
-      this.editprogram.year = item.year;
-      this.editprogram.id = item._id;
+      this.editDecision.name = item.name;
+      this.editDecision.detail = item.detail;
+      this.editDecision.number = item.number;
+      this.editDecision.signDate = item.signDate;
+      this.editDecision.expireIn = item.expireIn;
+      this.editDecision.id = item._id;
 
       // console.log('content', this.content);
     },
 
     async onSubmit() {
       const data = {
-        name: this.editprogram.name,
-        year: this.editprogram.year,
+        name: this.editDecision.name,
+        detail: this.editDecision.detail,
+        number: this.editDecision.number,
+        signDate: this.editDecision.signDate,
+        expireIn: this.editDecision.expireIn,
       };
       try {
         const result = await axios.put(
-          `/api/edit-program/${this.editprogram.id}`,
+          `/api/edit-decision/${this.editDecision.id}`,
           data
         );
 
@@ -345,7 +422,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-program/${item._id}`);
+          const result = await axios.delete(
+            `/api/delete-decision/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -355,12 +434,6 @@ export default {
         console.log(error, "delete api catch block error");
       }
     },
-    getIdArray() {
-      const idArr = this.id
-      console.log(idArr, "id Array")
-      localStorage.setItem("idArr", JSON.stringify(idArr))
-
-    }
   },
 };
 </script>

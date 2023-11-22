@@ -13,6 +13,7 @@ import App from './App.vue'
 import router from './router'
 import { ServerTable } from 'v-tables-3'
 import Toast from "vue-toastification"
+import './interceptors'
 window.axios = axios
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
