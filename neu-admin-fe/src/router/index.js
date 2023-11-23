@@ -17,7 +17,7 @@ const router = createRouter({
     },
     
     {
-      path: '/general-infor/trans-program',
+      path: '/general-infor/trans-program/:id',
       name: 'trans-programs-manage-page',
       component: TransnationProgramsManagePage,
       meta: { 

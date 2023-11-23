@@ -293,6 +293,8 @@ import axios from "axios";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
+const idArr = JSON.parse(localStorage.getItem("idArr"))
+const id = idArr[1]
 
 export default {
   name: "ProgramManagePage",
@@ -301,8 +303,12 @@ export default {
   },
   data() {
     return {
+      programId: 1,
       columns: ["stt", "name", "language", "degreeType", "degreeName", "issuedBy", "tool"],
       options: {
+        params: {
+          id: id
+        },
         headings: {
           name: "Tên chương trình",
           year: "Năm",

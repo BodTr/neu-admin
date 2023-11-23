@@ -7,7 +7,10 @@ const ObjectId = require("mongodb").ObjectId
 
 router.get('/api/get-all-trans-programs', async (req, res) => {
     try {
-        let { page, limit, query } = req.query
+        
+        
+        let { page, limit, query, id } = req.query
+        console.log(id, "get api id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const programs = await TransProgramSchema.find({
             name: {$regex: query}

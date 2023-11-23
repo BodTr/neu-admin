@@ -21,6 +21,9 @@ const TransProgramSchema = new mongoose.Schema({
         type: String,
         require: false
     }
-})
+},
+    {
+        timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    })
 
 module.exports = mongoose.model('TransProgramSchema', TransProgramSchema)

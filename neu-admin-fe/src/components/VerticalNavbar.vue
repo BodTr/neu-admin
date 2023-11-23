@@ -22,6 +22,7 @@
             class="navbar-brand-image"
           />
         </a>
+        {{ programId }}
       </h1>
 
       <div class="collapse navbar-collapse show" id="sidebar-menu">
@@ -55,7 +56,7 @@
               <h3 class="nav-link-title">Thông tin chung</h3>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/general-infor/trans-program">
+            <router-link class="nav-link" :to="{ name: 'trans-programs-manage-page', params: {id: programId} }">
               <span class="nav-link-icon d-md-none d-lg-inline-block"
                 >
                 <svg
@@ -162,8 +163,19 @@
 </template>
 
 <script>
+// import axios from 'axios'
+
 export default {
+  
   name: "VerticalNavBar",
+  data() {
+    return {
+      
+    }
+  },
+
+  props: ['programId'],
+
 };
 </script>
 

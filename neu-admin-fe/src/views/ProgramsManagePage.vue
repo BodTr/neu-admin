@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -276,6 +276,10 @@ export default {
     // get toast interface
     const toast = useToast();
     return { toast };
+  },
+
+  created() {
+    this.id = ['0']
   },
 
   methods: {
