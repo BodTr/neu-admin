@@ -281,6 +281,7 @@
                     </div>
                   </template>
                 </v-server-table>
+                {{ id }}
               </div>
             </div>
           </div>
@@ -295,7 +296,6 @@ import axios from "axios";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-
 export default {
   name: "ProgramManagePage",
   components: {
@@ -313,6 +313,9 @@ export default {
         "tool",
       ],
       options: {
+        params:{
+          id: this.$route.params.id
+        },
         headings: {
           name: "Tên quyết định",
           detail: "Nội dung quyết định",
@@ -322,7 +325,7 @@ export default {
           tool: "Thao tác",
         },
       },
-
+      id: this.$route.params.id,
       name: "",
       detail: "",
       number: "",
@@ -348,7 +351,9 @@ export default {
 
   methods: {
     async submitForm() {
+      console.log(this.id, "post api program id")
       const data = {
+        programId: this.id,
         name: this.name,
         detail: this.detail,
         number: this.number,

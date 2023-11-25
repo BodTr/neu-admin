@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí TT chương trình liên kết</h2>
+              <h2 class="page-title">Quản lí đơn vị thực hiện\</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -35,7 +35,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm đơn vị
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm chương trình</h5>
+                    <h5 class="modal-title">Thêm đơn vị</h5>
                     <button
                       type="button"
                       class="btn-close"
@@ -83,52 +83,66 @@
                     ></button>
                   </div>
                   <div class="modal-body row row-cards">
-                    <div class="mb-3">
-                      <label class="form-label">Tên</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="name"
-                        placeholder="Nhập tên chương trình"
-                      />
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên người thực hiện</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="name"
+                          placeholder="Nhập họ và tên người thực hiện"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ngày bắt đầu hiệu lực</label>
+                        <input
+                          type="date"
+                          v-model="phoneNumber"
+                          class="form-control"
+                          placeholder="Nhập số điện thoại"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="date"
+                          v-model="position"
+                          class="form-control"
+                          placeholder="Nhập chức vụ"
+                        />
+                      </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Ngôn ngữ</label>
+                        <label class="form-label">Email</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="language"
-                          placeholder="Nhập ngôn ngữ"
+                          v-model="email"
+                          placeholder="Nhập email"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bằng</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="degreeName"
-                          placeholder="Nhập tên văn bằng"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">Tên thương hiệu</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="degreeType"
-                          placeholder="Nhập tên thương hiệu"
-                        />
+                        <label class="form-label">Đơn vị thực hiện</label>
+                        <select
+                          v-model="unit"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Chọn đơn vị thực hiện
+                          </option>
+                          <option value="Đơn vị 1">Đơn vị 1</option>
+                          <option value="Đơn vị 2">Đơn vị 2</option>
+                        </select>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Nơi cấp</label>
+                        <label class="form-label">Nội dung phụ trách</label>
                         <input
-                          type="text"
-                          class="form-control"
-                          v-model="issuedBy"
-                          placeholder="Nhập nơi cấp"
+                            type="text"
+                            class="form-control"
+                            v-model="content"
+                            placeholder="Nhập nội dung phụ trách"
                         />
                       </div>
                     </div>
@@ -162,7 +176,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-trans-programs"
+                  url="/api/get-all-agencies"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -197,7 +211,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
                             <button
                               type="button"
                               class="btn-close"
@@ -206,23 +220,16 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
-                            <div class="mb-3">
-                              <label class="form-label">Tên</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                v-model="editProgram.name"
-                                placeholder="Nhập tên chương trình"
-                              />
-                            </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Ngôn ngữ</label>
+                                <label class="form-label"
+                                  >Tên văn bản liên kết</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.language"
-                                  placeholder="Nhập ngôn ngữ"
+                                  v-model="editAgency.name"
+                                  placeholder="Nhập tên văn bản liên kết đào tạo"
                                 />
                               </div>
                               <div class="mb-3">
@@ -230,30 +237,53 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.degreeName"
+                                  v-model="editAgency.phoneNumber"
+                                  placeholder="Nhập tên văn bằng"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editAgency.position"
                                   placeholder="Nhập tên văn bằng"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên thương hiệu</label
-                                >
+                                <label class="form-label">Email</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.degreeType"
-                                  placeholder="Nhập tên thương hiệu"
+                                  v-model="editAgency.email"
+                                  placeholder="Nhập email"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Nơi cấp</label>
+                                <label class="form-label"
+                                  >Đơn vị thực hiện</label
+                                >
+                                <select
+                                  v-model="editAgency.unit"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn đơn vị thực hiện
+                                  </option>
+                                  <option value="Đơn vị 1">Đơn vị 1</option>
+                                  <option value="Đơn vị 2">Đơn vị 2</option>
+                                </select>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Nội dung phụ trách</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.issuedBy"
-                                  placeholder="Nhập nơi cấp"
+                                  v-model="editAgency.content"
+                                  placeholder="Nhập nội dung phụ trách"
                                 />
                               </div>
                             </div>
@@ -294,14 +324,6 @@ import axios from "axios";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-// const idArr = JSON.parse(localStorage.getItem("idArr"))
-// let id = null
-// if (idArr === null) {
-//   id = 0
-// } else {
-//   id = idArr[1]
-// }
-
 
 export default {
   name: "ProgramManagePage",
@@ -311,34 +333,46 @@ export default {
 
   data() {
     return {
-      columns: ["stt", "name", "language", "degreeType", "degreeName", "issuedBy", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "email",
+        "phoneNumber",
+        "unit",
+        "content",
+        "position",
+        "tool",
+      ],
       options: {
         params: {
-          id: this.$route.params.id
+          id: this.$route.params.id,
         },
         headings: {
-          name: "Tên chương trình",
-          year: "Năm",
-          degreeType: "Tên thương hiệu",
-          degreeName: "Tên văn bằng",
-          issuedBy: "Cấp bởi",
-          tool: "Thao tác"
+          name: "Họ tên người thực hiện",
+          email: "Email",
+          phoneNumber: "Số điện thoại",
+          unit: "Đơn vị thực hiện",
+          content: "Nội dung phụ trách",
+          position: "Chức vụ",
+          tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
       name: "",
-      language: "",
-      degreeName: "",
-      degreeType: "",
-      issuedBy: "",
+      phoneNumber: "",
+      position: "",
+      email: "",
+      unit: "",
+      content: "",
 
-      editProgram: {
+      editAgency: {
         id: "",
         name: "",
-        language: "",
-        degreeName: "",
-        degreeType: "",
-        issuedBy: "",
+        phoneNumber: "",
+        position: "",
+        email: "",
+        unit: "",
+        content: "",
       },
     };
   },
@@ -354,15 +388,15 @@ export default {
       const data = {
         programId: id,
         name: this.name,
-        language: this.language,
-        degreeName: this.degreeName,
-        degreeType: this.degreeType,
-        issuedBy: this.issuedBy
-
+        phoneNumber: this.phoneNumber,
+        position: this.position,
+        email: this.email,
+        unit: this.unit,
+        content: this.content,
       };
 
       try {
-        const result = await axios.post("/api/create-trans-program", data);
+        const result = await axios.post("/api/create-agency", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -383,27 +417,27 @@ export default {
     },
 
     onEdit(item) {
-      this.editProgram.name = item.name;
-      this.editProgram.language = item.language;
-      this.editProgram.degreeName = item.degreeName;
-      this.editProgram.degreeType = item.degreeType;
-      this.editProgram.issuedBy = item.issuedBy;
-      this.editProgram.id = item._id;
-
-      // console.log('content', this.content);
+      this.editAgency.name = item.name;
+      this.editAgency.phoneNumber = item.phoneNumber;
+      this.editAgency.position = item.position;
+      this.editAgency.email = item.email;
+      this.editAgency.unit= item.unit;
+      this.editAgency.content= item.content;
+      this.editAgency.id = item._id;
     },
 
     async onSubmit() {
       const data = {
-        name: this.editProgram.name,
-        language: this.editProgram.language,
-        degreeName: this.editProgram.degreeName,
-        degreeType: this.editProgram.degreeType,
-        issuedBy: this.editProgram.issuedBy
+        name: this.editAgency.name,
+        phoneNumber: this.editAgency.phoneNumber,
+        position: this.editAgency.position,
+        email: this.editAgency.email,
+        unit: this.editAgency.unit,
+        content: this.editAgency.content,
       };
       try {
         const result = await axios.put(
-          `/api/edit-trans-program/${this.editProgram.id}`,
+          `/api/edit-agency/${this.editAgency.id}`,
           data
         );
 
@@ -414,7 +448,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Chương trình đã được sửa");
+          this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
         }
@@ -426,8 +460,8 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-trans-program/${item._id}`);
+        if (confirm("Xóa văn bản này?")) {
+          const result = await axios.delete(`/api/delete-agency/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

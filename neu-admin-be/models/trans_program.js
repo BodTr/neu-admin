@@ -20,6 +20,13 @@ const TransProgramSchema = new mongoose.Schema({
     issuedBy: {
         type: String,
         require: false
+    },
+    program: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ProgramSchema',
+            require: true
+        }
     }
 },
     {

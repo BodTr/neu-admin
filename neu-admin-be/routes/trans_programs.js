@@ -13,7 +13,8 @@ router.get('/api/get-all-trans-programs', async (req, res) => {
         console.log(id, "get api id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const programs = await TransProgramSchema.find({
-            name: {$regex: query}
+            program: { id: new ObjectId(id) }
+            ,name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await TransProgramSchema.estimatedDocumentCount()
         let stt = 0
@@ -35,7 +36,7 @@ router.get('/api/get-all-trans-programs', async (req, res) => {
 
 router.post('/api/create-trans-program', emptyTransProgramInputsValidation, typeTransProgramInputsValidation, async (req, res) => {
     try {
-        const { name, language, degreeName, degreeType, issuedBy } = req.body
+        const { programId, name, language, degreeName, degreeType, issuedBy } = req.body
         console.log(req.body, "req.body post api")
         const existedProgram = await TransProgramSchema.findOne({ name: name })
         if (existedProgram) {
@@ -46,7 +47,10 @@ router.post('/api/create-trans-program', emptyTransProgramInputsValidation, type
                 language: language,
                 degreeName: degreeName,
                 degreeType: degreeType,
-                issuedBy: issuedBy
+                issuedBy: issuedBy,
+                program: {
+                    id: programId
+                }
             })
             console.log(newProgram, "newProgram")
             res.json({ error: false, message: 'Lưu thành công chương trình' })

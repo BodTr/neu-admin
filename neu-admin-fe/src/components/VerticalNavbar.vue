@@ -82,7 +82,7 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/general-infor/approval-decision">
+            <router-link class="nav-link" :to="{ name: 'approval-decision-manage-page', params: {id: programId} }">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +106,8 @@
               <span class="nav-link-title">Các quyết định phê duyệt</span>
             </router-link>
           </li>
-          <!-- <li class="nav-item">
-            <router-link class="nav-link" to="/staff-manage">
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'documents-manage-page', params: {id: programId} }">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,11 +128,11 @@
                   ></path>
                 </svg>
               </span>
-              <span class="nav-link-title"> Quản lí nhân viên </span>
+              <span class="nav-link-title"> Quản lí văn bản liên kết </span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/slideshow-images-manage">
+            <router-link class="nav-link" :to="{ name: 'partners-manage-page', params: {id: programId} }">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -153,9 +153,34 @@
                   ></path>
                 </svg>
               </span>
-              <span class="nav-link-title"> Quản lí ảnh slideshow </span>
+              <span class="nav-link-title"> Quản lí đối tác </span>
             </router-link>
-          </li> -->
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'agencies-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Quản lí đơn vị thực hiện </span>
+            </router-link>
+          </li>
         </ul>
       </div>
     </div>

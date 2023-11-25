@@ -20,7 +20,16 @@ const DecisionSchema = new mongoose.Schema({
     expireIn: {
         type: String,
         require: false
+    },
+
+    program: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ProgramSchema',
+            require: true
+        }
     }
+
 },
     {
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }

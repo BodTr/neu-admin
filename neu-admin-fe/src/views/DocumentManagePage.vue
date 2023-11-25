@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí TT chương trình liên kết</h2>
+              <h2 class="page-title">Quản lí văn bản liên kết</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -35,7 +35,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm văn bản
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm chương trình</h5>
+                    <h5 class="modal-title">Thêm văn bản</h5>
                     <button
                       type="button"
                       class="btn-close"
@@ -83,52 +83,43 @@
                     ></button>
                   </div>
                   <div class="modal-body row row-cards">
-                    <div class="mb-3">
-                      <label class="form-label">Tên</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="name"
-                        placeholder="Nhập tên chương trình"
-                      />
-                    </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Ngôn ngữ</label>
+                        <label class="form-label">Tên văn bản liên kết</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="language"
-                          placeholder="Nhập ngôn ngữ"
+                          v-model="name"
+                          placeholder="Nhập tên văn bản liên kết Đào tạo"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bằng</label>
+                        <label class="form-label">Ngày bắt đầu hiệu lực</label>
                         <input
-                          type="text"
+                          type="date"
+                          v-model="effDate"
                           class="form-control"
-                          v-model="degreeName"
-                          placeholder="Nhập tên văn bằng"
+                          placeholder="Nhập ngày bắt đầu hiệu lực"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên thương hiệu</label>
+                        <label class="form-label">Nội dung</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="degreeType"
-                          placeholder="Nhập tên thương hiệu"
+                          v-model="content"
+                          placeholder="Nhập nội dung"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Nơi cấp</label>
+                        <label class="form-label">Thời hạn hiệu lực</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="issuedBy"
-                          placeholder="Nhập nơi cấp"
+                          v-model="expireIn"
+                          placeholder="Nhập thời hạn hiệu lực"
                         />
                       </div>
                     </div>
@@ -162,7 +153,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-trans-programs"
+                  url="/api/get-all-documents"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -197,7 +188,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
                             <button
                               type="button"
                               class="btn-close"
@@ -206,23 +197,14 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
-                            <div class="mb-3">
-                              <label class="form-label">Tên</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                v-model="editProgram.name"
-                                placeholder="Nhập tên chương trình"
-                              />
-                            </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Ngôn ngữ</label>
+                                <label class="form-label">Tên văn bản liên kết</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.language"
-                                  placeholder="Nhập ngôn ngữ"
+                                  v-model="editDoc.name"
+                                  placeholder="Nhập tên văn bản liên kết đào tạo"
                                 />
                               </div>
                               <div class="mb-3">
@@ -230,7 +212,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.degreeName"
+                                  v-model="editDoc.effDate"
                                   placeholder="Nhập tên văn bằng"
                                 />
                               </div>
@@ -238,22 +220,22 @@
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Tên thương hiệu</label
+                                  >Nội dung</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.degreeType"
-                                  placeholder="Nhập tên thương hiệu"
+                                  v-model="editDoc.content"
+                                  placeholder="Nhập nội dung"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Nơi cấp</label>
+                                <label class="form-label">Thời hạn hiệu lực</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editProgram.issuedBy"
-                                  placeholder="Nhập nơi cấp"
+                                  v-model="editDoc.expireIn"
+                                  placeholder="Nhập thời hạn hiệu lực"
                                 />
                               </div>
                             </div>
@@ -294,14 +276,6 @@ import axios from "axios";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-// const idArr = JSON.parse(localStorage.getItem("idArr"))
-// let id = null
-// if (idArr === null) {
-//   id = 0
-// } else {
-//   id = idArr[1]
-// }
-
 
 export default {
   name: "ProgramManagePage",
@@ -311,34 +285,38 @@ export default {
 
   data() {
     return {
-      columns: ["stt", "name", "language", "degreeType", "degreeName", "issuedBy", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "content",
+        "effDate",
+        "expireIn",
+        "tool",
+      ],
       options: {
         params: {
-          id: this.$route.params.id
+          id: this.$route.params.id,
         },
         headings: {
-          name: "Tên chương trình",
-          year: "Năm",
-          degreeType: "Tên thương hiệu",
-          degreeName: "Tên văn bằng",
-          issuedBy: "Cấp bởi",
-          tool: "Thao tác"
+          name: "Tên văn bản Liên Kết Đào Tạo",
+          content: "Nội dung",
+          effDate: "Ngày có hiệu lực",
+          expireIn: "Thời hạn hiệu lực",
+          tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
       name: "",
-      language: "",
-      degreeName: "",
-      degreeType: "",
-      issuedBy: "",
+      effDate: "",
+      content: "",
+      expireIn: "",
 
-      editProgram: {
+      editDoc: {
         id: "",
         name: "",
-        language: "",
-        degreeName: "",
-        degreeType: "",
-        issuedBy: "",
+        effDate: "",
+        content: "",
+        expireIn: "",
       },
     };
   },
@@ -354,15 +332,13 @@ export default {
       const data = {
         programId: id,
         name: this.name,
-        language: this.language,
-        degreeName: this.degreeName,
-        degreeType: this.degreeType,
-        issuedBy: this.issuedBy
-
+        effDate: this.effDate,
+        content: this.content,
+        expireIn: this.expireIn,
       };
 
       try {
-        const result = await axios.post("/api/create-trans-program", data);
+        const result = await axios.post("/api/create-document", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -383,27 +359,25 @@ export default {
     },
 
     onEdit(item) {
-      this.editProgram.name = item.name;
-      this.editProgram.language = item.language;
-      this.editProgram.degreeName = item.degreeName;
-      this.editProgram.degreeType = item.degreeType;
-      this.editProgram.issuedBy = item.issuedBy;
-      this.editProgram.id = item._id;
+      this.editDoc.name = item.name;
+      this.editDoc.effDate = item.effDate;
+      this.editDoc.content = item.content;
+      this.editDoc.expireIn = item.expireIn;
+      this.editDoc.id = item._id;
 
       // console.log('content', this.content);
     },
 
     async onSubmit() {
       const data = {
-        name: this.editProgram.name,
-        language: this.editProgram.language,
-        degreeName: this.editProgram.degreeName,
-        degreeType: this.editProgram.degreeType,
-        issuedBy: this.editProgram.issuedBy
+        name: this.editDoc.name,
+        effDate: this.editDoc.effDate,
+        content: this.editDoc.content,
+        expireIn: this.editDoc.expireIn,
       };
       try {
         const result = await axios.put(
-          `/api/edit-trans-program/${this.editProgram.id}`,
+          `/api/edit-document/${this.editDoc.id}`,
           data
         );
 
@@ -414,7 +388,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Chương trình đã được sửa");
+          this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
         }
@@ -426,8 +400,10 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-trans-program/${item._id}`);
+        if (confirm("Xóa văn bản này?")) {
+          const result = await axios.delete(
+            `/api/delete-document/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

@@ -7,10 +7,12 @@ const ObjectId = require("mongodb").ObjectId
 
 router.get('/api/get-all-decisions', async (req, res) => {
     try {
-        let { page, limit, query } = req.query
+        let { page, limit, query, id } = req.query
+        console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const decisions = await DecisionSchema.find({
-            name: {$regex: query}
+            program: { id: new ObjectId(id) }
+            ,name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await DecisionSchema.estimatedDocumentCount()
         let stt = 0
@@ -32,7 +34,7 @@ router.get('/api/get-all-decisions', async (req, res) => {
 
 router.post('/api/create-decision', emptyDecisionInputsValidation, typeDecisionInputsValidation, async (req, res) => {
     try {
-        const { name, detail, number, signDate, expireIn } = req.body
+        const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
         
         const existedDecision = await DecisionSchema.findOne({ name: name })
@@ -45,7 +47,10 @@ router.post('/api/create-decision', emptyDecisionInputsValidation, typeDecisionI
                 detail: detail,
                 number: number,
                 signDate: signDate,
-                expireIn: expireIn
+                expireIn: expireIn,
+                program: {
+                    id: programId
+                }
             })
             console.log(newDecision, "newDecision")
             res.json({ error: false, message: 'Lưu thành công chương trình' })
