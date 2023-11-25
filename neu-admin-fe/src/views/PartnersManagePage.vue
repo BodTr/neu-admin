@@ -124,7 +124,7 @@
                         </div>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Nội dung đối tác</label>
+                        <label class="form-label">Nội dung Kiểm định/công nhận </label>
                         <textarea
                           class="form-control"
                           rows="5"

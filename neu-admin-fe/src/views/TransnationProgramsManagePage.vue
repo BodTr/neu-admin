@@ -352,7 +352,7 @@ export default {
   methods: {
     async submitForm() {
       const data = {
-        programId: id,
+        programId: this.id,
         name: this.name,
         language: this.language,
         degreeName: this.degreeName,

@@ -22,7 +22,6 @@
             class="navbar-brand-image"
           />
         </a>
-        {{ programId }}
       </h1>
 
       <div class="collapse navbar-collapse show" id="sidebar-menu">

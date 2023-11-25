@@ -208,12 +208,12 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Tên văn bằng</label>
+                                <label class="form-label">Ngày có hiệu lực</label>
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
                                   v-model="editDoc.effDate"
-                                  placeholder="Nhập tên văn bằng"
+                                  placeholder="Nhập ngày có hiệu lực"
                                 />
                               </div>
                             </div>
@@ -277,6 +277,7 @@ import axios from "axios";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
+
 export default {
   name: "ProgramManagePage",
   components: {
@@ -330,7 +331,7 @@ export default {
   methods: {
     async submitForm() {
       const data = {
-        programId: id,
+        programId: this.id,
         name: this.name,
         effDate: this.effDate,
         content: this.content,

@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí đơn vị thực hiện\</h2>
+              <h2 class="page-title">Quản lí đơn vị thực hiện</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -94,9 +94,9 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Ngày bắt đầu hiệu lực</label>
+                        <label class="form-label">Số điện thoại</label>
                         <input
-                          type="date"
+                          type="number"
                           v-model="phoneNumber"
                           class="form-control"
                           placeholder="Nhập số điện thoại"
@@ -105,7 +105,7 @@
                       <div class="mb-3">
                         <label class="form-label">Chức vụ</label>
                         <input
-                          type="date"
+                          type="text"
                           v-model="position"
                           class="form-control"
                           placeholder="Nhập chức vụ"
@@ -386,7 +386,7 @@ export default {
   methods: {
     async submitForm() {
       const data = {
-        programId: id,
+        programId: this.id,
         name: this.name,
         phoneNumber: this.phoneNumber,
         position: this.position,

@@ -21,6 +21,9 @@ db.once('open', () => console.log('Connected to Mongoose'))
 app.use(require('./routes/programs'))
 app.use(require('./routes/trans_programs'))
 app.use(require('./routes/decisions'))
+app.use(require('./routes/documents'))
+app.use(require('./routes/partners'))
+app.use(require('./routes/agencies'))
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {
