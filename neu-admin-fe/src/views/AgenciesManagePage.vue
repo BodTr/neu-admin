@@ -15,8 +15,7 @@
                 <a
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal-report"
+                  @click="showModal()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -65,17 +64,19 @@
               </div>
             </div>
             <div
-              class="modal modal-blur fade"
+              v-if="displayModal"
+              class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
-              style="display: none"
-              aria-hidden="true"
+              style="display: block"
+              aria-modal="true"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Thêm đơn vị</h5>
                     <button
+                      @click="hideModal()"
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
@@ -148,17 +149,10 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      href="#"
-                      class="btn btn-link link-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </a>
+
                     <a
                       @click="submitForm()"
                       class="btn btn-primary ms-auto"
-                      data-bs-dismiss="modal"
                     >
                       Create
                     </a>
@@ -202,17 +196,19 @@
                       Sửa
                     </a>
                     <div
-                      class="modal modal-blur fade"
+                      v-if="displayModalOne"
+                      class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
-                      style="display: none"
-                      aria-hidden="true"
+                      style="display: block"
+                      aria-modal="true"
                     >
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title">Chỉnh sửa văn bản</h5>
                             <button
+                              @click="hideModal1()"
                               type="button"
                               class="btn-close"
                               data-bs-dismiss="modal"
@@ -290,16 +286,8 @@
                           </div>
                           <div class="modal-footer">
                             <a
-                              href="#"
-                              class="btn btn-link link-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancel
-                            </a>
-                            <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
-                              data-bs-dismiss="modal"
                             >
                               Edit
                             </a>
@@ -364,6 +352,8 @@ export default {
       email: "",
       unit: "",
       content: "",
+      displayModal: false,
+      displayModalOne: false,
 
       editAgency: {
         id: "",
@@ -384,6 +374,18 @@ export default {
   },
 
   methods: {
+    showModal (){
+      this.displayModal = true
+    },
+    hideModal (){
+      this.displayModal = false
+    },
+    showModal1 (){
+      this.displayModalOne = true
+    },
+    hideModal1 (){
+      this.displayModalOne = false
+    },
     async submitForm() {
       const data = {
         programId: this.id,
@@ -409,7 +411,13 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          location.reload();
+          this.displayModal = false
+          this.name = ''
+          this.phoneNumber = ''
+          this.position = ''
+          this.email = ''
+          this.unit = ''
+          this.content = ''
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -424,6 +432,7 @@ export default {
       this.editAgency.unit= item.unit;
       this.editAgency.content= item.content;
       this.editAgency.id = item._id;
+      this.showModal1()
     },
 
     async onSubmit() {
@@ -451,6 +460,7 @@ export default {
           this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
+          this.displayModalOne = false
         }
       } catch (error) {
         console.log(error, "put api catch block error");

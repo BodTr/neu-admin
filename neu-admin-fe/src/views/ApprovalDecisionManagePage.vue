@@ -13,10 +13,9 @@
             <div class="col-auto ms-auto d-print-none">
               <div class="btn-list">
                 <a
+                  @click="showModal()"
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal-report"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -65,17 +64,19 @@
               </div>
             </div>
             <div
-              class="modal modal-blur fade"
+              v-if="displayModal"
+              class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
-              style="display: none"
-              aria-hidden="true"
+              style="display: block"
+              aria-modal="true"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Thêm quyết định</h5>
                     <button
+                      @click="hideModal()"
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
@@ -135,16 +136,8 @@
                   </div>
                   <div class="modal-footer">
                     <a
-                      href="#"
-                      class="btn btn-link link-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </a>
-                    <a
                       @click="submitForm()"
                       class="btn btn-primary ms-auto"
-                      data-bs-dismiss="modal"
                     >
                       Create
                     </a>
@@ -188,17 +181,19 @@
                       Sửa
                     </a>
                     <div
-                      class="modal modal-blur fade"
+                      v-if="displayModalOne"
+                      class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
-                      style="display: none"
-                      aria-hidden="true"
+                      style="display: block"
+                      aria-modal="true"
                     >
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa quyết định</h5>
                             <button
+                              @click="hideModal1()"
                               type="button"
                               class="btn-close"
                               data-bs-dismiss="modal"
@@ -261,17 +256,10 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <a
-                              href="#"
-                              class="btn btn-link link-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancel
-                            </a>
+
                             <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
-                              data-bs-dismiss="modal"
                             >
                               Edit
                             </a>
@@ -331,6 +319,8 @@ export default {
       number: "",
       signDate: "",
       expireIn: "",
+      displayModal: false,
+      displayModalOne: false,
 
       editDecision: {
         id: "",
@@ -350,6 +340,18 @@ export default {
   },
 
   methods: {
+    showModal (){
+      this.displayModal = true
+    },
+    hideModal (){
+      this.displayModal = false
+    },
+    showModal1 (){
+      this.displayModalOne = true
+    },
+    hideModal1 (){
+      this.displayModalOne = false
+    },
     async submitForm() {
       console.log(this.id, "post api program id")
       const data = {
@@ -375,7 +377,12 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          location.reload();
+          this.displayModal = false
+          this.name = ''
+          this.detail = ''
+          this.number = ''
+          this.signDate = ''
+          this.expireIn = ''
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -389,6 +396,7 @@ export default {
       this.editDecision.signDate = item.signDate;
       this.editDecision.expireIn = item.expireIn;
       this.editDecision.id = item._id;
+      this.showModal1()
 
       // console.log('content', this.content);
     },
@@ -414,9 +422,10 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Chương trình đã được sửa");
+          this.toast.success("Quyết định đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
+          this.displayModalOne = false
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -426,7 +435,7 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa chương trình này?")) {
+        if (confirm("Xóa quyết định này?")) {
           const result = await axios.delete(
             `/api/delete-decision/${item._id}`
           );

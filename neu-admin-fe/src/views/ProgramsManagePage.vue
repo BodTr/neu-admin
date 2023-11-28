@@ -15,8 +15,7 @@
                 <a
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal-report"
+                  @click="showModal()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -64,18 +63,18 @@
                 </a>
               </div>
             </div>
-            <div
-              class="modal modal-blur fade"
+            <div v-if="displayModal"
+              class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
-              style="display: none"
-              aria-hidden="true"
+              aria-modal="true"
+              style="display:block"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Thêm chương trình</h5>
-                    <button
+                    <button @click="hideModal()"
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
@@ -108,16 +107,9 @@
                   </div>
                   <div class="modal-footer">
                     <a
-                      href="#"
-                      class="btn btn-link link-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </a>
-                    <a
                       @click="submitForm()"
                       class="btn btn-primary ms-auto"
-                      data-bs-dismiss="modal"
+                      
                     >
                       Create
                     </a>
@@ -143,7 +135,7 @@
                 >
                   <template v-slot:isManaged="item">
                     <label class="form-check">
-                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" @change="getIdArray()" />
+                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" @change="getIdArray" />
                     </label>
                   </template>
                   <template v-slot:tool="item">
@@ -166,17 +158,19 @@
                       Sửa
                     </a>
                     <div
-                      class="modal modal-blur fade"
+                      v-if="displayModalOne"
+                      class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
-                      style="display: none"
-                      aria-hidden="true"
+                      style="display: block"
+                      aria-modal="true"
                     >
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title">Chỉnh sửa chương trình</h5>
                             <button
+                              @click="hideModal1()"
                               type="button"
                               class="btn-close"
                               data-bs-dismiss="modal"
@@ -197,7 +191,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label">Năm</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -209,16 +203,8 @@
                           </div>
                           <div class="modal-footer">
                             <a
-                              href="#"
-                              class="btn btn-link link-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancel
-                            </a>
-                            <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
-                              data-bs-dismiss="modal"
                             >
                               Edit
                             </a>
@@ -259,11 +245,12 @@ export default {
           tool: "Thao tác"
         },
       },
-
       name: "",
       year: "",
       id: [],
       
+      displayModal: false,
+      displayModalOne: false,
       editprogram: {
         id: "",
         name: "",
@@ -279,10 +266,35 @@ export default {
   },
 
   created() {
-    this.id = ['0']
+    // this.id = ['0']
+    const idArr = localStorage.getItem("idArr")
+    console.log(idArr === "null", "check id")
+
+    if (idArr === "null") {
+      this.id = ['0']
+      console.log("if statement", this.id)
+    } else {
+      this.id = JSON.parse(localStorage.getItem("idArr"))
+      console.log("else statement", this.id)
+    }
+    
   },
 
+
+
   methods: {
+    showModal (){
+      this.displayModal = true
+    },
+    hideModal (){
+      this.displayModal = false
+    },
+    showModal1 (){
+      this.displayModalOne = true
+    },
+    hideModal1 (){
+      this.displayModalOne = false
+    },
     async submitForm() {
       const data = {
         name: this.name,
@@ -301,9 +313,12 @@ export default {
 
         if (result.data.error === false) {
           // alert(result.data.message)
+          
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          location.reload();
+          this.displayModal = false
+          this.name = ''
+          this.year = ''
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -314,6 +329,7 @@ export default {
       this.editprogram.name = item.name;
       this.editprogram.year = item.year;
       this.editprogram.id = item._id;
+      this.showModal1()
 
       // console.log('content', this.content);
     },
@@ -339,6 +355,8 @@ export default {
           this.toast.success("Chương trình đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
+          this.displayModalOne = false
+
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -363,7 +381,7 @@ export default {
       const idArr = this.id
       console.log(idArr, "id Array")
       localStorage.setItem("idArr", JSON.stringify(idArr))
-
+      
     }
   },
 };

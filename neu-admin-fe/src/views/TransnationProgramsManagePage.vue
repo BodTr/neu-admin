@@ -15,8 +15,7 @@
                 <a
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal-report"
+                  @click="showModal()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -65,17 +64,19 @@
               </div>
             </div>
             <div
-              class="modal modal-blur fade"
+            v-if="displayModal"
+              class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
-              style="display: none"
-              aria-hidden="true"
+              style="display: block"
+              aria-modal="true"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Thêm chương trình</h5>
                     <button
+                      @click="hideModal()"
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
@@ -135,16 +136,8 @@
                   </div>
                   <div class="modal-footer">
                     <a
-                      href="#"
-                      class="btn btn-link link-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </a>
-                    <a
                       @click="submitForm()"
                       class="btn btn-primary ms-auto"
-                      data-bs-dismiss="modal"
                     >
                       Create
                     </a>
@@ -188,17 +181,19 @@
                       Sửa
                     </a>
                     <div
-                      class="modal modal-blur fade"
+                      v-if="displayModal"
+                      class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
-                      style="display: none"
-                      aria-hidden="true"
+                      style="display: block"
+                      aria-modal="true"
                     >
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title">Chỉnh sửa chương trình</h5>
                             <button
+                              @click="hideModal1()"
                               type="button"
                               class="btn-close"
                               data-bs-dismiss="modal"
@@ -260,16 +255,8 @@
                           </div>
                           <div class="modal-footer">
                             <a
-                              href="#"
-                              class="btn btn-link link-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancel
-                            </a>
-                            <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
-                              data-bs-dismiss="modal"
                             >
                               Edit
                             </a>
@@ -331,6 +318,8 @@ export default {
       degreeName: "",
       degreeType: "",
       issuedBy: "",
+      displayModal: false,
+      displayModalOne: false,
 
       editProgram: {
         id: "",
@@ -350,6 +339,18 @@ export default {
   },
 
   methods: {
+    showModal (){
+      this.displayModal = true
+    },
+    hideModal (){
+      this.displayModal = false
+    },
+    showModal1 (){
+      this.displayModalOne = true
+    },
+    hideModal1 (){
+      this.displayModalOne = false
+    },
     async submitForm() {
       const data = {
         programId: this.id,
@@ -375,7 +376,13 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          location.reload();
+          this.displayModal = false
+          this.name = ''
+          this.language = ''
+          this.degreeName = ''
+          this.degreeType = ''
+          this.issuedBy = ''
+
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -389,6 +396,7 @@ export default {
       this.editProgram.degreeType = item.degreeType;
       this.editProgram.issuedBy = item.issuedBy;
       this.editProgram.id = item._id;
+      this.showModal1()
 
       // console.log('content', this.content);
     },
@@ -417,6 +425,7 @@ export default {
           this.toast.success("Chương trình đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
+          this.displayModalOne = false
         }
       } catch (error) {
         console.log(error, "put api catch block error");

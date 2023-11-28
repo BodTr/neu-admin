@@ -18,7 +18,8 @@ function typeProgramInputsValidation(req, res, next) {
     const error = new Error('wrong type program inputs')
     error.code = 'PROGRAM_INPUTS_TYPE_ERROR'
     const { name, year } = req.body
-    if (typeof name !== 'string' || typeof Number(year) !== 'number') {
+    console.log(isNaN(year) , "type input check")
+    if (typeof name !== 'string' || isNaN(year)) {
         throw error
     } else {
         console.log('program inputs type correct')
