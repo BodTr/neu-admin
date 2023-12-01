@@ -180,6 +180,194 @@
               <span class="nav-link-title"> Quản lí đơn vị thực hiện </span>
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'goals-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Mục tiêu chương trình </span>
+            </router-link>
+          </li>
+          <li class="nav-item ms-1">
+              <h3 class="nav-link-title">Đề án</h3>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'plans-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Quản lí nội dung đề án </span>
+            </router-link>
+          </li>
+          <li class="nav-item ms-1">
+              <h3 class="nav-link-title">Chất lượng đào tạo</h3>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'edu-quality-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Đảm bảo chất lượng đào tạo </span>
+            </router-link>
+          </li>
+          <li class="nav-item ms-1">
+              <h3 class="nav-link-title">Khung chương trình</h3>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'curriculums-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Thông tin khung chương trình </span>
+            </router-link>
+          </li>
+          <li class="nav-item ms-1">
+              <h3 class="nav-link-title">Tuyển sinh</h3>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'enrollment-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title"> Quản lí tuyển sinh</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'lecturers-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title">Quản lí giảng viên</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'units-manage-page', params: {id: programId} }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 11l3 3l8 -8"></path>
+                  <path
+                    d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                  ></path>
+                </svg>
+              </span>
+              <span class="nav-link-title">Quản lí đơn vị công tác</span>
+            </router-link>
+          </li>
+          
         </ul>
       </div>
     </div>

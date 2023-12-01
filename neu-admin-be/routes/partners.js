@@ -53,7 +53,7 @@ router.post('/api/create-partner', emptyPartnerInputsValidation, typePartnerInpu
                 }
             })
             console.log(newPartner, "newPartner")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+            res.json({ error: false, message: 'Lưu thành công đối tác' })
         }
         
         

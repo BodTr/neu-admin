@@ -7,15 +7,15 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí văn bản liên kết</h2>
+              <h2 class="page-title">Quản lí tuyển sinh</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
               <div class="btn-list">
                 <a
-                  @click="showModal()"
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
+                  @click="showModal()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm văn bản
+                  Thêm mới
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm văn bản</h5>
+                    <h5 class="modal-title">Thêm mới</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -86,50 +86,76 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bản liên kết</label>
+                        <label class="form-label">Năm học</label>
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
-                          v-model="name"
-                          placeholder="Nhập tên văn bản liên kết Đào tạo"
+                          v-model="year"
+                          placeholder="Nhập năm học"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Ngày bắt đầu hiệu lực</label>
+                        <label class="form-label">Số học viên nhập học</label>
                         <input
-                          type="date"
-                          v-model="effDate"
+                          type="number"
+                          v-model="admissionCount"
                           class="form-control"
-                          placeholder="Nhập ngày bắt đầu hiệu lực"
+                          placeholder="Nhập số học viên nhập học"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số học viên tốt nghiệp</label>
+                        <input
+                          type="text"
+                          v-model="graduatedCount"
+                          class="form-control"
+                          placeholder="Nhập số học viên tốt nghiệp"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Tổng thu học phí</label>
+                        <input
+                          type="text"
+                          v-model="tuitionSum"
+                          class="form-control"
+                          placeholder="Nhập tổng thu học phí(triệu đồng)"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Nội dung</label>
+                        <label class="form-label"
+                          >Số học viên dự thi/tham gia xét tuyển</label
+                        >
                         <input
                           type="text"
                           class="form-control"
-                          v-model="content"
-                          placeholder="Nhập nội dung"
+                          v-model="applicantsCount"
+                          placeholder="Nhập số học viên dự thi/tham gia xét tuyển"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Thời hạn hiệu lực</label>
+                        <label class="form-label">Số học viên thôi học</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="expireIn"
-                          placeholder="Nhập thời hạn hiệu lực"
+                          v-model="dropoutCount"
+                          placeholder="Nhập số học viên thôi học"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Tỉ lệ tốt nghiệp</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="graduatedPercentage"
+                          placeholder="Nhập tỉ lệ tốt nghiệp"
                         />
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -146,7 +172,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-documents"
+                  url="/api/get-all-enrollments"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -172,7 +198,7 @@
                       Sửa
                     </a>
                     <div
-                      v-if="displayModal"
+                      v-if="displayModalOne"
                       class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
@@ -194,43 +220,80 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên văn bản liên kết</label>
+                                <label class="form-label">Năm học</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editDoc.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                  v-model="editEnroll.year"
+                                  placeholder="Nhập năm học"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Ngày có hiệu lực</label>
+                                <label class="form-label"
+                                  >Số học viên nhập học</label
+                                >
                                 <input
-                                  type="date"
+                                  type="text"
                                   class="form-control"
-                                  v-model="editDoc.effDate"
-                                  placeholder="Nhập ngày có hiệu lực"
+                                  v-model="editEnroll.admissionCount"
+                                  placeholder="Nhập tên văn bằng"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Số học viên tốt nghiệp</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editEnroll.graduatedCount"
+                                  placeholder="Nhập tên văn bằng"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Tổng thu học phí</label
+                                >
+                                <input
+                                  type="text"
+                                  v-model="editEnroll.tuitionSum"
+                                  class="form-control"
+                                  placeholder="Nhập tổng thu học phí(triệu đồng)"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Nội dung</label
+                                  >Số học viên dự thi/tham gia xét tuyển</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editDoc.content"
-                                  placeholder="Nhập nội dung"
+                                  v-model="editEnroll.applicantsCount"
+                                  placeholder="Nhập số học viên dự thi/tham gia xét tuyển"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Thời hạn hiệu lực</label>
+                                <label class="form-label"
+                                  >Số học viên thôi học</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editDoc.expireIn"
-                                  placeholder="Nhập thời hạn hiệu lực"
+                                  v-model="editEnroll.dropoutCount"
+                                  placeholder="Nhập số học viên thôi học"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Tỉ lệ tốt nghiệp</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editEnroll.graduatedPercentage"
+                                  placeholder="Nhập nội dung phụ trách"
                                 />
                               </div>
                             </div>
@@ -264,7 +327,6 @@ import axios from "axios";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
-
 export default {
   name: "ProgramManagePage",
   components: {
@@ -275,10 +337,13 @@ export default {
     return {
       columns: [
         "stt",
-        "name",
-        "content",
-        "effDate",
-        "expireIn",
+        "year",
+        "applicantsCount",
+        "admissionCount",
+        "dropoutCount",
+        "tuitionSum",
+        "graduatedPercentage",
+        "graduatedCount",
         "tool",
       ],
       options: {
@@ -286,27 +351,36 @@ export default {
           id: this.$route.params.id,
         },
         headings: {
-          name: "Tên văn bản Liên Kết Đào Tạo",
-          content: "Nội dung",
-          effDate: "Ngày có hiệu lực",
-          expireIn: "Thời hạn hiệu lực",
+          year: "Năm học",
+          applicantsCount: "Số học viên dự thi/tham gia xét tuyển",
+          admissionCount: "Số học viên nhập học",
+          dropoutCount: "Số học viên thôi học",
+          graduatedPercentage: "Tỉ lệ tốt nghiệp",
+          graduatedCount: "Số học viên tốt nghiệp",
+          tuitionSum: "Tổng thu học phí(tr.Đồng)",
           tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
-      name: "",
-      effDate: "",
-      content: "",
-      expireIn: "",
+      year: "",
+      admissionCount: "",
+      graduatedCount: "",
+      tuitionSum: "",
+      applicantsCount: "",
+      dropoutCount: "",
+      graduatedPercentage: "",
       displayModal: false,
       displayModalOne: false,
 
-      editDoc: {
+      editEnroll: {
         id: "",
-        name: "",
-        effDate: "",
-        content: "",
-        expireIn: "",
+        year: "",
+        admissionCount: "",
+        graduatedCount: "",
+        tuitionSum: "",
+        applicantsCount: "",
+        dropoutCount: "",
+        graduatedPercentage: "",
       },
     };
   },
@@ -318,29 +392,32 @@ export default {
   },
 
   methods: {
-    showModal (){
-      this.displayModal = true
+    showModal() {
+      this.displayModal = true;
     },
-    hideModal (){
-      this.displayModal = false
+    hideModal() {
+      this.displayModal = false;
     },
-    showModal1 (){
-      this.displayModalOne = true
+    showModal1() {
+      this.displayModalOne = true;
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
       const data = {
         programId: this.id,
-        name: this.name,
-        effDate: this.effDate,
-        content: this.content,
-        expireIn: this.expireIn,
+        year: this.year,
+        admissionCount: this.admissionCount,
+        graduatedCount: this.graduatedCount,
+        tuitionSum: this.tuitionSum,
+        applicantsCount: this.applicantsCount,
+        dropoutCount: this.dropoutCount,
+        graduatedPercentage: this.graduatedPercentage,
       };
 
       try {
-        const result = await axios.post("/api/create-document", data);
+        const result = await axios.post("/api/create-enrollment", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -353,11 +430,14 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.effDate = ''
-          this.content = ''
-          this.expireIn = ''
+          this.displayModal = false;
+          this.year = "";
+          this.admissionCount = "";
+          this.graduatedCount = "";
+          this.tuitionSum = "";
+          this.applicantsCount = "";
+          this.dropoutCount = "";
+          this.graduatedPercentage = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -365,26 +445,30 @@ export default {
     },
 
     onEdit(item) {
-      this.editDoc.name = item.name;
-      this.editDoc.effDate = item.effDate;
-      this.editDoc.content = item.content;
-      this.editDoc.expireIn = item.expireIn;
-      this.editDoc.id = item._id;
-      this.showModal1()
-
-      // console.log('content', this.content);
+      this.editEnroll.year = item.year;
+      this.editEnroll.admissionCount = item.admissionCount;
+      this.editEnroll.graduatedCount = item.graduatedCount;
+      this.editEnroll.tuitionSum = item.tuitionSum
+      this.editEnroll.applicantsCount = item.applicantsCount;
+      this.editEnroll.dropoutCount = item.dropoutCount;
+      this.editEnroll.graduatedPercentage = item.graduatedPercentage;
+      this.editEnroll.id = item._id;
+      this.showModal1();
     },
 
     async onSubmit() {
       const data = {
-        name: this.editDoc.name,
-        effDate: this.editDoc.effDate,
-        content: this.editDoc.content,
-        expireIn: this.editDoc.expireIn,
+        year: this.editEnroll.year,
+        admissionCount: this.editEnroll.admissionCount,
+        graduatedCount: this.editEnroll.graduatedCount,
+        tuitionSum: this.editEnroll.tuitionSum,
+        applicantsCount: this.editEnroll.applicantsCount,
+        dropoutCount: this.editEnroll.dropoutCount,
+        graduatedPercentage: this.editEnroll.graduatedPercentage,
       };
       try {
         const result = await axios.put(
-          `/api/edit-document/${this.editDoc.id}`,
+          `/api/edit-enrollment/${this.editEnroll.id}`,
           data
         );
 
@@ -398,7 +482,7 @@ export default {
           this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -409,9 +493,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
-            `/api/delete-document/${item._id}`
-          );
+          const result = await axios.delete(`/api/delete-enrollment/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

@@ -1,13 +1,13 @@
 <template>
   <div class="page">
-    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
+    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chương trình</h2>
+              <h2 class="page-title">Quản lí khung chương trình đào tạo</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm khung chương trình
                 </a>
                 <a
                   href="#"
@@ -63,18 +63,20 @@
                 </a>
               </div>
             </div>
-            <div v-if="displayModal"
+            <div
+              v-if="displayModal"
               class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
+              style="display: block"
               aria-modal="true"
-              style="display:block"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm chương trình</h5>
-                    <button @click="hideModal()"
+                    <h5 class="modal-title">Thêm khung chương trình</h5>
+                    <button
+                      @click="hideModal()"
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
@@ -84,33 +86,65 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên</label>
+                        <label class="form-label">Tên môn học</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên chương trình"
+                          placeholder="Nhập tên môn học"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Năm học/học kì</label>
+                        <input
+                          type="text"
+                          v-model="year"
+                          class="form-control"
+                          placeholder="Nhập năm học/học kì"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Địa điểm đào tạo</label>
+                        <input
+                          type="text"
+                          v-model="location"
+                          class="form-control"
+                          placeholder="Nhập địa điểm đào tạo"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm</label>
+                        <label class="form-label">Phân loại/Học phần</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập năm"
+                          v-model="subjectType"
+                          placeholder="Nhập phân loại/học phần"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số tín chỉ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="creditsCount"
+                          placeholder="Nhập số tín chỉ"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Trường đào tạo</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="trainingUni"
+                          placeholder="Nhập trường đào tạo"
                         />
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                      
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -127,30 +161,25 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-programs"
+                  url="/api/get-all-curriculums"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged="item">
-                    <label class="form-check">
-                      <input class="form-check-input" type="checkbox" v-model="id" :value="item.row._id" @change="getIdArray" />
-                    </label>
-                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 btn-sm px-1  mr-2"
+                        class="btn btn-dark w-50 px-1"
                       >
                         Xoá
                       </a>
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger btn-sm w-50 d-sm-inline-block px-1"
+                      class="btn btn-danger w-50 d-sm-inline-block px-1"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
@@ -168,7 +197,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -180,23 +209,65 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label"
+                                  >Tên môn học</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.name"
-                                  placeholder="Nhập tên chương trình"
+                                  v-model="editCurriculum.name"
+                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Năm học/học kì</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editCurriculum.year"
+                                  placeholder="Nhập năm học/học kì"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Địa điểm đào tạo</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editCurriculum.location"
+                                  placeholder="Nhập địa điểm đào tạo"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Năm</label>
+                                <label class="form-label">Phân loại/học phần</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.year"
-                                  placeholder="Nhập năm"
+                                  v-model="editCurriculum.subjectType"
+                                  placeholder="Nhập phân loại/học phần"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Số tín chỉ</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editCurriculum.creditsCount"
+                                  placeholder="Nhập số tín chỉ"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Tên trường đào tạo</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editCurriculum.trainingUni"
+                                  placeholder="Nhập nội dung phụ trách"
                                 />
                               </div>
                             </div>
@@ -214,6 +285,7 @@
                     </div>
                   </template>
                 </v-server-table>
+                {{ id }}
               </div>
             </div>
           </div>
@@ -234,27 +306,53 @@ export default {
   components: {
     VerticalNavbar,
   },
+
   data() {
     return {
-      columns: ["stt", "name", "year", "isManaged", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "subjectType",
+        "year",
+        "location",
+        "creditsCount",
+        "trainingUni",
+        "tool",
+      ],
       options: {
+        params: {
+          id: this.$route.params.id,
+        },
         headings: {
-          name: "Tên chương trình",
-          year: "Năm",
-          isManaged: "Chọn quản lí",
-          tool: "Thao tác"
+          name: "Họ tên người thực hiện",
+          subjectType: "Phân loại/học phần",
+          year: "Số điện thoại",
+          creditsCount: "Đơn vị thực hiện",
+          location: "Chức vụ",
+          trainingUni: "Trường đào tạo",
+          tool: "Thao tác",
         },
       },
+      id: this.$route.params.id,
       name: "",
       year: "",
-      id: [],
-      
+      location: "",
+      subjectType: "",
+      creditsCount: "",
+      trainingUni: "",
+
       displayModal: false,
       displayModalOne: false,
-      editprogram: {
+
+      editCurriculum: {
         id: "",
         name: "",
         year: "",
+        location: "",
+        subjectType: "",
+        creditsCount: "",
+        trainingUni: "",
+
       },
     };
   },
@@ -265,44 +363,32 @@ export default {
     return { toast };
   },
 
-  created() {
-    // this.id = ['0']
-    const idArr = localStorage.getItem("idArr")
-    console.log(idArr === "null", "check id")
-
-    if (idArr === "null") {
-      this.id = ['0']
-      console.log("if statement", this.id)
-    } else {
-      this.id = JSON.parse(localStorage.getItem("idArr"))
-      console.log("else statement", this.id)
-    }
-    
-  },
-
-
-
   methods: {
-    showModal (){
-      this.displayModal = true
+    showModal() {
+      this.displayModal = true;
     },
-    hideModal (){
-      this.displayModal = false
+    hideModal() {
+      this.displayModal = false;
     },
-    showModal1 (){
-      this.displayModalOne = true
+    showModal1() {
+      this.displayModalOne = true;
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         year: this.year,
+        location: this.location,
+        subjectType: this.subjectType,
+        creditsCount: this.creditsCount,
+        trainingUni: this.trainingUni,
       };
 
       try {
-        const result = await axios.post("/api/create-program", data);
+        const result = await axios.post("/api/create-curriculum", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -313,12 +399,15 @@ export default {
 
         if (result.data.error === false) {
           // alert(result.data.message)
-          
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.year = ''
+          this.displayModal = false;
+          this.name = "";
+          this.year = "";
+          this.location = "";
+          this.subjectType = "";
+          this.creditsCount = "";
+          this.trainingUni = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -326,22 +415,28 @@ export default {
     },
 
     onEdit(item) {
-      this.editprogram.name = item.name;
-      this.editprogram.year = item.year;
-      this.editprogram.id = item._id;
-      this.showModal1()
-
-      // console.log('content', this.content);
+      this.editCurriculum.name = item.name;
+      this.editCurriculum.year = item.year;
+      this.editCurriculum.location = item.location;
+      this.editCurriculum.subjectType = item.subjectType;
+      this.editCurriculum.creditsCount = item.creditsCount;
+      this.editCurriculum.trainingUni = item.trainingUni;
+      this.editCurriculum.id = item._id;
+      this.showModal1();
     },
 
     async onSubmit() {
       const data = {
-        name: this.editprogram.name,
-        year: this.editprogram.year,
+        name: this.editCurriculum.name,
+        year: this.editCurriculum.year,
+        location: this.editCurriculum.location,
+        subjectType: this.editCurriculum.subjectType,
+        creditsCount: this.editCurriculum.creditsCount,
+        trainingUni: this.editCurriculum.trainingUni,
       };
       try {
         const result = await axios.put(
-          `/api/edit-program/${this.editprogram.id}`,
+          `/api/edit-curriculum/${this.editCurriculum.id}`,
           data
         );
 
@@ -352,11 +447,10 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Chương trình đã được sửa");
+          this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
-
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -366,8 +460,8 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-program/${item._id}`);
+        if (confirm("Xóa văn bản này?")) {
+          const result = await axios.delete(`/api/delete-curriculum/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -377,12 +471,6 @@ export default {
         console.log(error, "delete api catch block error");
       }
     },
-    getIdArray() {
-      const idArr = this.id
-      console.log(idArr, "id Array")
-      localStorage.setItem("idArr", JSON.stringify(idArr))
-      
-    }
   },
 };
 </script>
