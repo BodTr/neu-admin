@@ -167,6 +167,91 @@ function typeAgencyInputsValidation(req, res, next) {
     }
 }
 
+// goal inputs validate
+function emptyGoalInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty goal inputs");
+    const error = new Error("empty goal inputs");
+    error.code = "EMPTY_GOAL_INPUTS_ERROR";
+    const { programGoal, testDetail, goalFrom } = req.body;
+    if (!programGoal || !testDetail || !goalFrom) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeGoalInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type goal inputs")
+    const error = new Error('wrong type goal inputs')
+    error.code = 'GOAL_INPUTS_TYPE_ERROR'
+    const { programGoal, testDetail, goalFrom } = req.body
+    if (typeof programGoal !== 'string' || typeof testDetail !== 'string' || typeof goalFrom !== 'string') {
+        throw error
+    } else {
+        console.log('program inputs type correct')
+        next()
+    }
+}
+
+// plan inputs validate
+function emptyPlanlInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty plan inputs");
+    const error = new Error("empty plan inputs");
+    error.code = "EMPTY_PLAN_INPUTS_ERROR";
+    const { certName, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, report } = req.body;
+    if (!certName || !qualifiedLecturer || !planStructure || !qualifiedStudent || !tuition || !infraCondition || !language || !ecoManage || !report ) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typePlanInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type plan inputs")
+    const error = new Error('wrong type plan inputs')
+    error.code = 'PLAN_INPUTS_TYPE_ERROR'
+    const { certName, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, report } = req.body
+    if (typeof certName !== 'string' || typeof qualifiedLecturer !== 'string' || typeof qualifiedStudent !== 'string' || typeof planStructure !== 'string' || typeof tuition !== 'string' || typeof infraCondition !== 'string' || typeof language !== 'string' || typeof ecoManage !== 'string' || typeof report !== 'string') {
+        throw error
+    } else {
+        console.log('plan inputs type correct')
+        next()
+    }
+}
+
+// edu quality process inputs validate
+function emptyProcessInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty process inputs");
+    const error = new Error("empty process inputs");
+    error.code = "EMPTY_PROCESS_INPUTS_ERROR";
+    const { mechanism, detail, hasProcess } = req.body;
+    if (!mechanism || !detail || !hasProcess ) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeProcessInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type process inputs")
+    const error = new Error('wrong type process inputs')
+    error.code = 'PROCESS_INPUTS_TYPE_ERROR'
+    const { mechanism, detail, hasProcess } = req.body
+    if (typeof mechanism !== 'string' || typeof detail !== 'string') {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
+
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -179,5 +264,11 @@ module.exports = {
   emptyPartnerInputsValidation,
   typePartnerInputsValidation,
   emptyAgencyInputsValidation,
-  typeAgencyInputsValidation
+  typeAgencyInputsValidation,
+  emptyGoalInputsValidation,
+  typeGoalInputsValidation,
+  emptyPlanlInputsValidation,
+  typePlanInputsValidation,
+  emptyProcessInputsValidation,
+  typeProcessInputsValidation
 };

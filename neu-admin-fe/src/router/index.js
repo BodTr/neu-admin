@@ -13,6 +13,7 @@ import CurriculumManagePage from '../views/CurriculumManagePage.vue'
 import EnrollmentManagePage from '../views/EnrollmentManagePage.vue'
 import LecturersManagePage from '../views/LecturersManagePage.vue'
 import UnitsManagePage from '../views/UnitsManagePage.vue'
+import SubjectsManagePage from '../views/SubjectsManagePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,6 +124,14 @@ const router = createRouter({
       path: '/enrollment/units-infor/:id',
       name: 'units-manage-page',
       component: UnitsManagePage,
+      meta: { 
+        requiresProgramId: true
+      },
+    },
+    {
+      path: '/enrollment/subjects-infor/:id',
+      name: 'subjects-manage-page',
+      component: SubjectsManagePage,
       meta: { 
         requiresProgramId: true
       },

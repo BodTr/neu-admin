@@ -112,7 +112,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-goals"
+                  url="/api/get-all-units"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -248,7 +248,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-goal", data);
+        const result = await axios.post("/api/create-unit", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -284,7 +284,7 @@ export default {
       };
       try {
         const result = await axios.put(
-          `/api/edit-goal/${this.editUnit.id}`,
+          `/api/edit-unit/${this.editUnit.id}`,
           data
         );
 
@@ -309,7 +309,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa mục tiêu này?")) {
-          const result = await axios.delete(`/api/delete-goal/${item._id}`);
+          const result = await axios.delete(`/api/delete-unit/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

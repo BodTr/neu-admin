@@ -268,7 +268,7 @@ export default {
       },
       id: this.$route.params.id,
       mechanism: "",
-      hasProcess: "",
+      hasProcess: [],
       detail: "",
       displayModal: false,
       displayModalOne: false,
@@ -276,7 +276,7 @@ export default {
       editEduQuality: {
         id: "",
         mechanism: "",
-        hasProcess: "",
+        hasProcess: [],
         detail: "",
       },
     };
@@ -327,7 +327,7 @@ export default {
           this.displayModal = false;
           this.mechanism = "";
           this.detail = "";
-          this.hasProcess = "";
+          this.hasProcess = [];
         }
       } catch (error) {
         console.log(error, "post api catch block error");

@@ -24,6 +24,9 @@ app.use(require('./routes/decisions'))
 app.use(require('./routes/documents'))
 app.use(require('./routes/partners'))
 app.use(require('./routes/agencies'))
+app.use(require('./routes/goals'))
+app.use(require('./routes/plans'))
+app.use(require('./routes/edu_quality_processes'))
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {

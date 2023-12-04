@@ -92,7 +92,7 @@
                         <textarea
                           class="form-control"
                           rows="5"
-                          v-model="programGoals"
+                          v-model="programGoal"
                           placeholder="Nhập mục tiêu chương trình liên kết đào tạo"
                         ></textarea>
                       </div>
@@ -208,7 +208,7 @@
                                 <textarea
                                   class="form-control"
                                   rows="5"
-                                  v-model="editGoal.programGoals"
+                                  v-model="editGoal.programGoal"
                                   placeholder="Nhập mục tiêu chương trình liên kết đào tạo"
                                 ></textarea>
                               </div>
@@ -266,6 +266,7 @@
                     </div>
                   </template>
                 </v-server-table>
+                {{ id }}
               </div>
             </div>
           </div>
@@ -282,23 +283,26 @@ import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
 export default {
-  programGoals: "ProgramManagePage",
+  name: "ProgramManagePage",
   components: {
     VerticalNavbar,
   },
   data() {
     return {
-      columns: ["stt", "programGoals", "testDetail", "goalFrom", "tool"],
+      columns: ["stt", "programGoal", "testDetail", "goalFrom", "tool"],
       options: {
+        params:{
+          id: this.$route.params.id,
+        },
         headings: {
-          programGoals: "Nội dung mục tiêu",
+          programGoal: "Nội dung mục tiêu",
           testDetail: "Tự đánh giá",
           goalFrom: "Phân loại",
           tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
-      programGoals: "",
+      programGoal: "",
       testDetail: "",
       goalFrom: "",
 
@@ -306,7 +310,7 @@ export default {
       displayModalOne: false,
       editGoal: {
         id: "",
-        programGoals: "",
+        programGoal: "",
         testDetail: "",
         goalFrom: "",
       },
@@ -336,7 +340,7 @@ export default {
     async submitForm() {
       const data = {
         programId: this.id,
-        programGoals: this.programGoals,
+        programGoal: this.programGoal,
         testDetail: this.testDetail,
         goalFrom: this.goalFrom,
       };
@@ -357,7 +361,7 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.programGoals = "";
+          this.programGoal = "";
           this.testDetail = "";
         }
       } catch (error) {
@@ -366,7 +370,7 @@ export default {
     },
 
     onEdit(item) {
-      this.editGoal.programGoals = item.programGoals;
+      this.editGoal.programGoal = item.programGoal;
       this.editGoal.testDetail = item.testDetail;
       this.editGoal.goalFrom = item.goalFrom;
       this.editGoal.id = item._id;
@@ -377,7 +381,7 @@ export default {
 
     async onSubmit() {
       const data = {
-        programGoals: this.editGoal.programGoals,
+        programGoal: this.editGoal.programGoal,
         testDetail: this.editGoal.testDetail,
         goalFrom: this.editGoal.goalFrom,
       };
@@ -418,11 +422,11 @@ export default {
         console.log(error, "delete api catch block error");
       }
     },
-    getIdArray() {
-      const idArr = this.id;
-      console.log(idArr, "id Array");
-      localStorage.setItem("idArr", JSON.stringify(idArr));
-    },
+    // getIdArray() {
+    //   const idArr = this.id;
+    //   console.log(idArr, "id Array");
+    //   localStorage.setItem("idArr", JSON.stringify(idArr));
+    // },
   },
 };
 </script>
