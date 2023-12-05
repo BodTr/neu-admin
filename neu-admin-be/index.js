@@ -30,6 +30,7 @@ app.use(require('./routes/edu_quality_processes'))
 app.use(require('./routes/curriculums'))
 app.use(require('./routes/enrollment'))
 app.use(require('./routes/lecturers'))
+app.use(require('./routes/units'))
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {

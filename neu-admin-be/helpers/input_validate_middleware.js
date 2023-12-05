@@ -335,6 +335,34 @@ function typeLecturerInputsValidation(req, res, next) {
     }
 }
 
+// unit input validate
+function emptyUnitInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty unit inputs");
+    const error = new Error("empty unit inputs");
+    error.code = "EMPTY_UNIT_INPUTS_ERROR";
+    const { unit } = req.body;
+    if (!unit) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeUnitInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type unit inputs")
+    const error = new Error('wrong type unit inputs')
+    error.code = 'UNIT_INPUTS_TYPE_ERROR'
+    const { unit } = req.body
+    if (typeof unit !== 'string') {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -359,5 +387,7 @@ module.exports = {
   emptyEnrollmentInputsValidation,
   typeEnrollmentInputsValidation,
   emptyLecturerInputsValidation,
-  typeLecturerInputsValidation
+  typeLecturerInputsValidation,
+  emptyUnitInputsValidation,
+  typeUnitInputsValidation
 };
