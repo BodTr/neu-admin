@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Mục tiêu chương trình</h2>
+              <h2 class="page-title">Quản lí đơn vị công tác</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm mục tiêu
+                  Thêm đơn vị
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm mục tiêu</h5>
+                    <h5 class="modal-title">Thêm đơn vị</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -90,7 +90,7 @@
                         type="text"
                         class="form-control"
                         v-model="unit"
-                        placeholder="Nhập năm sinh"
+                        placeholder="Nhập tên đơn vị công tác"
                       />
                     </div>
                   </div>
@@ -148,7 +148,7 @@
                       <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa mục tiêu</h5>
+                            <h5 class="modal-title">Chỉnh sửa đơn vị</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -164,7 +164,7 @@
                                 type="text"
                                 class="form-control"
                                 v-model="editUnit.unit"
-                                placeholder="Nhập năm sinh"
+                                placeholder="Nhập tên đơn vị công tác"
                               />
                             </div>
                           </div>
@@ -295,7 +295,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Mục tiêu đã được sửa");
+          this.toast.success(result.data.message);
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
@@ -308,7 +308,7 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa mục tiêu này?")) {
+        if (confirm("Xóa đơn vị này?")) {
           const result = await axios.delete(`/api/delete-unit/${item._id}`);
           console.log(result);
           // alert(result.data.message)

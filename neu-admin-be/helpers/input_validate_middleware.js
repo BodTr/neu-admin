@@ -251,6 +251,89 @@ function typeProcessInputsValidation(req, res, next) {
     }
 }
 
+// curriculum inputs validate
+function emptyCurriculumInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty curriculum inputs");
+    const error = new Error("empty curriculum inputs");
+    error.code = "EMPTY_CURRICULUM_INPUTS_ERROR";
+    const { name, year, location, subjectType, creditsCount, trainingUni } = req.body;
+    if (!name || !year || !location || !subjectType || !creditsCount || !trainingUni) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeCurriculumInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type curriculum inputs")
+    const error = new Error('wrong type curriculum inputs')
+    error.code = 'CURRICULUM_INPUTS_TYPE_ERROR'
+    const { name, year, location, subjectType, creditsCount, trainingUni } = req.body
+    if (typeof name !== 'string' || isNaN(year) || typeof location !== 'string' || typeof subjectType !== 'string' || isNaN(creditsCount) || typeof trainingUni !== 'string') {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
+
+// enrollment input validate
+function emptyEnrollmentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty enrollment inputs");
+    const error = new Error("empty enrollment inputs");
+    error.code = "EMPTY_ENROLLMENT_INPUTS_ERROR";
+    const { year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body;
+    if (!year || !admissionCount || !graduatedCount || !tuitionSum || !applicantsCount || !dropoutCount || !graduatedPercentage) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeEnrollmentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type enrollment inputs")
+    const error = new Error('wrong type enrollment inputs')
+    error.code = 'ENROLLMENT_INPUTS_TYPE_ERROR'
+    const { year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body
+    if (isNaN(admissionCount) || isNaN(year) || isNaN(graduatedCount) || isNaN(tuitionSum) || isNaN(applicantsCount) || isNaN(dropoutCount) || typeof graduatedPercentage !== 'string') {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
+
+// lecturer inputs validate
+function emptyLecturerInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty lecturer inputs");
+    const error = new Error("empty lecturer inputs");
+    error.code = "EMPTY_LECTURER_INPUTS_ERROR";
+    const { name, nationality, unit, birthyear, level, experience } = req.body;
+    if (!name || !nationality || !unit || !birthyear || !level || !experience) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeLecturerInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type lecturer inputs")
+    const error = new Error('wrong type lecturer inputs')
+    error.code = 'LECTURER_INPUTS_TYPE_ERROR'
+    const { name, nationality, unit, birthyear, level } = req.body
+    if (typeof name !== 'string' || typeof nationality !== 'string' || typeof unit !== 'string' || typeof level !== 'string' || isNaN(birthyear)) {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
 
 module.exports = {
   emptyProgramInputsValidation,
@@ -270,5 +353,11 @@ module.exports = {
   emptyPlanlInputsValidation,
   typePlanInputsValidation,
   emptyProcessInputsValidation,
-  typeProcessInputsValidation
+  typeProcessInputsValidation,
+  emptyCurriculumInputsValidation,
+  typeCurriculumInputsValidation,
+  emptyEnrollmentInputsValidation,
+  typeEnrollmentInputsValidation,
+  emptyLecturerInputsValidation,
+  typeLecturerInputsValidation
 };

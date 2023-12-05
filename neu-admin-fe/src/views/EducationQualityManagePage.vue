@@ -195,18 +195,18 @@
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-check">
+                              <div class="mb-3" style="margin-left: 2rem ;">
+                                <label class="form-check"></label>
+                                <div class="form-check">
                                   <input
                                     class="form-check-input"
                                     type="checkbox"
                                     v-model="editEduQuality.hasProcess"
                                     value="Có qui trình"
                                   />
-                                  <span class="form-check-label"
-                                    >Có qui trình</span
-                                  >
-                                </label>
+                                  <span class="form-check-label">Có qui trình</span>
+                                </div>
+                                  
                               </div>
                             </div>
                             <div class="mb-3">
@@ -335,9 +335,14 @@ export default {
     },
 
     onEdit(item) {
+      if (item.hasProcess === 'Có') {
+        this.editEduQuality.hasProcess = ['Có qui trình'];
+      } else {
+        this.editEduQuality.hasProcess = ['']
+      }
       this.editEduQuality.mechanism = item.mechanism;
       this.editEduQuality.detail = item.detail;
-      this.editEduQuality.hasProcess = item.hasProcess;
+      
       this.editEduQuality.id = item._id;
       this.showModal1();
 

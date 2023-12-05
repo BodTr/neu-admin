@@ -106,7 +106,7 @@
                       <div class="mb-3">
                         <label class="form-label">Số học viên tốt nghiệp</label>
                         <input
-                          type="text"
+                          type="number"
                           v-model="graduatedCount"
                           class="form-control"
                           placeholder="Nhập số học viên tốt nghiệp"
@@ -115,7 +115,7 @@
                       <div class="mb-3">
                         <label class="form-label">Tổng thu học phí</label>
                         <input
-                          type="text"
+                          type="number"
                           v-model="tuitionSum"
                           class="form-control"
                           placeholder="Nhập tổng thu học phí(triệu đồng)"
@@ -128,7 +128,7 @@
                           >Số học viên dự thi/tham gia xét tuyển</label
                         >
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
                           v-model="applicantsCount"
                           placeholder="Nhập số học viên dự thi/tham gia xét tuyển"
@@ -137,7 +137,7 @@
                       <div class="mb-3">
                         <label class="form-label">Số học viên thôi học</label>
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
                           v-model="dropoutCount"
                           placeholder="Nhập số học viên thôi học"
@@ -222,7 +222,7 @@
                               <div class="mb-3">
                                 <label class="form-label">Năm học</label>
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editEnroll.year"
                                   placeholder="Nhập năm học"
@@ -233,7 +233,7 @@
                                   >Số học viên nhập học</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editEnroll.admissionCount"
                                   placeholder="Nhập tên văn bằng"
@@ -244,7 +244,7 @@
                                   >Số học viên tốt nghiệp</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editEnroll.graduatedCount"
                                   placeholder="Nhập tên văn bằng"
@@ -255,7 +255,7 @@
                                   >Tổng thu học phí</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   v-model="editEnroll.tuitionSum"
                                   class="form-control"
                                   placeholder="Nhập tổng thu học phí(triệu đồng)"
@@ -268,7 +268,7 @@
                                   >Số học viên dự thi/tham gia xét tuyển</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editEnroll.applicantsCount"
                                   placeholder="Nhập số học viên dự thi/tham gia xét tuyển"
@@ -279,7 +279,7 @@
                                   >Số học viên thôi học</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editEnroll.dropoutCount"
                                   placeholder="Nhập số học viên thôi học"

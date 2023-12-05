@@ -469,7 +469,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Văn bản đã được sửa");
+          this.toast.success(result.data.message);
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
