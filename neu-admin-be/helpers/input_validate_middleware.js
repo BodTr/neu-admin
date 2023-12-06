@@ -363,6 +363,34 @@ function typeUnitInputsValidation(req, res, next) {
     }
 }
 
+// subject inputs validate
+function emptySubjectInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty subject inputs");
+    const error = new Error("empty subject inputs");
+    error.code = "EMPTY_SUBJECT_INPUTS_ERROR";
+    const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note } = req.body;
+    if (!name || !lecturer || !teachingAssistant || !executionTime || !year || !creditsCount || !note) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeSubjectInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type subject inputs")
+    const error = new Error('wrong type subject inputs')
+    error.code = 'SUBJECT_INPUTS_TYPE_ERROR'
+    const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note } = req.body
+    if (typeof name !== 'string' || typeof lecturer !== 'string' || typeof teachingAssistant !== 'string' || typeof executionTime !== 'string' || isNaN(year) || isNaN(creditsCount) || typeof note !== 'string') {
+        throw error
+    } else {
+        console.log('process inputs type correct')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -389,5 +417,7 @@ module.exports = {
   emptyLecturerInputsValidation,
   typeLecturerInputsValidation,
   emptyUnitInputsValidation,
-  typeUnitInputsValidation
+  typeUnitInputsValidation,
+  emptySubjectInputsValidation,
+  typeSubjectInputsValidation
 };

@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí môn học</h2>
+              <h2 class="page-title">Quản lí MOU.MOA</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm môn học
+                  Thêm mới
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm môn học</h5>
+                    <h5 class="modal-title">Thêm mới</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -86,68 +86,77 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên môn học</label>
+                        <label class="form-label">Quốc gia</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="name"
-                          placeholder="Nhập tên môn học"
+                          v-model="nation"
+                          placeholder="Nhập quốc gia"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Giảng viên</label>
-                        <input
-                          type="text"
-                          v-model="lecturer"
-                          class="form-control"
-                          placeholder="Nhập giảng viên"
-                        />
+                        <label class="form-label">Loại văn bản</label>
+                        <select
+                          v-model="docType"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Chọn loại văn bản
+                          </option>
+                          <option value="MOU">MOU</option>
+                          <option value="MOA">MOA</option>
+                          <option value="Letter of intend">
+                            Letter of intend
+                          </option>
+                        </select>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Trợ giảng</label>
-                        <input
-                          type="text"
-                          v-model="teachingAssistant"
+                        <label class="form-label">Nội dung văn bản</label>
+                        <textarea
+                          v-model="docDetail"
                           class="form-control"
-                          placeholder="Nhập trợ giảng"
-                        />
+                          row="5"
+                          placeholder="Nhập nội dung văn bản"
+                        ></textarea>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Thời gian thực hiện</label>
+                        <label class="form-label">Văn bản đính kèm</label>
                         <input
-                          type="text"
-                          v-model="executionTime"
+                          type="file"
+                          ref="attachedDoc"
                           class="form-control"
-                          placeholder="Nhập thời gian thực hiện"
+                          @change="handlePdfUpload()"
                         />
+                        <div v-if="message != ''">{{ message }}</div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm học</label>
+                        <label class="form-label">Tên trường đối tác</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập phân loại/học phần"
+                          v-model="partnerUni"
+                          placeholder="Nhập tên trường đối tác"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số tín chỉ</label>
+                        <label class="form-label">Thời gian kí kết</label>
                         <input
-                          type="text"
+                          type="time"
                           class="form-control"
-                          v-model="creditsCount"
-                          placeholder="Nhập số tín chỉ giảng dạy"
+                          v-model="signingTime"
+                          placeholder="Nhập thời gian kí kết"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số lượng học viên</label>
+                        <label class="form-label">Thời gian hết hạn</label>
                         <input
-                          type="text"
+                          type="date"
                           class="form-control"
-                          v-model="studentsCount"
-                          placeholder="Nhập số lượng học viên"
+                          v-model="expireTime"
+                          placeholder="Nhập thời gian hết hạn"
                         />
                       </div>
                       <div class="mb-3">
@@ -179,7 +188,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-subjects"
+                  url="/api/get-all-moumoas"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -215,7 +224,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                            <h5 class="modal-title">Chỉnh sửa</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -227,40 +236,50 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên môn học</label>
+                                <label class="form-label">Quốc gia</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editSubject.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                  v-model="editMoumoa.nation"
+                                  placeholder="Nhập quốc gia"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Giảng viên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.lecturer"
-                                  placeholder="Nhập giảng viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Trợ giảng</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.teachingAssistant"
-                                  placeholder="Nhập trợ giảng"
-                                />
+                                <label class="form-label">Loại văn bản</label>
+                                <select
+                                  v-model="editMoumoa.docType"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn loại văn bản
+                                  </option>
+                                  <option value="MOU">MOU</option>
+                                  <option value="MOA">MOA</option>
+                                  <option value="Letter of intend">
+                                    Letter of intend
+                                  </option>
+                                </select>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Thời gian thực hiện</label
+                                  >Nội dung văn bản</label
+                                >
+                                <textarea
+                                  v-model="editMoumoa.docDetail"
+                                  class="form-control"
+                                  row="5"
+                                  placeholder="Nhập nội dung văn bản"
+                                ></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Văn bản đính kèm</label
                                 >
                                 <input
-                                  type="text"
+                                  type="file"
                                   class="form-control"
-                                  v-model="editSubject.executionTime"
+                                  ref="attachedDoc1"
                                   placeholder="Nhập thời gian thực hiện"
                                 />
                               </div>
@@ -273,17 +292,19 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editSubject.year"
+                                  v-model="editMoumoa.partnerUni"
                                   placeholder="Nhập phân loại/học phần"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Số tín chỉ</label>
+                                <label class="form-label"
+                                  >Thời gian kí kết</label
+                                >
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
-                                  v-model="editSubject.creditsCount"
-                                  placeholder="Nhập số tín chỉ giảng dạy"
+                                  v-model="editMoumoa.signingTime"
+                                  placeholder="Nhập thời gian kí kết"
                                 />
                               </div>
                               <div class="mb-3">
@@ -293,7 +314,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editSubject.studentsCount"
+                                  v-model="editMoumoa.expireTime"
                                   placeholder="Nhập số lượng học viên"
                                 />
                               </div>
@@ -302,7 +323,7 @@
                                 <textarea
                                   class="form-control"
                                   rows="5"
-                                  v-model="editSubject.note"
+                                  v-model="editMoumoa.note"
                                   placeholder="Nhập ghi chú"
                                 ></textarea>
                               </div>
@@ -347,13 +368,13 @@ export default {
     return {
       columns: [
         "stt",
-        "name",
-        "year",
-        "lecturer",
-        "teachingAssistant",
-        "executionTime",
-        "creditsCount",
-        "studentsCount",
+        "nation",
+        "partnerUni",
+        "docType",
+        "docDetail",
+        "attachedDoc",
+        "signingTime",
+        "expireTime",
         "note",
         "tool",
       ],
@@ -362,39 +383,39 @@ export default {
           id: this.$route.params.id,
         },
         headings: {
-          name: "Họ tên người thực hiện",
-          year: "Phân loại/học phần",
-          lecturer: "Số điện thoại",
-          creditsCount: "Đơn vị thực hiện",
-          teachingAssistant: "Chức vụ",
-          executionTime: "Thời gian thực hiện",
-          studentsCount: "Trường đào tạo",
+          nation: "Quốc gia",
+          partnerUni: "Phân loại/học phần",
+          docType: "Loại văn bản",
+          signingTime: "Đơn vị thực hiện",
+          docDetail: "Chức vụ",
+          attachedDoc: "Thời gian thực hiện",
+          expireTime: "Trường đào tạo",
           note: "Ghi chú",
           tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
-      name: "",
-      lecturer: "",
-      teachingAssistant: "",
-      executionTime: "",
-      year: "",
-      creditsCount: "",
-      studentsCount: "",
+      nation: "",
+      docType: "",
+      docDetail: "",
+      attachedDoc: null,
+      partnerUni: "",
+      signingTime: "",
+      expireTime: "",
       note: "",
 
       displayModal: false,
       displayModalOne: false,
 
-      editSubject: {
+      editMoumoa: {
         id: "",
-        name: "",
-        lecturer: "",
-        teachingAssistant: "",
-        executionTime: "",
-        year: "",
-        creditsCount: "",
-        studentsCount: "",
+        nation: "",
+        docType: "",
+        docDetail: "",
+        attachedDoc: null,
+        partnerUni: "",
+        signingTime: "",
+        expireTime: "",
         note: "",
       },
     };
@@ -422,18 +443,18 @@ export default {
     async submitForm() {
       const data = {
         programId: this.id,
-        name: this.name,
-        lecturer: this.lecturer,
-        teachingAssistant: this.teachingAssistant,
-        executionTime: this.executionTime,
-        year: this.year,
-        creditsCount: this.creditsCount,
-        studentsCount: this.studentsCount,
-        note: this.note
+        nation: this.nation,
+        docType: this.docType,
+        docDetail: this.docDetail,
+        attachedDoc: this.attachedDoc,
+        partnerUni: this.partnerUni,
+        signingTime: this.signingTime,
+        expireTime: this.expireTime,
+        note: this.note,
       };
 
       try {
-        const result = await axios.post("/api/create-subject", data);
+        const result = await axios.post("/api/create-moumoa", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -447,14 +468,14 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.name = "";
-          this.lecturer = "";
-          this.teachingAssistant = "";
-          this.executionTime = '';
-          this.year = "";
-          this.creditsCount = "";
-          this.studentsCount = "";
-          this.note = '';
+          this.nation = "";
+          this.docType = "";
+          this.docDetail = "";
+          this.attachedDoc = "";
+          this.partnerUni = "";
+          this.signingTime = "";
+          this.expireTime = "";
+          this.note = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -462,32 +483,32 @@ export default {
     },
 
     onEdit(item) {
-      this.editSubject.name = item.name;
-      this.editSubject.lecturer = item.lecturer;
-      this.editSubject.teachingAssistant = item.teachingAssistant;
-      this.editSubject.executionTime =item.executionTime;
-      this.editSubject.year = item.year;
-      this.editSubject.creditsCount = item.creditsCount;
-      this.editSubject.studentsCount = item.studentsCount;
-      this.editSubject.note = item.note
-      this.editSubject.id = item._id;
+      this.editMoumoa.nation = item.nation;
+      this.editMoumoa.docType = item.docType;
+      this.editMoumoa.docDetail = item.docDetail;
+      this.editMoumoa.attachedDoc = item.attachedDoc;
+      this.editMoumoa.partnerUni = item.partnerUni;
+      this.editMoumoa.signingTime = item.signingTime;
+      this.editMoumoa.expireTime = item.expireTime;
+      this.editMoumoa.note = item.note;
+      this.editMoumoa.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
       const data = {
-        name: this.editSubject.name,
-        lecturer: this.editSubject.lecturer,
-        teachingAssistant: this.editSubject.teachingAssistant,
-        executionTime: this.editSubject.executionTime,
-        year: this.editSubject.year,
-        creditsCount: this.editSubject.creditsCount,
-        studentsCount: this.editSubject.studentsCount,
-        note: this.editSubject.note
+        nation: this.editMoumoa.nation,
+        docType: this.editMoumoa.docType,
+        docDetail: this.editMoumoa.docDetail,
+        attachedDoc: this.editMoumoa.attachedDoc,
+        partnerUni: this.editMoumoa.partnerUni,
+        signingTime: this.editMoumoa.signingTime,
+        expireTime: this.editMoumoa.expireTime,
+        note: this.editMoumoa.note,
       };
       try {
         const result = await axios.put(
-          `/api/edit-subject/${this.editSubject.id}`,
+          `/api/edit-moumoa/${this.editMoumoa.id}`,
           data
         );
 
@@ -512,9 +533,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
-            `/api/delete-subject/${item._id}`
-          );
+          const result = await axios.delete(`/api/delete-moumoat/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
