@@ -14,6 +14,7 @@ import EnrollmentManagePage from '../views/EnrollmentManagePage.vue'
 import LecturersManagePage from '../views/LecturersManagePage.vue'
 import UnitsManagePage from '../views/UnitsManagePage.vue'
 import SubjectsManagePage from '../views/SubjectsManagePage.vue'
+import MOUMOAManagePage from '../views/MOUMOAManagePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -136,6 +137,15 @@ const router = createRouter({
         requiresProgramId: true
       },
     },
+    {
+      path: '/enrollment/moumoa-infor/:id',
+      name: 'moumoa-manage-page',
+      component: MOUMOAManagePage,
+      meta: { 
+        requiresProgramId: true
+      },
+    }
+
   ]
 })
 

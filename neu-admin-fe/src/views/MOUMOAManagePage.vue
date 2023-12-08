@@ -126,8 +126,23 @@
                           type="file"
                           ref="attachedDoc"
                           class="form-control"
-                          @change="handlePdfUpload()"
+                          @change="handlePdfChange()"
+                          style="display: none"
                         />
+                        <div class="card">
+                          <button
+                            @click="handlePdfUpload()"
+                            class="btn btn-outline-primary w-100"
+                          >
+                            Choose File
+                          </button>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="attachedDocName"
+                            disabled
+                          />
+                        </div>
                         <div v-if="message != ''">{{ message }}</div>
                       </div>
                     </div>
@@ -144,7 +159,7 @@
                       <div class="mb-3">
                         <label class="form-label">Thời gian kí kết</label>
                         <input
-                          type="time"
+                          type="date"
                           class="form-control"
                           v-model="signingTime"
                           placeholder="Nhập thời gian kí kết"
@@ -280,8 +295,24 @@
                                   type="file"
                                   class="form-control"
                                   ref="attachedDoc1"
-                                  placeholder="Nhập thời gian thực hiện"
+                                  @change="handlePdfChange1()"
+                                  style="display: none"
                                 />
+                                <div class="card">
+                                  <button
+                                    @click="handlePdfUpload1()"
+                                    class="btn btn-outline-primary w-100"
+                                  >
+                                    Choose File
+                                  </button>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="editMoumoa.attachedDocName"
+                                    disabled
+                                  />
+                                </div>
+                                <div v-if="editMoumoa.message != ''">{{ editMoumoa.message }}</div>
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -399,10 +430,12 @@ export default {
       docType: "",
       docDetail: "",
       attachedDoc: null,
+      attachedDocName: "",
       partnerUni: "",
       signingTime: "",
       expireTime: "",
       note: "",
+      message: "",
 
       displayModal: false,
       displayModalOne: false,
@@ -413,10 +446,13 @@ export default {
         docType: "",
         docDetail: "",
         attachedDoc: null,
+        attachedDocName: "",
+        attachedDocLink: "",
         partnerUni: "",
         signingTime: "",
         expireTime: "",
         note: "",
+        message: "",
       },
     };
   },
@@ -428,6 +464,50 @@ export default {
   },
 
   methods: {
+    handlePdfUpload() {
+      this.$refs.attachedDoc.click();
+    },
+    handlePdfUpload1() {
+      this.$refs.attachedDoc1.click();
+    },
+    handlePdfChange() {
+      const file = this.$refs.attachedDoc.files[0];
+      console.log(file, "handlePdfChange file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.attachedDoc = file;
+      this.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.message = "";
+      } else {
+        this.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
+    handlePdfChange1() {
+      const file = this.$refs.attachedDoc1.files[0];
+      console.log(file, "handlePdfChange1 file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.editMoumoa.attachedDoc = file;
+      this.editMoumoa.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.editMoumoa.message = "";
+      } else {
+        this.editMoumoa.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
     showModal() {
       this.displayModal = true;
     },
@@ -441,20 +521,26 @@ export default {
       this.displayModalOne = false;
     },
     async submitForm() {
-      const data = {
-        programId: this.id,
-        nation: this.nation,
-        docType: this.docType,
-        docDetail: this.docDetail,
-        attachedDoc: this.attachedDoc,
-        partnerUni: this.partnerUni,
-        signingTime: this.signingTime,
-        expireTime: this.expireTime,
-        note: this.note,
-      };
+      let formData = new FormData()
+      formData.append("nation", this.nation)
+      formData.append("docType", this.docType)
+      formData.append("docDetail", this.docDetail)
+      formData.append("partnerUni", this.partnerUni)
+      formData.append("signingTime", this.signingTime)
+      formData.append("expireTime", this.expireTime)
+      formData.append("note", this.note)
+      formData.append("programId", this.id)
+      formData.append("attachedDoc", this.attachedDoc)
+
+
 
       try {
-        const result = await axios.post("/api/create-moumoa", data);
+        const result = await axios.post("/api/create-moumoa", formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -486,7 +572,8 @@ export default {
       this.editMoumoa.nation = item.nation;
       this.editMoumoa.docType = item.docType;
       this.editMoumoa.docDetail = item.docDetail;
-      this.editMoumoa.attachedDoc = item.attachedDoc;
+      this.editMoumoa.attachedDocLink = item.attachedDocLink;
+      this.editMoumoa.attachedDocName = item.attachedDocName;
       this.editMoumoa.partnerUni = item.partnerUni;
       this.editMoumoa.signingTime = item.signingTime;
       this.editMoumoa.expireTime = item.expireTime;
@@ -496,20 +583,28 @@ export default {
     },
 
     async onSubmit() {
-      const data = {
-        nation: this.editMoumoa.nation,
-        docType: this.editMoumoa.docType,
-        docDetail: this.editMoumoa.docDetail,
-        attachedDoc: this.editMoumoa.attachedDoc,
-        partnerUni: this.editMoumoa.partnerUni,
-        signingTime: this.editMoumoa.signingTime,
-        expireTime: this.editMoumoa.expireTime,
-        note: this.editMoumoa.note,
-      };
+      let formData = new FormData()
+      formData.append("nation", this.editMoumoa.nation)
+      formData.append("docType", this.editMoumoa.docType)
+      formData.append("docDetail", this.editMoumoa.docDetail)
+      formData.append("partnerUni", this.editMoumoa.partnerUni)
+      formData.append("signingTime", this.editMoumoa.signingTime)
+      formData.append("expireTime", this.editMoumoa.expireTime)
+      formData.append("note", this.editMoumoa.note)
+      formData.append("programId", this.id)
+      formData.append("attachedDocName", this.editMoumoa.attachedDocName)
+      formData.append("attachedDocLink", this.editMoumoa.attachedDocLink)
+      formData.append("attachedDoc1", this.editMoumoa.attachedDoc)
+
       try {
         const result = await axios.put(
           `/api/edit-moumoa/${this.editMoumoa.id}`,
-          data
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
 
         if (result.data.error === true) {
@@ -533,7 +628,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(`/api/delete-moumoat/${item._id}`);
+          const result = await axios.delete(`/api/delete-moumoa/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

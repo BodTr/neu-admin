@@ -391,6 +391,47 @@ function typeSubjectInputsValidation(req, res, next) {
     }
 }
 
+// moumoa inputs validate
+function emptyMoumoaInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty moumoa inputs");
+    const error = new Error("empty moumoa inputs");
+    error.code = "EMPTY_MOUMOA_INPUTS_ERROR";
+    const { nation, partnerUni, docType, docDetail, attachedDoc, signingTime, expireTime, note } = req.body;
+    if (!nation || !partnerUni || !docType || !docDetail || !attachedDoc || !signingTime || !note || !expireTime) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeMoumoaInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type moumoa inputs")
+    const error = new Error('wrong type moumoa inputs')
+    error.code = 'MOUMOA_INPUTS_TYPE_ERROR'
+    const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note } = req.body
+    if (typeof name !== 'string' || typeof lecturer !== 'string' || typeof teachingAssistant !== 'string' || typeof executionTime !== 'string' || isNaN(year) || isNaN(creditsCount) || typeof note !== 'string') {
+        throw error
+    } else {
+        console.log('moumoa inputs type correct')
+        next()
+    }
+}
+
+function emptyFileMoumoaInputValidation(req, res, next) {
+    console.log(req.file, "middleware check empty moumoa file inputs")
+    const error = new Error('Empty moumoa file input')
+    error.code = 'EMPTY_MOUMOA_FILE_INPUT_ERROR'
+    const docFile = req.file
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('moumoa inputs type correct')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -419,5 +460,8 @@ module.exports = {
   emptyUnitInputsValidation,
   typeUnitInputsValidation,
   emptySubjectInputsValidation,
-  typeSubjectInputsValidation
+  typeSubjectInputsValidation,
+  emptyMoumoaInputsValidation,
+  typeMoumoaInputsValidation,
+  emptyFileMoumoaInputValidation
 };
