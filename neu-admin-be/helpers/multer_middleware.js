@@ -2,7 +2,7 @@ const multer = require('multer')
 const multerS3 = require('multer-s3')
 const { S3Client } = require('@aws-sdk/client-s3')
 
-const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+const allowedTypes = ["application/pdf"]
 const MAX_SIZE = 20 * 1024 * 1024
 
 const config = {

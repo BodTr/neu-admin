@@ -21,6 +21,10 @@ const MoumoaSchema = new mongoose.Schema({
         type: String,
         require: false
     },
+    attachedDocName: {
+        type: String,
+        require: false
+    },
     signingTime: {
         type: String,
         require: false
