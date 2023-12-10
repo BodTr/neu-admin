@@ -433,6 +433,48 @@ function emptyFileMoumoaInputValidation(req, res, next) {
     }
 }
 
+// HTQT inputs validate
+function emptyHTQTInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty htqt inputs");
+    const error = new Error("empty htqt inputs");
+    error.code = "EMPTY_HTQT_INPUTS_ERROR";
+    const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note } = req.body;
+    if (!nation || !partnerUni || !funding || !planDetail || !signingTime || !note || !expireTime) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeHTQTInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type htqt inputs")
+    const error = new Error('wrong type htqt inputs')
+    error.code = 'HTQT_INPUTS_TYPE_ERROR'
+    const { nation, funding, planDetail, partnerUni, signingTime, expireTime, note } = req.body
+    if (typeof nation !== 'string' || typeof partnerUni !== 'string' || typeof signingTime !== 'string' || typeof expireTime !== 'string' || typeof funding !== 'string' || typeof planDetail !== 'string' || typeof note !== 'string') {
+        throw error
+    } else {
+        console.log('htqt inputs type correct')
+        next()
+    }
+}
+
+function emptyFileHTQTInputValidation(req, res, next) {
+    
+    const error = new Error('Empty htqt file input')
+    error.code = 'EMPTY_HTQT_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty htqt file inputs")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('htqt file input filled')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -464,5 +506,8 @@ module.exports = {
   typeSubjectInputsValidation,
   emptyMoumoaInputsValidation,
   typeMoumoaInputsValidation,
-  emptyFileMoumoaInputValidation
+  emptyFileMoumoaInputValidation,
+  emptyHTQTInputsValidation,
+  typeHTQTInputsValidation,
+  emptyFileHTQTInputValidation
 };

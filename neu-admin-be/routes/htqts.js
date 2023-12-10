@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const MoumoaSchema = require('../models/moumoa')
-const { emptyMoumoaInputsValidation, typeMoumoaInputsValidation, emptyFileMoumoaInputValidation } = require('../helpers/input_validate_middleware')
+const HTQTSchema = require('../models/htqt')
+const { emptyHTQTInputsValidation, typeHTQTInputsValidation, emptyFileHTQTInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
-const { initMoumoaDocMiddleware } = require('../helpers/init_doc')
+const { initHTQTDocMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
 
 
@@ -21,18 +21,18 @@ const config = {
 
 const s3 = new S3Client(config)
 
-router.get('/api/get-all-moumoas', async (req, res) => {
+router.get('/api/get-all-htqts', async (req, res) => {
     try {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const moumoas = await MoumoaSchema.find({
+        const htqts = await HTQTSchema.find({
             program: { id: new ObjectId(id) }
             
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await MoumoaSchema.estimatedDocumentCount()
+        let count = await HTQTSchema.estimatedDocumentCount()
         let stt = 0
-        const aMoumoas = moumoas.map( doc => {
+        const aHtqts = htqts.map( doc => {
             stt++
             // const id = doc._id.toString()
             return {
@@ -40,30 +40,30 @@ router.get('/api/get-all-moumoas', async (req, res) => {
                 stt: stt
             }
         })
-        console.log(aMoumoas, "aMoumoas")
-        res.json({ data: aMoumoas, count: count, error: false })
+        console.log(aHtqts, "aHtqts")
+        res.json({ data: aHtqts, count: count, error: false })
     } catch (error) {
         console.log(error, "get programs api catch block error")
         res.json({ error: true, message: "something went wrong" })
     }
 })
 
-router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attachedMoumoaDoc"), emptyFileMoumoaInputValidation, emptyMoumoaInputsValidation, typeMoumoaInputsValidation, async (req, res, next) => {
+router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), emptyFileHTQTInputValidation, emptyHTQTInputsValidation, typeHTQTInputsValidation, async (req, res, next) => {
     try {
-        const { programId, nation, partnerUni, docType, docDetail, signingTime, expireTime, note  } = req.body
+        const { programId, nation, partnerUni, funding, planDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
-        const moumoaId = req.payload
+        const htqtId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
         const attachedDocLink = attachedDoc.location
         const attachedDocName = attachedDoc.originalname
-        const newMoumoa = {
+        const newHtqt = {
             nation: nation,
             partnerUni: partnerUni,
-            docType: docType,
-            docDetail: docDetail,
+            funding: funding,
+            planDetail: planDetail,
             attachedDocLink: attachedDocLink,
             attachedDocName: attachedDocName,
             signingTime: signingTime,
@@ -73,8 +73,8 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
                 id: programId
             }
         }
-        const storingMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: moumoaId }, newMoumoa, {new: true})
-        console.log(storingMoumoa, "storingMoumoa")
+        const storingHtqt = await HTQTSchema.findOneAndUpdate({ _id: htqtId }, newHtqt, {new: true})
+        console.log(storingHtqt, "storingHtqt")
         res.json({ error: false, message: 'Lưu thành công chương trình' })
         
         
@@ -86,10 +86,10 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
     }
 })
 
-router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMoumoaInputsValidation, typeMoumoaInputsValidation, async(req, res) => {
+router.put('/api/edit-htqt/:id', upload.single("attachedHTQTDoc1"), emptyHTQTInputsValidation, typeHTQTInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { nation, partnerUni, docType, docDetail, signingTime, expireTime, note, attachedDocLink, attachedDocName } = req.body
+        const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note, attachedDocLink, attachedDocName } = req.body
         const attachedDoc1 = req.file
         console.log(req.file, "req.file put api")
         console.log(req.body, "req.body put api")
@@ -110,11 +110,11 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
         }
 
         console.log(id, "::put api id::")
-        const updatingMoumoa = {
+        const updatingHtqt = {
             nation: nation,
             partnerUni: partnerUni,
-            docType: docType,
-            docDetail: docDetail,
+            funding: funding,
+            planDetail: planDetail,
             signingTime: signingTime,
             expireTime: expireTime,
             note: note,
@@ -122,8 +122,8 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
             attachedDocName: attachedDocName
         }
         console.log(req.body, "put api req.body")
-        const updatedMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: id }, updatingMoumoa, {new: true})
-        console.log(updatedMoumoa, "updatedMoumoa")
+        const updatedHtqt = await HTQTSchema.findOneAndUpdate({ _id: id }, updatingHtqt, {new: true})
+        console.log(updatedHtqt, "updatedHtqt")
         res.json({ error: false, message: "Văn bản đã được sửa thành công" })
     } catch (error) {
         console.log(error, "put catch block error")
@@ -132,12 +132,12 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
     }
 })
 
-router.delete('/api/delete-moumoa/:id', async(req, res) => {
+router.delete('/api/delete-htqt/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")
-        const deletingMoumoa = await MoumoaSchema.findOneAndDelete({ _id: id })
-        console.log(deletingMoumoa, "deletingMoumoa")
+        const deletingHtqt = await HTQTSchema.findOneAndDelete({ _id: id })
+        console.log(deletingHtqt, "deletingHtqt")
         res.json({ error: false, message: "Xóa thành công văn bản" })
     } catch (error) {
         console.log(error, "delete catch block error")
@@ -145,13 +145,13 @@ router.delete('/api/delete-moumoa/:id', async(req, res) => {
     }
 })
 
-router.use('/api/create-moumoa', async (error, req, res, next) => {
+router.use('/api/create-htqt', async (error, req, res, next) => {
     try {
         console.log(error, "error handle post api midddleware")
-        const moumoaId = req.payload
+        const htqtId = req.payload
         const docFile = req.file
-        const delInitMoumoa = await MoumoaSchema.deleteOne({ _id: moumoaId })
-        console.log(delInitMoumoa, "deleted delInitMoumoa")
+        const delInitHtqt = await HTQTSchema.deleteOne({ _id: htqtId })
+        console.log(delInitHtqt, "deleted delInitHtqt")
         if (!docFile) {
             next(error)
         } else {
@@ -171,7 +171,7 @@ router.use('/api/create-moumoa', async (error, req, res, next) => {
     }
 })
 
-router.use('/api/edit-moumoa/:id', async(error, req, res, next) => {
+router.use('/api/edit-htqt/:id', async(error, req, res, next) => {
     try {
         console.log(error, "error handle put api middleware")
         const { id } = req.params
@@ -199,13 +199,13 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_MOUMOA_INPUTS_ERROR") {
+        if (error.code === "EMPTY_HTQT_INPUTS_ERROR") {
             console.log(error.code, "empty input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "MOUMOA_INPUTS_TYPE_ERROR") {
+        } else if (error.code === "HTQT_INPUTS_TYPE_ERROR") {
             console.log("input type error")
             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else if (error.code === "EMPTY_MOUMOA_FILE_INPUT_ERROR") {
+        } else if (error.code === "EMPTY_HTQT_FILE_INPUT_ERROR") {
             console.log(error.code, "empty file input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
         } else {

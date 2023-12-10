@@ -35,8 +35,10 @@ const upload = multer({
                     return req.payload
                 }
             }
-            if (fieldname === "attachedDoc" || fieldname === "attachedDoc1") {
-                fileName = `program-${programId}/attached-doc-${getId()}/${Date.now()}_${file.originalname}`
+            if (fieldname === "attachedMoumoaDoc" || fieldname === "attachedMoumoaDoc1") {
+                fileName = `program-${programId}/attached-moumoa-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "attachedHTQTDoc" || fieldname === "attachedHTQTDoc1") {
+                fileName = `program-${programId}/attached-htqt-doc-${getId()}/${Date.now()}_${file.originalname}`
             }
 
             cb(null, fileName)

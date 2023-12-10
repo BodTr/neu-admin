@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí MOU.MOA</h2>
+              <h2 class="page-title">Quản lí các dự án HTQT</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -95,29 +95,21 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Loại văn bản</label>
-                        <select
-                          v-model="docType"
-                          class="form-select"
-                          tabindex="-1"
-                        >
-                          <option value="" disabled selected>
-                            Chọn loại văn bản
-                          </option>
-                          <option value="MOU">MOU</option>
-                          <option value="MOA">MOA</option>
-                          <option value="Letter of intend">
-                            Letter of intend
-                          </option>
-                        </select>
+                        <label class="form-label">Nguồn kinh phí</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="funding"
+                          placeholder="Nhập nguồn kinh phí"
+                        />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Nội dung văn bản</label>
+                        <label class="form-label">Nội dung dự án</label>
                         <textarea
-                          v-model="docDetail"
+                          v-model="planDetail"
                           class="form-control"
                           row="5"
-                          placeholder="Nhập nội dung văn bản"
+                          placeholder="Nhập nội dung dự án"
                         ></textarea>
                       </div>
                       <div class="mb-3">
@@ -203,7 +195,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-moumoas"
+                  url="/api/get-all-htqts"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -311,36 +303,28 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editMoumoa.nation"
+                                  v-model="editHTQT.nation"
                                   placeholder="Nhập quốc gia"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Loại văn bản</label>
-                                <select
-                                  v-model="editMoumoa.docType"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn loại văn bản
-                                  </option>
-                                  <option value="MOU">MOU</option>
-                                  <option value="MOA">MOA</option>
-                                  <option value="Letter of intend">
-                                    Letter of intend
-                                  </option>
-                                </select>
+                                <label class="form-label">Nguồn kinh phí</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editHTQT.funding"
+                                  placeholder="Nhập quốc gia"
+                                />
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Nội dung văn bản</label
+                                  >Nội dung dự án</label
                                 >
                                 <textarea
-                                  v-model="editMoumoa.docDetail"
+                                  v-model="editHTQT.planDetail"
                                   class="form-control"
                                   row="5"
-                                  placeholder="Nhập nội dung văn bản"
+                                  placeholder="Nhập nội dung dự án"
                                 ></textarea>
                               </div>
                               <div class="mb-3">
@@ -364,12 +348,12 @@
                                   <input
                                     type="text"
                                     class="form-control"
-                                    v-model="editMoumoa.attachedDocName"
+                                    v-model="editHTQT.attachedDocName"
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editMoumoa.message != ''">
-                                  {{ editMoumoa.message }}
+                                <div v-if="editHTQT.message != ''">
+                                  {{ editHTQT.message }}
                                 </div>
                               </div>
                             </div>
@@ -381,7 +365,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editMoumoa.partnerUni"
+                                  v-model="editHTQT.partnerUni"
                                   placeholder="Nhập phân loại/học phần"
                                 />
                               </div>
@@ -392,7 +376,7 @@
                                 <input
                                   type="date"
                                   class="form-control"
-                                  v-model="editMoumoa.signingTime"
+                                  v-model="editHTQT.signingTime"
                                   placeholder="Nhập thời gian kí kết"
                                 />
                               </div>
@@ -403,7 +387,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editMoumoa.expireTime"
+                                  v-model="editHTQT.expireTime"
                                   placeholder="Nhập số lượng học viên"
                                 />
                               </div>
@@ -412,7 +396,7 @@
                                 <textarea
                                   class="form-control"
                                   rows="5"
-                                  v-model="editMoumoa.note"
+                                  v-model="editHTQT.note"
                                   placeholder="Nhập ghi chú"
                                 ></textarea>
                               </div>
@@ -459,8 +443,8 @@ export default {
         "stt",
         "nation",
         "partnerUni",
-        "docType",
-        "docDetail",
+        "funding",
+        "planDetail",
         "attachedDoc",
         "signingTime",
         "expireTime",
@@ -474,9 +458,9 @@ export default {
         headings: {
           nation: "Quốc gia",
           partnerUni: "Trường đối tác",
-          docType: "Loại văn bản",
+          funding: "Nguồn kinh phí",
           signingTime: "Thời gian kí kết",
-          docDetail: "Nội dung văn bản",
+          planDetail: "Nội dung dự án",
           attachedDoc: "Văn bản đính kèm",
           expireTime: "Thời gian hết hạn",
           note: "Ghi chú",
@@ -485,8 +469,8 @@ export default {
       },
       id: this.$route.params.id,
       nation: "",
-      docType: "",
-      docDetail: "",
+      funding: "",
+      planDetail: "",
       attachedDoc: null,
       attachedDocName: "",
       partnerUni: "",
@@ -498,11 +482,11 @@ export default {
       displayModal: false,
       displayModalOne: false,
 
-      editMoumoa: {
+      editHTQT: {
         id: "",
         nation: "",
-        docType: "",
-        docDetail: "",
+        funding: "",
+        planDetail: "",
         attachedDoc: null,
         attachedDocName: "",
         attachedDocLink: "",
@@ -553,12 +537,12 @@ export default {
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.editMoumoa.attachedDoc = file;
-      this.editMoumoa.attachedDocName = file.name;
+      this.editHTQT.attachedDoc = file;
+      this.editHTQT.attachedDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
-        this.editMoumoa.message = "";
+        this.editHTQT.message = "";
       } else {
-        this.editMoumoa.message =
+        this.editHTQT.message =
           tooLarge && allowedTypes.includes(file.type)
             ? `File quá nặng, giới hạn kích thước là ${
                 MAX_SIZE / (1024 * 1024)
@@ -581,17 +565,17 @@ export default {
     async submitForm() {
       let formData = new FormData();
       formData.append("nation", this.nation);
-      formData.append("docType", this.docType);
-      formData.append("docDetail", this.docDetail);
+      formData.append("funding", this.funding);
+      formData.append("planDetail", this.planDetail);
       formData.append("partnerUni", this.partnerUni);
       formData.append("signingTime", this.signingTime);
       formData.append("expireTime", this.expireTime);
       formData.append("note", this.note);
       formData.append("programId", this.id);
-      formData.append("attachedDoc", this.attachedDoc);
+      formData.append("attachedHTQTDoc", this.attachedDoc);
 
       try {
-        const result = await axios.post("/api/create-moumoa", formData, {
+        const result = await axios.post("/api/create-htqt", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -610,8 +594,8 @@ export default {
           this.$refs.table.refresh();
           this.displayModal = false;
           this.nation = "";
-          this.docType = "";
-          this.docDetail = "";
+          this.funding = "";
+          this.planDetail = "";
           this.attachedDoc = "";
           this.partnerUni = "";
           this.signingTime = "";
@@ -626,36 +610,36 @@ export default {
     },
 
     onEdit(item) {
-      this.editMoumoa.nation = item.nation;
-      this.editMoumoa.docType = item.docType;
-      this.editMoumoa.docDetail = item.docDetail;
-      this.editMoumoa.attachedDocLink = item.attachedDocLink;
-      this.editMoumoa.attachedDocName = item.attachedDocName;
-      this.editMoumoa.partnerUni = item.partnerUni;
-      this.editMoumoa.signingTime = item.signingTime;
-      this.editMoumoa.expireTime = item.expireTime;
-      this.editMoumoa.note = item.note;
-      this.editMoumoa.id = item._id;
+      this.editHTQT.nation = item.nation;
+      this.editHTQT.funding = item.funding;
+      this.editHTQT.planDetail = item.planDetail;
+      this.editHTQT.attachedDocLink = item.attachedDocLink;
+      this.editHTQT.attachedDocName = item.attachedDocName;
+      this.editHTQT.partnerUni = item.partnerUni;
+      this.editHTQT.signingTime = item.signingTime;
+      this.editHTQT.expireTime = item.expireTime;
+      this.editHTQT.note = item.note;
+      this.editHTQT.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
       let formData = new FormData();
-      formData.append("nation", this.editMoumoa.nation);
-      formData.append("docType", this.editMoumoa.docType);
-      formData.append("docDetail", this.editMoumoa.docDetail);
-      formData.append("partnerUni", this.editMoumoa.partnerUni);
-      formData.append("signingTime", this.editMoumoa.signingTime);
-      formData.append("expireTime", this.editMoumoa.expireTime);
-      formData.append("note", this.editMoumoa.note);
+      formData.append("nation", this.editHTQT.nation);
+      formData.append("funding", this.editHTQT.funding);
+      formData.append("planDetail", this.editHTQT.planDetail);
+      formData.append("partnerUni", this.editHTQT.partnerUni);
+      formData.append("signingTime", this.editHTQT.signingTime);
+      formData.append("expireTime", this.editHTQT.expireTime);
+      formData.append("note", this.editHTQT.note);
       formData.append("programId", this.id);
-      formData.append("attachedDocName", this.editMoumoa.attachedDocName);
-      formData.append("attachedDocLink", this.editMoumoa.attachedDocLink);
-      formData.append("attachedDoc1", this.editMoumoa.attachedDoc);
+      formData.append("attachedDocName", this.editHTQT.attachedDocName);
+      formData.append("attachedDocLink", this.editHTQT.attachedDocLink);
+      formData.append("attachedHTQTDoc1", this.editHTQT.attachedDoc);
 
       try {
         const result = await axios.put(
-          `/api/edit-moumoa/${this.editMoumoa.id}`,
+          `/api/edit-htqt/${this.editHTQT.id}`,
           formData,
           {
             headers: {
@@ -685,7 +669,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(`/api/delete-moumoa/${item._id}`);
+          const result = await axios.delete(`/api/delete-htqt/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
