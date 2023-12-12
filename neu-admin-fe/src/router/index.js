@@ -16,6 +16,8 @@ import UnitsManagePage from '../views/UnitsManagePage.vue'
 import SubjectsManagePage from '../views/SubjectsManagePage.vue'
 import MOUMOAManagePage from '../views/MOUMOAManagePage.vue'
 import HTQTManagePage from '../views/HTQTManagePage.vue'
+import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentManagePage.vue'
+import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -150,6 +152,22 @@ const router = createRouter({
       path: '/enrollment/htqt-infor/:id',
       name: 'htqt-manage-page',
       component: HTQTManagePage,
+      meta: { 
+        requiresProgramId: true
+      },
+    },
+    {
+      path: '/enrollment/ex-f-student-infor/:id',
+      name: 'ex-f-student-manage-page',
+      component: ExchangeForeignStudentManagePage,
+      meta: { 
+        requiresProgramId: true
+      },
+    },
+    {
+      path: '/enrollment/ex-student-infor/:id',
+      name: 'ex-student-manage-page',
+      component: ExchangeStudentManagePage,
       meta: { 
         requiresProgramId: true
       },

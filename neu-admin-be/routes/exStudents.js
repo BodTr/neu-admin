@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const MoumoaSchema = require('../models/moumoa')
-const { emptyMoumoaInputsValidation, typeMoumoaInputsValidation, emptyFileMoumoaInputValidation } = require('../helpers/input_validate_middleware')
+const ExForeignStudentSchema = require('../models/ex_student')
+const { emptyExStudentInputsValidation, typeExStudentInputsValidation, emptyFileExStudentInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
-const { initMoumoaDocMiddleware } = require('../helpers/init_doc')
+const { initExStudentMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
 
 
@@ -21,18 +21,23 @@ const config = {
 
 const s3 = new S3Client(config)
 
-router.get('/api/get-all-moumoas', async (req, res) => {
+const uploadFileFields = upload.fields([
+    {name: 'attachedExchangeDoc', maxCount: 1},
+    {name: 'attachedScoreDoc', maxCount: 1} // maxCount là số file tối đa có thể tải lên ở field đó
+])
+
+router.get('/api/get-all-ex-students', async (req, res) => {
     try {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const moumoas = await MoumoaSchema.find({
+        const students = await ExForeignStudentSchema.find({
             program: { id: new ObjectId(id) }
             
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await MoumoaSchema.estimatedDocumentCount()
+        let count = await ExForeignStudentSchema.estimatedDocumentCount()
         let stt = 0
-        const aMoumoas = moumoas.map( doc => {
+        const aStudents = students.map( doc => {
             stt++
             // const id = doc._id.toString()
             return {
@@ -40,41 +45,47 @@ router.get('/api/get-all-moumoas', async (req, res) => {
                 stt: stt
             }
         })
-        console.log(aMoumoas, "aMoumoas")
-        res.json({ data: aMoumoas, count: count, error: false })
+        console.log(aStudents, "aStudents")
+        res.json({ data: aStudents, count: count, error: false })
     } catch (error) {
         console.log(error, "get programs api catch block error")
         res.json({ error: true, message: "something went wrong" })
     }
 })
 
-router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attachedMoumoaDoc"), emptyFileMoumoaInputValidation, emptyMoumoaInputsValidation, typeMoumoaInputsValidation, async (req, res, next) => {
+router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields, emptyFileExStudentInputValidation, emptyExStudentInputsValidation, typeExStudentInputsValidation, async (req, res, next) => {
     try {
-        const { programId, nation, partnerUni, docType, docDetail, signingTime, expireTime, note  } = req.body
+        const { programId, name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
-        const moumoaId = req.payload
+        const studentId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
         const attachedDocLink = attachedDoc.location
         const attachedDocName = attachedDoc.originalname
-        const newMoumoa = {
-            nation: nation,
-            partnerUni: partnerUni,
-            docType: docType,
-            docDetail: docDetail,
+        const newStudent = {
+            name: name,
+            studentCode: studentCode,
+            department: department,
+            academicYear: academicYear,
+            exchangeYear: exchangeYear,
+            birthday: birthday,
+            sex: sex,
+            exchangeTime: exchangeTime,
+            major: major,
+            unit: unit,
+            receptionDecision: receptionDecision,
+            subject: subject,
+            result: result,
             attachedDocLink: attachedDocLink,
             attachedDocName: attachedDocName,
-            signingTime: signingTime,
-            expireTime: expireTime,
-            note: note,
             program: {
                 id: programId
             }
         }
-        const storingMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: moumoaId }, newMoumoa, {new: true})
-        console.log(storingMoumoa, "storingMoumoa")
+        const storingStudent = await ExForeignStudentSchema.findOneAndUpdate({ _id: studentId }, newStudent, {new: true})
+        console.log(storingStudent, "storingStudent")
         res.json({ error: false, message: 'Lưu thành công chương trình' })
         
         
@@ -86,10 +97,10 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
     }
 })
 
-router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMoumoaInputsValidation, typeMoumoaInputsValidation, async(req, res) => {
+router.put('/api/edit-ex-student/:id', upload.single("attachedExFStuDoc1"), emptyExStudentInputsValidation, typeExStudentInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { nation, partnerUni, docType, docDetail, signingTime, expireTime, note, attachedDocLink, attachedDocName } = req.body
+        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result, attachedDocLink, attachedDocName } = req.body
         const attachedDoc1 = req.file
         console.log(req.file, "req.file put api")
         console.log(req.body, "req.body put api")
@@ -110,21 +121,27 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
         }
 
         console.log(id, "::put api id::")
-        const updatingMoumoa = {
-            nation: nation,
-            partnerUni: partnerUni,
-            docType: docType,
-            docDetail: docDetail,
-            signingTime: signingTime,
-            expireTime: expireTime,
-            note: note,
+        const updatingStudent = {
+            name: name,
+            studentCode: studentCode,
+            position: position,
+            educationLevel: educationLevel,
+            receptionTime: receptionTime,
+            receptionYear: receptionYear,
+            birthday: birthday,
+            sex: sex,
+            major: major,
+            unit: unit,
+            receptionDecision: receptionDecision,
+            subject: subject,
+            result: result,
             attachedDocLink: newAttachedDocLink,
             attachedDocName: attachedDocName
         }
         console.log(req.body, "put api req.body")
-        const updatedMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: id }, updatingMoumoa, {new: true})
-        console.log(updatedMoumoa, "updatedMoumoa")
-        res.json({ error: false, message: "Văn bản đã được sửa thành công" })
+        const updatedStudent = await ExForeignStudentSchema.findOneAndUpdate({ _id: id }, updatingStudent, {new: true})
+        console.log(updatedStudent, "updatedStudent")
+        res.json({ error: false, message: "Thông tin học sinh sửa thành công" })
     } catch (error) {
         console.log(error, "put catch block error")
         res.json({error: true, message: "something went wrong!"})
@@ -132,35 +149,35 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
     }
 })
 
-router.delete('/api/delete-moumoa/:id', async(req, res) => {
+router.delete('/api/delete-ex-student/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")
-        const delMoumoa = await MoumoaSchema.findOne({ _id: id })
-        const delMoumoaKey = delMoumoa.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delMoumoaKey, "delMoumoaKey delete api")
+        const delStudent = await ExForeignStudentSchema.findOne({ _id: id })
+        const delStudentKey = delStudent.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+        console.log(delStudentKey, "delStudentKey delete api")
         const newDeleteCommand = new DeleteObjectCommand({
             Bucket: 'acvnapps',
-            Key: `${delMoumoaKey}`
+            Key: `${delStudentKey}`
         })
         const result = await s3.send(newDeleteCommand)
         console.log(result, ":::result, delete api:::")
-        const deletingMoumoa = await MoumoaSchema.findOneAndDelete({ _id: id })
-        console.log(deletingMoumoa, "deletingMoumoa")
-        res.json({ error: false, message: "Xóa thành công văn bản" })
+        const deletingStudent = await ExForeignStudentSchema.findOneAndDelete({ _id: id })
+        console.log(deletingStudent, "deletingStudent")
+        res.json({ error: false, message: "Xóa thành công thông tin học sinh" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
     }
 })
 
-router.use('/api/create-moumoa', async (error, req, res, next) => {
+router.use('/api/create-ex-student', async (error, req, res, next) => {
     try {
         console.log(error, "error handle post api midddleware")
-        const moumoaId = req.payload
+        const studentId = req.payload
         const docFile = req.file
-        const delInitMoumoa = await MoumoaSchema.deleteOne({ _id: moumoaId })
-        console.log(delInitMoumoa, "deleted delInitMoumoa")
+        const delInitStudent = await ExForeignStudentSchema.deleteOne({ _id: studentId })
+        console.log(delInitStudent, "deleted delInitStudent")
         if (!docFile) {
             next(error)
         } else {
@@ -180,7 +197,7 @@ router.use('/api/create-moumoa', async (error, req, res, next) => {
     }
 })
 
-router.use('/api/edit-moumoa/:id', async(error, req, res, next) => {
+router.use('/api/edit-ex-student/:id', async(error, req, res, next) => {
     try {
         console.log(error, "error handle put api middleware")
         const { id } = req.params
@@ -208,13 +225,13 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_MOUMOA_INPUTS_ERROR") {
+        if (error.code === "EMPTY_EFS_INPUTS_ERROR") {
             console.log(error.code, "empty input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "MOUMOA_INPUTS_TYPE_ERROR") {
+        } else if (error.code === "EFS_INPUTS_TYPE_ERROR") {
             console.log("input type error")
             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else if (error.code === "EMPTY_MOUMOA_FILE_INPUT_ERROR") {
+        } else if (error.code === "EMPTY_EFS_FILE_INPUT_ERROR") {
             console.log(error.code, "empty file input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
         } else {

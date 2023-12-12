@@ -659,6 +659,7 @@ export default {
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
+          this.editHTQT.attachedDoc = null;
         }
       } catch (error) {
         console.log(error, "put api catch block error");

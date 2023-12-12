@@ -689,6 +689,7 @@ export default {
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
+          this.editMoumoa.attachedDoc = null;
         }
       } catch (error) {
         console.log(error, "put api catch block error");

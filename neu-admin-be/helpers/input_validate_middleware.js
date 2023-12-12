@@ -475,6 +475,90 @@ function emptyFileHTQTInputValidation(req, res, next) {
     }
 }
 
+// exForeignStudent inputs validate
+function emptyExForeignStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty exForeignStudent inputs");
+    const error = new Error("empty exForeignStudent inputs");
+    error.code = "EMPTY_EFS_INPUTS_ERROR";
+    const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body;
+    if (!name || !studentCode || !position || !educationLevel || !receptionTime || !receptionYear || !birthday || !sex || !major || !unit || !receptionDecision || !subject || !result) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeExForeignStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type exForeignStudent inputs")
+    const error = new Error('wrong type exForeignStudent inputs')
+    error.code = 'EFS_INPUTS_TYPE_ERROR'
+    const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
+    if (typeof name !== 'string' || isNaN(studentCode) || typeof position !== 'string' || typeof educationLevel !== 'string' || typeof receptionTime !== 'string' || typeof receptionYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof unit !== 'string' || typeof receptionDecision !== 'string' || typeof subject !== 'string' || typeof result !== 'string') {
+        throw error
+    } else {
+        console.log('exForeignStudent inputs type correct')
+        next()
+    }
+}
+
+function emptyFileExForeignStudentInputValidation(req, res, next) {
+    
+    const error = new Error('Empty exForeignStudent file input')
+    error.code = 'EMPTY_EFS_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty exForeignStudent file inputs")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('exForeignStudent file input filled')
+        next()
+    }
+}
+
+// exStudent inputs validate
+function emptyExStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty exStudent inputs");
+    const error = new Error("empty exStudent inputs");
+    error.code = "EMPTY_ES_INPUTS_ERROR";
+    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body;
+    if (!name || !studentCode || !department || !academicYear || !exchangeTime || !exchangeYear || !birthday || !sex || !major || !receivingCountry || !partnerUni || !subject || !result || !confirmedResult || !exchangeDecision || !convertedScore) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeExStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type exStudent inputs")
+    const error = new Error('wrong type exStudent inputs')
+    error.code = 'ES_INPUTS_TYPE_ERROR'
+    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
+    if (typeof name !== 'string' || isNaN(studentCode) || typeof department !== 'string' || typeof academicYear !== 'string' || typeof exchangeTime !== 'string' || typeof exchangeYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof receivingCountry !== 'string' || typeof partnerUni !== 'string' || typeof subject !== 'string' || typeof result !== 'string' || typeof confirmedResult !== 'string' || typeof exchangeDecision !== 'string' || typeof convertedScore !== 'string') {
+        throw error
+    } else {
+        console.log('exStudent inputs type correct')
+        next()
+    }
+}
+
+function emptyFileExStudentInputValidation(req, res, next) {
+    
+    const error = new Error('Empty exStudent file input')
+    error.code = 'EMPTY_ES_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty exStudent file inputs")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('exStudent file input filled')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -509,5 +593,11 @@ module.exports = {
   emptyFileMoumoaInputValidation,
   emptyHTQTInputsValidation,
   typeHTQTInputsValidation,
-  emptyFileHTQTInputValidation
+  emptyFileHTQTInputValidation,
+  emptyExForeignStudentInputsValidation,
+  typeExForeignStudentInputsValidation,
+  emptyFileExForeignStudentInputValidation,
+  emptyExStudentInputsValidation,
+  typeExStudentInputsValidation,
+  emptyFileExStudentInputValidation
 };

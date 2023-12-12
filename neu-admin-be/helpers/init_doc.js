@@ -1,5 +1,7 @@
 const HTQTSchema = require('../models/htqt')
 const MoumoaSchema = require('../models/moumoa')
+const ExForeignStudentSchema = require('../models/ex_foreign_student')
+const ExStudentSchema = require('../models/ex_student')
 
 async function initMoumoaDocMiddleware(req, res, next) {
     try {
@@ -31,7 +33,39 @@ async function initHTQTDocMiddleware(req, res, next) {
     }
 }
 
+async function initexForeignStudentDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await ExForeignStudentSchema.create({
+            name: 'init nation'
+        })
+
+        const studentId = initDoc._id.toString()
+        req.payload = studentId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_htqt_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
+async function initExStudentMiddleware(req, res, next) {
+    try {
+        const initDoc = await ExStudentSchema.create({
+            name: 'init name'
+        })
+
+        const exStudentId = initDoc._id.toString()
+        req.payload = exStudentId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_moumoa_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
 module.exports = {
     initMoumoaDocMiddleware,
-    initHTQTDocMiddleware
+    initHTQTDocMiddleware,
+    initexForeignStudentDocMiddleware,
+    initExStudentMiddleware
 }

@@ -39,6 +39,12 @@ const upload = multer({
                 fileName = `program-${programId}/attached-moumoa-doc-${getId()}/${Date.now()}_${file.originalname}`
             } else if (fieldname === "attachedHTQTDoc" || fieldname === "attachedHTQTDoc1") {
                 fileName = `program-${programId}/attached-htqt-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "attachedExFStuDoc" || fieldname === "attachedExFStuDoc1") {
+                fileName = `program-${programId}/attached-ex-foreign-student-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "attachedExchangeDoc" || fieldname === "attachedExchangeDoc1") {
+                fileName = `program-${programId}/attached-ex-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "attachedScoreDoc1" || fieldname === "attachedScoreDoc") {
+                fileName = `program-${programId}/attached-ex-student-score-doc-${getId()}/${Date.now()}_${file.originalname}`
             }
 
             cb(null, fileName)

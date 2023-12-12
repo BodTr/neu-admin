@@ -1,3 +1,4 @@
+// hợp tác quốc tế
 const express = require('express')
 const router = express.Router()
 const HTQTSchema = require('../models/htqt')
@@ -136,9 +137,18 @@ router.delete('/api/delete-htqt/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")
+        const delHtqt = await HTQTSchema.findOne({ _id: id })
+        const delHtqtKey = delHtqt.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+        console.log(delHtqtKey, "delHtqtKey delete api")
+        const newDeleteCommand = new DeleteObjectCommand({
+            Bucket: 'acvnapps',
+            Key: `${delHtqtKey}`
+        })
+        const result = await s3.send(newDeleteCommand)
+        console.log(result, ":::result, delete api:::")
         const deletingHtqt = await HTQTSchema.findOneAndDelete({ _id: id })
         console.log(deletingHtqt, "deletingHtqt")
-        res.json({ error: false, message: "Xóa thành công văn bản" })
+        res.json({ error: false, message: "Xóa thành công" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})

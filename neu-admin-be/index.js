@@ -34,6 +34,7 @@ app.use(require('./routes/units'))
 app.use(require('./routes/subjects'))
 app.use(require('./routes/moumoas'))
 app.use(require('./routes/htqts'))
+app.use(require('./routes/ex_foreign_students'))
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {
