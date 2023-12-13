@@ -15,10 +15,10 @@
       <h1 class="navbar-brand navbar-brand-autodark">
         <a href=".">
           <img
-            src="../assets/logo-white.svg"
-            width="110"
-            height="32"
-            alt="Tabler"
+            src="../assets/Logo-NEU.png"
+            width="60"
+            height="60"
+            alt="neu-logo"
             class="navbar-brand-image"
           />
         </a>
