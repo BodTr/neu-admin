@@ -271,7 +271,7 @@ function typeCurriculumInputsValidation(req, res, next) {
     const error = new Error('wrong type curriculum inputs')
     error.code = 'CURRICULUM_INPUTS_TYPE_ERROR'
     const { name, year, location, subjectType, creditsCount, trainingUni } = req.body
-    if (typeof name !== 'string' || isNaN(year) || typeof location !== 'string' || typeof subjectType !== 'string' || isNaN(creditsCount) || typeof trainingUni !== 'string') {
+    if (typeof name !== 'string' || typeof year !== 'string' || typeof location !== 'string' || typeof subjectType !== 'string' || isNaN(creditsCount) || typeof trainingUni !== 'string') {
         throw error
     } else {
         console.log('process inputs type correct')

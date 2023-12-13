@@ -333,7 +333,7 @@
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 px-1"
+                        class="btn btn-danger btn-icon "
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +360,7 @@
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger w-50 d-sm-inline-block px-1"
+                      class="btn btn-info btn-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"

@@ -64,7 +64,7 @@
               </div>
             </div>
             <div
-            v-if="displayModal"
+              v-if="displayModal"
               class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
@@ -86,12 +86,12 @@
                   <div class="modal-body row row-cards">
                     <div class="mb-3">
                       <label class="form-label">Tên</label>
-                      <input
-                        type="text"
+                      <textarea
                         class="form-control"
+                        row="1"
                         v-model="name"
                         placeholder="Nhập tên chương trình"
-                      />
+                      ></textarea>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
@@ -105,12 +105,12 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Tên văn bằng</label>
-                        <input
-                          type="text"
+                        <textarea
                           class="form-control"
+                          row="1"
                           v-model="degreeName"
                           placeholder="Nhập tên văn bằng"
-                        />
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -135,10 +135,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -166,22 +163,62 @@
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 px-1"
+                        class="btn btn-danger btn-icon"
                       >
-                        Xoá
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-trash"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 7l16 0" />
+                          <path d="M10 11l0 6" />
+                          <path d="M14 11l0 6" />
+                          <path
+                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                          />
+                          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
                       </a>
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger w-50 d-sm-inline-block px-1"
+                      class="btn btn-info btn-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                      Sửa
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-edit"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
+                        />
+                        <path
+                          d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
+                        />
+                        <path d="M16 5l3 3" />
+                      </svg>
                     </a>
                     <div
-                      v-if="displayModal"
+                      v-if="displayModalOne"
                       class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
@@ -203,12 +240,12 @@
                           <div class="modal-body row row-cards">
                             <div class="mb-3">
                               <label class="form-label">Tên</label>
-                              <input
-                                type="text"
+                              <textarea
                                 class="form-control"
+                                row="1"
                                 v-model="editProgram.name"
                                 placeholder="Nhập tên chương trình"
-                              />
+                              ></textarea>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
@@ -222,12 +259,12 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Tên văn bằng</label>
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control"
+                                  row="1"
                                   v-model="editProgram.degreeName"
                                   placeholder="Nhập tên văn bằng"
-                                />
+                                ></textarea>
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -289,7 +326,6 @@ import { useToast } from "vue-toastification";
 //   id = idArr[1]
 // }
 
-
 export default {
   name: "ProgramManagePage",
   components: {
@@ -298,10 +334,18 @@ export default {
 
   data() {
     return {
-      columns: ["stt", "name", "language", "degreeType", "degreeName", "issuedBy", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "language",
+        "degreeType",
+        "degreeName",
+        "issuedBy",
+        "tool",
+      ],
       options: {
         params: {
-          id: this.$route.params.id
+          id: this.$route.params.id,
         },
         headings: {
           name: "Tên chương trình",
@@ -309,7 +353,7 @@ export default {
           degreeType: "Tên thương hiệu",
           degreeName: "Tên văn bằng",
           issuedBy: "Cấp bởi",
-          tool: "Thao tác"
+          tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
@@ -339,17 +383,18 @@ export default {
   },
 
   methods: {
-    showModal (){
-      this.displayModal = true
+    showModal() {
+      this.displayModal = true;
     },
-    hideModal (){
-      this.displayModal = false
+    hideModal() {
+      this.displayModal = false;
+      console.log(this.displayModal, "this.displayModal")
     },
-    showModal1 (){
-      this.displayModalOne = true
+    showModal1() {
+      this.displayModalOne = true;
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
       const data = {
@@ -358,8 +403,7 @@ export default {
         language: this.language,
         degreeName: this.degreeName,
         degreeType: this.degreeType,
-        issuedBy: this.issuedBy
-
+        issuedBy: this.issuedBy,
       };
 
       try {
@@ -376,13 +420,12 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.language = ''
-          this.degreeName = ''
-          this.degreeType = ''
-          this.issuedBy = ''
-
+          this.displayModal = false;
+          this.name = "";
+          this.language = "";
+          this.degreeName = "";
+          this.degreeType = "";
+          this.issuedBy = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -396,7 +439,7 @@ export default {
       this.editProgram.degreeType = item.degreeType;
       this.editProgram.issuedBy = item.issuedBy;
       this.editProgram.id = item._id;
-      this.showModal1()
+      this.showModal1();
 
       // console.log('content', this.content);
     },
@@ -407,7 +450,7 @@ export default {
         language: this.editProgram.language,
         degreeName: this.editProgram.degreeName,
         degreeType: this.editProgram.degreeType,
-        issuedBy: this.editProgram.issuedBy
+        issuedBy: this.editProgram.issuedBy,
       };
       try {
         const result = await axios.put(
@@ -425,7 +468,7 @@ export default {
           this.toast.success("Chương trình đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -436,7 +479,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-trans-program/${item._id}`);
+          const result = await axios.delete(
+            `/api/delete-trans-program/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

@@ -10,7 +10,7 @@ const AgencySchema = new mongoose.Schema({
         require: false
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         require: false
     },
     unit: {

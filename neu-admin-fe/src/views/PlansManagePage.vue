@@ -87,41 +87,41 @@
                     <div class="col-md-4">
                       <div class="mb-3">
                         <label class="form-label">Tên văn bằng</label>
-                        <input
-                          type="text"
+                        <textarea
                           class="form-control"
+                          row="1"
                           v-model="certName"
                           placeholder="Nhập tên văn bằng chứng chỉ"
-                        />
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Điều kiện giảng viên</label>
-                        <input
-                          type="text"
+                        <textarea
                           v-model="qualifiedLecturer"
+                          row="1"
                           class="form-control"
                           placeholder="Nhập điều kiện giảng viên"
-                        />
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Điều kiện tuyển sinh</label>
-                        <input
-                          type="text"
+                        <textarea
                           v-model="qualifiedStudent"
+                          row="1"
                           class="form-control"
                           placeholder="Nhập điều kiện tuyển sinh"
-                        />
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
                         <label class="form-label">Hình thức giảng dạy</label>
-                        <input
-                          type="text"
+                        <textarea
                           class="form-control"
+                          row="1"
                           v-model="planStructure"
                           placeholder="Nhập hình thức đào tạo"
-                        />
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Kinh phí đào tạo</label>
@@ -135,12 +135,12 @@
                         <label class="form-label"
                           >Điều kiện cơ sở vật chất, thiết bị</label
                         >
-                        <input
-                          type="text"
+                        <textarea
                           class="form-control"
+                          row="1"
                           v-model="infraCondition"
                           placeholder="Nhập nội dung phụ trách"
-                        />
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -155,21 +155,21 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Quản lí tài chính</label>
-                        <input
-                          type="text"
+                        <textarea
                           v-model="ecoManage"
+                          row="1"
                           class="form-control"
                           placeholder="Quản lí tài chính"
-                        />
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Thực hiện báo cáo</label>
-                        <input
-                          type="text"
+                        <textarea
                           v-model="report"
+                          row="1"
                           class="form-control"
                           placeholder="Thực hiện báo cáo"
-                        />
+                        ></textarea>
                       </div>
                     </div>
                   </div>
@@ -202,19 +202,59 @@
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 px-1"
+                        class="btn btn-danger btn-icon"
                       >
-                        Xoá
+                      <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-trash"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 7l16 0" />
+                          <path d="M10 11l0 6" />
+                          <path d="M14 11l0 6" />
+                          <path
+                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                          />
+                          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
                       </a>
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger w-50 d-sm-inline-block px-1"
+                      class="btn btn-info btn-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                      Sửa
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-edit"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
+                        />
+                        <path
+                          d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
+                        />
+                        <path d="M16 5l3 3" />
+                      </svg>
                     </a>
                     <div
                       v-if="displayModalOne"
@@ -240,34 +280,34 @@
                             <div class="col-md-4">
                               <div class="mb-3">
                                 <label class="form-label">Tên văn bằng</label>
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control"
+                                  row="1"
                                   v-model="editPlan.certName"
                                   placeholder="Nhập tên văn bằng chứng chỉ"
-                                />
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Điều kiện giảng viên</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   v-model="editPlan.qualifiedLecturer"
+                                  row="1"
                                   class="form-control"
                                   placeholder="Nhập điều kiện giảng viên"
-                                />
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Điều kiện tuyển sinh</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   v-model="editPlan.qualifiedStudent"
+                                  row="1"
                                   class="form-control"
                                   placeholder="Nhập điều kiện tuyển sinh"
-                                />
+                                ></textarea>
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -275,12 +315,12 @@
                                 <label class="form-label"
                                   >Hình thức giảng dạy</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control"
+                                  row="1"
                                   v-model="editPlan.planStructure"
                                   placeholder="Nhập hình thức đào tạo"
-                                />
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
@@ -296,12 +336,12 @@
                                 <label class="form-label"
                                   >Điều kiện cơ sở vật chất, thiết bị</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control"
+                                  row="1"
                                   v-model="editPlan.infraCondition"
                                   placeholder="Nhập nội dung phụ trách"
-                                />
+                                ></textarea>
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -320,23 +360,23 @@
                                 <label class="form-label"
                                   >Quản lí tài chính</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   v-model="editPlan.ecoManage"
+                                  row="1"
                                   class="form-control"
                                   placeholder="Quản lí tài chính"
-                                />
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Thực hiện báo cáo</label
                                 >
-                                <input
-                                  type="text"
+                                <textarea
                                   v-model="editPlan.report"
+                                  row="1"
                                   class="form-control"
                                   placeholder="Thực hiện báo cáo"
-                                />
+                                ></textarea>
                               </div>
                             </div>
                           </div>
@@ -507,7 +547,7 @@ export default {
       this.editPlan.tuition = item.tuition;
       this.editPlan.infraCondition = item.infraCondition;
       this.editPlan.language = item.language;
-      this.editPlan.ecoManage = item.language;
+      this.editPlan.ecoManage = item.ecoManage;
       this.editPlan.report = item.report
       this.editPlan.id = item._id;
       this.showModal1();

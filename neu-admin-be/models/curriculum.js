@@ -6,7 +6,7 @@ const CurriculumSchema = new mongoose.Schema({
         require: false
     },
     year: {
-        type: Number,
+        type: String,
         require: false
     },
     location: {

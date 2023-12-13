@@ -126,10 +126,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -157,22 +154,62 @@
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 px-1"
+                        class="btn btn-danger btn-icon"
                       >
-                        Xoá
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-trash"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 7l16 0" />
+                          <path d="M10 11l0 6" />
+                          <path d="M14 11l0 6" />
+                          <path
+                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                          />
+                          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
                       </a>
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger w-50 d-sm-inline-block px-1"
+                      class="btn btn-info btn-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                      Sửa
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-edit"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
+                        />
+                        <path
+                          d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
+                        />
+                        <path d="M16 5l3 3" />
+                      </svg>
                     </a>
                     <div
-                      v-if="displayModal"
+                      v-if="displayModalOne"
                       class="modal modal-blur fade show"
                       id="modal-report-one"
                       tabindex="-1"
@@ -194,7 +231,9 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên văn bản liên kết</label>
+                                <label class="form-label"
+                                  >Tên văn bản liên kết</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
@@ -203,7 +242,9 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Ngày có hiệu lực</label>
+                                <label class="form-label"
+                                  >Ngày có hiệu lực</label
+                                >
                                 <input
                                   type="date"
                                   class="form-control"
@@ -214,9 +255,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Nội dung</label
-                                >
+                                <label class="form-label">Nội dung</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -225,7 +264,9 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Thời hạn hiệu lực</label>
+                                <label class="form-label"
+                                  >Thời hạn hiệu lực</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
@@ -264,7 +305,6 @@ import axios from "axios";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
-
 export default {
   name: "ProgramManagePage",
   components: {
@@ -273,14 +313,7 @@ export default {
 
   data() {
     return {
-      columns: [
-        "stt",
-        "name",
-        "content",
-        "effDate",
-        "expireIn",
-        "tool",
-      ],
+      columns: ["stt", "name", "content", "effDate", "expireIn", "tool"],
       options: {
         params: {
           id: this.$route.params.id,
@@ -318,17 +351,17 @@ export default {
   },
 
   methods: {
-    showModal (){
-      this.displayModal = true
+    showModal() {
+      this.displayModal = true;
     },
-    hideModal (){
-      this.displayModal = false
+    hideModal() {
+      this.displayModal = false;
     },
-    showModal1 (){
-      this.displayModalOne = true
+    showModal1() {
+      this.displayModalOne = true;
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
       const data = {
@@ -353,11 +386,11 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.effDate = ''
-          this.content = ''
-          this.expireIn = ''
+          this.displayModal = false;
+          this.name = "";
+          this.effDate = "";
+          this.content = "";
+          this.expireIn = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -370,7 +403,7 @@ export default {
       this.editDoc.content = item.content;
       this.editDoc.expireIn = item.expireIn;
       this.editDoc.id = item._id;
-      this.showModal1()
+      this.showModal1();
 
       // console.log('content', this.content);
     },
@@ -398,7 +431,7 @@ export default {
           this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -409,9 +442,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
-            `/api/delete-document/${item._id}`
-          );
+          const result = await axios.delete(`/api/delete-document/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

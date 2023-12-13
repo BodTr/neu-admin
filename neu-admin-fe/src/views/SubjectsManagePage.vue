@@ -190,19 +190,59 @@
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-dark w-50 px-1"
+                        class="btn btn-danger btn-icon"
                       >
-                        Xoá
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-trash"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 7l16 0" />
+                          <path d="M10 11l0 6" />
+                          <path d="M14 11l0 6" />
+                          <path
+                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                          />
+                          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
                       </a>
                     </span>
                     <a
                       href="#"
-                      class="btn btn-danger w-50 d-sm-inline-block px-1"
+                      class="btn btn-info btn-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                      Sửa
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-edit"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
+                        />
+                        <path
+                          d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
+                        />
+                        <path d="M16 5l3 3" />
+                      </svg>
                     </a>
                     <div
                       v-if="displayModalOne"
@@ -429,7 +469,7 @@ export default {
         year: this.year,
         creditsCount: this.creditsCount,
         studentsCount: this.studentsCount,
-        note: this.note
+        note: this.note,
       };
 
       try {
@@ -450,11 +490,11 @@ export default {
           this.name = "";
           this.lecturer = "";
           this.teachingAssistant = "";
-          this.executionTime = '';
+          this.executionTime = "";
           this.year = "";
           this.creditsCount = "";
           this.studentsCount = "";
-          this.note = '';
+          this.note = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -465,11 +505,11 @@ export default {
       this.editSubject.name = item.name;
       this.editSubject.lecturer = item.lecturer;
       this.editSubject.teachingAssistant = item.teachingAssistant;
-      this.editSubject.executionTime =item.executionTime;
+      this.editSubject.executionTime = item.executionTime;
       this.editSubject.year = item.year;
       this.editSubject.creditsCount = item.creditsCount;
       this.editSubject.studentsCount = item.studentsCount;
-      this.editSubject.note = item.note
+      this.editSubject.note = item.note;
       this.editSubject.id = item._id;
       this.showModal1();
     },
@@ -483,7 +523,7 @@ export default {
         year: this.editSubject.year,
         creditsCount: this.editSubject.creditsCount,
         studentsCount: this.editSubject.studentsCount,
-        note: this.editSubject.note
+        note: this.editSubject.note,
       };
       try {
         const result = await axios.put(
@@ -512,9 +552,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
-            `/api/delete-subject/${item._id}`
-          );
+          const result = await axios.delete(`/api/delete-subject/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
