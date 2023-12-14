@@ -549,9 +549,10 @@ function emptyFileExStudentInputValidation(req, res, next) {
     
     const error = new Error('Empty exStudent file input')
     error.code = 'EMPTY_ES_FILE_INPUT_ERROR'
-    const docFile = req.file
-    console.log(docFile, "middleware check empty exStudent file inputs")
-    if (!docFile) {
+    const attachedExchangeDoc = req.files['attachedExchangeDoc']
+    const attachedScoreDocArr = req.files['attachedScoreDoc']
+    console.log(attachedExchangeDoc, attachedScoreDocArr, "middleware check empty exStudent file inputs")
+    if (!attachedExchangeDoc || !attachedScoreDocArr) {
         throw error
     } else {
         console.log('exStudent file input filled')

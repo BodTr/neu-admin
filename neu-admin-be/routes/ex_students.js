@@ -63,7 +63,6 @@ router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields,
         const { programId, name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
-        console.log(req.file, "req.file post api")
         const studentId = req.payload
         const attachedExchangeDocArr = req.files['attachedExchangeDoc']
         const attachedScoreDocArr = req.files['attachedScoreDoc']
@@ -100,6 +99,7 @@ router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields,
                 id: programId
             }
         }
+        console.log(newStudent, "newStudent")
         const storingStudent = await ExStudentSchema.findOneAndUpdate({ _id: studentId }, newStudent, {new: true})
         console.log(storingStudent, "storingStudent")
         res.json({ error: false, message: 'Lưu thành công thông tinh sinh viên' })

@@ -266,7 +266,7 @@
                           <input
                             type="text"
                             class="form-control"
-                            v-model="attachedExchangeDocName"
+                            v-model="attachedExDocName"
                             disabled
                           />
                         </div>
@@ -325,15 +325,72 @@
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:attachedDoc="item">
-                    {{ item.row.attachedDocName }}
+                  <template v-slot:attachedExchangeDoc="item">
+                    {{ item.row.attachedExDocName }}
+                    <a
+                      :href="item.row.attachedExDocLink"
+                      class="btn btn-success btn-icon"
+                    >
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-files"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                        <path
+                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                        />
+                        <path
+                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                        />
+                      </svg>
+                    </a>
+                  </template>
+                  <template v-slot:attachedScoreDoc="item">
+                    {{ item.row.attachedScoreDocName }}
+                    <a
+                      :href="item.row.attachedScoreDocLink"
+                      class="btn btn-success btn-icon"
+                    >
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-files"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                        <path
+                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                        />
+                        <path
+                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                        />
+                      </svg>
+                    </a>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
                         href="#"
                         @click="remove(item.row)"
-                        class="btn btn-danger btn-icon "
+                        class="btn btn-danger btn-icon"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -387,33 +444,7 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <a
-                      :href="item.row.attachedDocLink"
-                      class="btn btn-success btn-icon"
-                    >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
-                      </svg>
-                    </a>
+
                     <div
                       v-if="displayModalOne"
                       class="modal modal-blur fade show"
@@ -635,11 +666,13 @@
                                   <input
                                     type="text"
                                     class="form-control"
-                                    v-model="attachedExchangeDocName1"
+                                    v-model="editExStudent.attachedExDocName"
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editExStudent.eMessage != ''">{{ editExStudent.eMessage }}</div>
+                                <div v-if="editExStudent.eMessage != ''">
+                                  {{ editExStudent.eMessage }}
+                                </div>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
@@ -649,12 +682,12 @@
                                   type="file"
                                   ref="attachedScoreDoc1"
                                   class="form-control"
-                                  @change="handleScorePdfChange()"
+                                  @change="handleScorePdfChange1()"
                                   style="display: none"
                                 />
                                 <div class="card">
                                   <button
-                                    @click="handleScorePdfUpload()"
+                                    @click="handleScorePdfUpload1()"
                                     class="btn btn-outline-primary w-100"
                                   >
                                     Choose File
@@ -666,7 +699,9 @@
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editExStudent.sMessage != ''">{{ editExStudent.sMessage }}</div>
+                                <div v-if="editExStudent.sMessage != ''">
+                                  {{ editExStudent.sMessage }}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -700,7 +735,7 @@ import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
 export default {
-  name: "ExchangeForeignStudentManagePage",
+  name: "ExchangeStudentManagePage",
   components: {
     VerticalNavbar,
   },
@@ -716,7 +751,8 @@ export default {
         "major",
         "exchangeYear",
         "receivingCountry",
-        "attachedDoc",
+        "attachedExchangeDoc",
+        "attachedScoreDoc",
         "tool",
       ],
       options: {
@@ -724,13 +760,13 @@ export default {
           id: this.$route.params.id,
         },
         headings: {
-          name: "Tên văn bằng và chứng chỉ",
+          name: "Họ và tên",
           studentCode: "MSSV",
-          department: "Chức vụ",
-          academicYear: "Bậc học (Trường đối tác)",
-          major: "Chuyên ngành (Trường đối tác)",
-          exchangeYear: "Đơn vị tiếp nhận",
-          receivingCountry: "Môn học",
+          department: "Khoa/Viện đào tạo",
+          academicYear: "Khóa",
+          major: "Lớp chuyên ngành",
+          exchangeYear: "Năm học trao đổi",
+          receivingCountry: "Quốc gia tiếp nhận",
           attachedExchangeDoc: "Quyết định cử đi đính kèm",
           attachedScoreDoc: "Quyết định quy đổi điểm đính kèm",
           tool: "Thao tác",
@@ -755,7 +791,7 @@ export default {
       convertedScore: "",
       attachedExchangeDoc: null,
       attachedScoreDoc: null,
-      attachedExchangeDocName: "",
+      attachedExDocName: "",
       attachedScoreDocName: "",
       sMessage: "",
       eMessage: "",
@@ -789,7 +825,6 @@ export default {
         attachedExDocLink: "",
         eMessage: "",
         sMessage: "",
-
       },
     };
   },
@@ -858,7 +893,7 @@ export default {
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.attachedExchangeDoc = file;
-      this.attachedExchangeDocName = file.name;
+      this.attachedExDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.eMessage = "";
       } else {
@@ -921,12 +956,13 @@ export default {
       formData.append("convertedScore", this.convertedScore);
       formData.append("attachedExchangeDoc", this.attachedExchangeDoc);
       formData.append("attachedScoreDoc", this.attachedScoreDoc);
+      formData.append("programId", this.id);
 
       try {
         const result = await axios.post("/api/create-ex-student", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
+          },
         });
 
         if (result.data.error === true) {
@@ -958,7 +994,7 @@ export default {
           this.exchangeDecision = "";
           this.convertedScore = "";
           this.attachedExchangeDoc = null;
-          this.attachedExchangeDocName = "";
+          this.attachedExDocName = "";
           this.attachedScoreDoc = null;
           this.attachedScoreDocName = "";
         }
@@ -973,18 +1009,21 @@ export default {
       this.editExStudent.sex = item.sex;
       this.editExStudent.department = item.department;
       this.editExStudent.academicYear = item.academicYear;
-      this.editExStudent.studentCode = item.studentCode;
-      this.editExStudent.result = item.result;
-      this.editExStudent.receptionYear = item.receptionYear;
-      
-
-      
       this.editExStudent.major = item.major;
-      this.editExStudent.receivingCountry = item.receivingCountry;
-      this.editExStudent.partnerUni = item.partnerUni;
+      this.editExStudent.studentCode = item.studentCode;
       this.editExStudent.exchangeYear = item.exchangeYear;
       this.editExStudent.exchangeTime = item.exchangeTime;
-      this.editExStudent.attachedDocName = item.attachedDocName;
+      this.editExStudent.receivingCountry = item.receivingCountry;
+      this.editExStudent.partnerUni = item.partnerUni;
+      this.editExStudent.subject = item.subject;
+      this.editExStudent.result = item.result;
+      this.editExStudent.confirmedResult = item.confirmedResult;
+      this.editExStudent.exchangeDecision = item.exchangeDecision;
+      this.editExStudent.convertedScore = item.convertedScore;
+      this.editExStudent.attachedScoreDocName = item.attachedScoreDocName;
+      this.editExStudent.attachedExDocName = item.attachedExDocName;
+      this.editExStudent.attachedScoreDocLink = item.attachedScoreDocLink;
+      this.editExStudent.attachedExDocLink = item.attachedExDocLink;
       this.editExStudent.id = item._id;
       this.showModal1();
     },
@@ -1007,19 +1046,36 @@ export default {
       formData.append("confirmedResult", this.editExStudent.confirmedResult);
       formData.append("exchangeDecision", this.editExStudent.exchangeDecision);
       formData.append("convertedScore", this.editExStudent.convertedScore);
-      formData.append("attachedExchangeDoc1", this.editExStudent.attachedExchangeDoc);
+      formData.append(
+        "attachedExchangeDoc1",
+        this.editExStudent.attachedExchangeDoc
+      );
       formData.append("attachedScoreDoc1", this.editExStudent.attachedScoreDoc);
-      formData.append("attachedScoreDocName", this.editExStudent.attachedScoreDocName);
-      formData.append("attachedExDocName", this.editExStudent.attachedExDocName);
-      formData.append("attachedScoreDocLink", this.editExStudent.attachedScoreDocLink);
-      formData.append("attachedExDocLink", this.editExStudent.attachedExDocLink);
+      formData.append(
+        "attachedScoreDocName",
+        this.editExStudent.attachedScoreDocName
+      );
+      formData.append(
+        "attachedExDocName",
+        this.editExStudent.attachedExDocName
+      );
+      formData.append(
+        "attachedScoreDocLink",
+        this.editExStudent.attachedScoreDocLink
+      );
+      formData.append(
+        "attachedExDocLink",
+        this.editExStudent.attachedExDocLink
+      );
+      formData.append("programId", this.id);
       try {
         const result = await axios.put(
           `/api/edit-ex-student/${this.editExStudent.id}`,
-          formData, {
+          formData,
+          {
             headers: {
               "Content-Type": "multipart/form-data",
-            }
+            },
           }
         );
 
