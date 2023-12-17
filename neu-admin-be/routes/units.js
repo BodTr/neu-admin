@@ -11,8 +11,8 @@ router.get('/api/get-all-units', async (req, res) => {
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const units = await UnitSchema.find({
-            program: { id: new ObjectId(id) }
-            ,unit: {$regex: query}
+            program: { id: new ObjectId(id) },
+            unit: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await UnitSchema.estimatedDocumentCount()
         let stt = 0

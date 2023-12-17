@@ -27,7 +27,7 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const students = await ExForeignStudentSchema.find({
-            program: { id: new ObjectId(id) }
+            program: { id: new ObjectId(id) },
             
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await ExForeignStudentSchema.estimatedDocumentCount()

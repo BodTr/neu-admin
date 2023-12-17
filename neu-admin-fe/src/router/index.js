@@ -18,6 +18,7 @@ import MOUMOAManagePage from '../views/MOUMOAManagePage.vue'
 import HTQTManagePage from '../views/HTQTManagePage.vue'
 import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentManagePage.vue'
 import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
+import VISAManagePage from '../views/VISAManagePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -168,6 +169,14 @@ const router = createRouter({
       path: '/enrollment/ex-student-infor/:id',
       name: 'ex-student-manage-page',
       component: ExchangeStudentManagePage,
+      meta: { 
+        requiresProgramId: true
+      },
+    },
+    {
+      path: '/enrollment/extend-visa/:id',
+      name: 'extend-visa-manage-page',
+      component: VISAManagePage,
       meta: { 
         requiresProgramId: true
       },

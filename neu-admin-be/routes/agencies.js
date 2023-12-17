@@ -11,8 +11,8 @@ router.get('/api/get-all-agencies', async (req, res) => {
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const agencies = await AgencySchema.find({
-            program: { id: new ObjectId(id) }
-            ,name: {$regex: query}
+            program: { id: new ObjectId(id) },
+            name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await AgencySchema.estimatedDocumentCount()
         let stt = 0

@@ -395,6 +395,7 @@ export default {
         params: {
           id: this.$route.params.id,
         },
+
         headings: {
           name: "Họ tên người thực hiện",
           birthyear: "Năm sinh",

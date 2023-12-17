@@ -1,13 +1,13 @@
 <template>
   <div class="page">
-    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
+    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chương trình</h2>
+              <h2 class="page-title">Quản lí đơn vị thực hiện</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm đơn vị
                 </a>
                 <a
                   href="#"
@@ -68,13 +68,13 @@
               class="modal modal-blur fade show"
               id="modal-report"
               tabindex="-1"
-              aria-modal="true"
               style="display: block"
+              aria-modal="true"
             >
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm chương trình</h5>
+                    <h5 class="modal-title">Thêm đơn vị</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -86,29 +86,74 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên</label>
+                        <label class="form-label">Họ tên người thực hiện</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên chương trình"
+                          placeholder="Nhập họ và tên người thực hiện"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input
+                          type="text"
+                          v-model="phoneNumber"
+                          class="form-control"
+                          placeholder="Nhập số điện thoại"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          v-model="position"
+                          class="form-control"
+                          placeholder="Nhập chức vụ"
                         />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm</label>
+                        <label class="form-label">Email</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập năm"
+                          v-model="email"
+                          placeholder="Nhập email"
                         />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị thực hiện</label>
+                        <select
+                          v-model="unit"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Chọn đơn vị thực hiện
+                          </option>
+                          <option value="Đơn vị 1">Đơn vị 1</option>
+                          <option value="Đơn vị 2">Đơn vị 2</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Nội dung phụ trách</label>
+                        <textarea
+                            class="form-control"
+                            row="1"
+                            v-model="content"
+                            placeholder="Nhập nội dung phụ trách"
+                        ></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a @click="submitForm()" class="btn btn-primary ms-auto">
+
+                    <a
+                      @click="submitForm()"
+                      class="btn btn-primary ms-auto"
+                    >
                       Create
                     </a>
                   </div>
@@ -125,23 +170,12 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-programs"
+                  url="/api/get-all-agencies"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged="item">
-                    <label class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        v-model="id"
-                        :value="item.row._id"
-                        @change="getIdArray"
-                      />
-                    </label>
-                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -149,7 +183,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                        <svg
+                      <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -179,7 +213,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                      <svg
+                    <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -212,7 +246,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -224,24 +258,69 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label"
+                                  >Tên văn bản liên kết</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.name"
-                                  placeholder="Nhập tên chương trình"
+                                  v-model="editAgency.name"
+                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editAgency.phoneNumber"
+                                  placeholder="Nhập tên văn bằng"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editAgency.position"
+                                  placeholder="Nhập tên văn bằng"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Năm</label>
+                                <label class="form-label">Email</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editprogram.year"
-                                  placeholder="Nhập năm"
+                                  v-model="editAgency.email"
+                                  placeholder="Nhập email"
                                 />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Đơn vị thực hiện</label
+                                >
+                                <select
+                                  v-model="editAgency.unit"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn đơn vị thực hiện
+                                  </option>
+                                  <option value="Đơn vị 1">Đơn vị 1</option>
+                                  <option value="Đơn vị 2">Đơn vị 2</option>
+                                </select>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Nội dung phụ trách</label>
+                                <textarea
+                                  class="form-control"
+                                  row="1"
+                                  v-model="editAgency.content"
+                                  placeholder="Nhập nội dung phụ trách"
+                                ></textarea>
                               </div>
                             </div>
                           </div>
@@ -258,6 +337,7 @@
                     </div>
                   </template>
                 </v-server-table>
+                {{ id }}
               </div>
             </div>
           </div>
@@ -278,27 +358,51 @@ export default {
   components: {
     VerticalNavbar,
   },
+
   data() {
     return {
-      columns: ["stt", "name", "year", "isManaged", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "email",
+        "phoneNumber",
+        "unit",
+        "content",
+        "position",
+        "tool",
+      ],
       options: {
+        params: {
+          id: this.$route.params.id,
+        },
         headings: {
-          name: "Tên chương trình",
-          year: "Năm",
-          isManaged: "Chọn quản lí",
+          name: "Họ tên người thực hiện",
+          email: "Email",
+          phoneNumber: "Số điện thoại",
+          unit: "Đơn vị thực hiện",
+          content: "Nội dung phụ trách",
+          position: "Chức vụ",
           tool: "Thao tác",
         },
       },
+      id: this.$route.params.id,
       name: "",
-      year: "",
-      id: [],
-
+      phoneNumber: "",
+      position: "",
+      email: "",
+      unit: "",
+      content: "",
       displayModal: false,
       displayModalOne: false,
-      editprogram: {
+
+      editAgency: {
         id: "",
         name: "",
-        year: "",
+        phoneNumber: "",
+        position: "",
+        email: "",
+        unit: "",
+        content: "",
       },
     };
   },
@@ -309,42 +413,32 @@ export default {
     return { toast };
   },
 
-  created() {
-    // this.id = ['0']
-    const idArr = localStorage.getItem("idArr");
-    console.log(idArr === null, "check id");
-    console.log(this.id, "this.id")
-    if (idArr === null) {
-      this.id = ["0"];
-      console.log(this.id, "this.id123")
-      console.log("if statement", this.id);
-    } else {
-      this.id = JSON.parse(localStorage.getItem("idArr"));
-      console.log("else statement", this.id);
-    }
-  },
-
   methods: {
-    showModal() {
-      this.displayModal = true;
+    showModal (){
+      this.displayModal = true
     },
-    hideModal() {
-      this.displayModal = false;
+    hideModal (){
+      this.displayModal = false
     },
-    showModal1() {
-      this.displayModalOne = true;
+    showModal1 (){
+      this.displayModalOne = true
     },
-    hideModal1() {
-      this.displayModalOne = false;
+    hideModal1 (){
+      this.displayModalOne = false
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
-        year: this.year,
+        phoneNumber: this.phoneNumber,
+        position: this.position,
+        email: this.email,
+        unit: this.unit,
+        content: this.content,
       };
 
       try {
-        const result = await axios.post("/api/create-program", data);
+        const result = await axios.post("/api/create-agency", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -355,12 +449,15 @@ export default {
 
         if (result.data.error === false) {
           // alert(result.data.message)
-
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false;
-          this.name = "";
-          this.year = "";
+          this.displayModal = false
+          this.name = ''
+          this.phoneNumber = ''
+          this.position = ''
+          this.email = ''
+          this.unit = ''
+          this.content = ''
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -368,22 +465,28 @@ export default {
     },
 
     onEdit(item) {
-      this.editprogram.name = item.name;
-      this.editprogram.year = item.year;
-      this.editprogram.id = item._id;
-      this.showModal1();
-
-      // console.log('content', this.content);
+      this.editAgency.name = item.name;
+      this.editAgency.phoneNumber = item.phoneNumber;
+      this.editAgency.position = item.position;
+      this.editAgency.email = item.email;
+      this.editAgency.unit= item.unit;
+      this.editAgency.content= item.content;
+      this.editAgency.id = item._id;
+      this.showModal1()
     },
 
     async onSubmit() {
       const data = {
-        name: this.editprogram.name,
-        year: this.editprogram.year,
+        name: this.editAgency.name,
+        phoneNumber: this.editAgency.phoneNumber,
+        position: this.editAgency.position,
+        email: this.editAgency.email,
+        unit: this.editAgency.unit,
+        content: this.editAgency.content,
       };
       try {
         const result = await axios.put(
-          `/api/edit-program/${this.editprogram.id}`,
+          `/api/edit-agency/${this.editAgency.id}`,
           data
         );
 
@@ -394,10 +497,10 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Chương trình đã được sửa");
+          this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false;
+          this.displayModalOne = false
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -407,8 +510,8 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-program/${item._id}`);
+        if (confirm("Xóa văn bản này?")) {
+          const result = await axios.delete(`/api/delete-agency/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -417,11 +520,6 @@ export default {
       } catch (error) {
         console.log(error, "delete api catch block error");
       }
-    },
-    getIdArray() {
-      const idArr = this.id;
-      console.log(idArr, "id Array");
-      localStorage.setItem("idArr", JSON.stringify(idArr));
     },
   },
 };

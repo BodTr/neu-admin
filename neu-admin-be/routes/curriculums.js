@@ -11,8 +11,8 @@ router.get('/api/get-all-curriculums', async (req, res) => {
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const curriculums = await CurriculumSchema.find({
-            program: { id: new ObjectId(id) }
-            ,name: {$regex: query}
+            program: { id: new ObjectId(id) },
+            name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await CurriculumSchema.estimatedDocumentCount()
         let stt = 0
