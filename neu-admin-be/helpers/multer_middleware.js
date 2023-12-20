@@ -3,6 +3,7 @@ const multerS3 = require('multer-s3')
 const { S3Client } = require('@aws-sdk/client-s3')
 
 const allowedTypes = ["application/pdf"]
+const allowedTypes1 = ["application/pdf", "image/jpeg", "image/png", "image/gif", "image/jpg"]
 const MAX_SIZE = 20 * 1024 * 1024
 
 const config = {
@@ -45,6 +46,12 @@ const upload = multer({
                 fileName = `program-${programId}/attached-ex-doc-${getId()}/${Date.now()}_${file.originalname}`
             } else if (fieldname === "attachedScoreDoc1" || fieldname === "attachedScoreDoc") {
                 fileName = `program-${programId}/attached-ex-student-score-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "suggestUnit" || fieldname === "suggestUnit1") {
+                fileName = `program-${programId}/suggest-unit-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "decisionNumber" || fieldname === "decisionNumber1") {
+                fileName = `program-${programId}/decision-number-doc-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "attachedFile" || fieldname === "attachedFile1") {
+                fileName = `program-${programId}/attached-file-doc-${getId()}/${Date.now()}_${file.originalname}`
             }
 
             cb(null, fileName)
@@ -56,14 +63,27 @@ const upload = multer({
         fileSize: MAX_SIZE
     },
     fileFilter: (req, file, cb) => {
-        
-        if (!allowedTypes.includes(file.mimetype)) {
-            const error = new multer.MulterError("LIMIT_FILE_TYPES")
-            error.name = 'imageTypeError'
-            return cb(error, false)
-        }
+        const fieldname = file.fieldname
 
-        cb(null, true)
+        if (fieldname === "attachedFile" || fieldname === "attachedFile") {
+            if (!allowedTypes1.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'imageTypeError'
+                return cb(error, false)
+            }
+            
+            cb(null, true)
+        } else {
+            if (!allowedTypes.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'imageTypeError'
+                return cb(error, false)
+            }
+    
+            cb(null, true)
+        }
+        
+        
     }
 })
 

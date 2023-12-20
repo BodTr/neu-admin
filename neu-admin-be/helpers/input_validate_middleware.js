@@ -560,6 +560,50 @@ function emptyFileExStudentInputValidation(req, res, next) {
     }
 }
 
+// extendVisa inputs validate
+function emptyExtendVisaInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty extendVisa inputs");
+    const error = new Error("empty extendVisa inputs");
+    error.code = "EMPTY_EV_INPUTS_ERROR";
+    const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay } = req.body;
+    if (!name || !birthday || !sex || !nationality || !visaCode || !phoneNumber || !purpose || !job || !studentCode || !workPermit || !visaType || !address || !visaBeginDay || !visaEndDay) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeExtendVisaInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type extendVisa inputs")
+    const error = new Error('wrong type extendVisa inputs')
+    error.code = 'EV_INPUTS_TYPE_ERROR'
+    const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay } = req.body
+    if (typeof name !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof nationality !== 'string' || typeof visaCode !== 'string' || isNaN(phoneNumber) || typeof purpose !== 'string' || typeof job !== 'string' || typeof studentCode !== 'string' || typeof workPermit !== 'string' || typeof visaType !== 'string' || typeof address !== 'string' || typeof visaBeginDay !== 'string' || typeof visaEndDay !== 'string') {
+        throw error
+    } else {
+        console.log('extendVisa inputs type correct')
+        next()
+    }
+}
+
+function emptyFileExtendVisaInputValidation(req, res, next) {
+    
+    const error = new Error('Empty extendVisa file input')
+    error.code = 'EMPTY_EV_FILE_INPUT_ERROR'
+    const suggestUnit = req.files['suggestUnit']
+    const decisionNumber = req.files['decisionNumber']
+    const attachedFile = req.files['attachedFile']
+    console.log(suggestUnit, decisionNumber, attachedFile, "middleware check empty extendVisa file inputs")
+    if (!suggestUnit || !decisionNumber || !attachedFile) {
+        throw error
+    } else {
+        console.log('extendVisa file input filled')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -600,5 +644,8 @@ module.exports = {
   emptyFileExForeignStudentInputValidation,
   emptyExStudentInputsValidation,
   typeExStudentInputsValidation,
-  emptyFileExStudentInputValidation
+  emptyFileExStudentInputValidation,
+  emptyExtendVisaInputsValidation,
+  typeExtendVisaInputsValidation,
+  emptyFileExtendVisaInputValidation
 };

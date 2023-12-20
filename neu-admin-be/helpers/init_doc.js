@@ -2,6 +2,7 @@ const HTQTSchema = require('../models/htqt')
 const MoumoaSchema = require('../models/moumoa')
 const ExForeignStudentSchema = require('../models/ex_foreign_student')
 const ExStudentSchema = require('../models/ex_student')
+const ExtendVisaSchema = require('../models/extend_visa')
 
 async function initMoumoaDocMiddleware(req, res, next) {
     try {
@@ -63,9 +64,24 @@ async function initExStudentMiddleware(req, res, next) {
     }
 }
 
+async function initExtendVisaMiddleware(req, res, next) {
+    try {
+        const initDoc = await ExStudentSchema.create({
+            name: 'init name'
+        })
+
+        const extendVisaId = initDoc._id.toString()
+        req.payload = extendVisaId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_moumoa_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
 module.exports = {
     initMoumoaDocMiddleware,
     initHTQTDocMiddleware,
     initexForeignStudentDocMiddleware,
-    initExStudentMiddleware
+    initExStudentMiddleware,
+    initExtendVisaMiddleware
 }
