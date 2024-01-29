@@ -66,7 +66,7 @@ async function initExStudentMiddleware(req, res, next) {
 
 async function initExtendVisaMiddleware(req, res, next) {
     try {
-        const initDoc = await ExStudentSchema.create({
+        const initDoc = await ExtendVisaSchema.create({
             name: 'init name'
         })
 

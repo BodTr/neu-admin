@@ -29,7 +29,7 @@ const uploadFileFields = upload.fields([
 
 const uploadFileFields1 = upload.fields([
     {name: 'suggestUnit1', maxCount: 1},
-    {name: 'attachedScoreDoc1', maxCount: 1},
+    {name: 'decisionNumber1', maxCount: 1},
     {name: 'attachedFile1', maxCount: 1}
 ])
 
@@ -66,6 +66,7 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         const extendVisaId = req.payload
+        console.log(extendVisaId, "extendVisaId post api")
         const suggestUnitArr = req.files['suggestUnit']
         const decisionNumberArr = req.files['decisionNumber']
         const attachedFileArr = req.files['attachedFile']
@@ -138,8 +139,8 @@ router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputs
 
         if (suggestUnitArr) {
             const suggestUnit = suggestUnitArr[0]
-            const oldExFileKey = suggestUnit.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldExFileKey, "oldExFileKey put api")
+            const oldExFileKey = suggestUnitLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(oldExFileKey, "suggestUnitLink put api")
             const newDeleteCommand = new DeleteObjectCommand({
                 Bucket: 'acvnapps',
                 Key: `${oldExFileKey}`
@@ -154,8 +155,8 @@ router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputs
 
         if (decisionNumberArr) {
             const decisionNumber = decisionNumberArr[0]
-            const oldExFileKey = decisionNumber.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldExFileKey, "oldExFileKey put api")
+            const oldExFileKey = decisionNumberLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(oldExFileKey, "decisionNumberLink put api")
             const newDeleteCommand = new DeleteObjectCommand({
                 Bucket: 'acvnapps',
                 Key: `${oldExFileKey}`
@@ -170,8 +171,8 @@ router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputs
 
         if (attachedFileArr) {
             const attachedFile = attachedFileArr[0]
-            const oldExFileKey = attachedFile.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldExFileKey, "oldExFileKey put api")
+            const oldExFileKey = fileLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(oldExFileKey, "fileLink put api")
             const newDeleteCommand = new DeleteObjectCommand({
                 Bucket: 'acvnapps',
                 Key: `${oldExFileKey}`

@@ -156,7 +156,7 @@
                       <div class="mb-3">
                         <label class="form-label">Mục đích</label>
                         <input
-                          type="number"
+                          type="text"
                           class="form-control"
                           v-model="purpose"
                           placeholder="Nhập mục đích"
@@ -324,10 +324,10 @@
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:attachedExchangeDoc="item">
-                    {{ item.row.attachedExDocName }}
+                  <template v-slot:suggestUnit="item">
+                    {{ item.row.suggestUnitName }}
                     <a
-                      :href="item.row.attachedExDocLink"
+                      :href="item.row.suggestUnitLink"
                       class="btn btn-success btn-icon"
                     >
                       <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -354,10 +354,10 @@
                       </svg>
                     </a>
                   </template>
-                  <template v-slot:attachedScoreDoc="item">
-                    {{ item.row.attachedScoreDocName }}
+                  <template v-slot:decisionNumber="item">
+                    {{ item.row.decisionNumberName }}
                     <a
-                      :href="item.row.attachedScoreDocLink"
+                      :href="item.row.decisionNumberLink"
                       class="btn btn-success btn-icon"
                     >
                       <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -383,6 +383,38 @@
                         />
                       </svg>
                     </a>
+                  </template>
+                  <template v-slot:attachedFile="item">
+                    <div>
+                      {{ item.row.attachedFileName }}
+                      <a
+                        :href="item.row.attachedFileLink"
+                        class="btn btn-success btn-icon"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-files"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                          <path
+                            d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                          />
+                          <path
+                            d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                          />
+                        </svg>
+                      </a>
+                    </div>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -539,7 +571,7 @@
                               <div class="mb-3">
                                 <label class="form-label">Mục đích</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   class="form-control"
                                   v-model="editExtendVisa.purpose"
                                   placeholder="Nhập mục đích"
@@ -635,7 +667,9 @@
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editExtendVisa.uMessage != ''">{{ editExtendVisa.uMessage }}</div>
+                                <div v-if="editExtendVisa.uMessage != ''">
+                                  {{ editExtendVisa.uMessage }}
+                                </div>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Số quyết định</label>
@@ -660,7 +694,9 @@
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editExtendVisa.eMessage != ''">{{ editExtendVisa.eMessage }}</div>
+                                <div v-if="editExtendVisa.eMessage != ''">
+                                  {{ editExtendVisa.eMessage }}
+                                </div>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
@@ -687,7 +723,9 @@
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editExtendVisa.sMessage != ''">{{ editExtendVisa.sMessage }}</div>
+                                <div v-if="editExtendVisa.sMessage != ''">
+                                  {{ editExtendVisa.sMessage }}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -704,6 +742,7 @@
                     </div>
                   </template>
                 </v-server-table>
+                {{ id }}
               </div>
             </div>
           </div>
@@ -720,7 +759,7 @@ import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
 export default {
-  name: "ExchangeStudentManagePage",
+  name: "VISAManagePage",
   components: {
     VerticalNavbar,
   },
@@ -833,10 +872,10 @@ export default {
       this.$refs.suggestUnit1.click();
     },
     handleDecisionNumberUpload() {
-      this.$refs.DecisionNumber.click();
+      this.$refs.decisionNumber.click();
     },
     handleDecisionNumberUpload1() {
-      this.$refs.DecisionNumber1.click();
+      this.$refs.decisionNumber1.click();
     },
     handleFileUpload() {
       this.$refs.attachedFile.click();
@@ -923,11 +962,17 @@ export default {
     handleFileChange() {
       const file = this.$refs.attachedFile.files[0];
       console.log(file, "handleFileChange file");
-      const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/gif", "image/jpg"];
+      const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/jpg",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.editExtendVisa.decisionNumber = file;
-      this.editExtendVisa.decisionNumberName = file.name;
+      this.attachedFile = file;
+      this.fileName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.editExtendVisa.sMessage = "";
       } else {
@@ -942,11 +987,17 @@ export default {
     handleFileChange1() {
       const file = this.$refs.attachedFile1.files[0];
       console.log(file, "handleFileChange file");
-      const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/gif", "image/jpg"];
+      const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/jpg",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.editExtendVisa.decisionNumber = file;
-      this.editExtendVisa.decisionNumberName = file.name;
+      this.editExtendVisa.attachedFile = file;
+      this.editExtendVisa.fileName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.editExtendVisa.eMessage = "";
       } else {
@@ -1051,15 +1102,15 @@ export default {
       this.editExtendVisa.address = item.address;
       this.editExtendVisa.visaBeginDay = item.visaBeginDay;
       this.editExtendVisa.visaEndDay = item.visaEndDay;
-      this.editExtendVisa.suggestUnit = item.suggestUnit;
-      this.editExtendVisa.decisionNumber = item.decisionNumber;
-      this.editExtendVisa.attachedFile = item.attachedFile;
+      this.editExtendVisa.suggestUnit = null; // tránh trường hợp upfile lên r lại thoát ra khỏi modal (lúc đó file vẫn lưu vào vue)
+      this.editExtendVisa.decisionNumber = null;
+      this.editExtendVisa.attachedFile = null;
       this.editExtendVisa.suggestUnitName = item.suggestUnitName;
       this.editExtendVisa.decisionNumberName = item.decisionNumberName;
-      this.editExtendVisa.fileName = item.fileName;
+      this.editExtendVisa.fileName = item.attachedFileName;
       this.editExtendVisa.suggestUnitLink = item.suggestUnitLink;
       this.editExtendVisa.decisionNumberLink = item.decisionNumberLink;
-      this.editExtendVisa.fileLink = item.fileLink;
+      this.editExtendVisa.fileLink = item.attachedFileLink;
       this.editExtendVisa.id = item._id;
       this.showModal1();
     },
@@ -1085,11 +1136,20 @@ export default {
       formData.append("decisionNumber1", this.editExtendVisa.decisionNumber);
       formData.append("attachedFile1", this.editExtendVisa.attachedFile);
       formData.append("suggestUnitName", this.editExtendVisa.suggestUnitName);
-      formData.append("decisionNumberName", this.editExtendVisa.attachedScoreDoc);
+      formData.append(
+        "decisionNumberName",
+        this.editExtendVisa.decisionNumberName
+      );
       formData.append("fileName", this.editExtendVisa.fileName);
-      formData.append("attachedExDocName", this.editExtendVisa.attachedExDocName);
+      formData.append(
+        "attachedExDocName",
+        this.editExtendVisa.attachedExDocName
+      );
       formData.append("suggestUnitLink", this.editExtendVisa.suggestUnitLink);
-      formData.append("decisionNumberLink", this.editExtendVisa.decisionNumberLink);
+      formData.append(
+        "decisionNumberLink",
+        this.editExtendVisa.decisionNumberLink
+      );
       formData.append("fileLink", this.editExtendVisa.fileLink);
 
       try {
