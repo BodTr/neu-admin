@@ -2,10 +2,16 @@
   <div class="page page-center">
     <div class="container-tight py-4">
       <div class="empty">
-        <div class="empty-header">404</div>
-        <p class="empty-title">Oops… You just found an error page</p>
+        <div class="empty-header"><img
+            src="../assets/Logo-NEU.png"
+            width="100"
+            height="100"
+            alt="neu-logo"
+            class="navbar-brand-image-xl"
+          /></div>
+        <p class="empty-title">Cần chọn chương trình quản lý</p>
         <p class="empty-subtitle text-muted">
-          We are sorry but the page you are looking for was not found
+          Ở phần Quản lý cấu hình, hãy tích MỘT chương trình bạn muốn quản lý
         </p>
         <div class="empty-action">
           <router-link class="btn btn-primary" to="/">
