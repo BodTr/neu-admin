@@ -19,6 +19,7 @@ import HTQTManagePage from '../views/HTQTManagePage.vue'
 import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentManagePage.vue'
 import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
 import VISAManagePage from '../views/VISAManagePage.vue'
+import Admin from '../views/Admin.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -179,6 +180,15 @@ const router = createRouter({
       component: VISAManagePage,
       meta: { 
         requiresProgramId: true
+      },
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
+      props: false,
+      meta: { 
+        requiresProgramId: false
       },
     }
 

@@ -37,6 +37,7 @@ app.use(require('./routes/htqts'))
 app.use(require('./routes/ex_foreign_students'))
 app.use(require('./routes/ex_students'))
 app.use(require('./routes/extend_visa'))
+app.use(require('./routes/users'))
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {

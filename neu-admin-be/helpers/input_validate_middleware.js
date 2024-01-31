@@ -604,6 +604,47 @@ function emptyFileExtendVisaInputValidation(req, res, next) {
     }
 }
 
+// users inputs validate
+function emptyUserInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty user inputs");
+    const error = new Error("empty goal inputs");
+    error.code = "EMPTY_USER_INPUTS_ERROR";
+    const { name, username, password, phoneNumber } = req.body;
+    if (!name || !username || !password || !phoneNumber) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeUserInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type user inputs")
+    const error = new Error('wrong type user inputs')
+    error.code = 'USER_INPUTS_TYPE_ERROR'
+    const { name, username, phoneNumber } = req.body
+    if (typeof name !== 'string' || typeof username !== 'string' || isNaN(phoneNumber)) {
+        throw error
+    } else {
+        console.log('program inputs type correct')
+        next()
+    }
+}
+
+function emptyUserPasswordInputValidation(req, res, next) {
+    console.log(req.body, "middleware check empty user password input")
+    const error = new Error('empty user change password input')
+    error.code = 'EMPTY_USER_PASSWORD_INPUT_ERROR'
+    const { editedPassword } = req.body
+    if (!editedPassword) {
+        throw error
+    } else {
+        console.log('program inputs type correct')
+        next()
+    }
+}
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -647,5 +688,8 @@ module.exports = {
   emptyFileExStudentInputValidation,
   emptyExtendVisaInputsValidation,
   typeExtendVisaInputsValidation,
-  emptyFileExtendVisaInputValidation
+  emptyFileExtendVisaInputValidation,
+  emptyUserInputsValidation,
+  typeUserInputsValidation,
+  emptyUserPasswordInputValidation
 };
