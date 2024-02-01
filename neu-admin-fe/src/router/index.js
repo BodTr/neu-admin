@@ -20,6 +20,7 @@ import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentMan
 import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
 import VISAManagePage from '../views/VISAManagePage.vue'
 import Admin from '../views/Admin.vue'
+import LoginPage from '../views/LoginScreen.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +30,8 @@ const router = createRouter({
       name: 'programs-manage-page',
       component: ProgramsManagePage,
       meta: { 
-        requiresProgramId: false
+        requiresProgramId: false,
+        requiresAuth: true
       }
     },
     
@@ -38,7 +40,8 @@ const router = createRouter({
       name: 'trans-programs-manage-page',
       component: TransnationProgramsManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       }
     },
     {
@@ -46,7 +49,8 @@ const router = createRouter({
       name: 'approval-decision-manage-page',
       component: ApprovalDecisionManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -59,7 +63,8 @@ const router = createRouter({
       name: 'documents-manage-page',
       component: DocumentManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -67,7 +72,8 @@ const router = createRouter({
       name: 'agencies-manage-page',
       component: AgenciesManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -75,7 +81,8 @@ const router = createRouter({
       name: 'partners-manage-page',
       component: PartnersManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -83,7 +90,8 @@ const router = createRouter({
       name: 'goals-manage-page',
       component: ProgramGoalsManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -91,7 +99,8 @@ const router = createRouter({
       name: 'plans-manage-page',
       component: PlansManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -99,7 +108,8 @@ const router = createRouter({
       name: 'edu-quality-manage-page',
       component: EducationQualityManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -107,7 +117,8 @@ const router = createRouter({
       name: 'curriculums-manage-page',
       component: CurriculumManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -115,7 +126,8 @@ const router = createRouter({
       name: 'enrollment-manage-page',
       component: EnrollmentManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -123,7 +135,8 @@ const router = createRouter({
       name: 'lecturers-manage-page',
       component: LecturersManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -131,7 +144,8 @@ const router = createRouter({
       name: 'units-manage-page',
       component: UnitsManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -139,7 +153,8 @@ const router = createRouter({
       name: 'subjects-manage-page',
       component: SubjectsManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -147,7 +162,8 @@ const router = createRouter({
       name: 'moumoa-manage-page',
       component: MOUMOAManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -155,7 +171,8 @@ const router = createRouter({
       name: 'htqt-manage-page',
       component: HTQTManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -163,7 +180,8 @@ const router = createRouter({
       name: 'ex-f-student-manage-page',
       component: ExchangeForeignStudentManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -171,7 +189,8 @@ const router = createRouter({
       name: 'ex-student-manage-page',
       component: ExchangeStudentManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
@@ -179,18 +198,30 @@ const router = createRouter({
       name: 'extend-visa-manage-page',
       component: VISAManagePage,
       meta: { 
-        requiresProgramId: true
+        requiresProgramId: true,
+        requiresAuth: true
       },
     },
     {
       path: '/admin',
       name: 'admin',
       component: Admin,
-      props: false,
+      
       meta: { 
-        requiresProgramId: false
+        requiresProgramId: false,
+        requiresAuth: false
       },
-    }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginPage,
+      
+      meta: { 
+        requiresProgramId: false,
+        requiresAuth: false
+      },
+    },
 
   ]
 })

@@ -609,8 +609,8 @@ function emptyUserInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty user inputs");
     const error = new Error("empty goal inputs");
     error.code = "EMPTY_USER_INPUTS_ERROR";
-    const { name, username, password, phoneNumber } = req.body;
-    if (!name || !username || !password || !phoneNumber) {
+    const { name, username, phoneNumber } = req.body;
+    if (!name || !username || !phoneNumber) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
