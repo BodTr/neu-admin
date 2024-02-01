@@ -12,7 +12,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-brand navbar-brand-autodark" style="height: 90px;">
+      <div class="navbar-brand navbar-brand-autodark" style="height: 90px">
         <a href=".">
           <img
             src="../assets/Logo-NEU.png"
@@ -28,8 +28,7 @@
         <ul class="navbar-nav pt-lg-3">
           <li class="nav-item">
             <router-link class="nav-link" to="/">
-              <span class="nav-link-icon d-md-none d-lg-inline-block"
-                >
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon"
@@ -53,14 +52,22 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Thông tin chung</span>
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Thông tin chung</span
+              >
             </a>
-              
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'trans-programs-manage-page', params: {id: programId} }">
-              <span class="nav-link-icon d-md-none d-lg-inline-block"
-                >
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'trans-programs-manage-page',
+                params: { id: programId },
+              }"
+            >
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon"
@@ -84,7 +91,13 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'approval-decision-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'approval-decision-manage-page',
+                params: { id: programId },
+              }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +122,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'documents-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'documents-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +150,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'partners-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'partners-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +178,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'agencies-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'agencies-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +206,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'goals-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'goals-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -210,12 +235,18 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Đề án</span>
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Đề án</span
+              >
             </a>
-              
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'plans-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'plans-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,11 +272,21 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Chất lượng đào tạo</span>
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Chất lượng đào tạo</span
+              >
             </a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'edu-quality-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'edu-quality-manage-page',
+                params: { id: programId },
+              }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -270,13 +311,22 @@
             </router-link>
           </li>
           <li class="nav-item">
-              <a href="#" class="nav-link">
-                <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Khung chương trình</span>
-              </a>
-              
+            <a href="#" class="nav-link">
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Khung chương trình</span
+              >
+            </a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'curriculums-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'curriculums-manage-page',
+                params: { id: programId },
+              }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -302,12 +352,21 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Tuyển sinh</span>
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Tuyển sinh</span
+              >
             </a>
-              
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'enrollment-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'enrollment-manage-page',
+                params: { id: programId },
+              }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -332,7 +391,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'lecturers-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'lecturers-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +419,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'units-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'units-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -382,7 +447,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'subjects-manage-page', params: {id: programId} }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'subjects-manage-page', params: { id: programId } }"
+            >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -407,42 +475,86 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link"  :to="{ name: 'moumoa-manage-page', params: {id: programId} }">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Quản lí MOU.MOA</span>
+            <router-link
+              class="nav-link"
+              :to="{ name: 'moumoa-manage-page', params: { id: programId } }"
+            >
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Quản lí MOU.MOA</span
+              >
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'htqt-manage-page', params: {id: programId} }">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Quản lí các dự án HTQT</span>
+            <router-link
+              class="nav-link"
+              :to="{ name: 'htqt-manage-page', params: { id: programId } }"
+            >
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Quản lí các dự án HTQT</span
+              >
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'ex-f-student-manage-page', params: {id: programId} }">
-
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Quản lí sinh viên nước ngoài đến trao đổi</span>
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'ex-f-student-manage-page',
+                params: { id: programId },
+              }"
+            >
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Quản lí sinh viên nước ngoài đến trao đổi</span
+              >
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'ex-student-manage-page', params: {id: programId} }">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Quản lí sinh viên đi nước ngoài trao đổi</span>
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'ex-student-manage-page',
+                params: { id: programId },
+              }"
+            >
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Quản lí sinh viên đi nước ngoài trao đổi</span
+              >
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'extend-visa-manage-page', params: {id: programId} }">
-              
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Cấp/Gia hạn VISA</span>
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'extend-visa-manage-page',
+                params: { id: programId },
+              }"
+            >
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Cấp/Gia hạn VISA</span
+              >
             </router-link>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-link-title" style="font-size: 17px; font-weight: 600;">Quản trị</span>
+              <span
+                class="nav-link-title"
+                style="font-size: 17px; font-weight: 600"
+                >Quản trị</span
+              >
             </a>
-              
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/admin">
-              <span class="nav-link-icon d-md-none d-lg-inline-block"
-                >
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon"
@@ -465,6 +577,9 @@
               <span class="nav-link-title">Quản lý tài khoản</span>
             </router-link>
           </li>
+          <li class="nav-item">
+            <a href="#" class="btn btn-ghost-danger" @click="logout()"> Đăng xuất </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -472,19 +587,37 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import { useToast } from "vue-toastification"
+import router from '@/router'
+import instance from '../instance'
 
 export default {
-  
   name: "VerticalNavBar",
   data() {
-    return {
-      
-    }
+    return {};
   },
 
-  props: ['programId'],
-
+  props: ["programId"],
+  setup() {
+    const toast = useToast()
+    return { toast }
+  },
+  methods: {
+    async logout() {
+      try {
+        const data = { refresh_token: localStorage.getItem('refreshToken') }
+        const result = await instance.post('/api/logout', data)
+        if (result.data.error === false) {
+          localStorage.clear()
+          console.log(result)
+          this.toast.success(result.data.message)
+          router.push('/login')
+        }
+      } catch (error) {
+        console.log(error, "logout api catch block error")
+      }
+    }
+  }
 };
 </script>
 

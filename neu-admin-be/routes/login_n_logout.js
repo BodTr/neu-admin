@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt')
 const UserSchema = require('../models/user')
 const RefreshTokenSchema = require('../models/refreshToken')
 const {signAccessToken, signRefreshToken, authenticateAccessToken, authenticateRefreshToken} = require('../helpers/jwt_services')
+
+
+const ObjectId = require("mongodb").ObjectId
+
 // api check access token
 router.post('/api/verifiedUser', authenticateAccessToken, authenticateRefreshToken, (req, res) => {
     res.json({message: 'verified'})
@@ -83,13 +87,14 @@ router.post('/api/logout', authenticateAccessToken, authenticateRefreshToken, as
     try {
         
         const { id } = req.payload
-        await RefreshTokenSchema.deleteMany({id: id})
-        console.log('Đã xóa tất cả refresh token của user có id là' + ' ' + id)
+        
+        console.log(req.payload, "api logout req.payload")
+        const deletedRToken = await RefreshTokenSchema.deleteMany({user: {id: new ObjectId(id)}})
+        console.log(deletedRToken, "deletedRToken")
         req.payload = ""
-        console.log(req.payload, "XZXZ")
         res.json({
             error: false,
-            msg:'Đăng xuất thành công!'
+            message:'Đăng xuất thành công!'
          })
         
     } catch (error) {

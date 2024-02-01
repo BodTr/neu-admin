@@ -209,7 +209,7 @@ const router = createRouter({
       
       meta: { 
         requiresProgramId: false,
-        requiresAuth: false
+        requiresAuth: true
       },
     },
     {

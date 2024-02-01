@@ -116,7 +116,7 @@ instance2.interceptors.request.use(async (config) => {
 }, err => {
     return Promise.reject(err)
 })
-// dùng intrerceptor cho instance2 để check và refresh access token khi thay đổi router, refresh trang...
+// dùng intrerceptor cho instance2 để check và refresh access token khi thay đổi router, refresh trang... (instance2 để cho hàm verifyUser, vì hàm này đc gọi trên phần beforeEach() nên sẽ cần phải check hàm này mỗi lần refresh trang, đổi route)
 instance2.interceptors.response.use(async (response) => {
     console.log('sau khi server response::::', response.data)
     const config = response.config
