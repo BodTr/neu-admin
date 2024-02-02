@@ -35,11 +35,9 @@ const uploadFileFields1 = upload.fields([
 
 router.get('/api/get-all-extend-visas', async (req, res) => {
     try {
-        let { page, limit, query, id } = req.query
-        console.log(id, "get req id")
+        let { page, limit, query } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const extendVisas = await ExtendVisaSchema.find({
-            program: { id: new ObjectId(id) },
             visaCode: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await ExtendVisaSchema.estimatedDocumentCount()
@@ -62,7 +60,7 @@ router.get('/api/get-all-extend-visas', async (req, res) => {
 
 router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileFields, emptyFileExtendVisaInputValidation, emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, async (req, res, next) => {
     try {
-        const { programId, name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay } = req.body
+        const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         const extendVisaId = req.payload
@@ -80,8 +78,8 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
         const suggestUnitName = suggestUnit.originalname
         const decisionNumberLink = decisionNumber.location
         const decisionNumberName = decisionNumber.originalname
-        const attachedFileLink = decisionNumber.location
-        const attachedFileName = decisionNumber.originalname
+        const attachedFileLink = attachedFile.location
+        const attachedFileName = attachedFile.originalname
 
         const newExtendVisa = {
             name: name,
@@ -104,9 +102,6 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
             suggestUnitName: suggestUnitName,
             decisionNumberName: decisionNumberName,
             attachedFileName: attachedFileName,
-            program: {
-                id: programId
-            }
         }
         console.log(newExtendVisa, "newExtendVisa")
         const storingExtendVisa = await ExtendVisaSchema.findOneAndUpdate({ _id: extendVisaId }, newExtendVisa, {new: true})
@@ -125,7 +120,7 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
 router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { programId, name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay, suggestUnitName, decisionNumberName, fileName, suggestUnitLink, decisionNumberLink, fileLink } = req.body
+        const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay, suggestUnitName, decisionNumberName, fileName, suggestUnitLink, decisionNumberLink, fileLink } = req.body
         console.log(req.files, "req.file put api")
         console.log(req.body, "req.body put api")
         const suggestUnitArr = req.files['suggestUnit1']
@@ -207,9 +202,6 @@ router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputs
             suggestUnitName: suggestUnitName,
             decisionNumberName: decisionNumberName,
             attachedFileName: fileName,
-            program: {
-                id: programId
-            }
         }
         const updatedExtendVisa = await ExtendVisaSchema.findOneAndUpdate({ _id: id }, updatingExtendVisa, {new: true})
         console.log(updatedExtendVisa, "updatedExtendVisa")
@@ -243,7 +235,7 @@ router.delete('/api/delete-extend-visa/:id', async(req, res) => {
         console.log(delExtendVisaKey3, "delExtendVisaKey3 delete api")
         const newDeleteCommand3 = new DeleteObjectCommand({
             Bucket: 'acvnapps',
-            Key: `${delExtendVisaKey2}`
+            Key: `${delExtendVisaKey3}`
         })
         const result1 = await s3.send(newDeleteCommand1)
         const result2 = await s3.send(newDeleteCommand2)
@@ -251,7 +243,7 @@ router.delete('/api/delete-extend-visa/:id', async(req, res) => {
         console.log(result1, result2, result3, ":::result, delete api:::")
         const deletingExtendVisa = await ExtendVisaSchema.findOneAndDelete({ _id: id })
         console.log(deletingExtendVisa, "deletingExtendVisa")
-        res.json({ error: false, message: "Xóa thành công thông tin học sinh" })
+        res.json({ error: false, message: "Xóa thành công" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})

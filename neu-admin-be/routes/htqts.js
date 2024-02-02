@@ -24,12 +24,10 @@ const s3 = new S3Client(config)
 
 router.get('/api/get-all-htqts', async (req, res) => {
     try {
-        let { page, limit, query, id } = req.query
-        console.log(id, "get req id")
+        let { page, limit, query } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const htqts = await HTQTSchema.find({
-            program: { id: new ObjectId(id) }
-            
+            partnerUni: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await HTQTSchema.estimatedDocumentCount()
         let stt = 0
@@ -51,7 +49,7 @@ router.get('/api/get-all-htqts', async (req, res) => {
 
 router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), emptyFileHTQTInputValidation, emptyHTQTInputsValidation, typeHTQTInputsValidation, async (req, res, next) => {
     try {
-        const { programId, nation, partnerUni, funding, planDetail, signingTime, expireTime, note  } = req.body
+        const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
@@ -70,9 +68,6 @@ router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHT
             signingTime: signingTime,
             expireTime: expireTime,
             note: note,
-            program: {
-                id: programId
-            }
         }
         const storingHtqt = await HTQTSchema.findOneAndUpdate({ _id: htqtId }, newHtqt, {new: true})
         console.log(storingHtqt, "storingHtqt")

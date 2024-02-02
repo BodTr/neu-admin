@@ -477,7 +477,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :to="{ name: 'moumoa-manage-page', params: { id: programId } }"
+              :to="{ name: 'moumoa-manage-page' }"
             >
               <span
                 class="nav-link-title"
@@ -489,7 +489,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :to="{ name: 'htqt-manage-page', params: { id: programId } }"
+              :to="{ name: 'htqt-manage-page' }"
             >
               <span
                 class="nav-link-title"
@@ -503,7 +503,6 @@
               class="nav-link"
               :to="{
                 name: 'ex-f-student-manage-page',
-                params: { id: programId },
               }"
             >
               <span
@@ -518,7 +517,6 @@
               class="nav-link"
               :to="{
                 name: 'ex-student-manage-page',
-                params: { id: programId },
               }"
             >
               <span
@@ -533,7 +531,6 @@
               class="nav-link"
               :to="{
                 name: 'extend-visa-manage-page',
-                params: { id: programId },
               }"
             >
               <span

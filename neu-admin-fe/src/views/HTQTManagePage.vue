@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -429,7 +429,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -466,9 +465,6 @@ export default {
         "tool",
       ],
       options: {
-        params: {
-          id: this.$route.params.id,
-        },
         headings: {
           nation: "Quốc gia",
           partnerUni: "Trường đối tác",
@@ -481,7 +477,6 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
       nation: "",
       funding: "",
       planDetail: "",
@@ -517,6 +512,21 @@ export default {
     // get toast interface
     const toast = useToast();
     return { toast };
+  },
+
+  created() {
+    // this.id = ['0']
+    const idArr = localStorage.getItem("idArr");
+    console.log(idArr === null, "check id");
+    console.log(this.id, "this.id");
+    if (idArr === null) {
+      this.id = ["0"];
+      console.log(this.id, "this.id123");
+      console.log("if statement", this.id);
+    } else {
+      this.id = JSON.parse(localStorage.getItem("idArr"));
+      console.log("else statement", this.id);
+    }
   },
 
   methods: {
@@ -585,7 +595,6 @@ export default {
       formData.append("signingTime", this.signingTime);
       formData.append("expireTime", this.expireTime);
       formData.append("note", this.note);
-      formData.append("programId", this.id);
       formData.append("attachedHTQTDoc", this.attachedDoc);
 
       try {
@@ -646,7 +655,6 @@ export default {
       formData.append("signingTime", this.editHTQT.signingTime);
       formData.append("expireTime", this.editHTQT.expireTime);
       formData.append("note", this.editHTQT.note);
-      formData.append("programId", this.id);
       formData.append("attachedDocName", this.editHTQT.attachedDocName);
       formData.append("attachedDocLink", this.editHTQT.attachedDocLink);
       formData.append("attachedHTQTDoc1", this.editHTQT.attachedDoc);

@@ -523,7 +523,7 @@ function emptyExStudentInputsValidation(req, res, next) {
     const error = new Error("empty exStudent inputs");
     error.code = "EMPTY_ES_INPUTS_ERROR";
     const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body;
-    if (!name || !studentCode || !department || !academicYear || !exchangeTime || !exchangeYear || !birthday || !sex || !major || !receivingCountry || !partnerUni || !subject || !result || !confirmedResult || !exchangeDecision || !convertedScore) {
+    if (!name || !birthday || !sex || !department || !academicYear || !major || !studentCode || !exchangeYear || !exchangeTime || !receivingCountry || !partnerUni || !subject || !result || !confirmedResult || !exchangeDecision || !convertedScore) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {

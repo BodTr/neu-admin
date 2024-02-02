@@ -81,13 +81,6 @@ const ExStudentSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    program: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'ProgramSchema',
-            require: true
-        }
-    }
 
 },
     {

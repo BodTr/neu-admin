@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -718,7 +718,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -756,9 +755,6 @@ export default {
         "tool",
       ],
       options: {
-        params: {
-          id: this.$route.params.id,
-        },
         headings: {
           name: "Họ và tên",
           studentCode: "MSSV",
@@ -772,7 +768,6 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
       name: "",
       birthday: "",
       sex: "",
@@ -833,6 +828,21 @@ export default {
     // get toast interface
     const toast = useToast();
     return { toast };
+  },
+
+  created() {
+    // this.id = ['0']
+    const idArr = localStorage.getItem("idArr");
+    console.log(idArr === null, "check id");
+    console.log(this.id, "this.id");
+    if (idArr === null) {
+      this.id = ["0"];
+      console.log(this.id, "this.id123");
+      console.log("if statement", this.id);
+    } else {
+      this.id = JSON.parse(localStorage.getItem("idArr"));
+      console.log("else statement", this.id);
+    }
   },
 
   methods: {
@@ -956,7 +966,6 @@ export default {
       formData.append("convertedScore", this.convertedScore);
       formData.append("attachedExchangeDoc", this.attachedExchangeDoc);
       formData.append("attachedScoreDoc", this.attachedScoreDoc);
-      formData.append("programId", this.id);
 
       try {
         const result = await axios.post("/api/create-ex-student", formData, {
@@ -1037,7 +1046,7 @@ export default {
       formData.append("academicYear", this.editExStudent.academicYear);
       formData.append("major", this.editExStudent.major);
       formData.append("studentCode", this.editExStudent.studentCode);
-      formData.append("exchangeYear", this.exchangeYear);
+      formData.append("exchangeYear", this.editExStudent.exchangeYear);
       formData.append("exchangeTime", this.editExStudent.exchangeTime);
       formData.append("receivingCountry", this.editExStudent.receivingCountry);
       formData.append("partnerUni", this.editExStudent.partnerUni);
@@ -1067,7 +1076,6 @@ export default {
         "attachedExDocLink",
         this.editExStudent.attachedExDocLink
       );
-      formData.append("programId", this.id);
       try {
         const result = await axios.put(
           `/api/edit-ex-student/${this.editExStudent.id}`,

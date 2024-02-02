@@ -36,13 +36,6 @@ const MoumoaSchema = new mongoose.Schema({
     note: {
         type: String,
         require: false
-    },
-    program: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'ProgramSchema',
-            require: true
-        }
     }
 
 },

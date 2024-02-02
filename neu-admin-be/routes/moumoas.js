@@ -23,11 +23,10 @@ const s3 = new S3Client(config)
 
 router.get('/api/get-all-moumoas', async (req, res) => {
     try {
-        let { page, limit, query, id } = req.query
-        console.log(id, "get req id")
+        let { page, limit, query } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const moumoas = await MoumoaSchema.find({
-            program: { id: new ObjectId(id) }
+            partnerUni: {$regex: query}
             
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await MoumoaSchema.estimatedDocumentCount()
@@ -50,7 +49,7 @@ router.get('/api/get-all-moumoas', async (req, res) => {
 
 router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attachedMoumoaDoc"), emptyFileMoumoaInputValidation, emptyMoumoaInputsValidation, typeMoumoaInputsValidation, async (req, res, next) => {
     try {
-        const { programId, nation, partnerUni, docType, docDetail, signingTime, expireTime, note  } = req.body
+        const { nation, partnerUni, docType, docDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
@@ -69,9 +68,6 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
             signingTime: signingTime,
             expireTime: expireTime,
             note: note,
-            program: {
-                id: programId
-            }
         }
         const storingMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: moumoaId }, newMoumoa, {new: true})
         console.log(storingMoumoa, "storingMoumoa")

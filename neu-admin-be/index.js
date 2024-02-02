@@ -17,7 +17,11 @@ mongoose.connect(process.env.DATABASE_URL, {
 const db = mongoose.connection
 db.on('error', error => console.error(`MongoDB ERROR: ${error}`))
 db.once('open', () => console.log('Connected to Mongoose'))
+// app.use((req, res, next) => {
+//     console.log(`Request URL ${req.url}`)
 
+//     next()
+// })
 app.use(require('./routes/programs'))
 app.use(require('./routes/trans_programs'))
 app.use(require('./routes/decisions'))

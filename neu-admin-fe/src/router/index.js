@@ -158,47 +158,47 @@ const router = createRouter({
       },
     },
     {
-      path: '/enrollment/moumoa-infor/:id',
+      path: '/enrollment/moumoa-infor',
       name: 'moumoa-manage-page',
       component: MOUMOAManagePage,
       meta: { 
-        requiresProgramId: true,
+        requiresProgramId: false,
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/htqt-infor/:id',
+      path: '/enrollment/htqt-infor',
       name: 'htqt-manage-page',
       component: HTQTManagePage,
       meta: { 
-        requiresProgramId: true,
+        requiresProgramId: false,
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/ex-f-student-infor/:id',
+      path: '/enrollment/ex-f-student-infor',
       name: 'ex-f-student-manage-page',
       component: ExchangeForeignStudentManagePage,
       meta: { 
-        requiresProgramId: true,
+        requiresProgramId: false,
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/ex-student-infor/:id',
+      path: '/enrollment/ex-student-infor',
       name: 'ex-student-manage-page',
       component: ExchangeStudentManagePage,
       meta: { 
-        requiresProgramId: true,
+        requiresProgramId: false,
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/extend-visa/:id',
+      path: '/enrollment/extend-visa',
       name: 'extend-visa-manage-page',
       component: VISAManagePage,
       meta: { 
-        requiresProgramId: true,
+        requiresProgramId: false,
         requiresAuth: true
       },
     },

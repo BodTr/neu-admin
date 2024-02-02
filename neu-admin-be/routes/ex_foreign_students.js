@@ -23,12 +23,10 @@ const s3 = new S3Client(config)
 
 router.get('/api/get-all-ex-f-students', async (req, res) => {
     try {
-        let { page, limit, query, id } = req.query
-        console.log(id, "get req id")
+        let { page, limit, query } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const students = await ExForeignStudentSchema.find({
-            program: { id: new ObjectId(id) },
-            
+            name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await ExForeignStudentSchema.estimatedDocumentCount()
         let stt = 0
@@ -50,7 +48,7 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
 
 router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), emptyFileExForeignStudentInputValidation, emptyExForeignStudentInputsValidation, typeExForeignStudentInputsValidation, async (req, res, next) => {
     try {
-        const { programId ,name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
+        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
@@ -75,13 +73,10 @@ router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, uploa
             result: result,
             attachedDocLink: attachedDocLink,
             attachedDocName: attachedDocName,
-            program: {
-                id: programId
-            }
         }
         const storingStudent = await ExForeignStudentSchema.findOneAndUpdate({ _id: studentId }, newStudent, {new: true})
         console.log(storingStudent, "storingStudent")
-        res.json({ error: false, message: 'Lưu thành công chương trình' })
+        res.json({ error: false, message: 'Lưu thành công' })
         
         
         
