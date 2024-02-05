@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ProgramSchema = require('../models/program')
 const { emptyProgramInputsValidation, typeProgramInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-programs', async (req, res) => {
     try {

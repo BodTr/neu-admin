@@ -595,7 +595,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -770,7 +770,7 @@ export default {
       formData.append("attachedExFStuDoc", this.attachedDoc);
 
       try {
-        const result = await axios.post("/api/create-ex-f-student", formData, {
+        const result = await instance.post("/api/create-ex-f-student", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
@@ -848,7 +848,7 @@ export default {
       formData.append("attachedDocName",this.editExForeignStudent.attachedDocName);
       formData.append("attachedDocLink",this.editExForeignStudent.attachedDocLink);
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-ex-f-student/${this.editExForeignStudent.id}`,
           formData, {
             headers: {
@@ -879,7 +879,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
+          const result = await instance.delete(
             `/api/delete-ex-f-student/${item._id}`
           );
           console.log(result);

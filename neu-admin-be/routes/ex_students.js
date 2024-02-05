@@ -5,7 +5,7 @@ const { emptyExStudentInputsValidation, typeExStudentInputsValidation, emptyFile
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initExStudentMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
 
@@ -31,6 +31,7 @@ const uploadFileFields1 = upload.fields([
     {name: 'attachedScoreDoc1', maxCount: 1}
 ])
 
+router.use(authenticateAccessToken)
 router.get('/api/get-all-ex-students', async (req, res) => {
     try {
         let { page, limit, query } = req.query

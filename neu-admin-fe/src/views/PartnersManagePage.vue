@@ -316,7 +316,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -400,7 +400,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-partner", data);
+        const result = await instance.post("/api/create-partner", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -447,7 +447,7 @@ export default {
         test: this.editPartner.test,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-partner/${this.editPartner.id}`,
           data
         );
@@ -473,7 +473,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa đối tác này?")) {
-          const result = await axios.delete(`/api/delete-partner/${item._id}`);
+          const result = await instance.delete(`/api/delete-partner/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

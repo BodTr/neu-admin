@@ -5,7 +5,7 @@ const { emptyExForeignStudentInputsValidation, typeExForeignStudentInputsValidat
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initexForeignStudentDocMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
 
@@ -21,6 +21,7 @@ const config = {
 
 const s3 = new S3Client(config)
 
+router.use(authenticateAccessToken)
 router.get('/api/get-all-ex-f-students', async (req, res) => {
     try {
         let { page, limit, query } = req.query

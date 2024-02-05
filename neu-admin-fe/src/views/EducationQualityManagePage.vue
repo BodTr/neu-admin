@@ -283,7 +283,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -351,7 +351,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-process", data);
+        const result = await instance.post("/api/create-process", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -397,7 +397,7 @@ export default {
         hasProcess: this.editEduQuality.hasProcess,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-process/${this.editEduQuality.id}`,
           data
         );
@@ -423,7 +423,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa qui trình này?")) {
-          const result = await axios.delete(`/api/delete-process/${item._id}`);
+          const result = await instance.delete(`/api/delete-process/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

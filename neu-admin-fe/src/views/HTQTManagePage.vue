@@ -439,7 +439,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -598,7 +598,7 @@ export default {
       formData.append("attachedHTQTDoc", this.attachedDoc);
 
       try {
-        const result = await axios.post("/api/create-htqt", formData, {
+        const result = await instance.post("/api/create-htqt", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -660,7 +660,7 @@ export default {
       formData.append("attachedHTQTDoc1", this.editHTQT.attachedDoc);
 
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-htqt/${this.editHTQT.id}`,
           formData,
           {
@@ -692,7 +692,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(`/api/delete-htqt/${item._id}`);
+          const result = await instance.delete(`/api/delete-htqt/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

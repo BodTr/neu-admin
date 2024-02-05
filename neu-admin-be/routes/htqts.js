@@ -6,7 +6,7 @@ const { emptyHTQTInputsValidation, typeHTQTInputsValidation, emptyFileHTQTInputV
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initHTQTDocMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
 
@@ -21,6 +21,8 @@ const config = {
 }
 
 const s3 = new S3Client(config)
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-htqts', async (req, res) => {
     try {

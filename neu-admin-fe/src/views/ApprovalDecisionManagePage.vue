@@ -320,8 +320,8 @@
 </template>
 
 <script>
-import axios from "axios";
 // import { ref } from 'vue'
+import instance from "../instance";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 export default {
@@ -404,7 +404,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-decision", data);
+        const result = await instance.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -450,7 +450,7 @@ export default {
         expireIn: this.editDecision.expireIn,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-decision/${this.editDecision.id}`,
           data
         );
@@ -476,7 +476,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa quyết định này?")) {
-          const result = await axios.delete(
+          const result = await instance.delete(
             `/api/delete-decision/${item._id}`
           );
           console.log(result);

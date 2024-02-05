@@ -314,7 +314,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -407,7 +407,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-trans-program", data);
+        const result = await instance.post("/api/create-trans-program", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -453,7 +453,7 @@ export default {
         issuedBy: this.editProgram.issuedBy,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-trans-program/${this.editProgram.id}`,
           data
         );
@@ -479,7 +479,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(
+          const result = await instance.delete(
             `/api/delete-trans-program/${item._id}`
           );
           console.log(result);

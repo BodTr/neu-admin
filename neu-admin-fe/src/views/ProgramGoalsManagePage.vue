@@ -316,7 +316,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -384,7 +384,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-goal", data);
+        const result = await instance.post("/api/create-goal", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -424,7 +424,7 @@ export default {
         goalFrom: this.editGoal.goalFrom,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-goal/${this.editGoal.id}`,
           data
         );
@@ -450,7 +450,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa mục tiêu này?")) {
-          const result = await axios.delete(`/api/delete-goal/${item._id}`);
+          const result = await instance.delete(`/api/delete-goal/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

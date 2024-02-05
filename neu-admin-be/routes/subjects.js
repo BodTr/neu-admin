@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const SubjectSchema = require('../models/subject')
 const { emptySubjectInputsValidation, typeSubjectInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-subjects', async (req, res) => {
     try {

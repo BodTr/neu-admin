@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const TransProgramSchema = require('../models/trans_program')
 const { emptyTransProgramInputsValidation, typeTransProgramInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-trans-programs', async (req, res) => {
     try {

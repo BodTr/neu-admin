@@ -268,7 +268,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -344,7 +344,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-program", data);
+        const result = await instance.post("/api/create-program", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -382,7 +382,7 @@ export default {
         year: this.editprogram.year,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-program/${this.editprogram.id}`,
           data
         );
@@ -408,7 +408,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await axios.delete(`/api/delete-program/${item._id}`);
+          const result = await instance.delete(`/api/delete-program/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

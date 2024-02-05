@@ -22,6 +22,7 @@ db.once('open', () => console.log('Connected to Mongoose'))
 
 //     next()
 // })
+app.use(require('./routes/login_n_logout'))
 app.use(require('./routes/programs'))
 app.use(require('./routes/trans_programs'))
 app.use(require('./routes/decisions'))
@@ -42,7 +43,7 @@ app.use(require('./routes/ex_foreign_students'))
 app.use(require('./routes/ex_students'))
 app.use(require('./routes/extend_visa'))
 app.use(require('./routes/users'))
-app.use(require('./routes/login_n_logout'))
+
 
 app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {

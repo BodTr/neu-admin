@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ProcessSchema = require('../models/edu_quality_process')
 const { emptyProcessInputsValidation, typeProcessInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
 
+router.use(authenticateAccessToken)
 router.get('/api/get-all-processes', async (req, res) => {
     try {
         let { page, limit, query, id } = req.query

@@ -42,7 +42,6 @@
   <script>
   import { useToast } from "vue-toastification"
   import router from '@/router'
-  //import axios from 'axios';
   import instance from '../instance'
   //import { mapMutations } from 'vuex'
   export default {
@@ -64,7 +63,7 @@
   
       async Login() {
         
-        // phải đặt (defined) một biến data trước khi cho vào axios
+
         const data = {
           username: this.username,
           password: this.password,

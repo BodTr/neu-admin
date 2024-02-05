@@ -3,8 +3,10 @@ const router = express.Router()
 const UserSchema = require('../models/user')
 const bcrypt = require('bcrypt')
 const ObjectId = require("mongodb").ObjectId
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { emptyUserInputsValidation, typeUserInputsValidation, emptyUserPasswordInputValidation } = require('../helpers/input_validate_middleware')
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-users', async (req, res) => {
     try {

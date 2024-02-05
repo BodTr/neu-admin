@@ -752,7 +752,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -1052,7 +1052,7 @@ export default {
       formData.append("attachedFile", this.attachedFile);
 
       try {
-        const result = await axios.post("/api/create-extend-visa", formData, {
+        const result = await instance.post("/api/create-extend-visa", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -1161,7 +1161,7 @@ export default {
       formData.append("fileLink", this.editExtendVisa.fileLink);
 
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-extend-visa/${this.editExtendVisa.id}`,
           formData,
           {
@@ -1193,7 +1193,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(
+          const result = await instance.delete(
             `/api/delete-extend-visa/${item._id}`
           );
           console.log(result);

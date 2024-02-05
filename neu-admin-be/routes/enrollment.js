@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const EnrollmentSchema = require('../models/enrollment')
 const { emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
 
+router.use(authenticateAccessToken)
 router.get('/api/get-all-enrollments', async (req, res) => {
     try {
         let { page, limit, query, id } = req.query

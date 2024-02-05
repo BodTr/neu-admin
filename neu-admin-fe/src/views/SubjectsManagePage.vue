@@ -372,7 +372,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -473,7 +473,7 @@ export default {
       };
 
       try {
-        const result = await axios.post("/api/create-subject", data);
+        const result = await instance.post("/api/create-subject", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -526,7 +526,7 @@ export default {
         note: this.editSubject.note,
       };
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-subject/${this.editSubject.id}`,
           data
         );
@@ -552,7 +552,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(`/api/delete-subject/${item._id}`);
+          const result = await instance.delete(`/api/delete-subject/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

@@ -455,7 +455,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -614,7 +614,7 @@ export default {
       formData.append("attachedMoumoaDoc", this.attachedDoc);
 
       try {
-        const result = await axios.post("/api/create-moumoa", formData, {
+        const result = await instance.post("/api/create-moumoa", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -676,7 +676,7 @@ export default {
       formData.append("attachedMoumoaDoc1", this.editMoumoa.attachedDoc);
 
       try {
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-moumoa/${this.editMoumoa.id}`,
           formData,
           {
@@ -708,7 +708,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await axios.delete(`/api/delete-moumoa/${item._id}`);
+          const result = await instance.delete(`/api/delete-moumoa/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

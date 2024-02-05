@@ -5,7 +5,7 @@ const { emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, emptyFi
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initExtendVisaMiddleware } = require('../helpers/init_doc')
 const { upload } = require('../helpers/multer_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
 
@@ -32,6 +32,8 @@ const uploadFileFields1 = upload.fields([
     {name: 'decisionNumber1', maxCount: 1},
     {name: 'attachedFile1', maxCount: 1}
 ])
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-extend-visas', async (req, res) => {
     try {

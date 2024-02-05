@@ -374,7 +374,8 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -467,7 +468,7 @@ export default {
         };
         console.log(data, "post api data");
 
-        const result = await axios.post("/api/create-user", data);
+        const result = await instance.post("/api/create-user", data);
         console.log(result, "post api result");
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -508,7 +509,7 @@ export default {
           phoneNumber: this.editUser.phoneNumber,
         };
 
-        const result = await axios.put(
+        const result = await instance.put(
           `/api/edit-user/${this.editUser.id}`,
           data
         );
@@ -544,7 +545,7 @@ export default {
         const data = {
           editedPassword: this.editUser.editedPassword,
         };
-        const result = await axios.patch(
+        const result = await instance.patch(
           `/api/edit-user-password/${this.editUser.id}`,
           data
         );
@@ -572,7 +573,7 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa user này?")) {
-          const result = await axios.delete(`/api/delete-user/${item._id}`);
+          const result = await instance.delete(`/api/delete-user/${item._id}`);
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

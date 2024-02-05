@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const UnitSchema = require('../models/unit')
 const { emptyUnitInputsValidation, typeUnitInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-units', async (req, res) => {
     try {

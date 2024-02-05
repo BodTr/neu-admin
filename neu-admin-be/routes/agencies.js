@@ -2,8 +2,11 @@ const express = require('express')
 const router = express.Router()
 const AgencySchema = require('../models/agency')
 const { emptyAgencyInputsValidation, typeAgencyInputsValidation } = require('../helpers/input_validate_middleware')
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-agencies', async (req, res) => {
     try {

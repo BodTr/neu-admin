@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const LecturerSchema = require('../models/lecturer')
 const { emptyLecturerInputsValidation, typeLecturerInputsValidation } = require('../helpers/input_validate_middleware')
-
+const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+router.use(authenticateAccessToken)
 
 router.get('/api/get-all-lecturers', async (req, res) => {
     try {
