@@ -5,6 +5,10 @@ const TransProgramSchema = new mongoose.Schema({
         type: String,
         require: false
     },
+    name_en: {
+        type: String,
+        require: false
+    },
     language: {
         type: String,
         require: false

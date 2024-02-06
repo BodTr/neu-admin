@@ -33,7 +33,7 @@ function emptyTransProgramInputsValidation(req, res, next) {
     const error = new Error("empty program inputs");
     error.code = "EMPTY_TRANS_PROGRAM_INPUTS_ERROR";
     const { name, language, degreeType, degreeName, issuedBy } = req.body;
-    if (!name || !language || !degreeName || !degreeType || !issuedBy) {
+    if (!name || !degreeName || !degreeType || !issuedBy) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -46,8 +46,8 @@ function typeTransProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type program inputs")
     const error = new Error('wrong type program inputs')
     error.code = 'TRANS_PROGRAM_INPUTS_TYPE_ERROR'
-    const { name, language, degreeType, degreeName, issuedBy } = req.body
-    if (typeof name !== 'string' || typeof language !== 'string' || typeof degreeType !== 'string' || typeof degreeName !== 'string' || typeof issuedBy !== 'string') {
+    const { name, degreeType, degreeName, issuedBy } = req.body
+    if (typeof name !== 'string'  || typeof degreeType !== 'string' || typeof degreeName !== 'string' || typeof issuedBy !== 'string') {
         throw error
     } else {
         console.log('program inputs type correct')

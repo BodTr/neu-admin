@@ -140,20 +140,127 @@
                       <div class="mb-3">
                         <label class="form-label">Nội dung phụ trách</label>
                         <textarea
-                            class="form-control"
-                            row="1"
-                            v-model="content"
-                            placeholder="Nhập nội dung phụ trách"
+                          class="form-control"
+                          row="1"
+                          v-model="content"
+                          placeholder="Nhập nội dung phụ trách"
                         ></textarea>
+                      </div>
+                    </div>
+                    <h3>Lãnh đạo phụ trách chương trình</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Chủ nhiệm chương trình</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Điều phối viên chương trình</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -183,7 +290,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -213,7 +320,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -314,7 +421,9 @@
                                 </select>
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Nội dung phụ trách</label>
+                                <label class="form-label"
+                                  >Nội dung phụ trách</label
+                                >
                                 <textarea
                                   class="form-control"
                                   row="1"
@@ -348,7 +457,6 @@
 </template>
 
 <script>
-
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
@@ -375,7 +483,7 @@ export default {
         params: {
           id: this.$route.params.id,
         },
-        
+
         headings: {
           name: "Họ tên người thực hiện",
           email: "Email",
@@ -415,17 +523,17 @@ export default {
   },
 
   methods: {
-    showModal (){
-      this.displayModal = true
+    showModal() {
+      this.displayModal = true;
     },
-    hideModal (){
-      this.displayModal = false
+    hideModal() {
+      this.displayModal = false;
     },
-    showModal1 (){
-      this.displayModalOne = true
+    showModal1() {
+      this.displayModalOne = true;
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
       const data = {
@@ -452,13 +560,13 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.phoneNumber = ''
-          this.position = ''
-          this.email = ''
-          this.unit = ''
-          this.content = ''
+          this.displayModal = false;
+          this.name = "";
+          this.phoneNumber = "";
+          this.position = "";
+          this.email = "";
+          this.unit = "";
+          this.content = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -470,10 +578,10 @@ export default {
       this.editAgency.phoneNumber = item.phoneNumber;
       this.editAgency.position = item.position;
       this.editAgency.email = item.email;
-      this.editAgency.unit= item.unit;
-      this.editAgency.content= item.content;
+      this.editAgency.unit = item.unit;
+      this.editAgency.content = item.content;
       this.editAgency.id = item._id;
-      this.showModal1()
+      this.showModal1();
     },
 
     async onSubmit() {
@@ -501,7 +609,7 @@ export default {
           this.toast.success("Văn bản đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -512,7 +620,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await instance.delete(`/api/delete-agency/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-agency/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

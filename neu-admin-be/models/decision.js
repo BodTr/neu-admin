@@ -13,6 +13,14 @@ const DecisionSchema = new mongoose.Schema({
         type: String,
         require: false
     },
+    attachedDocLink: {
+        type: String,
+        require: false
+    },
+    attachedDocName: {
+        type: String,
+        require: false
+    },
     signDate: {
         type: String,
         require: false

@@ -50,7 +50,7 @@ const upload = multer({
                 fileName = `program-${programId}/suggest-unit-doc-${getId()}/${Date.now()}_${file.originalname}`
             } else if (fieldname === "decisionNumber" || fieldname === "decisionNumber1") {
                 fileName = `program-${programId}/decision-number-doc-${getId()}/${Date.now()}_${file.originalname}`
-            } else if (fieldname === "attachedFile" || fieldname === "attachedFile1") {
+            } else if (fieldname === "attachedFile" || fieldname === "attachedFile1" || fieldname === "attachedDoc") {
                 fileName = `program-${programId}/attached-file-doc-${getId()}/${Date.now()}_${file.originalname}`
             }
 

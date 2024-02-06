@@ -86,12 +86,21 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên đối tác</label>
+                        <label class="form-label">Tên trường tiếng việt</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
                           placeholder="Nhập tên đối tác"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Tên trường tiếng anh</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="name"
+                          placeholder="Nhập tên đối tác tiếng anh"
                         />
                       </div>
                       <div class="mb-3">
@@ -104,6 +113,7 @@
                         />
                       </div>
                     </div>
+                    
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Địa chỉ</label>
@@ -134,6 +144,191 @@
                         v-model="testDetail"
                         placeholder="Nhập nội dung kiểm định"
                       ></textarea>
+                    </div>
+                    <h3>Thông tin người liên hệ</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Lãnh đạo cấp trường</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Lãnh đạo đơn vị liên kết</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Đại diện bộ phận đối ngoại</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
+                    </div>
+                    <h3>Người phụ trách chương trình</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Họ tên"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chức vụ</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Chức vụ"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Đơn vị"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -291,6 +486,191 @@
                                 placeholder="Nhập nội kiểm định/công nhận chất lượng đào tạo"
                               ></textarea>
                             </div>
+                            <h3>Thông tin người liên hệ</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                />
+                              </div>
+                            </div>
+                            <h3>Lãnh đạo cấp trường</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                />
+                              </div>
+                            </div>
+                            <h3>Lãnh đạo đơn vị liên kết</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                />
+                              </div>
+                            </div>
+                            <h3>Đại diện bộ phận đối ngoại</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                />
+                              </div>
+                            </div>
+                            <h3>Người phụ trách chương trình</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                />
+                              </div>
+                            </div>
                           </div>
                           <div class="modal-footer">
                             <a
@@ -305,7 +685,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -473,7 +852,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa đối tác này?")) {
-          const result = await instance.delete(`/api/delete-partner/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-partner/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

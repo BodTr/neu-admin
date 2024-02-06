@@ -125,6 +125,31 @@
                       </div>
                     </div>
                     <div class="mb-3">
+                      <label class="form-label">Văn bản đính kèm</label>
+                      <input
+                        type="file"
+                        ref="attachedDoc"
+                        class="form-control"
+                        @change="handlePdfChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handlePdfUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="attachedDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="message != ''">{{ message }}</div>
+                    </div>
+                    <div class="mb-3">
                       <label class="form-label">Nội dung quyết định</label>
                       <textarea
                         class="form-control"
@@ -135,10 +160,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <a
-                      @click="submitForm()"
-                      class="btn btn-primary ms-auto"
-                    >
+                    <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Create
                     </a>
                   </div>
@@ -168,7 +190,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -198,7 +220,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -218,6 +240,33 @@
                           d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
                         />
                         <path d="M16 5l3 3" />
+                      </svg>
+                    </a>
+                    <a
+                      :href="item.row.attachedDocLink"
+                      class="btn btn-success btn-icon"
+                    >
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-files"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                        <path
+                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                        />
+                        <path
+                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                        />
                       </svg>
                     </a>
                     <div
@@ -284,6 +333,33 @@
                               </div>
                             </div>
                             <div class="mb-3">
+                              <label class="form-label">Văn bản đính kèm</label>
+                              <input
+                                type="file"
+                                class="form-control"
+                                ref="attachedDoc1"
+                                @change="handlePdfChange1()"
+                                style="display: none"
+                              />
+                              <div class="card">
+                                <button
+                                  @click="handlePdfUpload1()"
+                                  class="btn btn-outline-primary w-100"
+                                >
+                                  Choose File
+                                </button>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editDecision.attachedDocName"
+                                  disabled
+                                />
+                              </div>
+                              <div v-if="editDecision.message != ''">
+                                {{ editDecision.message }}
+                              </div>
+                            </div>
+                            <div class="mb-3">
                               <label class="form-label"
                                 >Nội dung quyết định</label
                               >
@@ -296,7 +372,6 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-
                             <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
@@ -309,7 +384,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -336,18 +410,20 @@ export default {
         "name",
         "detail",
         "number",
+        "attachedDocName",
         "signDate",
         "expireIn",
         "tool",
       ],
       options: {
-        params:{
-          id: this.$route.params.id
+        params: {
+          id: this.$route.params.id,
         },
         headings: {
           name: "Tên quyết định",
           detail: "Nội dung quyết định",
           number: "Quyết định số",
+          attachedDocName: "Văn bản đính kèm",
           signDate: "Ngày kí",
           expireIn: "Thời hạn hiệu lực",
           tool: "Thao tác",
@@ -361,6 +437,8 @@ export default {
       expireIn: "",
       displayModal: false,
       displayModalOne: false,
+      attachedDocName: "",
+      message: "",
 
       editDecision: {
         id: "",
@@ -369,6 +447,9 @@ export default {
         number: "",
         signDate: "",
         expireIn: "",
+        attachedDocName: "",
+        attachedDoc: "",
+        message: "",
       },
     };
   },
@@ -380,31 +461,93 @@ export default {
   },
 
   methods: {
-    showModal (){
-      this.displayModal = true
+    handlePdfUpload() {
+      this.$refs.attachedDoc.click();
     },
-    hideModal (){
-      this.displayModal = false
+    handlePdfUpload1() {
+      this.$refs.attachedDoc1.click();
     },
-    showModal1 (){
-      this.displayModalOne = true
+    handlePdfChange() {
+      const file = this.$refs.attachedDoc.files[0];
+      console.log(file, "handlePdfChange file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.attachedDoc = file;
+      this.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.message = "";
+      } else {
+        this.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
     },
-    hideModal1 (){
-      this.displayModalOne = false
+    handlePdfChange1() {
+      const file = this.$refs.attachedDoc1.files[0];
+      console.log(file, "handlePdfChange1 file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.editDecision.attachedDoc = file;
+      this.editDecision.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.editDecision.message = "";
+      } else {
+        this.editDecision.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
+    showModal() {
+      this.displayModal = true;
+    },
+    hideModal() {
+      this.displayModal = false;
+    },
+    showModal1() {
+      this.displayModalOne = true;
+    },
+    hideModal1() {
+      this.displayModalOne = false;
     },
     async submitForm() {
-      console.log(this.id, "post api program id")
-      const data = {
-        programId: this.id,
-        name: this.name,
-        detail: this.detail,
-        number: this.number,
-        signDate: this.signDate,
-        expireIn: this.expireIn,
-      };
+      console.log("AAAAAAAAAAAA");
+      console.log(this.id, "post api program id");
+
+      let formData = new FormData();
+      formData.append("programId", this.id);
+      formData.append("name", this.name);
+      formData.append("detail", this.detail);
+      formData.append("number", this.number);
+      formData.append("signDate", this.signDate);
+      formData.append("expireIn", this.expireIn);
+      formData.append("attachedDoc", this.attachedDoc);
 
       try {
-        const result = await instance.post("/api/create-decision", data);
+        const result = await instance.post("/api/create-decision", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // const data = {
+        //   programId: this.id,
+        //   name: this.name,
+        //   detail: this.detail,
+        //   number: this.number,
+        //   signDate: this.signDate,
+        //   expireIn: this.expireIn,
+        // };
+
+        // try {
+        //   const result = await instance.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -417,12 +560,12 @@ export default {
           // alert(result.data.message)
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
-          this.displayModal = false
-          this.name = ''
-          this.detail = ''
-          this.number = ''
-          this.signDate = ''
-          this.expireIn = ''
+          this.displayModal = false;
+          this.name = "";
+          this.detail = "";
+          this.number = "";
+          this.signDate = "";
+          this.expireIn = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -435,25 +578,53 @@ export default {
       this.editDecision.number = item.number;
       this.editDecision.signDate = item.signDate;
       this.editDecision.expireIn = item.expireIn;
+      this.editDecision.attachedDocLink = item.attachedDocLink;
+      this.editDecision.attachedDocName = item.attachedDocName;
       this.editDecision.id = item._id;
-      this.showModal1()
+      this.showModal1();
 
       // console.log('content', this.content);
     },
 
     async onSubmit() {
-      const data = {
-        name: this.editDecision.name,
-        detail: this.editDecision.detail,
-        number: this.editDecision.number,
-        signDate: this.editDecision.signDate,
-        expireIn: this.editDecision.expireIn,
-      };
+      // const data = {
+      //   name: this.editDecision.name,
+      //   detail: this.editDecision.detail,
+      //   number: this.editDecision.number,
+      //   signDate: this.editDecision.signDate,
+      //   expireIn: this.editDecision.expireIn,
+      // };
+
+      let formData = new FormData();
+      formData.append("name", this.editDecision.name);
+      formData.append("detail", this.editDecision.detail);
+      formData.append("number", this.editDecision.number);
+      formData.append("signDate", this.editDecision.signDate);
+      formData.append("expireIn", this.editDecision.expireIn);
+      formData.append("attachedDoc", this.editDecision.attachedDoc);
+
       try {
         const result = await instance.put(
           `/api/edit-decision/${this.editDecision.id}`,
-          data
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
+
+        // const result = await instance.post("/api/create-decision", formData, {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // });
+
+        // try {
+        //   const result = await instance.put(
+        //     `/api/edit-decision/${this.editDecision.id}`,
+        //     data
+        //   );
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -465,7 +636,7 @@ export default {
           this.toast.success("Quyết định đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
-          this.displayModalOne = false
+          this.displayModalOne = false;
         }
       } catch (error) {
         console.log(error, "put api catch block error");

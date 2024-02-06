@@ -33,7 +33,7 @@
               <path d="M5 12l6 6"></path>
               <path d="M5 12l6 -6"></path>
             </svg>
-            Quay về trang chủ
+            Chọn chương trình quản lý
           </router-link>
         </div>
       </div>

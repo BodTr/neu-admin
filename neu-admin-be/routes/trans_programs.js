@@ -38,7 +38,7 @@ router.get('/api/get-all-trans-programs', async (req, res) => {
 
 router.post('/api/create-trans-program', emptyTransProgramInputsValidation, typeTransProgramInputsValidation, async (req, res) => {
     try {
-        const { programId, name, language, degreeName, degreeType, issuedBy } = req.body
+        const { programId, name,name_en, language, degreeName, degreeType, issuedBy } = req.body
         console.log(req.body, "req.body post api")
         const existedProgram = await TransProgramSchema.findOne({ name: name })
         if (existedProgram) {
@@ -46,6 +46,7 @@ router.post('/api/create-trans-program', emptyTransProgramInputsValidation, type
         } else {
             const newProgram = await TransProgramSchema.create({
                 name: name,
+                name_en: name_en,
                 language: language,
                 degreeName: degreeName,
                 degreeType: degreeType,
@@ -68,10 +69,11 @@ router.post('/api/create-trans-program', emptyTransProgramInputsValidation, type
 router.put('/api/edit-trans-program/:id', emptyTransProgramInputsValidation, typeTransProgramInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, language, degreeName, degreeType, issuedBy } = req.body
+        const { name, language,name_en, degreeName, degreeType, issuedBy } = req.body
         console.log(id, "::put api id::")
         const updatingProgram = {
             name: name,
+            name_en: name_en,
             language: language,
             degreeName: degreeName,
             degreeType: degreeType,

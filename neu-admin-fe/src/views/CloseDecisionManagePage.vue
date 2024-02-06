@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí văn bản liên kết</h2>
+              <h2 class="page-title">Quản lí quyết định đóng chương trình</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm văn bản
+                  Thêm quyết định
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm văn bản</h5>
+                    <h5 class="modal-title">Thêm quyết định</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -86,57 +86,32 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bản liên kết</label>
+                        <label class="form-label">Tên quyết định</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên văn bản liên kết Đào tạo"
+                          placeholder="Nhập tên quyết định"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Ngày bắt đầu hiệu lực</label>
+                        <label class="form-label">Ngày kí</label>
                         <input
                           type="date"
-                          v-model="effDate"
+                          v-model="signDate"
                           class="form-control"
-                          placeholder="Nhập ngày bắt đầu hiệu lực"
+                          placeholder="Nhập ngày kí date"
                         />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Văn bản đính kèm</label>
-                        <input
-                          type="file"
-                          ref="attachedDoc"
-                          class="form-control"
-                          @change="handlePdfChange()"
-                          style="display: none"
-                        />
-                        <div class="card">
-                          <button
-                            @click="handlePdfUpload()"
-                            class="btn btn-outline-primary w-100"
-                          >
-                            Choose File
-                          </button>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="attachedDocName"
-                            disabled
-                          />
-                        </div>
-                        <div v-if="message != ''">{{ message }}</div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Nội dung</label>
+                        <label class="form-label">Số quết định</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="content"
-                          placeholder="Nhập nội dung"
+                          v-model="number"
+                          placeholder="Nhập số quyết định"
                         />
                       </div>
                       <div class="mb-3">
@@ -148,6 +123,40 @@
                           placeholder="Nhập thời hạn hiệu lực"
                         />
                       </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Văn bản đính kèm</label>
+                      <input
+                        type="file"
+                        ref="attachedDoc"
+                        class="form-control"
+                        @change="handlePdfChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handlePdfUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="attachedDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="message != ''">{{ message }}</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Nội dung quyết định</label>
+                      <textarea
+                        class="form-control"
+                        rows="5"
+                        v-model="detail"
+                        placeholder="Nhập nội dung quyết định"
+                      ></textarea>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -168,7 +177,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-documents"
+                  url="/api/get-all-close-decisions"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -271,7 +280,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                            <h5 class="modal-title">Chỉnh sửa quyết định</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -283,28 +292,47 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
+                                <label class="form-label">Tên quyết định</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editDecision.name"
+                                  placeholder="Nhập tên quyết định"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Ngày kí</label>
+                                <input
+                                  type="date"
+                                  v-model="editDecision.signDate"
+                                  class="form-control"
+                                  placeholder="Nhập ngày kí date"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Số quết định</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editDecision.number"
+                                  placeholder="Nhập số quyết định"
+                                />
+                              </div>
+                              <div class="mb-3">
                                 <label class="form-label"
-                                  >Tên văn bản liên kết</label
+                                  >Thời hạn hiệu lực</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editDoc.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                  v-model="editDecision.expireIn"
+                                  placeholder="Nhập thời hạn hiệu lực"
                                 />
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Ngày có hiệu lực</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editDoc.effDate"
-                                  placeholder="Nhập ngày có hiệu lực"
-                                />
-                              </div>
-                              <div class="mb-3">
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label"
                                   >Văn bản đính kèm</label
                                 >
@@ -325,36 +353,24 @@
                                   <input
                                     type="text"
                                     class="form-control"
-                                    v-model="editDoc.attachedDocName"
+                                    v-model="editDecision.attachedDocName"
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editDoc.message != ''">
-                                  {{ editDoc.message }}
+                                <div v-if="editDecision.message != ''">
+                                  {{ editDecision.message }}
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Nội dung</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDoc.content"
-                                  placeholder="Nhập nội dung"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời hạn hiệu lực</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDoc.expireIn"
-                                  placeholder="Nhập thời hạn hiệu lực"
-                                />
-                              </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Nội dung quyết định</label
+                              >
+                              <textarea
+                                class="form-control"
+                                rows="5"
+                                v-model="editDecision.detail"
+                                placeholder="Nhập nội dung quyết định"
+                              ></textarea>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -380,47 +396,58 @@
 </template>
 
 <script>
-import instance from "../instance";
 // import { ref } from 'vue'
+import instance from "../instance";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-
 export default {
   name: "ProgramManagePage",
   components: {
     VerticalNavbar,
   },
-
   data() {
     return {
-      columns: ["stt", "name", "content","attachedDocName", "effDate", "expireIn", "tool"],
+      columns: [
+        "stt",
+        "name",
+        "detail",
+        "number",
+        "attachedDocName",
+        "signDate",
+        "expireIn",
+        "tool",
+      ],
       options: {
         params: {
           id: this.$route.params.id,
         },
         headings: {
-          name: "Tên văn bản Liên Kết Đào Tạo",
-          content: "Nội dung",
-          attachedDocName: "Đính kèm văn bản",
-          effDate: "Ngày có hiệu lực",
+          name: "Tên quyết định",
+          detail: "Nội dung quyết định",
+          number: "Quyết định số",
+          attachedDocName: "Văn bản đính kèm",
+          signDate: "Ngày kí",
           expireIn: "Thời hạn hiệu lực",
           tool: "Thao tác",
         },
       },
       id: this.$route.params.id,
       name: "",
-      effDate: "",
-      content: "",
+      detail: "",
+      number: "",
+      signDate: "",
       expireIn: "",
       displayModal: false,
       displayModalOne: false,
       attachedDocName: "",
       message: "",
-      editDoc: {
+
+      editDecision: {
         id: "",
         name: "",
-        effDate: "",
-        content: "",
+        detail: "",
+        number: "",
+        signDate: "",
         expireIn: "",
         attachedDocName: "",
         attachedDoc: "",
@@ -436,18 +463,6 @@ export default {
   },
 
   methods: {
-    showModal() {
-      this.displayModal = true;
-    },
-    hideModal() {
-      this.displayModal = false;
-    },
-    showModal1() {
-      this.displayModalOne = true;
-    },
-    hideModal1() {
-      this.displayModalOne = false;
-    },
     handlePdfUpload() {
       this.$refs.attachedDoc.click();
     },
@@ -479,12 +494,12 @@ export default {
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.editDoc.attachedDoc = file;
-      this.editDoc.attachedDocName = file.name;
+      this.editDecision.attachedDoc = file;
+      this.editDecision.attachedDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
-        this.editDoc.message = "";
+        this.editDecision.message = "";
       } else {
-        this.editDoc.message =
+        this.editDecision.message =
           tooLarge && allowedTypes.includes(file.type)
             ? `File quá nặng, giới hạn kích thước là ${
                 MAX_SIZE / (1024 * 1024)
@@ -492,32 +507,49 @@ export default {
             : "Định dạng file không phù hợp!!";
       }
     },
+    showModal() {
+      this.displayModal = true;
+    },
+    hideModal() {
+      this.displayModal = false;
+    },
+    showModal1() {
+      this.displayModalOne = true;
+    },
+    hideModal1() {
+      this.displayModalOne = false;
+    },
     async submitForm() {
-      // const data = {
-      //   programId: this.id,
-      //   name: this.name,
-      //   effDate: this.effDate,
-      //   content: this.content,
-      //   expireIn: this.expireIn,
-      // };
+      console.log("AAAAAAAAAAAA");
+      console.log(this.id, "post api program id");
 
       let formData = new FormData();
       formData.append("programId", this.id);
       formData.append("name", this.name);
-      formData.append("effDate", this.effDate);
-      formData.append("content", this.content);
+      formData.append("detail", this.detail);
+      formData.append("number", this.number);
+      formData.append("signDate", this.signDate);
       formData.append("expireIn", this.expireIn);
       formData.append("attachedDoc", this.attachedDoc);
 
       try {
-        const result = await instance.post("/api/create-document", formData, {
+        const result = await instance.post("/api/create-close-decision", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-      // try {
-      //   const result = await instance.post("/api/create-document", data);
+        // const data = {
+        //   programId: this.id,
+        //   name: this.name,
+        //   detail: this.detail,
+        //   number: this.number,
+        //   signDate: this.signDate,
+        //   expireIn: this.expireIn,
+        // };
+
+        // try {
+        //   const result = await instance.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -532,8 +564,9 @@ export default {
           this.$refs.table.refresh();
           this.displayModal = false;
           this.name = "";
-          this.effDate = "";
-          this.content = "";
+          this.detail = "";
+          this.number = "";
+          this.signDate = "";
           this.expireIn = "";
         }
       } catch (error) {
@@ -542,13 +575,15 @@ export default {
     },
 
     onEdit(item) {
-      this.editDoc.name = item.name;
-      this.editDoc.effDate = item.effDate;
-      this.editDoc.content = item.content;
-      this.editDoc.expireIn = item.expireIn;
-      this.editDoc.attachedDocLink = item.attachedDocLink;
-      this.editDoc.attachedDocName = item.attachedDocName;
-      this.editDoc.id = item._id;
+      this.editDecision.name = item.name;
+      this.editDecision.detail = item.detail;
+      this.editDecision.number = item.number;
+      this.editDecision.signDate = item.signDate;
+      this.editDecision.expireIn = item.expireIn;
+      this.editDecision.attachedDocLink = item.attachedDocLink;
+      this.editDecision.attachedDocName = item.attachedDocName;
+
+      this.editDecision.id = item._id;
       this.showModal1();
 
       // console.log('content', this.content);
@@ -556,22 +591,24 @@ export default {
 
     async onSubmit() {
       // const data = {
-      //   name: this.editDoc.name,
-      //   effDate: this.editDoc.effDate,
-      //   content: this.editDoc.content,
-      //   expireIn: this.editDoc.expireIn,
+      //   name: this.editDecision.name,
+      //   detail: this.editDecision.detail,
+      //   number: this.editDecision.number,
+      //   signDate: this.editDecision.signDate,
+      //   expireIn: this.editDecision.expireIn,
       // };
 
       let formData = new FormData();
-      formData.append("name", this.editDoc.name);
-      formData.append("effDate", this.editDoc.effDate);
-      formData.append("content", this.editDoc.content);
-      formData.append("expireIn", this.editDoc.expireIn);
-      formData.append("attachedDoc", this.editDoc.attachedDoc);
+      formData.append("name", this.editDecision.name);
+      formData.append("detail", this.editDecision.detail);
+      formData.append("number", this.editDecision.number);
+      formData.append("signDate", this.editDecision.signDate);
+      formData.append("expireIn", this.editDecision.expireIn);
+      formData.append("attachedDoc", this.editDecision.attachedDoc);
 
       try {
         const result = await instance.put(
-          `/api/edit-document/${this.editDoc.id}`,
+          `/api/edit-close-decision/${this.editDecision.id}`,
           formData,
           {
             headers: {
@@ -579,11 +616,18 @@ export default {
             },
           }
         );
-      // try {
-      //   const result = await instance.put(
-      //     `/api/edit-document/${this.editDoc.id}`,
-      //     data
-      //   );
+
+        // const result = await instance.post("/api/create-decision", formData, {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // });
+
+        // try {
+        //   const result = await instance.put(
+        //     `/api/edit-decision/${this.editDecision.id}`,
+        //     data
+        //   );
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -592,7 +636,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Văn bản đã được sửa");
+          this.toast.success("Quyết định đã được sửa");
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
@@ -605,9 +649,9 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa văn bản này?")) {
+        if (confirm("Xóa quyết định này?")) {
           const result = await instance.delete(
-            `/api/delete-document/${item._id}`
+            `/api/delete-close-decision/${item._id}`
           );
           console.log(result);
           // alert(result.data.message)

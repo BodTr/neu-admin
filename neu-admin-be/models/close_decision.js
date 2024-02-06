@@ -1,60 +1,35 @@
 const mongoose = require('mongoose')
 
-const PartnerSchema = new mongoose.Schema({
+const Close_decisionSchema = new mongoose.Schema({
     name: {
         type: String,
         require: false
     },
-    name_en: {
+    detail: {
         type: String,
         require: false
     },
-    rank: {
+    number: {
+        type: String,
+        require: false
+    },
+    attachedDocLink: {
+        type: String,
+        require: false
+    },
+    attachedDocName: {
+        type: String,
+        require: false
+    },
+    signDate: {
+        type: String,
+        require: false
+    },
+    expireIn: {
         type: String,
         require: false
     },
 
-    contact: {
-        type: Object,
-        require: false
-    },
-
-    leader_school: {
-        type: Object,
-        require: false
-    },
-
-    leader_org: {
-        type: Object,
-        require: false
-    },
-    
-    represent_foreign: {
-        type: Object,
-        require: false
-    },
-
-    charge:{
-        type: Object,
-        require: false
-    },
-
-    test: {
-        type: String,
-        require: false
-    },
-    testDetail: {
-        type: String,
-        require: false
-    },
-    address: {
-        type: String,
-        require: false
-    },
-    website: {
-        type: String,
-        require: false
-    },
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -68,4 +43,4 @@ const PartnerSchema = new mongoose.Schema({
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
     })
 
-module.exports = mongoose.model('PartnerSchema', PartnerSchema)
+module.exports = mongoose.model('Close_decisionSchema', Close_decisionSchema)

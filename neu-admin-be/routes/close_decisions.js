@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const DecisionSchema = require('../models/decision')
+const DecisionSchema = require('../models/close_decision')
 const { emptyDecisionInputsValidation, typeDecisionInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { upload } = require('../helpers/multer_middleware')
 const ObjectId = require("mongodb").ObjectId
 
 router.use(authenticateAccessToken)
-router.get('/api/get-all-decisions', async (req, res) => {
+router.get('/api/get-all-close-decisions', async (req, res) => {
     try {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
@@ -34,7 +34,7 @@ router.get('/api/get-all-decisions', async (req, res) => {
     }
 })
 
-router.post('/api/create-decision', upload.single("attachedDoc"), emptyDecisionInputsValidation, typeDecisionInputsValidation, async (req, res) => {
+router.post('/api/create-close-decision', upload.single("attachedDoc"), emptyDecisionInputsValidation, typeDecisionInputsValidation, async (req, res) => {
     try {
         const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
@@ -75,7 +75,7 @@ router.post('/api/create-decision', upload.single("attachedDoc"), emptyDecisionI
     }
 })
 
-router.put('/api/edit-decision/:id',  upload.single("attachedDoc"),emptyDecisionInputsValidation, typeDecisionInputsValidation, async(req, res) => {
+router.put('/api/edit-close-decision/:id',  upload.single("attachedDoc"),emptyDecisionInputsValidation, typeDecisionInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
         const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName} = req.body
@@ -108,7 +108,7 @@ router.put('/api/edit-decision/:id',  upload.single("attachedDoc"),emptyDecision
     }
 })
 
-router.delete('/api/delete-decision/:id', async(req, res) => {
+router.delete('/api/delete-close-decision/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")

@@ -85,7 +85,7 @@
                   </div>
                   <div class="modal-body row row-cards">
                     <div class="mb-3">
-                      <label class="form-label">Tên</label>
+                      <label class="form-label">Tên tiếng việt</label>
                       <textarea
                         class="form-control"
                         row="1"
@@ -93,8 +93,17 @@
                         placeholder="Nhập tên chương trình"
                       ></textarea>
                     </div>
+                    <div class="mb-3">
+                      <label class="form-label">Tên tiếng anh</label>
+                      <textarea
+                        class="form-control"
+                        row="1"
+                        v-model="name_en"
+                        placeholder="Nhập tên chương trình"
+                      ></textarea>
+                    </div>
                     <div class="col-md-6">
-                      <div class="mb-3">
+                      <div style="display: none;" class="mb-3">
                         <label class="form-label">Ngôn ngữ</label>
                         <input
                           type="text"
@@ -104,17 +113,6 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bằng</label>
-                        <textarea
-                          class="form-control"
-                          row="1"
-                          v-model="degreeName"
-                          placeholder="Nhập tên văn bằng"
-                        ></textarea>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
                         <label class="form-label">Tên thương hiệu</label>
                         <input
                           type="text"
@@ -122,6 +120,18 @@
                           v-model="degreeType"
                           placeholder="Nhập tên thương hiệu"
                         />
+                      </div>
+                      
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Tên văn bằng</label>
+                        <textarea
+                          class="form-control"
+                          row="1"
+                          v-model="degreeName"
+                          placeholder="Nhập tên văn bằng"
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Nơi cấp</label>
@@ -239,7 +249,7 @@
                           </div>
                           <div class="modal-body row row-cards">
                             <div class="mb-3">
-                              <label class="form-label">Tên</label>
+                              <label class="form-label">Tên tiếng việt</label>
                               <textarea
                                 class="form-control"
                                 row="1"
@@ -247,8 +257,17 @@
                                 placeholder="Nhập tên chương trình"
                               ></textarea>
                             </div>
+                            <div class="mb-3">
+                              <label class="form-label">Tên tiếng anh</label>
+                              <textarea
+                                class="form-control"
+                                row="1"
+                                v-model="editProgram.name_en"
+                                placeholder="Nhập tên chương trình"
+                              ></textarea>
+                            </div>
                             <div class="col-md-6">
-                              <div class="mb-3">
+                              <div style="display: none;" class="mb-3">
                                 <label class="form-label">Ngôn ngữ</label>
                                 <input
                                   type="text"
@@ -257,17 +276,6 @@
                                   placeholder="Nhập ngôn ngữ"
                                 />
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label">Tên văn bằng</label>
-                                <textarea
-                                  class="form-control"
-                                  row="1"
-                                  v-model="editProgram.degreeName"
-                                  placeholder="Nhập tên văn bằng"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Tên thương hiệu</label
@@ -279,6 +287,18 @@
                                   placeholder="Nhập tên thương hiệu"
                                 />
                               </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Tên văn bằng</label>
+                                <textarea
+                                  class="form-control"
+                                  row="1"
+                                  v-model="editProgram.degreeName"
+                                  placeholder="Nhập tên văn bằng"
+                                ></textarea>
+                              </div>
+                              
                               <div class="mb-3">
                                 <label class="form-label">Nơi cấp</label>
                                 <input
@@ -303,7 +323,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -337,7 +356,7 @@ export default {
       columns: [
         "stt",
         "name",
-        "language",
+        "name_en",
         "degreeType",
         "degreeName",
         "issuedBy",
@@ -348,7 +367,8 @@ export default {
           id: this.$route.params.id,
         },
         headings: {
-          name: "Tên chương trình",
+          name: "Tên chương trình tiếng việt",
+          name_en: "Tên chương trình tiếng anh",
           year: "Năm",
           degreeType: "Tên thương hiệu",
           degreeName: "Tên văn bằng",
@@ -434,6 +454,7 @@ export default {
 
     onEdit(item) {
       this.editProgram.name = item.name;
+      this.editProgram.name_en = item.name_en;
       this.editProgram.language = item.language;
       this.editProgram.degreeName = item.degreeName;
       this.editProgram.degreeType = item.degreeType;

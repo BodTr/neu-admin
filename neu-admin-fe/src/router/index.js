@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ProgramsManagePage from '../views/ProgramsManagePage.vue'
 import TransnationProgramsManagePage from '../views/TransnationProgramsManagePage.vue'
 import ApprovalDecisionManagePage from '../views/ApprovalDecisionManagePage.vue'
+import CloseDecisionManagePage from '../views/CloseDecisionManagePage.vue'
 import IdArrayLengthOneErrorPage from '../views/IdArrayLengthOneErrorPage.vue'
 import DocumentManagePage from '../views/DocumentManagePage.vue'
 import AgenciesManagePage from '../views/AgenciesManagePage.vue'
@@ -48,6 +49,15 @@ const router = createRouter({
       path: '/general-infor/approval-decision/:id',
       name: 'approval-decision-manage-page',
       component: ApprovalDecisionManagePage,
+      meta: { 
+        requiresProgramId: true,
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/general-infor/close-decision/:id',
+      name: 'close-decision-manage-page',
+      component: CloseDecisionManagePage,
       meta: { 
         requiresProgramId: true,
         requiresAuth: true

@@ -1,23 +1,42 @@
 const express = require('express')
 const router = express.Router()
 const DocumentSchema = require('../models/document')
-const { emptyDocumentInputsValidation, typeDocumentInputsValidation } = require('../helpers/input_validate_middleware')
-const { authenticateAccessToken } = require('../helpers/jwt_services')
+const {
+    emptyDocumentInputsValidation,
+    typeDocumentInputsValidation
+} = require('../helpers/input_validate_middleware')
+const {
+    authenticateAccessToken
+} = require('../helpers/jwt_services')
+const {
+    upload
+} = require('../helpers/multer_middleware')
 const ObjectId = require("mongodb").ObjectId
 
 router.use(authenticateAccessToken)
 router.get('/api/get-all-documents', async (req, res) => {
     try {
-        let { page, limit, query, id } = req.query
+        let {
+            page,
+            limit,
+            query,
+            id
+        } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const documents = await DocumentSchema.find({
-            program: { id: new ObjectId(id) },
-            name: {$regex: query}
-        }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
+            program: {
+                id: new ObjectId(id)
+            },
+            name: {
+                $regex: query
+            }
+        }).lean().sort({
+            _id: -1
+        }).skip(skip).limit(limit)
         let count = await DocumentSchema.estimatedDocumentCount()
         let stt = 0
-        const aDocuments = documents.map( doc => {
+        const aDocuments = documents.map(doc => {
             stt++
             // const id = doc._id.toString()
             return {
@@ -26,74 +45,152 @@ router.get('/api/get-all-documents', async (req, res) => {
             }
         })
         console.log(aDocuments, "aDocuments")
-        res.json({ data: aDocuments, count: count, error: false })
+        res.json({
+            data: aDocuments,
+            count: count,
+            error: false
+        })
     } catch (error) {
         console.log(error, "get programs api catch block error")
-        res.json({ error: true, message: "something went wrong" })
+        res.json({
+            error: true,
+            message: "something went wrong"
+        })
     }
 })
 
-router.post('/api/create-document', emptyDocumentInputsValidation, typeDocumentInputsValidation, async (req, res) => {
+router.post('/api/create-document', upload.single("attachedDoc"), emptyDocumentInputsValidation, typeDocumentInputsValidation, async (req, res) => {
     try {
-        const { programId, name, content, effDate, expireIn } = req.body
+        const {
+            programId,
+            name,
+            content,
+            effDate,
+            expireIn,
+            attachedDocLink,
+            attachedDocName
+        } = req.body
         console.log(req.body, "req.body post api")
-        
-        const existedDocument = await DocumentSchema.findOne({ name: name })
+
+        const existedDocument = await DocumentSchema.findOne({
+            name: name
+        })
         if (existedDocument) {
-            res.json({ error: true, message: "Văn bản đã tồn tại" })
+            res.json({
+                error: true,
+                message: "Văn bản đã tồn tại"
+            })
         } else {
+            const attachedDoc = req.file
+            if (attachedDoc) {
+                console.log(attachedDoc, "attachedDoc, post api")
+                attachedDocLink = attachedDoc.location
+                attachedDocName = attachedDoc.originalname
+            }
+
+
             const newDocument = await DocumentSchema.create({
                 name: name,
                 content: content,
                 effDate: effDate,
                 expireIn: expireIn,
+                attachedDocLink: attachedDocLink,
+                attachedDocName: attachedDocName,
+
                 program: {
                     id: programId
                 }
             })
             console.log(newDocument, "newDocument")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+            res.json({
+                error: false,
+                message: 'Lưu thành công chương trình'
+            })
         }
-        
-        
+
+
     } catch (error) {
         console.log(error, "post api catch block error")
-        res.json({ error: true, message: "something went wrong" })
+        res.json({
+            error: true,
+            message: "something went wrong"
+        })
     }
 })
 
-router.put('/api/edit-document/:id', emptyDocumentInputsValidation, typeDocumentInputsValidation, async(req, res) => {
+router.put('/api/edit-document/:id', upload.single("attachedDoc"), emptyDocumentInputsValidation, typeDocumentInputsValidation, async (req, res) => {
     try {
-        const { id } = req.params
-        const { name, content, effDate, expireIn } = req.body
+        const {
+            id
+        } = req.params
+        const {
+            name,
+            content,
+            effDate,
+            expireIn,
+            attachedDocLink,
+            attachedDocName
+        } = req.body
         console.log(id, "::put api id::")
+
+        const attachedDoc = req.file
+        if (attachedDoc) {
+            console.log(attachedDoc, "attachedDoc, post api")
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
+
+
+
         const updatingDocument = {
             name: name,
             content: content,
             effDate: effDate,
-            expireIn: expireIn
+            expireIn: expireIn,
+            attachedDocLink: attachedDocLink,
+            attachedDocName: attachedDocName
         }
         console.log(req.body, "put api req.body")
-        const updatedDocument = await DocumentSchema.findOneAndUpdate({ _id: id }, updatingDocument, {new: true})
+        const updatedDocument = await DocumentSchema.findOneAndUpdate({
+            _id: id
+        }, updatingDocument, {
+            new: true
+        })
         console.log(updatedDocument, "updatedDocument")
-        res.json({ error: false, message: "Văn bản đã được sửa thành công" })
+        res.json({
+            error: false,
+            message: "Văn bản đã được sửa thành công"
+        })
     } catch (error) {
         console.log(error, "put catch block error")
-        res.json({error: true, message: "something went wrong!"})
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
         // next(error)
     }
 })
 
-router.delete('/api/delete-document/:id', async(req, res) => {
+router.delete('/api/delete-document/:id', async (req, res) => {
     try {
-        const { id } = req.params
+        const {
+            id
+        } = req.params
         console.log(id, "::id delete api::")
-        const deletingDocument = await DocumentSchema.findOneAndDelete({ _id: id })
+        const deletingDocument = await DocumentSchema.findOneAndDelete({
+            _id: id
+        })
         console.log(deletingDocument, "deletingDocument")
-        res.json({ error: false, message: "Xóa thành công văn bản" })
+        res.json({
+            error: false,
+            message: "Xóa thành công văn bản"
+        })
     } catch (error) {
         console.log(error, "delete catch block error")
-        res.json({error: true, message: "something went wrong!"})
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 
@@ -103,15 +200,21 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
 
         if (error.code === "EMPTY_DOCUMENT_INPUTS_ERROR") {
             console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+            return res.json({
+                error: true,
+                message: "Hãy điền đẩy đủ form"
+            })
         }
-    
+
         if (error.code === "DOCUMENT_INPUTS_TYPE_ERROR") {
             console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+            return res.json({
+                error: true,
+                message: "Hãy điền đúng loại dữ liệu"
+            })
         }
     }
-    
+
 
 })
 
