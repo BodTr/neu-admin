@@ -3,6 +3,51 @@ const MoumoaSchema = require('../models/moumoa')
 const ExForeignStudentSchema = require('../models/ex_foreign_student')
 const ExStudentSchema = require('../models/ex_student')
 const ExtendVisaSchema = require('../models/extend_visa')
+const DecisionSchema = require('../models/decision')
+const CloseDecisionSchema = require('../models/close_decision')
+const DocumentSchema = require('../models/document')
+
+async function initCloseDecisionDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await CloseDecisionSchema.create({
+            name: 'init name'
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_close_decision_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
+async function initDocumentMiddleware(req, res, next) {
+    try {
+        const initDoc = await DocumentSchema.create({
+            name: 'init name'
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_document :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
+async function initDecisionDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await DecisionSchema.create({
+            name: 'init name'
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_decision_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
 
 async function initMoumoaDocMiddleware(req, res, next) {
     try {
@@ -83,5 +128,8 @@ module.exports = {
     initHTQTDocMiddleware,
     initexForeignStudentDocMiddleware,
     initExStudentMiddleware,
-    initExtendVisaMiddleware
+    initExtendVisaMiddleware,
+    initDecisionDocMiddleware,
+    initCloseDecisionDocMiddleware,
+    initDocumentMiddleware,
 }

@@ -648,6 +648,7 @@ export default {
       result: "",
       attachedDoc: null,
       attachedDocName: "",
+      message: "",
 
       displayModal: false,
       displayModalOne: false,
@@ -670,6 +671,7 @@ export default {
         attachedDoc: null,
         attachedDocName: "",
         attachedDocLink: "",
+        message: "",
       },
     };
   },
@@ -770,6 +772,7 @@ export default {
       formData.append("attachedExFStuDoc", this.attachedDoc);
 
       try {
+        console.log(this.attachedDoc, "attachedExFStuDoc formData") 
         const result = await instance.post("/api/create-ex-f-student", formData, {
           headers: {
             "Content-Type": "multipart/form-data",

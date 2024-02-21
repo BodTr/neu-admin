@@ -9,7 +9,7 @@ const {signAccessToken, signRefreshToken, authenticateAccessToken, authenticateR
 const ObjectId = require("mongodb").ObjectId
 
 // api check access token
-router.post('/api/verifiedUser', authenticateAccessToken, authenticateRefreshToken, (req, res) => {
+router.get('/api/verifiedUser', authenticateAccessToken, (req, res) => {
     res.json({message: 'verified'})
 })
 
@@ -21,16 +21,16 @@ router.post('/api/login', async (req, res, next) => {
         const user = await UserSchema.findOne({ username })
 
         if (!user) {
-            return res.json({ error: TextTrackCueList, message: 'Tài khoản chưa đăng kí' })
+            return res.json({ error: true, message: 'Tài khoản chưa đăng kí' })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
             return res.json({ error: true, message: 'Mật khẩu không chính xác'})
         }
-        const accessToken = await signAccessToken(user._id, user.role)   
-        const refreshToken = await signRefreshToken(user._id, user.role) 
-        const user_role = user.role
+        const accessToken = await signAccessToken(user._id)   
+        const refreshToken = await signRefreshToken(user._id) 
+        
         // khi tạo được refresh token rồi thì ta sẽ lưu refresh token đó vào db
         const savedRefreshToken = new RefreshTokenSchema ({
             token: refreshToken,
@@ -59,9 +59,9 @@ router.post('/api/login', async (req, res, next) => {
 router.post('/api/refresh-token', authenticateRefreshToken,  async (req, res) =>{
     try {
 
-        const { id, role } = req.payload 
-        const newAccessToken = await signAccessToken(id, role) 
-        const newRefreshToken = await signRefreshToken(id, role)
+        const { id } = req.payload 
+        const newAccessToken = await signAccessToken(id) 
+        const newRefreshToken = await signRefreshToken(id)
         const savedRefreshToken = new RefreshTokenSchema ({
             token: newRefreshToken,
             user: {

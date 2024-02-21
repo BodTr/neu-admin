@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Close_decisionSchema = new mongoose.Schema({
+const CloseDecisionSchema = new mongoose.Schema({
     name: {
         type: String,
         require: false
@@ -43,4 +43,4 @@ const Close_decisionSchema = new mongoose.Schema({
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
     })
 
-module.exports = mongoose.model('Close_decisionSchema', Close_decisionSchema)
+module.exports = mongoose.model('CloseDecisionSchema', CloseDecisionSchema)

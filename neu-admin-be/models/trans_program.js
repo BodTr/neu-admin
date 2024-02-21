@@ -9,10 +9,6 @@ const TransProgramSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    language: {
-        type: String,
-        require: false
-    },
     degreeName: {
         type: String,
         require: false

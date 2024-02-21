@@ -22,7 +22,7 @@ db.once('open', () => console.log('Connected to Mongoose'))
 
 //     next()
 // })
-app.use(require('./routes/login_n_logout'))
+app.use(require('./routes/login_n_logout'))  // route này phải đầu tiên vì ko dùng authenticateAccessToken middleware 
 app.use(require('./routes/programs'))
 app.use(require('./routes/trans_programs'))
 app.use(require('./routes/decisions'))

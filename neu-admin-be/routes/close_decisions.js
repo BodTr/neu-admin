@@ -1,10 +1,24 @@
 const express = require('express')
 const router = express.Router()
-const DecisionSchema = require('../models/close_decision')
-const { emptyDecisionInputsValidation, typeDecisionInputsValidation } = require('../helpers/input_validate_middleware')
+const CloseDecisionSchema = require('../models/close_decision')
+const { emptyCloseDecisionInputsValidation, typeCloseDecisionInputsValidation, emptyFileCloseDecisionInputValidation } = require('../helpers/input_validate_middleware')
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
+const { initCloseDecisionDocMiddleware } = require('../helpers/init_doc')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { upload } = require('../helpers/multer_middleware')
 const ObjectId = require("mongodb").ObjectId
+
+const config = {
+    version: 'latest',
+    region: 'ap-southeast-1',
+    endpoint: 'https://s3.ap-southeast-1.amazonaws.com',
+    credentials: {
+        accessKeyId: 'AKIAJWV2UWBGOU7M53TA',
+        secretAccessKey: '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',
+    },
+}
+
+const s3 = new S3Client(config)
 
 router.use(authenticateAccessToken)
 router.get('/api/get-all-close-decisions', async (req, res) => {
@@ -12,11 +26,11 @@ router.get('/api/get-all-close-decisions', async (req, res) => {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const decisions = await DecisionSchema.find({
+        const decisions = await CloseDecisionSchema.find({
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await DecisionSchema.estimatedDocumentCount()
+        let count = await CloseDecisionSchema.estimatedDocumentCount()
         let stt = 0
         const aDecisions = decisions.map( doc => {
             stt++
@@ -34,39 +48,33 @@ router.get('/api/get-all-close-decisions', async (req, res) => {
     }
 })
 
-router.post('/api/create-close-decision', upload.single("attachedDoc"), emptyDecisionInputsValidation, typeDecisionInputsValidation, async (req, res) => {
+router.post('/api/create-close-decision', initCloseDecisionDocMiddleware, upload.single("closeDecisionDoc"), emptyFileCloseDecisionInputValidation, emptyCloseDecisionInputsValidation, typeCloseDecisionInputsValidation, async (req, res) => {
     try {
         const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
-        
-        const existedDecision = await DecisionSchema.findOne({ name: name })
-        if (existedDecision) {
-            res.json({ error: true, message: "Quyết định đã tồn tại" })
-        } else {
-            console.log(detail, number, signDate, expireIn, "abc")
-
-            const attachedDoc = req.file
-            console.log(attachedDoc, "attachedDoc, post api")
-            const attachedDocLink = attachedDoc.location
-            const attachedDocName = attachedDoc.originalname
-
-
-
-            const newDecision = await DecisionSchema.create({
-                name: name,
-                detail: detail,
-                number: number,
-                attachedDocLink: attachedDocLink,
-                attachedDocName: attachedDocName,
-                signDate: signDate,
-                expireIn: expireIn,
-                program: {
-                    id: programId
-                }
-            })
-            console.log(newDecision, "newDecision")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+        console.log(req.payload, "req.payload post api")
+        console.log(req.file, "req.file post api")
+        const closeDecisionId = req.payload
+        const attachedDoc = req.file
+        const attachedDocLink = attachedDoc.location
+        const attachedDocName = attachedDoc.originalname
+        const newCloseDecision = {
+            name: name,
+            detail: detail,
+            number: number,
+            attachedDocLink: attachedDocLink,
+            attachedDocName: attachedDocName,
+            signDate: signDate,
+            expireIn: expireIn,
+            program: {
+                id: programId
+            }
         }
+
+        const storingCloseDecision = await CloseDecisionSchema.findOneAndUpdate({ _id: closeDecisionId }, newCloseDecision, {new: true})
+        console.log(storingCloseDecision, "storingCloseDecision")
+        res.json({ error: false, message: 'Lưu thành công quyết định' })
+        
         
         
     } catch (error) {
@@ -75,16 +83,26 @@ router.post('/api/create-close-decision', upload.single("attachedDoc"), emptyDec
     }
 })
 
-router.put('/api/edit-close-decision/:id',  upload.single("attachedDoc"),emptyDecisionInputsValidation, typeDecisionInputsValidation, async(req, res) => {
+router.put('/api/edit-close-decision/:id',  upload.single("closeDecisionDoc1"), emptyCloseDecisionInputsValidation, typeCloseDecisionInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
         const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName} = req.body
         console.log(id, "::put api id::")
-        const attachedDoc = req.file
-        if(attachedDoc){
-            console.log(attachedDoc, "attachedDoc, post api")
-             attachedDocLink = attachedDoc.location
-                attachedDocName = attachedDoc.originalname
+        const closeDecisionDoc1 = req.file
+        console.log(closeDecisionDoc1, "closeDecisionDoc1 put api")
+        let newAttachedDocLink = ''
+        if(closeDecisionDoc1) {
+            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(oldFileKey, "oldFileKey put api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${oldFileKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, ":::result, newDeleteCommand put api:::")
+            newAttachedDocLink = closeDecisionDoc1.location
+        } else {
+            newAttachedDocLink = attachedDocLink
         }
 
 
@@ -92,13 +110,13 @@ router.put('/api/edit-close-decision/:id',  upload.single("attachedDoc"),emptyDe
             name: name,
             detail: detail,
             number: number,
-            attachedDocLink: attachedDocLink,
+            attachedDocLink: newAttachedDocLink,
             attachedDocName: attachedDocName,
             signDate: signDate,
             expireIn: expireIn
         }
         console.log(req.body, "put api req.body")
-        const updatedDecision = await DecisionSchema.findOneAndUpdate({ _id: id }, updatingDecision, {new: true})
+        const updatedDecision = await CloseDecisionSchema.findOneAndUpdate({ _id: id }, updatingDecision, {new: true})
         console.log(updatedDecision, "updatedDecision")
         res.json({ error: false, message: "Quyết định đã được sửa thành công" })
     } catch (error) {
@@ -112,8 +130,18 @@ router.delete('/api/delete-close-decision/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")
-        const deletingDecision = await DecisionSchema.findOneAndDelete({ _id: id })
+        const deletingDecision = await CloseDecisionSchema.findOne({ _id: id })
         console.log(deletingDecision, "deletingDecision")
+        const delDecisionKey = deletingDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+        console.log(delDecisionKey, "delMoumoaKey delete api")
+        const newDeleteCommand = new DeleteObjectCommand({
+            Bucket: 'acvnapps',
+            Key: `${delDecisionKey}`
+        })
+        const result = await s3.send(newDeleteCommand)
+        console.log(result, ":::result, delete api:::")
+        const delDecision = await CloseDecisionSchema.findOneAndDelete({ _id: id })
+        console.log(delDecision, "delDecision")
         res.json({ error: false, message: "Xóa thành công quyết định" })
     } catch (error) {
         console.log(error, "delete catch block error")
@@ -121,11 +149,60 @@ router.delete('/api/delete-close-decision/:id', async(req, res) => {
     }
 })
 
+router.use('/api/create-close-decision', async (error, req, res, next) => {
+    try {
+        console.log(error, "error handle post api midddleware")
+        const decisionId = req.payload
+        const docFile = req.file
+        const delInitDecision = await MoumoaSchema.deleteOne({ _id: decisionId })
+        console.log(delInitDecision, "deleted delInitDecision")
+        if (!docFile) {
+            next(error)
+        } else {
+            console.log('POST api error!! So, delete images just uploaded')
+            const fileKey = docFile.Key
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${fileKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, "::: s3 file deleted result, post api:::")
+            next(error)
+        }
+    } catch (error) {
+        console.log(error, "post error handling middleware catch block error")
+        res.json({ error: true, message: 'something went wrong' }) // nếu có lỗi gì xảy ra ở try block owr treen thì lỗi đc xử lí ở đây
+    }
+})
+
+router.use('/api/edit-close-decision/:id', async(error, req, res, next) => {
+    try {
+        console.log(error, "error handle put api middleware")
+        const { id } = req.params
+        const docFile = req.file
+        if (!docFile) {
+            next(error)
+        } else {
+            const fileKey = docFile.Key
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${fileKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, ":::result, post api:::")
+            next(error)
+        }
+    } catch (error) {
+        console.log(error, "put error handling middleware catch block error")
+        res.json({ error: true, message: 'something went wrong' })
+    }
+})
+
 router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_DECISION_INPUTS_ERROR") {
+        if (error.code === "EMPTY_DECISION_INPUTS_ERROR" || error.code === "EMPTY_CLOSE_DECISION_FILE_INPUT_ERROR") {
             console.log(error.code, "empty input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
         }

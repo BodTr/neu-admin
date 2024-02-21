@@ -128,7 +128,7 @@
                       <label class="form-label">Văn bản đính kèm</label>
                       <input
                         type="file"
-                        ref="attachedDoc"
+                        ref="closeDecisionDoc"
                         class="form-control"
                         @change="handlePdfChange()"
                         style="display: none"
@@ -339,7 +339,7 @@
                                 <input
                                   type="file"
                                   class="form-control"
-                                  ref="attachedDoc1"
+                                  ref="closeDecisionDoc1"
                                   @change="handlePdfChange1()"
                                   style="display: none"
                                 />
@@ -439,6 +439,7 @@ export default {
       expireIn: "",
       displayModal: false,
       displayModalOne: false,
+      closeDecisionDoc: null,
       attachedDocName: "",
       message: "",
 
@@ -450,7 +451,8 @@ export default {
         signDate: "",
         expireIn: "",
         attachedDocName: "",
-        attachedDoc: "",
+        attachedDocLink: "",
+        closeDecisionDoc: null,
         message: ""
       },
     };
@@ -464,18 +466,18 @@ export default {
 
   methods: {
     handlePdfUpload() {
-      this.$refs.attachedDoc.click();
+      this.$refs.closeDecisionDoc.click();
     },
     handlePdfUpload1() {
-      this.$refs.attachedDoc1.click();
+      this.$refs.closeDecisionDoc1.click();
     },
     handlePdfChange() {
-      const file = this.$refs.attachedDoc.files[0];
+      const file = this.$refs.closeDecisionDoc.files[0];
       console.log(file, "handlePdfChange file");
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.attachedDoc = file;
+      this.closeDecisionDoc = file;
       this.attachedDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.message = "";
@@ -489,12 +491,12 @@ export default {
       }
     },
     handlePdfChange1() {
-      const file = this.$refs.attachedDoc1.files[0];
+      const file = this.$refs.closeDecisionDoc1.files[0];
       console.log(file, "handlePdfChange1 file");
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
-      this.editDecision.attachedDoc = file;
+      this.editDecision.closeDecisionDoc = file;
       this.editDecision.attachedDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.editDecision.message = "";
@@ -520,9 +522,7 @@ export default {
       this.displayModalOne = false;
     },
     async submitForm() {
-      console.log("AAAAAAAAAAAA");
       console.log(this.id, "post api program id");
-
       let formData = new FormData();
       formData.append("programId", this.id);
       formData.append("name", this.name);
@@ -530,7 +530,7 @@ export default {
       formData.append("number", this.number);
       formData.append("signDate", this.signDate);
       formData.append("expireIn", this.expireIn);
-      formData.append("attachedDoc", this.attachedDoc);
+      formData.append("closeDecisionDoc", this.closeDecisionDoc);
 
       try {
         const result = await instance.post("/api/create-close-decision", formData, {
@@ -539,17 +539,6 @@ export default {
           },
         });
 
-        // const data = {
-        //   programId: this.id,
-        //   name: this.name,
-        //   detail: this.detail,
-        //   number: this.number,
-        //   signDate: this.signDate,
-        //   expireIn: this.expireIn,
-        // };
-
-        // try {
-        //   const result = await instance.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -568,6 +557,8 @@ export default {
           this.number = "";
           this.signDate = "";
           this.expireIn = "";
+          this.closeDecisionDoc = null;
+          this.attachedDocName = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -582,6 +573,7 @@ export default {
       this.editDecision.expireIn = item.expireIn;
       this.editDecision.attachedDocLink = item.attachedDocLink;
       this.editDecision.attachedDocName = item.attachedDocName;
+      this.editDecision.closeDecisionDoc = null;
 
       this.editDecision.id = item._id;
       this.showModal1();
@@ -590,21 +582,17 @@ export default {
     },
 
     async onSubmit() {
-      // const data = {
-      //   name: this.editDecision.name,
-      //   detail: this.editDecision.detail,
-      //   number: this.editDecision.number,
-      //   signDate: this.editDecision.signDate,
-      //   expireIn: this.editDecision.expireIn,
-      // };
 
       let formData = new FormData();
+      formData.append("programId", this.id)
       formData.append("name", this.editDecision.name);
       formData.append("detail", this.editDecision.detail);
       formData.append("number", this.editDecision.number);
       formData.append("signDate", this.editDecision.signDate);
       formData.append("expireIn", this.editDecision.expireIn);
-      formData.append("attachedDoc", this.editDecision.attachedDoc);
+      formData.append("closeDecisionDoc1", this.editDecision.closeDecisionDoc);
+      formData.append("attachedDocLink", this.editDecision.attachedDocLink);
+      formData.append("attachedDocName", this.editDecision.attachedDocName);
 
       try {
         const result = await instance.put(
@@ -617,17 +605,6 @@ export default {
           }
         );
 
-        // const result = await instance.post("/api/create-decision", formData, {
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // });
-
-        // try {
-        //   const result = await instance.put(
-        //     `/api/edit-decision/${this.editDecision.id}`,
-        //     data
-        //   );
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -638,7 +615,7 @@ export default {
           // alert('Project has been updated')
           this.toast.success("Quyết định đã được sửa");
           this.$refs.table.refresh();
-          console.log(result.data);
+          console.log(result.data, "put api result if error === false");
           this.displayModalOne = false;
         }
       } catch (error) {

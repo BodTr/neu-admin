@@ -107,7 +107,7 @@
                         <label class="form-label">Văn bản đính kèm</label>
                         <input
                           type="file"
-                          ref="attachedDoc"
+                          ref="documentFile"
                           class="form-control"
                           @change="handlePdfChange()"
                           style="display: none"
@@ -311,7 +311,7 @@
                                 <input
                                   type="file"
                                   class="form-control"
-                                  ref="attachedDoc1"
+                                  ref="documentFile1"
                                   @change="handlePdfChange1()"
                                   style="display: none"
                                 />
@@ -414,6 +414,7 @@ export default {
       expireIn: "",
       displayModal: false,
       displayModalOne: false,
+      attachedDoc: null,
       attachedDocName: "",
       message: "",
       editDoc: {
@@ -423,7 +424,8 @@ export default {
         content: "",
         expireIn: "",
         attachedDocName: "",
-        attachedDoc: "",
+        attachedDocLink: "",
+        attachedDoc: null,
         message: ""
       },
     };
@@ -449,13 +451,13 @@ export default {
       this.displayModalOne = false;
     },
     handlePdfUpload() {
-      this.$refs.attachedDoc.click();
+      this.$refs.documentFile.click();
     },
     handlePdfUpload1() {
-      this.$refs.attachedDoc1.click();
+      this.$refs.documentFile1.click();
     },
     handlePdfChange() {
-      const file = this.$refs.attachedDoc.files[0];
+      const file = this.$refs.documentFile.files[0];
       console.log(file, "handlePdfChange file");
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
@@ -474,7 +476,7 @@ export default {
       }
     },
     handlePdfChange1() {
-      const file = this.$refs.attachedDoc1.files[0];
+      const file = this.$refs.documentFile1.files[0];
       console.log(file, "handlePdfChange1 file");
       const allowedTypes = ["application/pdf"];
       const MAX_SIZE = 20 * 1024 * 1024;
@@ -493,21 +495,13 @@ export default {
       }
     },
     async submitForm() {
-      // const data = {
-      //   programId: this.id,
-      //   name: this.name,
-      //   effDate: this.effDate,
-      //   content: this.content,
-      //   expireIn: this.expireIn,
-      // };
-
       let formData = new FormData();
       formData.append("programId", this.id);
       formData.append("name", this.name);
       formData.append("effDate", this.effDate);
       formData.append("content", this.content);
       formData.append("expireIn", this.expireIn);
-      formData.append("attachedDoc", this.attachedDoc);
+      formData.append("documentFile", this.attachedDoc);
 
       try {
         const result = await instance.post("/api/create-document", formData, {
@@ -515,9 +509,6 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-
-      // try {
-      //   const result = await instance.post("/api/create-document", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -535,6 +526,8 @@ export default {
           this.effDate = "";
           this.content = "";
           this.expireIn = "";
+          this.attachedDoc = null;
+          this.attachedDocName = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -549,26 +542,20 @@ export default {
       this.editDoc.attachedDocLink = item.attachedDocLink;
       this.editDoc.attachedDocName = item.attachedDocName;
       this.editDoc.id = item._id;
+      this.editDoc.attachedDoc = null;
       this.showModal1();
-
-      // console.log('content', this.content);
     },
 
     async onSubmit() {
-      // const data = {
-      //   name: this.editDoc.name,
-      //   effDate: this.editDoc.effDate,
-      //   content: this.editDoc.content,
-      //   expireIn: this.editDoc.expireIn,
-      // };
 
       let formData = new FormData();
       formData.append("name", this.editDoc.name);
       formData.append("effDate", this.editDoc.effDate);
       formData.append("content", this.editDoc.content);
       formData.append("expireIn", this.editDoc.expireIn);
-      formData.append("attachedDoc", this.editDoc.attachedDoc);
-
+      formData.append("documentFile1", this.editDoc.attachedDoc);
+      formData.append("attachedDocLink", this.editDoc.attachedDocLink);
+      formData.append("attachedDocName", this.editDoc.attachedDocName);
       try {
         const result = await instance.put(
           `/api/edit-document/${this.editDoc.id}`,
@@ -579,11 +566,6 @@ export default {
             },
           }
         );
-      // try {
-      //   const result = await instance.put(
-      //     `/api/edit-document/${this.editDoc.id}`,
-      //     data
-      //   );
 
         if (result.data.error === true) {
           // alert(result.data.message)

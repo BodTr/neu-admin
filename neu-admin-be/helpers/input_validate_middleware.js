@@ -32,7 +32,7 @@ function emptyTransProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty program inputs");
     const error = new Error("empty program inputs");
     error.code = "EMPTY_TRANS_PROGRAM_INPUTS_ERROR";
-    const { name, language, degreeType, degreeName, issuedBy } = req.body;
+    const { name, degreeType, degreeName, issuedBy } = req.body;
     if (!name || !degreeName || !degreeType || !issuedBy) {
         console.log(error.code, 'middleware empty error')
         throw error;
@@ -55,7 +55,49 @@ function typeTransProgramInputsValidation(req, res, next) {
     }
 }
 
-// decision inputs validate
+// close_decision inputs validate
+function emptyCloseDecisionInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty close_decision inputs");
+    const error = new Error("empty decision inputs");
+    error.code = "EMPTY_CLOSE_DECISION_INPUTS_ERROR";
+    const { name, detail, number, signDate, expireIn } = req.body;
+    if (!name || !detail || !number || !signDate || !expireIn) {
+        console.log(error.code, 'CloseDecisionInputs middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeCloseDecisionInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type close_decision inputs")
+    const error = new Error('wrong type decision inputs')
+    error.code = 'CLOSE_DECISION_INPUTS_TYPE_ERROR'
+    const { name, detail, number, signDate, expireIn } = req.body
+    if (typeof name !== 'string' || typeof detail !== 'string' || typeof number !== 'string' || typeof signDate !== 'string' || typeof expireIn !== 'string') {
+        throw error
+    } else {
+        console.log('close_decision inputs type correct')
+        next()
+    }
+}
+
+function emptyFileCloseDecisionInputValidation(req, res, next) {
+    
+    const error = new Error('Empty close_decision file input')
+    error.code = 'EMPTY_CLOSE_DECISION_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty close_decision file input")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('close_decision file input filled')
+        next()
+    }
+}
+
+// decision input validate
 function emptyDecisionInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty decision inputs");
     const error = new Error("empty decision inputs");
@@ -83,6 +125,21 @@ function typeDecisionInputsValidation(req, res, next) {
     }
 }
 
+function emptyFileDecisionInputValidation(req, res, next) {
+    
+    const error = new Error('Empty decision file input')
+    error.code = 'EMPTY_DECISION_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty decision file input")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('decision file input filled')
+        next()
+    }
+}
+
+
 // document inputs validate
 function emptyDocumentInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty document inputs");
@@ -107,6 +164,20 @@ function typeDocumentInputsValidation(req, res, next) {
         throw error
     } else {
         console.log('program inputs type correct')
+        next()
+    }
+}
+
+function emptyFileDocumentInputValidation(req, res, next) {
+    
+    const error = new Error('Empty document file input')
+    error.code = 'EMPTY_DOCUMENT_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty document file input")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('document file input filled')
         next()
     }
 }
@@ -652,8 +723,10 @@ module.exports = {
   typeTransProgramInputsValidation,
   emptyDecisionInputsValidation,
   typeDecisionInputsValidation,
+  emptyFileDecisionInputValidation,
   emptyDocumentInputsValidation,
   typeDocumentInputsValidation,
+  emptyFileDocumentInputValidation,
   emptyPartnerInputsValidation,
   typePartnerInputsValidation,
   emptyAgencyInputsValidation,
@@ -691,5 +764,8 @@ module.exports = {
   emptyFileExtendVisaInputValidation,
   emptyUserInputsValidation,
   typeUserInputsValidation,
-  emptyUserPasswordInputValidation
+  emptyUserPasswordInputValidation,
+  emptyCloseDecisionInputsValidation,
+  typeCloseDecisionInputsValidation,
+  emptyFileCloseDecisionInputValidation,
 };

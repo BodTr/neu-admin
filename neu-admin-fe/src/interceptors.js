@@ -71,18 +71,21 @@ axios.interceptors.response.use( async (response) => {
     const {code, message} = response.data
     console.log(code, "res code")
     if (code && code === 1) {
-        if (message && message === 'jwt expired') {
-            console.log('Truong hop het han:::')
-            const result = await refreshAcessToken3()
-            console.log(result, "newAccessToken và newRefreshToken")
+        console.log('Truong hop het han:::')
+        const result = await refreshAcessToken3()
+        console.log(result, "newAccessToken và newRefreshToken")
+        if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+            localStorage.clear()
+            router.push('/login')
+        } else {
             const newAccessToken = result.newAccessToken
             const newRefreshToken = result.newRefreshToken
             console.log(`da lay access token moi::: ${newAccessToken}`)
-            config.headers['Authorization'] = `Bearer ${newAccessToken}` // phải sửa lại headers cho thành access token mới thì các req mà có access token hết hạn mới làm việc bth
             window.localStorage.setItem("accessToken", newAccessToken)
             window.localStorage.setItem("refreshToken", newRefreshToken)
             return axios(config) // trả về config mới
         }
+        
     } else if(code && code === 2 || code === 3 || code === 400) {
         localStorage.clear()
         router.push('/login') // trường hợp access token lỗi hoặc chưa có thì chuyển người dùng về trang đăng nhập 
@@ -96,6 +99,8 @@ axios.interceptors.response.use( async (response) => {
 
 
 // tạo interceptors của instance
+// instance dùng trong tất cả các api trừ các api có phương thức get
+
 instance.interceptors.request.use(async (config) => {
     // trước khi gửi req lên sv thì các url khác cần thêm header, nhưng url '/login' và '/refresh-token' không cần thêm headers authorizaton vào ('/refresh-token')
     if(config.url.indexOf('/login') >= 0 || config.url.indexOf('/refresh-token') >= 0) { // những route này ko cần auth header
@@ -111,6 +116,7 @@ instance.interceptors.request.use(async (config) => {
     return Promise.reject(err)
 })
 
+
 // dùng phương thức này để tạo ra một interceptors (đóng vai trò như là một middleware) chặn giữa server và client và ở đây (interceptors.response) nó sẽ xử lí res của server trc khi res đến đc client
 instance.interceptors.response.use( async (response) => {
     console.log('sau khi server response (instace res interceptor):::', response.data)
@@ -125,13 +131,19 @@ instance.interceptors.response.use( async (response) => {
         if (message && message === 'jwt expired') {
             console.log('Truong hop het han:::')
             const result = await refreshAcessToken()
-            const newAccessToken = result.newAccessToken
-            const newRefreshToken = result.newRefreshToken
-            console.log(`da lay access token moi::: ${newAccessToken}`)
-            config.headers['Authorization'] = `Bearer ${newAccessToken}` // phải sửa lại headers cho thành access token mới thì các req mà có access token hết hạn mới làm việc bth
-            window.localStorage.setItem("accessToken", newAccessToken)
-            window.localStorage.setItem("refreshToken", newRefreshToken)
-            return instance(config) // trả về config mới
+            if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+                localStorage.clear()
+                router.push('/login')
+            } else {
+                const newAccessToken = result.newAccessToken
+                const newRefreshToken = result.newRefreshToken
+                console.log(`da lay access token moi::: ${newAccessToken}`)
+                config.headers['Authorization'] = `Bearer ${newAccessToken}` // phải sửa lại headers cho thành access token mới thì các req mà có access token hết hạn mới làm việc bth
+                window.localStorage.setItem("accessToken", newAccessToken)
+                window.localStorage.setItem("refreshToken", newRefreshToken)
+                return instance(config) // trả về config mới
+            }
+            
         }
     } else if(code && code === 2 || code === 3 || code === 400) {
         localStorage.clear()
@@ -143,22 +155,20 @@ instance.interceptors.response.use( async (response) => {
 })
 
 // tạo interceptors của instance2 (interceptors2)
+// dùng intrerceptor cho instance2 để check và refresh access token khi thay đổi router, refresh trang... (instance2 để cho hàm verifyUser, vì hàm này đc gọi trên phần beforeEach() nên sẽ cần phải check hàm này mỗi lần refresh trang, đổi route)
 
 instance2.interceptors.request.use(async (config) => {
-    if(config.url.indexOf('/login') >= 0 || config.url.indexOf('/refresh-token') >= 0) { // những route này ko cần auth header
-        console.log("api login hoặc api refresh token instance2 interceptors req")
-        return config
-    }
+
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
     console.log('Truoc khi req duoc gui len server (instace2 req interceptor)::::')
-    console.log(accessToken)
-    console.log(refreshToken)
+    // console.log(accessToken)
+    // console.log(refreshToken)
     return config
 }, err => {
     return Promise.reject(err)
 })
-// dùng intrerceptor cho instance2 để check và refresh access token khi thay đổi router, refresh trang... (instance2 để cho hàm verifyUser, vì hàm này đc gọi trên phần beforeEach() nên sẽ cần phải check hàm này mỗi lần refresh trang, đổi route)
+
 instance2.interceptors.response.use(async (response) => {
     console.log('sau khi server response (instace2 res interceptor)::::', response.data)
     const config = response.config
@@ -166,15 +176,33 @@ instance2.interceptors.response.use(async (response) => {
     if (code && code === 1) {
         if (message && message === 'jwt expired') {
             console.log('Truong hop het han::::')
-            const { newAccessToken, newRefreshToken } = await refreshAccessToken2()
-            console.log('da lay token moi::::')
-            console.log(newAccessToken)
-            console.log(newRefreshToken)
-            config.headers['Authorization'] = `Bearer ${newAccessToken}`
-            config.data = { refresh_token: newRefreshToken }
-            window.localStorage.setItem("accessToken", newAccessToken)
-            window.localStorage.setItem("refreshToken", newRefreshToken)
-            return instance2(config)
+            const result = await refreshAccessToken2()
+            console.log(result, "instance2 interceptors response")
+            if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+                localStorage.clear()
+                router.push('/login')
+            } else {
+                const newAccessToken = result.newAccessToken
+                const newRefreshToken = result.newRefreshToken
+                console.log('da lay token moi::::')
+                console.log(newAccessToken)
+                console.log(newRefreshToken)
+                config.headers['Authorization'] = `Bearer ${newAccessToken}`
+                config.data = { refresh_token: newRefreshToken }
+                window.localStorage.setItem("accessToken", newAccessToken)
+                window.localStorage.setItem("refreshToken", newRefreshToken)
+                return instance2(config)
+            }
+            // const newAccessToken = result.newAccessToken
+            // const newRefreshToken = result.newRefreshToken
+            // console.log('da lay token moi::::')
+            // console.log(newAccessToken)
+            // console.log(newRefreshToken)
+            // config.headers['Authorization'] = `Bearer ${newAccessToken}`
+            // config.data = { refresh_token: newRefreshToken }
+            // window.localStorage.setItem("accessToken", newAccessToken)
+            // window.localStorage.setItem("refreshToken", newRefreshToken)
+            
         }
     }
     return response
@@ -196,6 +224,8 @@ async function refreshAcessToken3() {
             
             return result.data
 
+        } else {
+            return false
         }
     } catch (error) {
         console.log(error, "refreshAcessToken3 catch block error")
@@ -210,6 +240,8 @@ async function refreshAcessToken() {
             
             return result.data
 
+        } else {
+            return false
         }
     } catch (error) {
         console.log(error, "refreshAcessToken catch block error")
@@ -218,10 +250,15 @@ async function refreshAcessToken() {
 
 async function refreshAccessToken2() {
     const data = { refresh_token: localStorage.getItem("refreshToken") }
+    console.log(data, "refreshAccessToken2 data")
     try {
         const result = await instance2.post('/api/refresh-token', data)
         if (result.data.error === false) {
+            console.log(result.data ,"refreshAccessToken2 result data if error === false")
             return result.data
+        } else {
+            console.log(result.data ,"refreshAccessToken2 result data if error === true")
+            return false
         }
     } catch (error) {
         console.log(error, "refreshAcessToken2 catch block error")
@@ -231,10 +268,10 @@ async function refreshAccessToken2() {
 
 async function verifyUser() {
     const accessToken = localStorage.getItem('accessToken')
-    const refreshToken = localStorage.getItem('refreshToken')
+    
     try {
-        const data = { refresh_token: refreshToken }
-        const result = await instance2.post('/api/verifiedUser', data,
+        
+        const result = await instance2.get('/api/verifiedUser',
             {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`

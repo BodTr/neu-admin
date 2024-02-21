@@ -1,21 +1,5 @@
 const jwt = require("jsonwebtoken");
 const RefreshTokenSchema = require("../models/refreshToken");
-// const signAccessToken =  (id) => {
-//     return new Promise((resolve, reject) =>{
-//         const payload = {
-//             id,
-//             role
-//         }
-//         const secret = process.env.ACCESS_TOKEN_KEY
-//         const options = {
-//             expiresIn: '15m'
-//         }
-//         jwt.sign(payload, secret, options, (err, token) => {
-//             if (err) reject(err)
-//             resolve(token)
-//         })
-//     })
-// }
 
 const signAccessToken = async (id) => {
   try {
@@ -104,7 +88,7 @@ async function authenticateRefreshToken(req, res, next) {
       token: refresh_token,
     });
     if (!existingToken) {
-      return res.json({ error: true, message: "Invalid refresh token" });
+      return res.json({ code: 40, message: "Invalid refresh token" });
     } else {
       req.payload = decodedPayload;
     }

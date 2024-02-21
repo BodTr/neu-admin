@@ -103,15 +103,7 @@
                       ></textarea>
                     </div>
                     <div class="col-md-6">
-                      <div style="display: none;" class="mb-3">
-                        <label class="form-label">Ngôn ngữ</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="language"
-                          placeholder="Nhập ngôn ngữ"
-                        />
-                      </div>
+                      
                       <div class="mb-3">
                         <label class="form-label">Tên thương hiệu</label>
                         <input
@@ -267,15 +259,7 @@
                               ></textarea>
                             </div>
                             <div class="col-md-6">
-                              <div style="display: none;" class="mb-3">
-                                <label class="form-label">Ngôn ngữ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editProgram.language"
-                                  placeholder="Nhập ngôn ngữ"
-                                />
-                              </div>
+                              
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Tên thương hiệu</label
@@ -378,7 +362,6 @@ export default {
       },
       id: this.$route.params.id,
       name: "",
-      language: "",
       degreeName: "",
       degreeType: "",
       issuedBy: "",
@@ -388,7 +371,6 @@ export default {
       editProgram: {
         id: "",
         name: "",
-        language: "",
         degreeName: "",
         degreeType: "",
         issuedBy: "",
@@ -420,7 +402,6 @@ export default {
       const data = {
         programId: this.id,
         name: this.name,
-        language: this.language,
         degreeName: this.degreeName,
         degreeType: this.degreeType,
         issuedBy: this.issuedBy,
@@ -442,7 +423,6 @@ export default {
           this.$refs.table.refresh();
           this.displayModal = false;
           this.name = "";
-          this.language = "";
           this.degreeName = "";
           this.degreeType = "";
           this.issuedBy = "";
@@ -455,7 +435,6 @@ export default {
     onEdit(item) {
       this.editProgram.name = item.name;
       this.editProgram.name_en = item.name_en;
-      this.editProgram.language = item.language;
       this.editProgram.degreeName = item.degreeName;
       this.editProgram.degreeType = item.degreeType;
       this.editProgram.issuedBy = item.issuedBy;
@@ -468,7 +447,6 @@ export default {
     async onSubmit() {
       const data = {
         name: this.editProgram.name,
-        language: this.editProgram.language,
         degreeName: this.editProgram.degreeName,
         degreeType: this.editProgram.degreeType,
         issuedBy: this.editProgram.issuedBy,

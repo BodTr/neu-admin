@@ -437,6 +437,7 @@ export default {
       expireIn: "",
       displayModal: false,
       displayModalOne: false,
+      attachedDoc: null,
       attachedDocName: "",
       message: "",
 
@@ -448,7 +449,8 @@ export default {
         signDate: "",
         expireIn: "",
         attachedDocName: "",
-        attachedDoc: "",
+        attachedDocLink: "",
+        attachedDoc: null,
         message: "",
       },
     };
@@ -518,7 +520,6 @@ export default {
       this.displayModalOne = false;
     },
     async submitForm() {
-      console.log("AAAAAAAAAAAA");
       console.log(this.id, "post api program id");
 
       let formData = new FormData();
@@ -528,7 +529,7 @@ export default {
       formData.append("number", this.number);
       formData.append("signDate", this.signDate);
       formData.append("expireIn", this.expireIn);
-      formData.append("attachedDoc", this.attachedDoc);
+      formData.append("approvalDecisionDoc", this.attachedDoc);
 
       try {
         const result = await instance.post("/api/create-decision", formData, {
@@ -537,17 +538,7 @@ export default {
           },
         });
 
-        // const data = {
-        //   programId: this.id,
-        //   name: this.name,
-        //   detail: this.detail,
-        //   number: this.number,
-        //   signDate: this.signDate,
-        //   expireIn: this.expireIn,
-        // };
 
-        // try {
-        //   const result = await instance.post("/api/create-decision", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -566,6 +557,8 @@ export default {
           this.number = "";
           this.signDate = "";
           this.expireIn = "";
+          this.attachedDocName = "";
+          this.attachedDoc = null;
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -581,27 +574,23 @@ export default {
       this.editDecision.attachedDocLink = item.attachedDocLink;
       this.editDecision.attachedDocName = item.attachedDocName;
       this.editDecision.id = item._id;
+      this.editDecision.attachedDoc = null;
       this.showModal1();
 
       // console.log('content', this.content);
     },
 
     async onSubmit() {
-      // const data = {
-      //   name: this.editDecision.name,
-      //   detail: this.editDecision.detail,
-      //   number: this.editDecision.number,
-      //   signDate: this.editDecision.signDate,
-      //   expireIn: this.editDecision.expireIn,
-      // };
-
       let formData = new FormData();
+      formData.append("programId", this.id)
       formData.append("name", this.editDecision.name);
       formData.append("detail", this.editDecision.detail);
       formData.append("number", this.editDecision.number);
       formData.append("signDate", this.editDecision.signDate);
       formData.append("expireIn", this.editDecision.expireIn);
-      formData.append("attachedDoc", this.editDecision.attachedDoc);
+      formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
+      formData.append("attachedDocLink", this.editDecision.attachedDocLink);
+      formData.append("attachedDocName", this.editDecision.attachedDocName)
 
       try {
         const result = await instance.put(

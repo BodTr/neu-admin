@@ -100,7 +100,7 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), emptyMou
                 Key: `${oldFileKey}`
             })
             const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, put api:::")
+            console.log(result, ":::result, newDeleteCommand put api:::")
             newAttachedDocLink = attachedDoc1.location
 
         } else {
