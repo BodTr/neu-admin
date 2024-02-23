@@ -556,6 +556,7 @@ export default {
       formData.append("documentFile1", this.editDoc.attachedDoc);
       formData.append("attachedDocLink", this.editDoc.attachedDocLink);
       formData.append("attachedDocName", this.editDoc.attachedDocName);
+      formData.append("programId", this.id);
       try {
         const result = await instance.put(
           `/api/edit-document/${this.editDoc.id}`,
