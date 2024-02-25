@@ -18,6 +18,8 @@ import SubjectsManagePage from '../views/SubjectsManagePage.vue'
 import MOUMOAManagePage from '../views/MOUMOAManagePage.vue'
 import HTQTManagePage from '../views/HTQTManagePage.vue'
 import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentManagePage.vue'
+import StudentManagePage from '../views/StudentManagePage.vue'
+
 import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
 import VISAManagePage from '../views/VISAManagePage.vue'
 import Admin from '../views/Admin.vue'
@@ -189,6 +191,15 @@ const router = createRouter({
       path: '/enrollment/ex-f-student-infor',
       name: 'ex-f-student-manage-page',
       component: ExchangeForeignStudentManagePage,
+      meta: { 
+        requiresProgramId: false,
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/enrollment/student-infor',
+      name: 'student-manage-page',
+      component: StudentManagePage,
       meta: { 
         requiresProgramId: false,
         requiresAuth: true
