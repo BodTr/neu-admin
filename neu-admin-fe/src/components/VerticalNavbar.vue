@@ -47,7 +47,7 @@
                   <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                 </svg>
               </span>
-              <span class="nav-link-title"> Quản lí cấu hình </span>
+              <span class="nav-link-title"> Quản lý cấu hình </span>
             </router-link>
           </li>
           <li class="nav-item active dropdown">
@@ -59,11 +59,13 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
-                >Thông tin chung</span
-              >
+                style="font-size: 15px; font-weight: 600"
+                >Thông tin chung</span>
             </a>
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
@@ -185,7 +187,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title"> Quản lí văn bản liên kết </span>
+                  <span class="nav-link-title"> Quản lý văn bản liên kết </span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -214,7 +216,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title"> Quản lí đối tác </span>
+                  <span class="nav-link-title"> Quản lý đối tác </span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -243,7 +245,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title"> Quản lí đơn vị thực hiện </span>
+                  <span class="nav-link-title"> Quản lý đơn vị thực hiện </span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -298,9 +300,12 @@
           </li> -->
           <li class="nav-item active dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Đề án</span
               >
             </a>
@@ -330,7 +335,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title"> Quản lí nội dung đề án </span>
+                  <span class="nav-link-title"> Quản lý nội dung đề án </span>
                 </router-link>
               </div>
             </div>
@@ -347,9 +352,12 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Chất lượng đào tạo</span
               >
             </a>
@@ -401,9 +409,12 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Khung chương trình</span
               >
             </a>
@@ -455,9 +466,12 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Tuyển sinh</span
               >
             </a>
@@ -490,7 +504,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title"> Quản lí tuyển sinh</span>
+                  <span class="nav-link-title"> Quản lý tuyển sinh</span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -519,7 +533,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title">Quản lí giảng viên</span>
+                  <span class="nav-link-title">Quản lý giảng viên</span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -545,7 +559,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title">Quản lí đơn vị công tác</span>
+                  <span class="nav-link-title">Quản lý đơn vị công tác</span>
                 </router-link>
                 <router-link
                   class="dropdown-item"
@@ -574,7 +588,7 @@
                       ></path>
                     </svg>
                   </span>
-                  <span class="nav-link-title">Quản lí môn học</span>
+                  <span class="nav-link-title">Quản lý môn học</span>
                 </router-link>
               </div>
             </div>
@@ -594,19 +608,25 @@
 
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'moumoa-manage-page' }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
-                >Quản lí MOU.MOA</span
+                style="font-size: 15px; font-weight: 600; color: #fff; "
+                >Quản lý MOU.MOA</span
               >
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'htqt-manage-page' }">
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
-                >Quản lí các dự án HTQT</span
+                style="font-size: 15px; font-weight: 600; color: #fff;"
+                >Quản lý các dự án HTQT</span
               >
             </router-link>
           </li>
@@ -619,10 +639,13 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
-                >Quản ký sinh viên trao đổi <br /> ngắn hạn</span
+                style="font-size: 15px; font-weight: 600"
+                >Quản lý sinh viên <br /> trao đổi ngắn hạn</span
               >
             </a>
             <div class="dropdown-menu">
@@ -654,7 +677,7 @@
                     </svg>
                   </span>
                   <span class="nav-link-title">
-                    Quản lí sinh viên nước <br /> ngoài đến trao đổi
+                    Quản lý sinh viên nước <br /> ngoài đến trao đổi
                   </span>
                 </router-link>
                 <router-link
@@ -684,7 +707,7 @@
                     </svg>
                   </span>
                   <span class="nav-link-title">
-                    Quản lí sinh viên đi nước <br /> ngoài trao đổi
+                    Quản lý sinh viên đi nước <br /> ngoài trao đổi
                   </span>
                 </router-link>
               </div>
@@ -699,9 +722,12 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Quản lý lưu học sinh</span
               >
             </a>
@@ -748,9 +774,12 @@
                 name: 'extend-visa-manage-page',
               }"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600; color: #fff;"
                 >Cấp/Gia hạn VISA</span
               >
             </router-link>
@@ -765,9 +794,12 @@
               role="button"
               aria-expanded="false"
             >
+              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" /></svg>
+              </span>
               <span
                 class="nav-link-title"
-                style="font-size: 17px; font-weight: 600"
+                style="font-size: 15px; font-weight: 600"
                 >Quản trị</span
               >
             </a>

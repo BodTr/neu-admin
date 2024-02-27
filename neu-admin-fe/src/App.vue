@@ -9,4 +9,14 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style>
+
+.VueTables__search__input {
+  width: 200px;
+  margin: 10px
+}
+
+.VueTables__search-field label {
+  float: left;
+  margin: 5px
+}
 </style>
