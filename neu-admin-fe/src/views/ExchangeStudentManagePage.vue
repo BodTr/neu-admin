@@ -8,7 +8,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <h2 class="page-title">
-                Quản lí sinh viên đi nước ngoài trao đổi
+                Quản lý sinh viên đi nước ngoài trao đổi
               </h2>
             </div>
 

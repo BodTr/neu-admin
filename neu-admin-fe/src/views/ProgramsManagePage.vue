@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chương trình</h2>
+              <h2 class="page-title">Quản lý chương trình</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -285,7 +285,7 @@ export default {
         headings: {
           name: "Tên chương trình",
           year: "Năm",
-          isManaged: "Chọn quản lí",
+          isManaged: "Chọn quản lý",
           tool: "Thao tác",
         },
       },

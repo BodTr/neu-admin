@@ -8,7 +8,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <h2 class="page-title">
-                Quản lí cấp/gia hạn visa cho giảng viên/sinh viên nước ngoài
+                Quản lý cấp/gia hạn visa cho giảng viên/sinh viên nước ngoài
               </h2>
             </div>
 

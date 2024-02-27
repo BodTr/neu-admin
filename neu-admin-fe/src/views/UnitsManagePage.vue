@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí đơn vị công tác</h2>
+              <h2 class="page-title">Quản lý đơn vị công tác</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">

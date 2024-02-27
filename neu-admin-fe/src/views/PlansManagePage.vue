@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí nội dung đề án</h2>
+              <h2 class="page-title">Quản lý nội dung đề án</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -154,12 +154,12 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Quản lí tài chính</label>
+                        <label class="form-label">Quản lý tài chính</label>
                         <textarea
                           v-model="ecoManage"
                           row="1"
                           class="form-control"
-                          placeholder="Quản lí tài chính"
+                          placeholder="Quản lý tài chính"
                         ></textarea>
                       </div>
                       <div class="mb-3">
@@ -358,13 +358,13 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Quản lí tài chính</label
+                                  >Quản lý tài chính</label
                                 >
                                 <textarea
                                   v-model="editPlan.ecoManage"
                                   row="1"
                                   class="form-control"
-                                  placeholder="Quản lí tài chính"
+                                  placeholder="Quản lý tài chính"
                                 ></textarea>
                               </div>
                               <div class="mb-3">
@@ -441,7 +441,7 @@ export default {
           qualifiedLecturer: "Điều kiện về giảng viên",
           qualifiedStudent: "Điều kiện tuyển sinh",
           tuition: "Kinh phí đào tạo",
-          ecoManage: "Quản lí tài chính",
+          ecoManage: "Quản lý tài chính",
           infraCondition: "Điều kiện cơ sở vật chất",
           report: "Thực hiện báo cáo",
           tool: "Thao tác",

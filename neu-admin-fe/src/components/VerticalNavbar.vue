@@ -728,7 +728,7 @@
               <span
                 class="nav-link-title"
                 style="font-size: 15px; font-weight: 600"
-                >Quản lý lưu học sinh</span
+                >Quản lý lưu sinh viên</span
               >
             </a>
             <div class="dropdown-menu">

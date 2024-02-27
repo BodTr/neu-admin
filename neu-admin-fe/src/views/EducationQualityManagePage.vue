@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lí chất lượng đào tạo</h2>
+              <h2 class="page-title">Quản lý chất lượng đào tạo</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -34,7 +34,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm qui trình quản lí
+                  Thêm qui trình quản lý
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm qui trình quản lí</h5>
+                    <h5 class="modal-title">Thêm qui trình quản lý</h5>
                     <button
                       @click="hideModal()"
                       type="button"
