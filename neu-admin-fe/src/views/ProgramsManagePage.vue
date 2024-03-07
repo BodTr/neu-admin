@@ -1,13 +1,13 @@
 <template>
   <div class="page">
-    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
+    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lý chương trình</h2>
+              <h2 class="page-title">Quản lý Chương trình liên kết</h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -86,7 +86,7 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên</label>
+                        <label class="form-label">Tên chương trình</label>
                         <input
                           type="text"
                           class="form-control"
@@ -94,15 +94,87 @@
                           placeholder="Nhập tên chương trình"
                         />
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Quốc gia</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="nation"
+                          placeholder="Nhập quốc gia"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Trường đối tác</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="parterUni"
+                          placeholder="Nhập tên trường đối tác"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chuyên ngành</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="major"
+                          placeholder="Nhập tên chuyên ngành"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Trình độ đào tạo</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="level"
+                          placeholder="Nhập trình độ đào tạo"
+                        />
+                      </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Năm</label>
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
                           v-model="year"
                           placeholder="Nhập năm"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Đơn vị quản lý</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="agency"
+                          placeholder="Nhập đơn vị quản lý"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">SĐT đơn vị quản lý</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="agencyPhoneNumber"
+                          placeholder="Nhập số điện thoại"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Chỉ tiêu</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          v-model="quota"
+                          placeholder="Nhập chỉ tiêu"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ngày hết hạn</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="expiry"
+                          placeholder="Nhập đơn vị quản lý"
                         />
                       </div>
                     </div>
@@ -224,7 +296,9 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label"
+                                  >Tên chương trình</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
@@ -232,15 +306,91 @@
                                   placeholder="Nhập tên chương trình"
                                 />
                               </div>
+                              <div class="mb-3">
+                                <label class="form-label">Quốc gia</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.nation"
+                                  placeholder="Nhập quốc gia"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Trường đối tác</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.parterUni"
+                                  placeholder="Nhập tên trường đối tác"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chuyên ngành</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.major"
+                                  placeholder="Nhập tên chuyên ngành"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Trình độ đào tạo</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.level"
+                                  placeholder="Nhập trình độ đào tạo"
+                                />
+                              </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label">Năm</label>
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editprogram.year"
                                   placeholder="Nhập năm"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị quản lý</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.agency"
+                                  placeholder="Nhập đơn vị quản lý"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >SĐT đơn vị quản lý</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="agencyPhoneNumber"
+                                  placeholder="Nhập số điện thoại"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chỉ tiêu</label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  v-model="quota"
+                                  placeholder="Nhập chỉ tiêu"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Ngày hết hạn</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="expiry"
+                                  placeholder="Nhập đơn vị quản lý"
                                 />
                               </div>
                             </div>
@@ -280,25 +430,55 @@ export default {
   },
   data() {
     return {
-      columns: ["stt", "name", "year", "isManaged", "tool"],
+      columns: ["stt", "year", "name", "nation", "parterUni", "major", "quota", "level", "agency", "agencyPhoneNumber", "expiry", "status", "approvalDecision", "tool"],
       options: {
         headings: {
           name: "Tên chương trình",
           year: "Năm",
-          isManaged: "Chọn quản lý",
+          nation: "Quốc gia",
+          parterUni: "Trường đối tác",
+          major: "Chuyên ngành",
+          quota: "Chỉ tiêu",
+          level: "Trình độ đào tạo",
+          agency: "Tên đơn vị quản lý",
+          agencyPhoneNumber: "SĐT đơn vị quản lý",
+          expiry: "Ngày hết hạn",
+          status: "Trạng thái",
+          approvalDecision: "Quyết định phê duyệt",
           tool: "Thao tác",
+
         },
       },
       name: "",
       year: "",
-      id: [],
-
+      nation: "",
+      parterUni: "",
+      major: "",
+      quota: "",
+      level: "",
+      agency: "",
+      agencyPhoneNumber: "",
+      expiry: "",
+      status: "",
+      approvalDecisionLink: "",
+      approvalDecisionName: "",
       displayModal: false,
       displayModalOne: false,
       editprogram: {
         id: "",
         name: "",
         year: "",
+        nation: "",
+        parterUni: "",
+        major: "",
+        quota: "",
+        level: "",
+        agency: "",
+        agencyPhoneNumber: "",
+        expiry: "",
+        status: "",
+        approvalDecisionLink: "",
+        approvalDecisionName: "",
       },
     };
   },
@@ -309,20 +489,7 @@ export default {
     return { toast };
   },
 
-  created() {
-    // this.id = ['0']
-    const idArr = localStorage.getItem("idArr");
-    console.log(idArr === null, "check id");
-    console.log(this.id, "this.id")
-    if (idArr === null) {
-      this.id = ["0"];
-      console.log(this.id, "this.id123")
-      console.log("if statement", this.id);
-    } else {
-      this.id = JSON.parse(localStorage.getItem("idArr"));
-      console.log("else statement", this.id);
-    }
-  },
+
 
   methods: {
     showModal() {
@@ -341,6 +508,15 @@ export default {
       const data = {
         name: this.name,
         year: this.year,
+        nation: this.nation,
+        parterUni: this.parterUni,
+        major: this.major,
+        quota: this.quota,
+        level: this.level,
+        agency: this.agency,
+        agencyPhoneNumber: this.agencyPhoneNumber,
+        expiry: this.expiry,
+
       };
 
       try {
@@ -361,6 +537,15 @@ export default {
           this.displayModal = false;
           this.name = "";
           this.year = "";
+          this.nation = "";
+          this.parterUni = "";
+          this.major = "";
+          this.quota = "";
+          this.level = "";
+          this.agency = "";
+          this.agencyPhoneNumber = "";
+          this.expiry = "";
+
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -370,6 +555,14 @@ export default {
     onEdit(item) {
       this.editprogram.name = item.name;
       this.editprogram.year = item.year;
+      this.editprogram.nation = item.nation;
+      this.editprogram.parterUni = item.parterUni;
+      this.editprogram.major = item.major;
+      this.editprogram.quota = item.quota;
+      this.editprogram.level = item.level;
+      this.editprogram.agency = item.agency;
+      this.editprogram.agencyPhoneNumber = item.agencyPhoneNumber;
+      this.editprogram.expiry = item.expiry;
       this.editprogram.id = item._id;
       this.showModal1();
 
@@ -380,6 +573,15 @@ export default {
       const data = {
         name: this.editprogram.name,
         year: this.editprogram.year,
+        nation: this.editprogram.nation,
+        parterUni: this.editprogram.parterUni,
+        major: this.editprogram.major,
+        quota: this.editprogram.quota,
+        level: this.editprogram.level,
+        agency: this.editprogram.agency,
+        agencyPhoneNumber: this.editprogram.agencyPhoneNumber,
+        expiry: this.editprogram.expiry,
+
       };
       try {
         const result = await instance.put(
@@ -408,7 +610,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa chương trình này?")) {
-          const result = await instance.delete(`/api/delete-program/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-program/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

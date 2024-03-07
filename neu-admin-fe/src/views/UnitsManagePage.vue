@@ -221,7 +221,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -246,15 +245,12 @@ export default {
     return {
       columns: ["stt", "unit", "tool"],
       options: {
-        params: {
-          id: this.$route.params.id,
-        },
+
         headings: {
           unit: "Tự đánh giá",
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
       unit: "",
 
       displayModal: false,
@@ -287,7 +283,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         unit: this.unit,
       };
 

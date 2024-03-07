@@ -1,13 +1,13 @@
 <template>
   <div class="page">
-    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
+    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              
+
               <h2 class="page-title">Quản lý tài khoản</h2>
             </div>
 
@@ -125,6 +125,21 @@
                           placeholder="Nhập số điện thoại"
                         />
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Phân quyền người dùng</label>
+                        <select
+                          v-model="permission"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Chọn phân quyền của người dùng
+                          </option>
+                          <option value="Cấp 3">Cấp 3</option>
+                          <option value="Cấp 2">Cấp 2</option>
+                          <option value="Super Admin">Super Admin</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -214,7 +229,6 @@
                         </svg>
                       </a>
 
-                      
                       <a
                         href="#"
                         class="btn btn-warning btn-icon"
@@ -244,7 +258,65 @@
                           <path d="M10 11v-2a2 2 0 1 1 4 0v2" />
                         </svg>
                       </a>
-                      
+                      <a
+                        href="#"
+                        v-if="
+                          item.row.permission === 'Cấp 2' ||
+                          item.row.permission === 'Cấp 3'
+                        "
+                        class="btn btn-lime btn-icon"
+                        data-bs-target="#modal-report-three"
+                        @click="showUserMenu(item.row)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-users-group"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                          <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
+                          <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                          <path d="M17 10h2a2 2 0 0 1 2 2v1" />
+                          <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                          <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
+                        </svg>
+                      </a>
+                      <a
+                        href="#"
+                        v-if="item.row.permission === 'Cấp 3'"
+                        class="btn btn-cyan btn-icon"
+                        data-bs-target="#modal-report-four"
+                        @click="onEditAttachedUserProgram(item.row)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-git-branch"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                          <path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                          <path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                          <path d="M7 8l0 8" />
+                          <path d="M9 18h6a2 2 0 0 0 2 -2v-5" />
+                          <path d="M14 14l3 -3l3 3" />
+                        </svg>
+                      </a>
                     </span>
 
                     <div
@@ -298,10 +370,28 @@
                                   placeholder="Nhập số điện thoại"
                                 />
                               </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Phân quyền người dùng</label
+                                >
+                                <select
+                                  v-model="editUser.permission"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn phân quyền của người dùng
+                                  </option>
+                                  <option value="Cấp 3">Cấp 3</option>
+                                  <option value="Cấp 2">Cấp 2</option>
+                                  <option value="Super Admin">
+                                    Super Admin
+                                  </option>
+                                </select>
+                              </div>
                             </div>
                           </div>
                           <div class="modal-footer">
-                            
                             <a
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
@@ -349,7 +439,6 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                          
                             <button
                               type="button"
                               class="btn btn-primary"
@@ -359,6 +448,393 @@
                               Lưu
                             </button>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      v-if="displayModalThree"
+                      class="modal modal-blur fade show"
+                      id="modal-report-three"
+                      tabindex="-1"
+                      style="display: block"
+                      aria-modal="true"
+                    >
+                      <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Phân quyền Menu</h5>
+                            <button
+                              @click="hideModal3()"
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body row row-cards">
+                            <div class="table-responsive">
+                              <table id="menu_table" class="table mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>Bậc 1</th>
+                                    <th>Bậc 2</th>
+                                    <th>Bậc 3</th>
+                                    <th>Hiển thị</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Quản lý chương trình liên kết</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="program_manage"
+                                        value="program_manage"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td rowspan="14">CTLKĐT với nước ngoài</td>
+                                    <td rowspan="7">Thông tin chung</td>
+                                    <td>Thông tin chương trình liên kết</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="program_infor"
+                                        value="program_infor"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Các quyết định phê duyệt</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="approval_decision"
+                                        value="approval_decision"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Các quyết định đóng chương trình</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="close_decision"
+                                        value="close_decision"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý văn bản liên kết</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="document"
+                                        value="document"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý đối tác</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="partner"
+                                        value="partner"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý đơn vị thực hiện</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="agency"
+                                        value="agency"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Mục tiêu chương trình</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="program_goal"
+                                        value="program_goal"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Đề án</td>
+                                    <td>Quản lý nội dung đề án</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="plan"
+                                        value="plan"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Chất lượng đào tạo</td>
+                                    <td>Đảm bảo chất lượng đào tạo</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="education_quality"
+                                        value="education_quality"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Khung chương trình</td>
+                                    <td>Thông tin khung chương trình</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="curriculum"
+                                        value="curriculum"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td rowspan="4">Tuyển sinh</td>
+                                    <td>Quản lý tuyển sinh</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="enrollment"
+                                        value="enrollment"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý giảng viên</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="lecturer"
+                                        value="lecturer"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý đơn vị công tác</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="unit"
+                                        value="unit"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý môn học</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="subject"
+                                        value="subject"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý MOU.MOA</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="moumoa"
+                                        value="moumoa"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý các dự án HTQT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="htqt"
+                                        value="htqt"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td rowspan="2">
+                                      Quản lý sinh viên trao đổi ngắn hạn
+                                    </td>
+                                    <td>Sinh viên nước ngoài đến trao đổi</td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="ex_f_stu"
+                                        value="ex_f_stu"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Sinh viên đi nước ngoài trao đổi</td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="ex_stu"
+                                        value="ex_stu"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý lưu sinh viên</td>
+                                    <td>Quản lý lưu sinh viên</td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="student"
+                                        value="student"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Cấp/Gia hạn VISA</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="visa"
+                                        value="visa"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Quản lý tài khoản</td>
+                                    <td>Quản lý tài khoản</td>
+                                    <td></td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="user_manage"
+                                        value="user_manage"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              data-bs-dismiss="modal"
+                              @click="onMenuChange()"
+                            >
+                              Lưu
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      v-if="displayModalFour"
+                      class="modal modal-blur fade show"
+                      id="modal-report-four"
+                      tabindex="-1"
+                      style="display: block"
+                      aria-modal="true"
+                    >
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Phân bổ Chương trình cho đơn vị</h5>
+                            <button
+                              @click="hideModal4()"
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body row row-cards">
+                            <div class="col-md-4">
+                              <label class="form-label"
+                                >Năm học</label
+                              >
+                              <select
+                                v-model="year"
+                                class="form-select"
+                                tabindex="-1"
+                                @change="onYearChange()"
+                              >
+                                <option value="" disabled selected>
+                                  Chọn năm học
+                                </option>
+                                <option v-for="(year, index) in yearsArray" :value="year">{{ year }}</option>
+                              </select>
+                            </div>
+                            <div class="table-responsive">
+                              <table id="menu_table" class="table mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>Tên chương trình</th>
+                                    <th>Hiển thị</th>
+                                  </tr>
+                                </thead>
+                                <tbody v-for="(program, index) in programsOrderedByYearArr">
+                                  <tr>
+                                    <td>{{ program.name }}</td>
+                                    <td><input
+                                        type="checkbox"
+                                        id="program_manage"
+                                        :value="program._id"
+                                        v-model="selectedProgramIdArr"
+                                      /></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              data-bs-dismiss="modal"
+                              @click="onUserChange()"
+                            >
+                              Lưu
+                            </button>
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
@@ -374,7 +850,6 @@
 </template>
 
 <script>
-
 import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
@@ -387,12 +862,13 @@ export default {
   },
   data() {
     return {
-      columns: ["stt", "name", "username", "phoneNumber", "tool"],
+      columns: ["stt", "name", "username", "phoneNumber", "permission", "tool"],
       options: {
         headings: {
           name: "Tên tài khoản",
           username: "Tên đăng nhập",
           phoneNumber: "Số điện thoại",
+          permission: "phân quyền",
           tool: "Thao tác",
         },
       },
@@ -400,17 +876,27 @@ export default {
       name: "",
       username: "",
       phoneNumber: "",
+      permission: "",
       password: "",
 
       displayModal: false,
       displayModalOne: false,
       displayModalTwo: false,
+      displayModalThree: false,
+      displayModalFour: false,
+
+      menuArray: [],
+      yearsArray: [],
+      programsOrderedByYearArr: [],
+      selectedProgramIdArr: [],
+      year: "",
 
       editUser: {
         id: "",
         name: "",
         username: "",
         phoneNumber: "",
+        permission: "",
         editedPassword: "",
       },
     };
@@ -422,23 +908,73 @@ export default {
     return { toast };
   },
 
-  created() {
-    // this.id = ['0']
-    const idArr = localStorage.getItem("idArr");
-    console.log(idArr === null, "check id");
-    console.log(this.id, "this.id");
-    if (idArr === null) {
-      this.id = ["0"];
-      console.log(this.id, "this.id123");
-      console.log("if statement", this.id);
-    } else {
-      this.id = JSON.parse(localStorage.getItem("idArr"));
-      console.log("else statement", this.id);
+  async mounted () {
+    try {
+      const yearsArr = await this.getYearsArr()
+      console.log(yearsArr, "yearsArr")
+      this.yearsArray = yearsArr
+      
+    } catch (error) {
+      console.log("mounted catch block error")
     }
+    
   },
 
   methods: {
+    async getYearsArr() {
+      try {
+        const result = await instance.get("/api/get-years-array")
+        console.log(result, "result, getYearsArr()")
+        const yearsArr = result.data.data
+        return yearsArr
+      } catch (error) {
+        console.log(error, "getYearsArr() catch block error")
+      }
+    },
+    onEditAttachedUserProgram(item) {
+      console.log("onEditAttachedUserProgram click event");
+      this.editUser.id = item._id
+      this.showModal4()
+    },
+    async onYearChange() {
+      console.log(this.year, "onYearChange")
+      try {
+        const queryParams = { year: this.year }
+        const result = await instance.get('/api/get-programs-by-year', {params: queryParams})
+        console.log(result, "result, get-programs-by-year api result")
+        this.programsOrderedByYearArr = result.data.programsZeroUserFilterByYear
+      } catch(error) {
+        console.log(error, "onYearChange() catch block error")
+      }
+    },
 
+
+    async onUserChange() {
+      try {
+        const data = {
+          programIdArr: this.selectedProgramIdArr
+        }
+        const result = await instance.patch(`/api/add-programs-for-users/${this.editUser.id}`, data)
+        console.log(result)
+        if (result.data.error === true) {
+          // alert(result.data.message)
+          this.toast.error(result.data.message);
+          // location.reload();
+          // this.$refs.table.refresh()
+        }
+
+        if (result.data.error === false) {
+          // alert(result.data.message)
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.displayModalFour = false;
+          this.selectedProgramIdArr = [];
+        }
+      } catch (error) {
+        
+      }
+
+    },
     showModal() {
       this.displayModal = true;
     },
@@ -457,13 +993,65 @@ export default {
     hideModal2() {
       this.displayModalTwo = false;
     },
+    showModal3() {
+      console.log("showModal3 click event");
+      this.displayModalThree = true
+    },
+    hideModal3() {
+      this.displayModalThree = false
+    },
+    showModal4() {
+      this.displayModalFour = true
+    },
+    hideModal4() {
+      this.displayModalFour = false
+    },
 
+    showUserMenu(item) {
+      console.log(item);
+      this.editUser.id = item._id;
+      if (!item.menuManageArray) {
+        this.menuArray = []
+      } else {
+        this.menuArray = item.menuManageArray
+      }
+      
+      this.showModal3();
+    },
+    
+    async onMenuChange() {
+      console.log("onMenuChange click event");
+      try {
+        const data = {
+          menuArray: this.menuArray
+        }
+        const result = await instance.patch(`/api/add-menu/${this.editUser.id}`, data)
+        console.log(result, "patch add-menu api result");
+        if (result.data.error === true) {
+          // alert(result.data.message)
+          this.toast.error(result.data.message);
+          // location.reload();
+          // this.$refs.table.refresh()
+        }
+
+        if (result.data.error === false) {
+          // alert(result.data.message)
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.displayModalThree = false;
+          this.menuArray = [];
+        }
+      } catch (error) {
+        console.log(error, "onMenuChange catch block error")
+      }
+    },
     async submitFile() {
       try {
         const data = {
           name: this.name,
           username: this.username,
           phoneNumber: this.phoneNumber,
+          permission: this.permission,
           password: this.password,
         };
         console.log(data, "post api data");
@@ -485,6 +1073,7 @@ export default {
           this.name = "";
           this.username = "";
           this.phoneNumber = "";
+          this.permission = "";
           this.password = "";
         }
       } catch (error) {
@@ -497,6 +1086,7 @@ export default {
       this.editUser.name = item.name;
       this.editUser.username = item.username;
       this.editUser.phoneNumber = item.phoneNumber;
+      this.editUser.permission = item.permission;
       this.editUser.id = item._id;
       this.showModal1();
     },
@@ -507,6 +1097,7 @@ export default {
           name: this.editUser.name,
           username: this.editUser.username,
           phoneNumber: this.editUser.phoneNumber,
+          permission: this.editUser.permission,
         };
 
         const result = await instance.put(
@@ -518,7 +1109,7 @@ export default {
           // alert(result.data.message)
           this.toast.error(result.data.message);
           // location.reload();
-          this.$refs.table.refresh()
+          this.$refs.table.refresh();
         }
 
         if (result.data.error === false) {
@@ -536,7 +1127,7 @@ export default {
     async onEditPassWord(item) {
       console.log(item);
       this.editUser.id = item._id;
-      this.showModal2()
+      this.showModal2();
     },
 
     async onPasswordChange() {
@@ -587,4 +1178,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  #menu_table td, #menu_table th  {
+    border: 1px solid #ddd;
+  }
+</style>

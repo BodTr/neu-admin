@@ -33,35 +33,35 @@ const router = createRouter({
       name: 'programs-manage-page',
       component: ProgramsManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       }
     },
     
     {
-      path: '/general-infor/trans-program/:id',
+      path: '/general-infor/trans-program/',
       name: 'trans-programs-manage-page',
       component: TransnationProgramsManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       }
     },
     {
-      path: '/general-infor/approval-decision/:id',
+      path: '/general-infor/approval-decision/',
       name: 'approval-decision-manage-page',
       component: ApprovalDecisionManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/general-infor/close-decision/:id',
+      path: '/general-infor/close-decision/',
       name: 'close-decision-manage-page',
       component: CloseDecisionManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
@@ -71,101 +71,101 @@ const router = createRouter({
       component: IdArrayLengthOneErrorPage
     },
     {
-      path: '/general-infor/documents/:id',
+      path: '/general-infor/documents/',
       name: 'documents-manage-page',
       component: DocumentManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/general-infor/agencies/:id',
+      path: '/general-infor/agencies/',
       name: 'agencies-manage-page',
       component: AgenciesManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/general-infor/partners/:id',
+      path: '/general-infor/partners/',
       name: 'partners-manage-page',
       component: PartnersManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/general-infor/goals/:id',
+      path: '/general-infor/goals/',
       name: 'goals-manage-page',
       component: ProgramGoalsManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/plans-infor/plans/:id',
+      path: '/plans-infor/plans/',
       name: 'plans-manage-page',
       component: PlansManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/edu-quality/processes/:id',
+      path: '/edu-quality/processes/',
       name: 'edu-quality-manage-page',
       component: EducationQualityManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/curriculums/curriculum-infor/:id',
+      path: '/curriculums/curriculum-infor/',
       name: 'curriculums-manage-page',
       component: CurriculumManagePage,
       meta: { 
-        requiresProgramId: true,
+
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/enrollment-infor/:id',
+      path: '/enrollment/enrollment-infor/',
       name: 'enrollment-manage-page',
       component: EnrollmentManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/lecturers-infor/:id',
+      path: '/enrollment/lecturers-infor/',
       name: 'lecturers-manage-page',
       component: LecturersManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/units-infor/:id',
+      path: '/enrollment/units-infor/',
       name: 'units-manage-page',
       component: UnitsManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
     {
-      path: '/enrollment/subjects-infor/:id',
+      path: '/enrollment/subjects-infor/',
       name: 'subjects-manage-page',
       component: SubjectsManagePage,
       meta: { 
-        requiresProgramId: true,
+        
         requiresAuth: true
       },
     },
@@ -174,7 +174,7 @@ const router = createRouter({
       name: 'moumoa-manage-page',
       component: MOUMOAManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -183,7 +183,7 @@ const router = createRouter({
       name: 'htqt-manage-page',
       component: HTQTManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -192,7 +192,7 @@ const router = createRouter({
       name: 'ex-f-student-manage-page',
       component: ExchangeForeignStudentManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -201,7 +201,7 @@ const router = createRouter({
       name: 'student-manage-page',
       component: StudentManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -210,7 +210,7 @@ const router = createRouter({
       name: 'ex-student-manage-page',
       component: ExchangeStudentManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -219,7 +219,7 @@ const router = createRouter({
       name: 'extend-visa-manage-page',
       component: VISAManagePage,
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -229,7 +229,7 @@ const router = createRouter({
       component: Admin,
       
       meta: { 
-        requiresProgramId: false,
+        
         requiresAuth: true
       },
     },
@@ -239,7 +239,6 @@ const router = createRouter({
       component: LoginPage,
       
       meta: { 
-        requiresProgramId: false,
         requiresAuth: false
       },
     },

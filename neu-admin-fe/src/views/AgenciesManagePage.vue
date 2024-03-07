@@ -458,6 +458,7 @@
 
 <script>
 // import { ref } from 'vue'
+import instance from "../instance";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
@@ -537,7 +538,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         name: this.name,
         phoneNumber: this.phoneNumber,
         position: this.position,

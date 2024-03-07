@@ -24,22 +24,6 @@ router.beforeEach(async(to, from) => {
         
 
         // phần kiểm tra đã tích vào chương trình đào tạo chưa
-        const idArr = JSON.parse(localStorage.getItem("idArr"))
-        
-
-        if (idArr !== null) {
-            if (to.meta.requiresProgramId && idArr.length !== 2) {
-                return {name: 'id-array-error-page'}
-            } else {
-
-            }
-        } else {
-            if (to.meta.requiresProgramId) {
-                return {name: 'id-array-error-page'}
-            } else {
-
-            }
-        }
 
         
     } catch (error) {

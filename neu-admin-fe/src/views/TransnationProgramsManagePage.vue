@@ -400,7 +400,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         name: this.name,
         degreeName: this.degreeName,
         degreeType: this.degreeType,

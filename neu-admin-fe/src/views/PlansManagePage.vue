@@ -496,7 +496,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         certName: this.certName,
         qualifiedLecturer: this.qualifiedLecturer,
         qualifiedStudent: this.qualifiedStudent,

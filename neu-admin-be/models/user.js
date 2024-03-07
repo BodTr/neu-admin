@@ -17,6 +17,14 @@ const UserSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         require: false
+    },
+    menuManageArray: [{
+        type: String,
+        require: false
+    }],
+    permission: {
+        type: String,
+        require: false
     }
     
 },

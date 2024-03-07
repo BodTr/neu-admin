@@ -523,7 +523,6 @@ export default {
       console.log(this.id, "post api program id");
 
       let formData = new FormData();
-      formData.append("programId", this.id);
       formData.append("name", this.name);
       formData.append("detail", this.detail);
       formData.append("number", this.number);
@@ -582,7 +581,6 @@ export default {
 
     async onSubmit() {
       let formData = new FormData();
-      formData.append("programId", this.id)
       formData.append("name", this.editDecision.name);
       formData.append("detail", this.editDecision.detail);
       formData.append("number", this.editDecision.number);

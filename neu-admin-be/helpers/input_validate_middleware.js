@@ -3,8 +3,8 @@ function emptyProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty program inputs");
     const error = new Error("empty program inputs");
     error.code = "EMPTY_PROGRAM_INPUTS_ERROR";
-    const { name, year } = req.body;
-    if (!name || !year) {
+    const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body;
+    if (!name || !year || !nation || !parterUni || !major || !quota || !level || !agency || !agencyPhoneNumber || !expiry) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -17,9 +17,10 @@ function typeProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type program inputs")
     const error = new Error('wrong type program inputs')
     error.code = 'PROGRAM_INPUTS_TYPE_ERROR'
-    const { name, year } = req.body
-    console.log(isNaN(year) , "type input check")
-    if (typeof name !== 'string' || isNaN(year)) {
+    const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body
+    
+    if (typeof name !== 'string' || isNaN(year) || typeof nation !== 'string' || typeof parterUni !== 'string' || typeof major !== 'string' || isNaN(quota) || typeof level !== 'string' || typeof agency !== 'string' || isNaN(agencyPhoneNumber) || typeof expiry !== 'string') {
+        console.log("type input incorrect")
         throw error
     } else {
         console.log('program inputs type correct')
@@ -680,8 +681,8 @@ function emptyUserInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty user inputs");
     const error = new Error("empty goal inputs");
     error.code = "EMPTY_USER_INPUTS_ERROR";
-    const { name, username, phoneNumber } = req.body;
-    if (!name || !username || !phoneNumber) {
+    const { name, username, phoneNumber, permission } = req.body;
+    if (!name || !username || !phoneNumber || !permission) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {

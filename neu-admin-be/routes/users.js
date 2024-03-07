@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const UserSchema = require('../models/user')
+const ProgramSchema = require('../models/program')
 const bcrypt = require('bcrypt')
 const ObjectId = require("mongodb").ObjectId
 const { authenticateAccessToken } = require('../helpers/jwt_services')
@@ -38,8 +39,54 @@ router.get('/api/get-all-users', async (req, res) => {
     }
 })
 
+router.get('/api/get-all-program-years', async(req, res) => {
+    try {
+    
+    } catch (error) {
+        
+    }
+})
+
+router.get('/api/getMenus', async (req, res) => {
+    //Dnh sách menu đầy đủ
+    var menus =[
+        {
+            title: "Quản lý CTLK",
+            url: "/"
+        },
+        {
+            title: "CTLKĐT với nước ngoài",
+            url: "",
+            childs: [
+                {
+                    title: "Thông tin chung",
+                    url: "",
+                    childs: [
+                        {
+                            title: "TT chương trình liên kết",
+                            url: "/general-infor/trans-program"
+                        },
+                        {
+                            title: "TT chương trình liên kết",
+                            url: "/general-infor/trans-program"
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+
+    //Lấy danh sách menu mà user đượ sử dụng
+
+    //Join 2 bảng thỏa mãn với nhau
+
+
+    res.json({ data:menus, error: false })
+})
+
 router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidation, async (req, res) => {
-    const { name, username, password, phoneNumber } = req.body
+    const { name, username, password, phoneNumber, permission } = req.body
     console.log(req.body, "post api")
     const encryptedPassword = await bcrypt.hash(password, 10)
     try {
@@ -52,6 +99,7 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
                 name: name,
                 phoneNumber:phoneNumber,
                 username: username,
+                permission: permission,
                 password: encryptedPassword
             })
             console.log('User saved successfully', saving_user)
@@ -65,12 +113,14 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
     }
 })
 
+
+
 router.put('/api/edit-user/:id', emptyUserInputsValidation, typeUserInputsValidation, async (req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id::")
         console.log(req.body, "req.body put api")
-        const { name, userName, phoneNumber } = req.body
+        const { name, userName, phoneNumber, permission } = req.body
         const checkedUser = await UserSchema.findOne({ _id: id })
         if (!checkedUser) {
             console.log(checkedUser, "Db error put api")
@@ -80,6 +130,7 @@ router.put('/api/edit-user/:id', emptyUserInputsValidation, typeUserInputsValida
                 name: name,
                 userName: userName,
                 phoneNumber: phoneNumber,
+                permission: permission,
             }
             const updatedUser = await UserSchema.findOneAndUpdate({ _id: id }, updatingUser, { new: true })
             console.log(updatedUser, "updatedUser")
@@ -103,14 +154,29 @@ router.patch('/api/edit-user-password/:id', emptyUserPasswordInputValidation, as
         } else {
             const hashededitedPassword = await bcrypt.hash(editedPassword, 10)
             const updatedPasswordUser = await UserSchema.findOneAndUpdate({ _id: id }, {password: hashededitedPassword}, {new: true})
-            console.log(updatedPasswordUser, "updatedPasswordUser")
-            res.json({ error: false, message: "Password has been updated" })
+            console.log(updatedPasswordUser, "updatedPasswordUser edit-user-password api ")
+            res.json({ error: false, message: "Mật khẩu được sửa thành công" })
         }
     } catch (error) {
-        console.log(error, "patch api catch block error")
+        console.log(error, "edit-user-password api patch api catch block error")
         res.json({error: true, message: "something went wrong!"})
     }
 })
+
+router.patch('/api/add-menu/:id', async(req, res) => {
+    try {
+        const { id } = req.params
+        const { menuArray } = req.body
+        const addedMenuUser = await UserSchema.findByIdAndUpdate({_id: id}, {menuManageArray: menuArray})
+        console.log(addedMenuUser, "addedMenuUser add-menu api")
+        res.json({ error: false, message: "Phân quyền menu cho người dùng thành công" })
+    } catch (error) {
+        console.log(error, "add-menu api patch api catch block error")
+        res.json({error: true, message: "something went wrong!"})
+    }
+
+})
+
 
 router.delete('/api/delete-user/:id', async (req, res) => {
     try {

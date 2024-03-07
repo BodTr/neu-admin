@@ -770,7 +770,6 @@ export default {
     async submitForm() {
       console.log(this.id, "post api program id");
       const data = {
-        programId: this.id,
         name: this.name,
         address: this.address,
         testDetail: this.testDetail,

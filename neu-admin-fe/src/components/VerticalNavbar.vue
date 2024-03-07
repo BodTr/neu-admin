@@ -26,6 +26,32 @@
 
       <div class="collapse navbar-collapse show" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
+          <li v-for="item in items" class="nav-item">
+            <router-link  class="nav-link" to="/">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                </svg>
+              </span>
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> {{ item.title }} </span>
+            </router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav pt-lg-3">
           <li class="nav-item">
             <router-link class="nav-link" to="/">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -47,7 +73,7 @@
                   <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                 </svg>
               </span>
-              <span class="nav-link-title"> Quản lý cấu hình </span>
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý CTLK </span>
             </router-link>
           </li>
           <li class="nav-item active dropdown">
@@ -72,8 +98,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'trans-programs-manage-page',
-                    params: { id: programId },
+                    name: 'trans-programs-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -101,8 +126,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'approval-decision-manage-page',
-                    params: { id: programId },
+                    name: 'approval-decision-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -132,8 +156,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'close-decision-manage-page',
-                    params: { id: programId },
+                    name: 'close-decision-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -163,8 +186,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'documents-manage-page',
-                    params: { id: programId },
+                    name: 'documents-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -192,8 +214,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'partners-manage-page',
-                    params: { id: programId },
+                    name: 'partners-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -221,8 +242,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'agencies-manage-page',
-                    params: { id: programId },
+                    name: 'agencies-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -249,7 +269,7 @@
                 </router-link>
                 <router-link
                   class="dropdown-item"
-                  :to="{ name: 'goals-manage-page', params: { id: programId } }"
+                  :to="{ name: 'goals-manage-page' }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -313,7 +333,7 @@
               <div class="dropdown-menu-columns">
                 <router-link
                   class="dropdown-item"
-                  :to="{ name: 'plans-manage-page', params: { id: programId } }"
+                  :to="{ name: 'plans-manage-page' }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -366,8 +386,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'edu-quality-manage-page',
-                    params: { id: programId },
+                    name: 'edu-quality-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -423,8 +442,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'curriculums-manage-page',
-                    params: { id: programId },
+                    name: 'curriculums-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -480,8 +498,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'enrollment-manage-page',
-                    params: { id: programId },
+                    name: 'enrollment-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -509,8 +526,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'lecturers-manage-page',
-                    params: { id: programId },
+                    name: 'lecturers-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -537,7 +553,7 @@
                 </router-link>
                 <router-link
                   class="dropdown-item"
-                  :to="{ name: 'units-manage-page', params: { id: programId } }"
+                  :to="{ name: 'units-manage-page' }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -564,8 +580,7 @@
                 <router-link
                   class="dropdown-item"
                   :to="{
-                    name: 'subjects-manage-page',
-                    params: { id: programId },
+                    name: 'subjects-manage-page'
                   }"
                 >
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -856,14 +871,19 @@ import instance from "../instance";
 export default {
   name: "VerticalNavBar",
   data() {
-    return {};
+    return {
+      items: []
+    };
   },
 
-  props: ["programId"],
   setup() {
     const toast = useToast();
     return { toast };
   },
+  // mounted () {
+  //   let self = this;
+  //   self.getMenu();
+  // },
   methods: {
     async logout() {
       try {
@@ -879,7 +899,14 @@ export default {
         console.log(error, "logout api catch block error");
       }
     },
+   
+    getMenu: async function(){
+      const data = await instance.get("/api/getMenus")
+      console.log(data.data.data,"data 111111111111")
+      this.items = data.data.data
+    }
   },
+
 };
 </script>
 

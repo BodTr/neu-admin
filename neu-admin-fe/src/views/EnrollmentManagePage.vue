@@ -446,7 +446,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         year: this.year,
         admissionCount: this.admissionCount,
         graduatedCount: this.graduatedCount,

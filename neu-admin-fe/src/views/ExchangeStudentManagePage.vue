@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar :programId="id.length !== 1 ? `${id[1]}` : `${id[0]}`" />
+    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -828,21 +828,6 @@ export default {
     // get toast interface
     const toast = useToast();
     return { toast };
-  },
-
-  created() {
-    // this.id = ['0']
-    const idArr = localStorage.getItem("idArr");
-    console.log(idArr === null, "check id");
-    console.log(this.id, "this.id");
-    if (idArr === null) {
-      this.id = ["0"];
-      console.log(this.id, "this.id123");
-      console.log("if statement", this.id);
-    } else {
-      this.id = JSON.parse(localStorage.getItem("idArr"));
-      console.log("else statement", this.id);
-    }
   },
 
   methods: {

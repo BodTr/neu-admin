@@ -377,7 +377,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         programGoal: this.programGoal,
         testDetail: this.testDetail,
         goalFrom: this.goalFrom,

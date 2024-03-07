@@ -496,7 +496,6 @@ export default {
     },
     async submitForm() {
       let formData = new FormData();
-      formData.append("programId", this.id);
       formData.append("name", this.name);
       formData.append("effDate", this.effDate);
       formData.append("content", this.content);
@@ -556,7 +555,6 @@ export default {
       formData.append("documentFile1", this.editDoc.attachedDoc);
       formData.append("attachedDocLink", this.editDoc.attachedDocLink);
       formData.append("attachedDocName", this.editDoc.attachedDocName);
-      formData.append("programId", this.id);
       try {
         const result = await instance.put(
           `/api/edit-document/${this.editDoc.id}`,

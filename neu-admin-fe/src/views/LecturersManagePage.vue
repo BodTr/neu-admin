@@ -449,7 +449,6 @@ export default {
     },
     async submitForm() {
       const data = {
-        programId: this.id,
         name: this.name,
         nationality: this.nationality,
         unit: this.unit,

@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const ProgramSchema = require('../models/program')
+const YearSchema = require('../models/years')
 const { emptyProgramInputsValidation, typeProgramInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
+
+const initYearId = '65e968d440e62c9bf7a39996'
 
 router.use(authenticateAccessToken)
 
@@ -32,9 +35,76 @@ router.get('/api/get-all-programs', async (req, res) => {
     }
 })
 
+router.get('/api/get-years-array', async(req, res) => {
+    try {
+        
+        const yearsArrDoc = await YearSchema.findOne({ _id: initYearId })
+        console.log(yearsArrDoc, "yearsArrDoc, get-years-array api")
+        const yearsArr = yearsArrDoc.yearsArray
+        console.log(yearsArr, "yearsArr, get-years-array api")
+        const filteredYearsArr = yearsArr.filter((year, index) => {
+            if(yearsArr.indexOf(year) === index) {
+                return year
+            } // lấy những phần tử có giá trị year đầu tiên
+            
+        })
+        console.log(filteredYearsArr, "filteredYearsArr, get-years-array api")
+        const orderedYearsArr = filteredYearsArr.sort((a, b) => {
+            return a - b
+        })
+        console.log(orderedYearsArr, "orderedYearsArr, get-years-array api")
+        res.json({error: false, data: orderedYearsArr})
+    } catch (error) {
+        console.log(error, "get get-years-array api catch block error")
+        res.json({ error: true, message: "something went wrong" })
+    }
+})
+
+router.get('/api/get-programs-by-year', async(req, res) => {
+    try {
+        console.log(req.query, "req.query, get-programs-by-year api")
+        const year = req.query.year
+        console.log(year, "year get-programs-by-year api")
+        const programsZeroUser = await ProgramSchema.find({ user: { id: new ObjectId('111111111111111111111111') } }).lean() // những chương trình chưa liên kết với người dùng nào
+        console.log(programsZeroUser, "programsZeroUser get-programs-by-year api")
+        const programsZeroUserFilterByYear = programsZeroUser.filter((prog) => {
+            console.log(prog.year.toString() === year, "filter function get-programs-by-year api")
+            if (prog.year.toString() === year) {
+                return prog
+            }
+
+        })
+        console.log(programsZeroUserFilterByYear, "programsZeroUserFilterByYear get-programs-by-year api")
+        res.json({ error: false, programsZeroUserFilterByYear })
+    } catch (error) {
+        console.log(error, "get-programs-by-year catch block api")
+    }
+})
+
+router.patch('/api/add-programs-for-users/:id', async(req, res) => {
+    try {
+        const userId = req.params.id
+        const { programIdArr } = req.body
+        console.log(userId, "user id add-programs-for-users patch api")
+        console.log(programIdArr, "programIdArr add-programs-for-users patch api")
+        if (programIdArr.length === 0) {
+            res.json({error: false, message: 'Chưa chọn bất kì chương trình nào'})
+        } else {
+            const addedUserProgramsArr = programIdArr.map(async (id) => {
+                const updatedProgram = await ProgramSchema.findOneAndUpdate({_id: id}, {user: { id: new ObjectId(userId) } }, {new: true})
+                return updatedProgram
+            })
+            console.log(addedUserProgramsArr, "addedUserProgramsArr add-programs-for-users")
+            res.json({ error: false, message: 'Cập nhật khóa học cho đơn vị thành công' })
+        }
+    } catch(error) {
+        console.log(error, "add-programs-for-users api catch block error")
+    }
+})
+
 router.post('/api/create-program', emptyProgramInputsValidation, typeProgramInputsValidation, async (req, res) => {
     try {
-        const { name, year } = req.body
+        const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body
         console.log(req.body, "req.body post api")
         const existedProgram = await ProgramSchema.findOne({ name: name })
         if (existedProgram) {
@@ -42,8 +112,35 @@ router.post('/api/create-program', emptyProgramInputsValidation, typeProgramInpu
         } else {
             const newProgram = await ProgramSchema.create({
                 name: name,
-                year: year
+                year: year,
+                nation: nation,
+                parterUni: parterUni,
+                major: major,
+                quota: quota,
+                level: level,
+                agency: agency,
+                agencyPhoneNumber: agencyPhoneNumber,
+                expiry: expiry,
+                user: {
+                    id: new ObjectId('111111111111111111111111')
+                }
             })
+
+            const yearsArrDoc = await YearSchema.findOne({_id: initYearId})
+            const yearsArray = yearsArrDoc.yearsArray
+            const firstArrItem = yearsArray[0]
+            console.log(firstArrItem, "firstArrItem, create-program api")
+            if (firstArrItem === 1) {
+                
+                const updatingArr = await YearSchema.findOneAndUpdate({ _id: initYearId }, { yearsArray: [year] }, {new: true})
+                console.log(updatingArr, "updatingArr, lần đầu")
+            } else {
+                yearsArray.push(year)
+                const newYearsArray = yearsArray
+                const updatingArr = await YearSchema.findOneAndUpdate({ _id: initYearId }, { yearsArray: newYearsArray }, {new: true})
+                console.log(updatingArr, "updatingArr, các lần sau")
+            }
+
             console.log(newProgram, "newProgram")
             res.json({ error: false, message: 'Lưu thành công chương trình' })
         }
@@ -55,14 +152,23 @@ router.post('/api/create-program', emptyProgramInputsValidation, typeProgramInpu
     }
 })
 
+
 router.put('/api/edit-program/:id', emptyProgramInputsValidation, typeProgramInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, year } = req.body
+        const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body
         console.log(id, "::put api id::")
         const updatingProgram = {
             name: name,
-            year: year
+            year: year,
+            nation: nation,
+            parterUni: parterUni,
+            major: major,
+            quota: quota,
+            level: level,
+            agency: agency,
+            agencyPhoneNumber: agencyPhoneNumber,
+            expiry: expiry,
         }
         console.log(req.body, "put api req.body")
         const updatedProgram = await ProgramSchema.findOneAndUpdate({ _id: id }, updatingProgram, {new: true})

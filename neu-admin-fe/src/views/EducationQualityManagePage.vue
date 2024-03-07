@@ -344,7 +344,6 @@ export default {
     async submitForm() {
       console.log(this.id, "post api program id");
       const data = {
-        programId: this.id,
         mechanism: this.mechanism,
         detail: this.detail,
         hasProcess: this.hasProcess,

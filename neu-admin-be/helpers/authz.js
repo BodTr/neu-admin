@@ -1,7 +1,7 @@
 const authPage = (permissions) => {
     return (req, res, next) => {
         const userRole = req.payload.role
-        console.log(userRole, "IIII")
+        console.log(userRole, "authz.js middleware")
         console.log(permissions)
         if (permissions.includes(userRole)) {
             console.log(`Only ${permissions}`)
