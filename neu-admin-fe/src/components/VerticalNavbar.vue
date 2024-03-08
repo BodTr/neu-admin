@@ -23,36 +23,9 @@
           />
         </a>
       </div>
-
       <div class="collapse navbar-collapse show" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
-          <li v-for="item in items" class="nav-item">
-            <router-link  class="nav-link" to="/">
-              <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
-                  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-                  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
-                </svg>
-              </span>
-              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> {{ item.title }} </span>
-            </router-link>
-          </li>
-        </ul>
-        <ul class="navbar-nav pt-lg-3">
-          <li class="nav-item">
+          <li v-show="programsIsShow" class="nav-item">
             <router-link class="nav-link" to="/">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -76,780 +49,253 @@
               <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý CTLK </span>
             </router-link>
           </li>
-          <li class="nav-item active dropdown">
+          <li v-show="lvOneProgramManageIsShow" class="nav-item dropdown">
             <a
-              href="#"
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle show"
+              href="#navbar-base"
               data-bs-toggle="dropdown"
               data-bs-auto-close="false"
               role="button"
-              aria-expanded="false"
+              aria-expanded="true"
             >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              <span class="nav-link-icon d-md-none d-lg-inline-block"
+                ><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                  <path d="M12 12l8 -4.5"></path>
+                  <path d="M12 12l0 9"></path>
+                  <path d="M12 12l-8 -4.5"></path>
+                  <path d="M16 5.25l-8 4.5"></path>
+                </svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Thông tin chung</span>
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> CTLKĐT với nước ngoài </span>
             </a>
             <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'trans-programs-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">TT chương trình liên kết</span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'approval-decision-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"
-                    >Các quyết định <br />phê duyệt<br
-                  /></span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'close-decision-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"
-                    >Các quyết định đóng <br />chương trình<br
-                  /></span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'documents-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Quản lý văn bản liên kết </span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'partners-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Quản lý đối tác </span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'agencies-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Quản lý đơn vị thực hiện </span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{ name: 'goals-manage-page' }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Mục tiêu chương trình </span>
-                </router-link>
+              <div class="dropdown-menu-column">
+                <div v-show="genaralInforIsShow" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Thông tin chung
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link v-for="(item, index) in genaralInforItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
+                  </div>
+                </div>
+                <div v-show="planIsShow" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Đề án
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link v-for="(item, index) in planItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
+                  </div>
+                </div>
+                <div v-show="educationQualityIsShow" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Chất lượng đào tạo
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link v-for="(item, index) in educationQualityItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
+                  </div>
+                </div>
+                <div v-show="curriculumIsShow" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Chất lượng đào tạo
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link v-for="(item, index) in curriculumItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
+                  </div>
+                </div>
+                <div v-show="enrollmentIsShow" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Tuyển sinh
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link v-for="(item, index) in enrollmentItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
+                  </div>
+                </div>
               </div>
+
             </div>
           </li>
-          <!-- <li class="nav-item">
-            
-          </li> -->
-
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <li class="nav-item active dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+          <li v-show="moumoaIsShow" class="nav-item">
+            <router-link class="nav-link" to="/enrollment/moumoa-infor">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 11l3 3l8 -8"></path><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path></svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Đề án</span
-              >
-            </a>
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{ name: 'plans-manage-page' }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Quản lý nội dung đề án </span>
-                </router-link>
-              </div>
-            </div>
-          </li>
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <li class="nav-item active dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="false"
-              role="button"
-              aria-expanded="false"
-            >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
-              </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Chất lượng đào tạo</span
-              >
-            </a>
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'edu-quality-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Đảm bảo chất lượng <br /> đào tạo
-                  </span>
-                </router-link>
-              </div>
-            </div>
-          </li>
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <li class="nav-item active dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="false"
-              role="button"
-              aria-expanded="false"
-            >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
-              </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Khung chương trình</span
-              >
-            </a>
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'curriculums-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Thông tin khung <br /> chương trình
-                  </span>
-                </router-link>
-              </div>
-            </div>
-          </li>
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <li class="nav-item active dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="false"
-              role="button"
-              aria-expanded="false"
-            >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
-              </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Tuyển sinh</span
-              >
-            </a>
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'enrollment-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Quản lý tuyển sinh</span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'lecturers-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">Quản lý giảng viên</span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{ name: 'units-manage-page' }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">Quản lý đơn vị công tác</span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'subjects-manage-page'
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">Quản lý môn học</span>
-                </router-link>
-              </div>
-            </div>
-          </li>
-          <!-- <li class="nav-item">
-            
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-          <!-- <li class="nav-item">
-
-          </li> -->
-
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'moumoa-manage-page' }">
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
-              </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600; color: #fff; "
-                >Quản lý MOU.MOA</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý MOU.MOA </span>
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'htqt-manage-page' }">
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+          <li v-show="htqtIsShow" class="nav-item">
+            <router-link class="nav-link" to="/enrollment/htqt-infor">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 11l3 3l8 -8"></path><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path></svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600; color: #fff;"
-                >Quản lý các dự án HTQT</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý Các dự án HTQT </span>
             </router-link>
           </li>
-           <li class="nav-item active dropdown">
+          <li v-show="shortTermExStuIsShow" class="nav-item dropdown">
             <a
-              href="#"
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle show"
+              href="#navbar-base"
               data-bs-toggle="dropdown"
               data-bs-auto-close="false"
               role="button"
-              aria-expanded="false"
+              aria-expanded="true"
             >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              <span class="nav-link-icon d-md-none d-lg-inline-block"
+                ><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                  <path d="M12 12l8 -4.5"></path>
+                  <path d="M12 12l0 9"></path>
+                  <path d="M12 12l-8 -4.5"></path>
+                  <path d="M16 5.25l-8 4.5"></path>
+                </svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Quản lý sinh viên <br /> trao đổi ngắn hạn</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý sinh viên <br> trao đổi ngắn hạn </span>
             </a>
             <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'ex-f-student-manage-page',
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Quản lý sinh viên nước <br /> ngoài đến trao đổi
-                  </span>
-                </router-link>
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                   name: 'ex-student-manage-page',
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Quản lý sinh viên đi nước <br /> ngoài trao đổi
-                  </span>
-                </router-link>
-              </div>
+              <router-link v-for="(item, index) in shortTermExStuItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
             </div>
           </li>
-          <li class="nav-item active dropdown">
+          <li v-show="studentIsShow" class="nav-item dropdown">
             <a
-              href="#"
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle show"
+              href="#navbar-base"
               data-bs-toggle="dropdown"
               data-bs-auto-close="false"
               role="button"
-              aria-expanded="false"
+              aria-expanded="true"
             >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+              <span class="nav-link-icon d-md-none d-lg-inline-block"
+                ><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                  <path d="M12 12l8 -4.5"></path>
+                  <path d="M12 12l0 9"></path>
+                  <path d="M12 12l-8 -4.5"></path>
+                  <path d="M16 5.25l-8 4.5"></path>
+                </svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Quản lý lưu sinh viên</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý lưu sinh viên</span>
             </a>
             <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'student-manage-page',
-                  }"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Quản lý lưu học sinh
-                  </span>
-                </router-link>
-                
-              </div>
+              <router-link v-for="(item, index) in studentItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
             </div>
           </li>
-          <li class="nav-item">
-            <router-link
-              class="nav-link"
-              :to="{
-                name: 'extend-visa-manage-page',
-              }"
-            >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-apps" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 7l6 0" /><path d="M17 4l0 6" /></svg>
+          <li v-show="visaIsShow" class="nav-item">
+            <router-link class="nav-link" to="/enrollment/htqt-infor">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 11l3 3l8 -8"></path><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path></svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600; color: #fff;"
-                >Cấp/Gia hạn VISA</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Cấp/Gia hạn VISA </span>
             </router-link>
           </li>
-         
-          <li class="nav-item active dropdown">
+          <li v-show="userIsShow" class="nav-item dropdown">
             <a
-              href="#"
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle show"
+              href="#navbar-base"
               data-bs-toggle="dropdown"
               data-bs-auto-close="false"
               role="button"
-              aria-expanded="false"
+              aria-expanded="true"
             >
-              <span class="nav-link-icon d-md-none d-lg-inline-block" style="color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" /></svg>
+              <span class="nav-link-icon d-md-none d-lg-inline-block"
+                ><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                  <path d="M12 12l8 -4.5"></path>
+                  <path d="M12 12l0 9"></path>
+                  <path d="M12 12l-8 -4.5"></path>
+                  <path d="M16 5.25l-8 4.5"></path>
+                </svg>
               </span>
-              <span
-                class="nav-link-title"
-                style="font-size: 15px; font-weight: 600"
-                >Quản trị</span
-              >
+              <span class="nav-link-title" style="font-size: 15px; font-weight: 600; color: #fff;"> Quản lý tài khoản</span>
             </a>
             <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <router-link
-                  class="dropdown-item"
-                  to="/admin"
-                >
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 11l3 3l8 -8"></path>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title">
-                    Quản lý tài khoản
-                  </span>
-                </router-link>
-                
-              </div>
+              <router-link v-for="(item, index) in userItem " class="dropdown-item" :to="{name: item.name}">{{ item.title }}</router-link>
             </div>
           </li>
           <li class="nav-item">
@@ -872,19 +318,245 @@ export default {
   name: "VerticalNavBar",
   data() {
     return {
-      items: []
+      items: [],
+      userMenuArr: [],
     };
+  },
+  computed: {
+    programsIsShow() {
+      // Quản lý chương trình liên kết
+      const arrayZero = [1]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayZero);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    lvOneProgramManageIsShow() {
+      // CTLKĐT với nước ngoài
+      const arrayOne = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+      const filteredUserMenuArr = this.userMenuArr.filter((item) => {
+        if (arrayOne.includes(item.stt)) {
+          return item;
+        }
+      });
+      if (filteredUserMenuArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    genaralInforIsShow() {
+      // Thông tin chung
+      const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayTwo);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    genaralInforItem() {
+      // Thông tin chung các item
+      const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayTwo);
+      return filteredArr;
+    },
+
+    planIsShow() {
+      // Đề án
+      const arrayThree = [9]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayThree);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    planItem() {
+      // Nội dung đề án
+      const arrayThree = [9]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayThree);
+      return filteredArr;
+    },
+    educationQualityIsShow() {
+      // Chất lượng đào tạo
+      const arrayFour = [10];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayFour);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    educationQualityItem() {
+      // Đảm bảo chất lượng đào tạo
+      const arrayFour = [10];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayFour);
+      return filteredArr
+    },
+    curriculumIsShow() {
+      // Khung chương trình
+      const arrayFive = [11];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayFive);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    curriculumItem() {
+      // Thông tin khung chương trình
+      const arrayFive = [11];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayFive);
+      return filteredArr
+    },
+    enrollmentIsShow() {
+      // Tuyển sinh
+      const arraySix = [12, 13, 14, 15];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arraySix);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    enrollmentItem() {
+      // quản lý tuyển sinh, giảng viên, đơn vị công tác, môn học
+      const arraySix = [12, 13, 14, 15];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arraySix);
+      return filteredArr
+    },
+    moumoaIsShow() {
+      // quản lý MOU.MOA
+      const arraySix = [16];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arraySix);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    htqtIsShow() {
+      const arraySeven = [17]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arraySeven);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    shortTermExStuIsShow() {
+      // Quản lý sinh viên trao đổi ngắn hạn
+      const arrayEight = [18, 19]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayEight);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    shortTermExStuItem() {
+      // Sinh viên nước ngoài đến trao đổi, sinh viên đi nước ngoài
+      const arrayEight = [18, 19]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayEight);
+      return filteredArr
+    },
+    studentIsShow() {
+      // Quản lý lưu sinh viên
+      const arrayNine = [20]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayNine);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    studentItem() {
+      // Quản lý lưu sinh viên
+      const arrayNine = [20]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayNine);
+      return filteredArr
+    },
+    visaIsShow() {
+      // Cấp/Gia hạn VISA
+      const arrayTen = [21]
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayTen);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    userIsShow() {
+      // Quản lý tài khoản
+      const arrayEleven = [22];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayEleven);
+      if (filteredArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    userItem() {
+      // Quản lý tài khoản
+      const arrayTwelve = [22];
+      const arr1 = this.userMenuArr;
+      const filteredArr = this.arrayFilterer(arr1, arrayTwelve);
+      return filteredArr
+    }
+
   },
 
   setup() {
     const toast = useToast();
     return { toast };
   },
-  // mounted () {
-  //   let self = this;
-  //   self.getMenu();
-  // },
+  mounted() {
+    // let self = this;
+    // self.getMenu();
+    const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
+    console.log(unOrderedUserMenuArr, "unOrderedUserMenuArr mounted hook");
+    const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
+    orderedUserMenuArr.sort((a, b) => {
+      return a.stt - b.stt;
+    });
+    this.userMenuArr = orderedUserMenuArr;
+    console.log(this.userMenuArr, "userMenuArr mounted hook");
+  },
   methods: {
+    arrayFilterer(arr1, arr2) {
+      // arr1 là array userMenuArr, và array này có prop stt trong mỗi phần tử, arr2 là array dùng để lọc arr1,
+      const filteredArr = arr1.filter((item) => {
+        if (arr2.includes(item.stt)) {
+          return item;
+        }
+      });
+
+      return filteredArr;
+    },
     async logout() {
       try {
         const data = { refresh_token: localStorage.getItem("refreshToken") };
@@ -899,14 +571,7 @@ export default {
         console.log(error, "logout api catch block error");
       }
     },
-   
-    getMenu: async function(){
-      const data = await instance.get("/api/getMenus")
-      console.log(data.data.data,"data 111111111111")
-      this.items = data.data.data
-    }
   },
-
 };
 </script>
 

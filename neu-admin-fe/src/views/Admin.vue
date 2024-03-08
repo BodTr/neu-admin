@@ -491,7 +491,7 @@
                                       <input
                                         type="checkbox"
                                         id="program_manage"
-                                        value="program_manage"
+                                        :value="{name :'programs-manage-page', stt: 1, title: 'Quản lý chương trình liên kết'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -504,7 +504,7 @@
                                       <input
                                         type="checkbox"
                                         id="program_infor"
-                                        value="program_infor"
+                                        :value="{ name : 'trans-programs-manage-page', stt: 2, title: 'TT chương trình liên kết'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -515,7 +515,7 @@
                                       <input
                                         type="checkbox"
                                         id="approval_decision"
-                                        value="approval_decision"
+                                        :value="{ name : 'approval-decision-manage-page', stt: 3, title: 'Các quyết định phê duyệt'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -525,8 +525,8 @@
                                     <td>
                                       <input
                                         type="checkbox"
-                                        id="close_decision"
-                                        value="close_decision"
+                                        id="close-decision-manage-page"
+                                        :value="{ name: 'close-decision-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -537,7 +537,7 @@
                                       <input
                                         type="checkbox"
                                         id="document"
-                                        value="document"
+                                        :value="{name: 'documents-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -548,7 +548,7 @@
                                       <input
                                         type="checkbox"
                                         id="partner"
-                                        value="partner"
+                                        :value="{name: 'partners-manage-page', stt: 6, title: 'Quản lý đối tác'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -559,7 +559,7 @@
                                       <input
                                         type="checkbox"
                                         id="agency"
-                                        value="agency"
+                                        :value="{name: 'agencies-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -570,7 +570,7 @@
                                       <input
                                         type="checkbox"
                                         id="program_goal"
-                                        value="program_goal"
+                                        :value="{name: 'goals-manage-page', stt: 8, title: 'Mục tiêu chương trình'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -582,7 +582,7 @@
                                       <input
                                         type="checkbox"
                                         id="plan"
-                                        value="plan"
+                                        :value="{name: 'plans-manage-page', stt: 9, title: 'Quản lý nội dung đề án'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -594,7 +594,7 @@
                                       <input
                                         type="checkbox"
                                         id="education_quality"
-                                        value="education_quality"
+                                        :value="{name: 'edu-quality-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -606,7 +606,7 @@
                                       <input
                                         type="checkbox"
                                         id="curriculum"
-                                        value="curriculum"
+                                        :value="{name: 'curriculums-manage-page', stt: 11, title: 'Thông tin khung chương trình'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -618,7 +618,7 @@
                                       <input
                                         type="checkbox"
                                         id="enrollment"
-                                        value="enrollment"
+                                        :value="{name: 'enrollment-manage-page', stt: 12, title: 'Quản lý tuyển sinh'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -629,7 +629,7 @@
                                       <input
                                         type="checkbox"
                                         id="lecturer"
-                                        value="lecturer"
+                                        :value="{name: 'lecturers-manage-page', stt: 13, title: 'Quản lý giảng viên'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -640,7 +640,7 @@
                                       <input
                                         type="checkbox"
                                         id="unit"
-                                        value="unit"
+                                        :value="{name: 'units-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -651,7 +651,7 @@
                                       <input
                                         type="checkbox"
                                         id="subject"
-                                        value="subject"
+                                        :value="{name: 'subjects-manage-page', stt: 15, title: 'Quản lý môn học'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -664,7 +664,7 @@
                                       <input
                                         type="checkbox"
                                         id="moumoa"
-                                        value="moumoa"
+                                        :value="{name: 'moumoa-manage-page', stt: 16, title: 'Quản lý MOU.MOA'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -677,7 +677,7 @@
                                       <input
                                         type="checkbox"
                                         id="htqt"
-                                        value="htqt"
+                                        :value="{name: 'htqt-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -692,7 +692,7 @@
                                       <input
                                         type="checkbox"
                                         id="ex_f_stu"
-                                        value="ex_f_stu"
+                                        :value="{name: 'ex-f-student-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -704,7 +704,7 @@
                                       <input
                                         type="checkbox"
                                         id="ex_stu"
-                                        value="ex_stu"
+                                        :value="{name: 'ex-student-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -717,7 +717,7 @@
                                       <input
                                         type="checkbox"
                                         id="student"
-                                        value="student"
+                                        :value="{name: 'student-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -730,7 +730,7 @@
                                       <input
                                         type="checkbox"
                                         id="visa"
-                                        value="visa"
+                                        :value="{name: 'extend-visa-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'}"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -743,7 +743,7 @@
                                       <input
                                         type="checkbox"
                                         id="user_manage"
-                                        value="user_manage"
+                                        :value="{name: 'admin', stt: 22, title: 'Quản lý tài khoản'}"
                                         v-model="menuArray"
                                       />
                                     </td>

@@ -74,10 +74,13 @@
           if( result.data.error === false ) {
             // alert('Success')
             console.log(result.data.accessToken, ".accessToken")
+            console.log(result.data.userInfor.menuManageArray, "result login api")
+            localStorage.setItem("menuManageArray", JSON.stringify(result.data.userInfor.menuManageArray))
+            // localStorage.setItem("menuManageArray", result.data.userInfor.menuManageArray)
             localStorage.setItem("accessToken", result.data.accessToken)
             localStorage.setItem("refreshToken", result.data.refreshToken)
             this.toast.success(result.data.message)
-            router.push('/')
+            router.push('/init-page')
             
             
             

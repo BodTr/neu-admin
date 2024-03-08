@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
         require: false
     },
     menuManageArray: [{
-        type: String,
+        type: Object,
         require: false
     }],
     permission: {

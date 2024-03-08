@@ -25,12 +25,23 @@ import VISAManagePage from '../views/VISAManagePage.vue'
 import Admin from '../views/Admin.vue'
 import LoginPage from '../views/LoginScreen.vue'
 
+import EmptyPage from '../views/EmptyPage.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/init-page',
+      name: 'empty-page', // trang trống mặc định
+      component: EmptyPage,
+      meta: { 
+        
+        requiresAuth: true
+      }
+    },
+    {
       path: '/',
-      name: 'programs-manage-page',
+      name: 'programs-manage-page', // Quản lý chương trình liên kết
       component: ProgramsManagePage,
       meta: { 
         
@@ -40,7 +51,7 @@ const router = createRouter({
     
     {
       path: '/general-infor/trans-program/',
-      name: 'trans-programs-manage-page',
+      name: 'trans-programs-manage-page', // Thông tin chương trình liên kết
       component: TransnationProgramsManagePage,
       meta: { 
         
@@ -49,7 +60,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/approval-decision/',
-      name: 'approval-decision-manage-page',
+      name: 'approval-decision-manage-page', // Các quyết định phê duyệt
       component: ApprovalDecisionManagePage,
       meta: { 
         
@@ -58,7 +69,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/close-decision/',
-      name: 'close-decision-manage-page',
+      name: 'close-decision-manage-page', // Các quyết định đóng chương trình
       component: CloseDecisionManagePage,
       meta: { 
         
@@ -72,7 +83,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/documents/',
-      name: 'documents-manage-page',
+      name: 'documents-manage-page', // Các văn bản liên kết
       component: DocumentManagePage,
       meta: { 
         
@@ -81,7 +92,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/agencies/',
-      name: 'agencies-manage-page',
+      name: 'agencies-manage-page', // Quản lý các đơn vị thực hiện
       component: AgenciesManagePage,
       meta: { 
         
@@ -90,7 +101,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/partners/',
-      name: 'partners-manage-page',
+      name: 'partners-manage-page', // Quản lý các đối tác
       component: PartnersManagePage,
       meta: { 
         
@@ -99,7 +110,7 @@ const router = createRouter({
     },
     {
       path: '/general-infor/goals/',
-      name: 'goals-manage-page',
+      name: 'goals-manage-page', // Quản lý mục tiêu chươn trình
       component: ProgramGoalsManagePage,
       meta: { 
         
@@ -108,7 +119,7 @@ const router = createRouter({
     },
     {
       path: '/plans-infor/plans/',
-      name: 'plans-manage-page',
+      name: 'plans-manage-page', // Quản lý nội dung đề án
       component: PlansManagePage,
       meta: { 
         
@@ -117,7 +128,7 @@ const router = createRouter({
     },
     {
       path: '/edu-quality/processes/',
-      name: 'edu-quality-manage-page',
+      name: 'edu-quality-manage-page', // Quản lý chất lượng đào tạo
       component: EducationQualityManagePage,
       meta: { 
         
@@ -126,7 +137,7 @@ const router = createRouter({
     },
     {
       path: '/curriculums/curriculum-infor/',
-      name: 'curriculums-manage-page',
+      name: 'curriculums-manage-page', // Quản lý khung chương trình
       component: CurriculumManagePage,
       meta: { 
 
@@ -135,7 +146,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/enrollment-infor/',
-      name: 'enrollment-manage-page',
+      name: 'enrollment-manage-page', // Quản lý tuyển sinh
       component: EnrollmentManagePage,
       meta: { 
         
@@ -144,7 +155,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/lecturers-infor/',
-      name: 'lecturers-manage-page',
+      name: 'lecturers-manage-page', // Quản lý giảng viên
       component: LecturersManagePage,
       meta: { 
         
@@ -153,7 +164,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/units-infor/',
-      name: 'units-manage-page',
+      name: 'units-manage-page', // Quản lý đơn vị công tác
       component: UnitsManagePage,
       meta: { 
         
@@ -162,7 +173,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/subjects-infor/',
-      name: 'subjects-manage-page',
+      name: 'subjects-manage-page', // Quản lý môn học
       component: SubjectsManagePage,
       meta: { 
         
@@ -171,7 +182,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/moumoa-infor',
-      name: 'moumoa-manage-page',
+      name: 'moumoa-manage-page', // Quản lý MOU.MOA
       component: MOUMOAManagePage,
       meta: { 
         
@@ -180,7 +191,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/htqt-infor',
-      name: 'htqt-manage-page',
+      name: 'htqt-manage-page', // Quản lý các dự án HTQT
       component: HTQTManagePage,
       meta: { 
         
@@ -189,7 +200,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/ex-f-student-infor',
-      name: 'ex-f-student-manage-page',
+      name: 'ex-f-student-manage-page', // Sinh viên nước ngoài đến trao đổi
       component: ExchangeForeignStudentManagePage,
       meta: { 
         
@@ -198,7 +209,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/student-infor',
-      name: 'student-manage-page',
+      name: 'student-manage-page', // Quản lý lưu sinh viên
       component: StudentManagePage,
       meta: { 
         
@@ -207,7 +218,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/ex-student-infor',
-      name: 'ex-student-manage-page',
+      name: 'ex-student-manage-page', // Quản lý sinh viên đi nước ngoài trao đổi
       component: ExchangeStudentManagePage,
       meta: { 
         
@@ -216,7 +227,7 @@ const router = createRouter({
     },
     {
       path: '/enrollment/extend-visa',
-      name: 'extend-visa-manage-page',
+      name: 'extend-visa-manage-page', // Quản lý VISA
       component: VISAManagePage,
       meta: { 
         
@@ -225,7 +236,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'admin',
+      name: 'admin', // Quản lý tài khoản
       component: Admin,
       
       meta: { 

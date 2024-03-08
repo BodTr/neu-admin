@@ -43,9 +43,13 @@ router.post('/api/login', async (req, res, next) => {
         await savedRefreshToken.save()
 
         console.log(savedRefreshToken, "savedRefreshToken")
+
+        const userInfor = {
+            menuManageArray: user.menuManageArray
+        }
         
         
-        res.json({ accessToken, refreshToken, error: false,  message: 'Đăng nhập thành công' })
+        res.json({ accessToken, refreshToken, userInfor, error: false,  message: 'Đăng nhập thành công' })
         
 
     } catch (error) {
