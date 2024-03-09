@@ -33,7 +33,7 @@ router.get('/api/get-all-users', async (req, res) => {
         })
         res.json({ data: aUsers, count:count, error: false })
     } catch (error) {
-        console.log(error)
+        console.log(error, "get-all-users catch block error api")
         res.json({ error: true, message: "ERROR::" })
         throw error
     }
@@ -99,27 +99,27 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
             if (permission === 'Super Admin') {
                 menuManageArray = [
                     {name :'programs-manage-page', stt: 1, title: 'Quản lý chương trình liên kết'},
-                    {name :'programs-manage-page', stt: 2, title: 'TT chương trình liên kết'},
-                    {name :'programs-manage-page', stt: 3, title: 'Các quyết định phê duyệt'},
-                    {name :'programs-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'},
-                    {name :'programs-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'},
-                    {name :'programs-manage-page', stt: 6, title: 'Quản lý đối tác'},
-                    {name :'programs-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'},
-                    {name :'programs-manage-page', stt: 8, title: 'Mục tiêu chương trình'},
-                    {name :'programs-manage-page', stt: 9, title: 'Quản lý nội dung đề án'},
-                    {name :'programs-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'},
-                    {name :'programs-manage-page', stt: 11, title: 'Thông tin khung chương trình'},
-                    {name :'programs-manage-page', stt: 12, title: 'Quản lý tuyển sinh'},
-                    {name :'programs-manage-page', stt: 13, title: 'Quản lý giảng viên'},
-                    {name :'programs-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'},
-                    {name :'programs-manage-page', stt: 15, title: 'Quản lý môn học'},
-                    {name :'programs-manage-page', stt: 16, title: 'Quản lý MOU.MOA'},
-                    {name :'programs-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'},
-                    {name :'programs-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'},
-                    {name :'programs-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'},
-                    {name :'programs-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'},
-                    {name :'programs-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'},
-                    {name :'programs-manage-page', stt: 22, title: 'Quản lý tài khoản'},
+                    {name :'trans-programs-manage-page', stt: 2, title: 'TT chương trình liên kết'},
+                    {name :'approval-decision-manage-page', stt: 3, title: 'Các quyết định phê duyệt'},
+                    {name :'close-decision-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'},
+                    {name :'documents-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'},
+                    {name :'partners-manage-page', stt: 6, title: 'Quản lý đối tác'},
+                    {name :'agencies-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'},
+                    {name :'goals-manage-page', stt: 8, title: 'Mục tiêu chương trình'},
+                    {name :'plans-manage-page', stt: 9, title: 'Quản lý nội dung đề án'},
+                    {name :'edu-quality-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'},
+                    {name :'curriculums-manage-page', stt: 11, title: 'Thông tin khung chương trình'},
+                    {name :'enrollment-manage-page', stt: 12, title: 'Quản lý tuyển sinh'},
+                    {name :'lecturers-manage-page', stt: 13, title: 'Quản lý giảng viên'},
+                    {name :'units-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'},
+                    {name :'subjects-manage-page', stt: 15, title: 'Quản lý môn học'},
+                    {name :'moumoa-manage-page', stt: 16, title: 'Quản lý MOU.MOA'},
+                    {name :'htqt-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'},
+                    {name :'ex-f-student-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'},
+                    {name :'ex-student-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'},
+                    {name :'student-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'},
+                    {name :'extend-visa-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'},
+                    {name :'admin', stt: 22, title: 'Quản lý tài khoản'},
 
                 ]
             } else {

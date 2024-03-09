@@ -122,7 +122,7 @@
                 <div v-show="genaralInforIsShow" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
-                    href="#"
+                    
                     data-bs-toggle="dropdown"
                     data-bs-auto-close="false"
                     role="button"
