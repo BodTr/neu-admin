@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <!-- <VerticalNavbar /> -->
     <div class="empty">
       <div class="empty-header"><img
         src="../assets/Logo-NEU.png"

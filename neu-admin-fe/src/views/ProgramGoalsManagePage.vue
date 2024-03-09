@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <!-- <VerticalNavbar /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -340,7 +340,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: localStorage.getItem("progId"),
+      id: "",
       programGoal: "",
       testDetail: "",
       goalFrom: "",
@@ -361,7 +361,9 @@ export default {
     const toast = useToast();
     return { toast };
   },
-
+  mounted() {
+    this.id = localStorage.getItem("progId")
+  },
   methods: {
     showModal() {
       this.displayModal = true;
@@ -377,6 +379,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         programGoal: this.programGoal,
         testDetail: this.testDetail,
         goalFrom: this.goalFrom,

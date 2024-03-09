@@ -360,7 +360,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: localStorage.getItem("progId"),
+      id: "",
       name: "",
       degreeName: "",
       degreeType: "",
@@ -383,7 +383,9 @@ export default {
     const toast = useToast();
     return { toast };
   },
-
+  mounted() {
+    this.id = localStorage.getItem("progId")
+  },
   methods: {
     showModal() {
       this.displayModal = true;
@@ -400,6 +402,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         degreeName: this.degreeName,
         degreeType: this.degreeType,
@@ -445,7 +448,7 @@ export default {
 
     async onSubmit() {
       const data = {
-        programId: this.id,
+        
         name: this.editProgram.name,
         degreeName: this.editProgram.degreeName,
         degreeType: this.editProgram.degreeType,
