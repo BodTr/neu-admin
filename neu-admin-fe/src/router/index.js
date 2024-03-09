@@ -30,6 +30,7 @@ import InitProgam from '../views/InitProgam.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  base: '/#/',
   routes: [
     {
       path: '/init-program',
