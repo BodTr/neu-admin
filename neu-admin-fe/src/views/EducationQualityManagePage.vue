@@ -297,7 +297,7 @@ export default {
       columns: ["stt", "mechanism", "hasProcess", "detail", "tool"],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           mechanism: "Cơ chế",
@@ -306,7 +306,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       mechanism: "",
       hasProcess: [],
       detail: "",
@@ -344,6 +344,7 @@ export default {
     async submitForm() {
       console.log(this.id, "post api program id");
       const data = {
+        programId: this.id,
         mechanism: this.mechanism,
         detail: this.detail,
         hasProcess: this.hasProcess,

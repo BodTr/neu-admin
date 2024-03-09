@@ -361,7 +361,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           name: "Họ tên người thực hiện",
@@ -373,7 +373,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       year: "",
       location: "",
@@ -417,6 +417,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         year: this.year,
         location: this.location,

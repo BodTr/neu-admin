@@ -388,7 +388,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           year: "Năm học",
@@ -401,7 +401,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       year: "",
       admissionCount: "",
       graduatedCount: "",
@@ -446,6 +446,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         year: this.year,
         admissionCount: this.admissionCount,
         graduatedCount: this.graduatedCount,

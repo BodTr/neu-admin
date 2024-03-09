@@ -331,7 +331,7 @@ export default {
       columns: ["stt", "programGoal", "testDetail", "goalFrom", "tool"],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           programGoal: "Nội dung mục tiêu",
@@ -340,7 +340,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       programGoal: "",
       testDetail: "",
       goalFrom: "",

@@ -348,7 +348,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           name: "Tên chương trình tiếng việt",
@@ -360,7 +360,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       degreeName: "",
       degreeType: "",
@@ -445,6 +445,7 @@ export default {
 
     async onSubmit() {
       const data = {
+        programId: this.id,
         name: this.editProgram.name,
         degreeName: this.editProgram.degreeName,
         degreeType: this.editProgram.degreeType,

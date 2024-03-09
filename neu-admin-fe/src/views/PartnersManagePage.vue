@@ -717,7 +717,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           name: "Tên đối tác",
@@ -728,7 +728,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       address: "",
       website: "",
@@ -770,6 +770,7 @@ export default {
     async submitForm() {
       console.log(this.id, "post api program id");
       const data = {
+        programId: this.id,
         name: this.name,
         address: this.address,
         testDetail: this.testDetail,

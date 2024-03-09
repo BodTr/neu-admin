@@ -860,8 +860,8 @@ import { useToast } from "vue-toastification";
 export default {
   name: "Admin",
   components: {
-    VerticalNavbar
-
+    VerticalNavbar,
+    // Header,
   },
   data() {
     return {

@@ -419,7 +419,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           name: "Tên quyết định",
@@ -431,7 +431,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       detail: "",
       number: "",
@@ -524,6 +524,7 @@ export default {
     async submitForm() {
       console.log(this.id, "post api program id");
       let formData = new FormData();
+      formData.append("programId", this.id);
       formData.append("name", this.name);
       formData.append("detail", this.detail);
       formData.append("number", this.number);

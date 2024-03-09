@@ -396,7 +396,7 @@ export default {
       columns: ["stt", "name", "content","attachedDocName", "effDate", "expireIn", "tool"],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           name: "Tên văn bản Liên Kết Đào Tạo",
@@ -407,7 +407,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       effDate: "",
       content: "",
@@ -496,6 +496,7 @@ export default {
     },
     async submitForm() {
       let formData = new FormData();
+      formData.append("programId", this.id);
       formData.append("name", this.name);
       formData.append("effDate", this.effDate);
       formData.append("content", this.content);

@@ -38,14 +38,17 @@
             <label class="form-label">Năm và Tên chương trình</label>
             <div class="row g-2">
               <div class="col-2">
-                <select name="user[month]" class="form-select">
-                  <option value="">Month</option>
+                <select v-model="year" class="form-select" tabindex="-1" @change="onYearChange()">
+                  <option v-for="(year, index) in yearsArray" :value="year">
+                    {{ year }}
+                  </option>
                 </select>
               </div>
               <div class="col-10">
-                <select name="user[day]" class="form-select">
-                  <option value="">Dayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</option>
-                  <option value="1">1</option>
+                <select v-model="programName" tabindex="-1" class="form-select">
+                  <option v-for="(program, index) in programsOrderedByYearArr" :value="program.name">
+                    {{ program.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -60,7 +63,8 @@
     name: "Header",
     data() {
       return {
-
+        year: "",
+        programName: "",
       }
     },
   }
