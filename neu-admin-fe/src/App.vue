@@ -26,6 +26,31 @@
       </div>
       <div class="collapse navbar-collapse show" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
+          <li>
+            <router-link
+              class="btn btn-lime d-none d-sm-inline-block"
+              to="/init-program"
+            >
+              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 5l0 14"></path>
+                <path d="M5 12l14 0"></path>
+              </svg>
+              Đổi chương trình quản lý
+            </router-link>
+          </li>
           <li v-show="programsIsShow" class="nav-item">
             <router-link class="nav-link" to="/">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
