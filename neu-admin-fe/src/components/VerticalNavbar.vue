@@ -471,7 +471,7 @@ import router from "@/router";
 import instance from "../instance";
 
 export default {
-  name: "VerticalNavBar",
+  name: "VerticalNavbar",
   data() {
     return {
       items: [],
