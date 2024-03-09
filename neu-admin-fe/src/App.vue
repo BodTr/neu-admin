@@ -380,7 +380,7 @@
             </div>
           </li>
           <li v-show="visaIsShow" class="nav-item">
-            <router-link class="nav-link" to="/enrollment/htqt-infor">
+            <router-link class="nav-link" to="/enrollment/extend-visa">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
