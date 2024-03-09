@@ -44,7 +44,9 @@ router.get("/api/get-all-documents", async (req, res) => {
             })
             .skip(skip)
             .limit(limit);
-        let count = await DocumentSchema.estimatedDocumentCount();
+        let count = await DocumentSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        });
         let stt = 0;
         const aDocuments = documents.map((doc) => {
             stt++;
@@ -108,7 +110,7 @@ router.post(
             console.log(storingDoc, "storingDoc")
             res.json({
                 error: false,
-                message: "Lưu thành công chương trình",
+                message: "Lưu thành công văn bản",
             });
             
         } catch (error) {

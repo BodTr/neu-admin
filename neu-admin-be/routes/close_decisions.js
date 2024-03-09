@@ -30,7 +30,9 @@ router.get('/api/get-all-close-decisions', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await CloseDecisionSchema.estimatedDocumentCount()
+        let count = await CloseDecisionSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aDecisions = decisions.map( doc => {
             stt++

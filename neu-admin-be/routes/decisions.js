@@ -30,7 +30,9 @@ router.get('/api/get-all-decisions', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await DecisionSchema.estimatedDocumentCount()
+        let count = await DecisionSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aDecisions = decisions.map( doc => {
             stt++
@@ -75,7 +77,7 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
         }
         const storingDecision = await DecisionSchema.findOneAndUpdate({ _id: decisionId }, newDecision, {new: true})
         console.log(storingDecision, "storingDecision post api")
-        res.json({ error: false, message: 'Lưu thành công chương trình' })
+        res.json({ error: false, message: 'Lưu thành công quyết định' })
         
     } catch (error) {
         console.log(error, "post api catch block error")

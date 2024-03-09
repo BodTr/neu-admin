@@ -73,7 +73,7 @@ router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHT
         }
         const storingHtqt = await HTQTSchema.findOneAndUpdate({ _id: htqtId }, newHtqt, {new: true})
         console.log(storingHtqt, "storingHtqt")
-        res.json({ error: false, message: 'Lưu thành công chương trình' })
+        res.json({ error: false, message: 'Lưu thành công' })
         
         
         

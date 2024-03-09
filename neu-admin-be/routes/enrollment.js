@@ -15,7 +15,9 @@ router.get('/api/get-all-enrollments', async (req, res) => {
             program: { id: new ObjectId(id) },
             graduatedPercentage: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await EnrollmentSchema.estimatedDocumentCount()
+        let count = await EnrollmentSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aEnrollments = enrollments.map( doc => {
             stt++
@@ -55,7 +57,7 @@ router.post('/api/create-enrollment', emptyEnrollmentInputsValidation, typeEnrol
                 }
             })
             console.log(newEnrollment, "newEnrollment")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+            res.json({ error: false, message: 'Lưu thành công' })
         }
         
         

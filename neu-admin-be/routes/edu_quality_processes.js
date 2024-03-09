@@ -15,7 +15,9 @@ router.get('/api/get-all-processes', async (req, res) => {
             program: { id: new ObjectId(id) },
             mechanism: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await ProcessSchema.estimatedDocumentCount()
+        let count = await ProcessSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aProcesses = processes.map( doc => {
             stt++
@@ -52,7 +54,7 @@ router.post('/api/create-process', emptyProcessInputsValidation, typeProcessInpu
             }
         })
         console.log(newProcess, "newProcess")
-        res.json({ error: false, message: 'Lưu thành công qui trình' })
+        res.json({ error: false, message: 'Lưu thành công quy trình' })
         
         
     } catch (error) {

@@ -16,7 +16,9 @@ router.get('/api/get-all-plans', async (req, res) => {
             program: { id: new ObjectId(id) },
             certName: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await PlanSchema.estimatedDocumentCount()
+        let count = await PlanSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aPlans = plans.map( doc => {
             stt++

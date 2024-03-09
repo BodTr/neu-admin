@@ -17,7 +17,9 @@ router.get('/api/get-all-agencies', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await AgencySchema.estimatedDocumentCount()
+        let count = await AgencySchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aAgencies = agencies.map( doc => {
             stt++
@@ -57,7 +59,7 @@ router.post('/api/create-agency', emptyAgencyInputsValidation, typeAgencyInputsV
                 }
             })
             console.log(newAgency, "newAgency")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+            res.json({ error: false, message: 'Lưu thành công đơn vị' })
         }
         
         

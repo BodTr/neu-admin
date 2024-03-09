@@ -73,7 +73,7 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
         }
         const storingMoumoa = await MoumoaSchema.findOneAndUpdate({ _id: moumoaId }, newMoumoa, {new: true})
         console.log(storingMoumoa, "storingMoumoa")
-        res.json({ error: false, message: 'Lưu thành công chương trình' })
+        res.json({ error: false, message: 'Lưu thành công' })
         
         
         

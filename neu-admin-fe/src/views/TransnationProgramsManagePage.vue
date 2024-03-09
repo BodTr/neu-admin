@@ -7,8 +7,12 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lý TT chương trình liên kết : <b style="    color: #ffe1e1;
-    font-size: 22px;" >"{{ programName }}"</b></h2>
+              <h2 class="page-title">
+                Quản lý TT chương trình liên kết của :
+                <b style="color: #ffe1e1; font-size: 22px"
+                  >"{{ programName }}"</b
+                >
+              </h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -104,7 +108,6 @@
                       ></textarea>
                     </div>
                     <div class="col-md-6">
-                      
                       <div class="mb-3">
                         <label class="form-label">Tên thương hiệu</label>
                         <input
@@ -114,7 +117,6 @@
                           placeholder="Nhập tên thương hiệu"
                         />
                       </div>
-                      
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
@@ -260,7 +262,6 @@
                               ></textarea>
                             </div>
                             <div class="col-md-6">
-                              
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Tên thương hiệu</label
@@ -283,7 +284,7 @@
                                   placeholder="Nhập tên văn bằng"
                                 ></textarea>
                               </div>
-                              
+
                               <div class="mb-3">
                                 <label class="form-label">Nơi cấp</label>
                                 <input
@@ -322,7 +323,7 @@ import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router'
+import router from "@/router";
 // const idArr = JSON.parse(localStorage.getItem("idArr"))
 // let id = null
 // if (idArr === null) {
@@ -387,11 +388,11 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
-    if(this.id == "" || this.id == null){ 
-      router.push("/init-program")
+    this.id = localStorage.getItem("progId");
+    if (this.id == "" || this.id == null) {
+      router.push("/init-program");
     }
-    this.programName = localStorage.getItem("programName")
+    this.programName = localStorage.getItem("programName");
   },
   methods: {
     showModal() {
@@ -399,7 +400,7 @@ export default {
     },
     hideModal() {
       this.displayModal = false;
-      console.log(this.displayModal, "this.displayModal")
+      console.log(this.displayModal, "this.displayModal");
     },
     showModal1() {
       this.displayModalOne = true;
@@ -455,7 +456,6 @@ export default {
 
     async onSubmit() {
       const data = {
-        
         name: this.editProgram.name,
         degreeName: this.editProgram.degreeName,
         degreeType: this.editProgram.degreeType,

@@ -108,7 +108,7 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
         console.log(newExtendVisa, "newExtendVisa")
         const storingExtendVisa = await ExtendVisaSchema.findOneAndUpdate({ _id: extendVisaId }, newExtendVisa, {new: true})
         console.log(storingExtendVisa, "storingExtendVisa")
-        res.json({ error: false, message: 'Lưu thành công thông tinh sinh viên' })
+        res.json({ error: false, message: 'Lưu thành công thông tinh visa' })
         
         
         

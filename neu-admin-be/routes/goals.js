@@ -16,7 +16,9 @@ router.get('/api/get-all-goals', async (req, res) => {
             program: { id: new ObjectId(id) },
             goalFrom: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await GoalSchema.estimatedDocumentCount()
+        let count = await GoalSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aGoals = goals.map( doc => {
             stt++

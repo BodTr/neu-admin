@@ -16,7 +16,9 @@ router.get('/api/get-all-subjects', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await SubjectSchema.estimatedDocumentCount()
+        let count = await SubjectSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aSubjects = subjects.map( doc => {
             stt++

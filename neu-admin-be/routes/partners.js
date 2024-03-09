@@ -15,7 +15,9 @@ router.get('/api/get-all-partners', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await PartnerSchema.estimatedDocumentCount()
+        let count = await PartnerSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aPartners = partners.map( doc => {
             stt++

@@ -7,7 +7,11 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lý môn học</h2>
+              <h2 class="page-title">Quản lý môn học của : 
+                <b style="color: #ffe1e1; font-size: 22px"
+                  >"{{ programName }}"</b
+                >
+              </h2>
             </div>
 
             <div class="col-auto ms-auto d-print-none">
@@ -413,6 +417,7 @@ export default {
           tool: "Thao tác",
         },
       },
+      programName: "",
       id: "",
       name: "",
       lecturer: "",
@@ -441,6 +446,10 @@ export default {
   },
   mounted() {
     this.id = localStorage.getItem("progId")
+    if (this.id == "" || this.id == null) {
+      router.push("/init-program");
+    }
+    this.programName = localStorage.getItem("programName");
   },
   setup() {
     // get toast interface

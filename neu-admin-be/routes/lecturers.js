@@ -16,7 +16,9 @@ router.get('/api/get-all-lecturers', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query},
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await LecturerSchema.estimatedDocumentCount()
+        let count = await LecturerSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aLecturers = lecturers.map( doc => {
             stt++

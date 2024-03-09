@@ -15,7 +15,9 @@ router.get('/api/get-all-curriculums', async (req, res) => {
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await CurriculumSchema.estimatedDocumentCount()
+        let count = await CurriculumSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aCurriculums = curriculums.map( doc => {
             stt++
