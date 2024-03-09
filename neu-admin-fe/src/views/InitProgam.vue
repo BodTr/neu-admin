@@ -4,12 +4,12 @@
       <div class="card card-md">
         <div class="card-body text-center py-4 p-sm-5">
           <img src="../assets/Logo-NEU.png" height="120" class="mb-n2" alt="" />
-          <h1 class="mt-5">Kết nối tri thức - vững bước tương lai!</h1>
+          <h1 class="mt-2">Kết nối tri thức - vững bước tương lai!</h1>
         </div>
         <div class="hr-text hr-text-center hr-text-spaceless">
           Chọn chương trình
         </div>
-        <div v-if="hasProgram" class="card-body">
+        <div v-if="hasProgram" style="padding: 20px;" class="card-body">
           <div class="col-md-4">
             <label class="form-label">Năm học</label>
             <select
@@ -24,7 +24,7 @@
               </option>
             </select>
           </div>
-          <div class="mb-3">
+          <div style="margin-top: 15px;" class="mb-3">
             <label class="form-label">Chương trình</label>
             <select
               v-model="programName"
@@ -48,15 +48,16 @@
             </a>
           </div>
         </div>
-      </div>
-      <div v-if="hasProgram" class="row align-items-center mt-3">
+        <div v-if="hasProgram" class="row align-items-center mt-3">
         <div class="col">
           <div class="btn-list justify-content-end">
             
-            <a class="btn btn-primary" @click="pushRouter()"> Tiếp tục </a>
+            <a style="margin: 0 auto;margin-bottom: 20px;" class="btn btn-primary" @click="pushRouter()"> Tiếp tục </a>
           </div>
         </div>
       </div>
+      </div>
+      
     </div>
   </div>
 </template>
