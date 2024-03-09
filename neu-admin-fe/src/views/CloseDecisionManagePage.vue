@@ -431,7 +431,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: localStorage.getItem("progId"),
+      id: "",
       name: "",
       detail: "",
       number: "",
@@ -463,7 +463,9 @@ export default {
     const toast = useToast();
     return { toast };
   },
-
+  mounted() {
+    this.id = localStorage.getItem("progId")
+  },
   methods: {
     handlePdfUpload() {
       this.$refs.closeDecisionDoc.click();

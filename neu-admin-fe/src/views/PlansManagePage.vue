@@ -447,7 +447,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: localStorage.getItem("progId"),
+      id: "",
       certName: "",
       qualifiedLecturer: "",
       qualifiedStudent: "",
@@ -474,7 +474,9 @@ export default {
       },
     };
   },
-
+  mounted() {
+    this.id = localStorage.getItem("progId")
+  },
   setup() {
     // get toast interface
     const toast = useToast();
