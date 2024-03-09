@@ -12,9 +12,10 @@
               />
             </a>
           </div>
+          <h2 style="text-align: center; color: white; margin-bottom: 20px; " >PHẦM MỀM CHUYỂN ĐỔI SỐ QUẢN TRỊ DỮ LIỆU PHÒNG HỢP TÁC QUỐC TẾ</h2>
           <div class="card card-md">
             <div class="card-body">
-              <h2 class="h2 text-center mb-4">Đăng nhập</h2>
+              <h2 class="h2 text-center mb-4">Đăng nhập tài khoản</h2>
               <form method="post" @submit.prevent="Login">
                 <div class="mb-3">
                   <label class="form-label">Tên đăng nhập</label>
@@ -30,6 +31,9 @@
                 </div>
                 <div class="form-footer">
                   <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+                  <p style="text-align: center; margin-top: 20px; text-decoration: underline;">
+                    <a>Tài liệu hướng dẫn</a>
+                  </p>
                 </div>
               </form>
             </div>
