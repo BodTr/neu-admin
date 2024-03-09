@@ -694,7 +694,7 @@ export default {
     // let self = this;
     // self.getMenu();
     const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
-    console.log(unOrderedUserMenuArr, "unOrderedUserMenuArr mounted hook");
+    console.log(localStorage.getItem("menuManageArray"), "unOrderedUserMenuArr mounted hook");
     if(unOrderedUserMenuArr){
       const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
       orderedUserMenuArr.sort((a, b) => {
