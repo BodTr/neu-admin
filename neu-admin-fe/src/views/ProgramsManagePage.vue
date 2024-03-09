@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -420,13 +419,11 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
 export default {
   name: "ProgramManagePage",
   components: {
-    VerticalNavbar,
   },
   data() {
     return {
