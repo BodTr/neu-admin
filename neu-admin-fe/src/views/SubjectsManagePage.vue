@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <!-- <VerticalNavbar /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -463,6 +463,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         lecturer: this.lecturer,
         teachingAssistant: this.teachingAssistant,
