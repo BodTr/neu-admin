@@ -3,7 +3,6 @@ import ProgramsManagePage from '../views/ProgramsManagePage.vue'
 import TransnationProgramsManagePage from '../views/TransnationProgramsManagePage.vue'
 import ApprovalDecisionManagePage from '../views/ApprovalDecisionManagePage.vue'
 import CloseDecisionManagePage from '../views/CloseDecisionManagePage.vue'
-import IdArrayLengthOneErrorPage from '../views/IdArrayLengthOneErrorPage.vue'
 import DocumentManagePage from '../views/DocumentManagePage.vue'
 import AgenciesManagePage from '../views/AgenciesManagePage.vue'
 import PartnersManagePage from '../views/PartnersManagePage.vue'
@@ -86,11 +85,6 @@ const router = createRouter({
         
         requiresAuth: true
       },
-    },
-    {
-      path: '/idarray-error-page',
-      name: 'id-array-error-page',
-      component: IdArrayLengthOneErrorPage
     },
     {
       path: '/general-infor/documents/',

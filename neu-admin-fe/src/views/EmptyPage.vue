@@ -9,7 +9,7 @@
         alt="neu-logo"
         class="navbar-brand-image-xl"
       /></div>
-      <p class="empty-title">Phần mềm quản lý chương trình HTQT NEU</p>
+      <p style="color: white;" class="empty-title">PHẦM MỀM CHUYỂN ĐỔI SỐ QUẢN TRỊ DỮ LIỆU PHÒNG HỢP TÁC QUỐC TẾ <br /> TRƯỜNG ĐẠI HỌC KINH TẾ QUỐC DÂN</p>
     </div>
   </div>
 </template>

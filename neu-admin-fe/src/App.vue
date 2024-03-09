@@ -135,6 +135,7 @@
                     <router-link
                       v-for="(item, index) in genaralInforItem"
                       class="dropdown-item"
+                      v-data="item.name"
                       :to="{ name: item.name }"
                       >{{ item.title }}</router-link
                     >
@@ -523,6 +524,7 @@ export default {
       const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwo);
+      console.log(filteredArr,"filteredArrfilteredArrfilteredArrfilteredArrfilteredArr")
       return filteredArr;
     },
 
@@ -624,6 +626,9 @@ export default {
       const arrayEight = [18, 19];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
+      // for(var i = 0; i < filteredArr.length;i++){
+      //   alert(filteredArr[i].name)
+      // }
       if (filteredArr.length === 0) {
         return false;
       } else {

@@ -321,6 +321,7 @@ import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
+import router from '@/router'
 // const idArr = JSON.parse(localStorage.getItem("idArr"))
 // let id = null
 // if (idArr === null) {
@@ -385,6 +386,9 @@ export default {
   },
   mounted() {
     this.id = localStorage.getItem("progId")
+    if(this.id == "" || this.id == null){ 
+      router.push("/init-program")
+    }
   },
   methods: {
     showModal() {
