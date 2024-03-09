@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <VerticalNavbar />
+    <!-- <VerticalNavbar /> -->
     <!-- <Header /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
