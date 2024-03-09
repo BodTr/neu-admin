@@ -84,7 +84,12 @@
             localStorage.setItem("accessToken", result.data.accessToken)
             localStorage.setItem("refreshToken", result.data.refreshToken)
             this.toast.success(result.data.message)
-            router.push('/init-program')
+            if (result.data.userInfor.permission === 'Super Admin') {
+              router.push('/init-page')
+            } else {
+              router.push('/init-program')
+            }
+            
             
             
             

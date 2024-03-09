@@ -305,7 +305,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>

@@ -30,6 +30,7 @@ router.post('/api/login', async (req, res, next) => {
         }
         const accessToken = await signAccessToken(user._id)   
         const refreshToken = await signRefreshToken(user._id) 
+        const userPermission = user.permission
         
         // khi tạo được refresh token rồi thì ta sẽ lưu refresh token đó vào db
         const savedRefreshToken = new RefreshTokenSchema ({
@@ -45,7 +46,8 @@ router.post('/api/login', async (req, res, next) => {
         console.log(savedRefreshToken, "savedRefreshToken")
 
         const userInfor = {
-            menuManageArray: user.menuManageArray
+            menuManageArray: user.menuManageArray,
+            permission: userPermission
         }
         
         
