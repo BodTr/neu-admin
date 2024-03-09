@@ -482,7 +482,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
 
         headings: {
@@ -495,7 +495,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       phoneNumber: "",
       position: "",
@@ -538,6 +538,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         phoneNumber: this.phoneNumber,
         position: this.position,
@@ -586,6 +587,7 @@ export default {
 
     async onSubmit() {
       const data = {
+
         name: this.editAgency.name,
         phoneNumber: this.editAgency.phoneNumber,
         position: this.editAgency.position,

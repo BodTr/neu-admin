@@ -393,7 +393,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
 
         headings: {
@@ -406,7 +406,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       name: "",
       nationality: "",
       unit: "",
@@ -449,6 +449,7 @@ export default {
     },
     async submitForm() {
       const data = {
+        programId: this.id,
         name: this.name,
         nationality: this.nationality,
         unit: this.unit,

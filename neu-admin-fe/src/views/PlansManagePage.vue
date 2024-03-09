@@ -432,7 +432,7 @@ export default {
       ],
       options: {
         params: {
-          id: this.$route.params.id,
+          id: localStorage.getItem("progId"),
         },
         headings: {
           certName: "Tên văn bằng và chứng chỉ",
@@ -447,7 +447,7 @@ export default {
           tool: "Thao tác",
         },
       },
-      id: this.$route.params.id,
+      id: localStorage.getItem("progId"),
       certName: "",
       qualifiedLecturer: "",
       qualifiedStudent: "",

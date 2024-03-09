@@ -174,14 +174,14 @@
                           type="text"
                           class="form-control"
                           v-model="expiry"
-                          placeholder="Nhập đơn vị quản lý"
+                          placeholder="Nhập ngày hết hạn"
                         />
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
-                      Create
+                      Thêm mới
                     </a>
                   </div>
                 </div>
@@ -390,7 +390,7 @@
                                   type="text"
                                   class="form-control"
                                   v-model="expiry"
-                                  placeholder="Nhập đơn vị quản lý"
+                                  placeholder="Nhập ngày hết hạn"
                                 />
                               </div>
                             </div>

@@ -43,13 +43,13 @@
             <p class="text-muted">Bạn chưa được liên kết với chương trình nào, liên hệ với admin để gán chương trình cho tài khoản</p>
           </div>
           <div>
-            <a href="#" class="btn btn-ghost-danger" @click="logout()">
+            <a class="btn btn-ghost-danger" @click="logout()">
               Đăng xuất
             </a>
           </div>
         </div>
       </div>
-      <div class="row align-items-center mt-3">
+      <div v-if="hasProgram" class="row align-items-center mt-3">
         <div class="col">
           <div class="btn-list justify-content-end">
             
@@ -63,6 +63,7 @@
 <script>
 import instance from '../instance';
 import router from '@/router';
+import { useToast } from "vue-toastification";
 export default {
   name: "InitProgram",
   data() {
@@ -73,6 +74,11 @@ export default {
       programName: "",
       year: "",
     };
+  },
+  setup() {
+    // get toast interface
+    const toast = useToast();
+    return { toast };
   },
   async mounted() {
     try {
@@ -126,6 +132,15 @@ export default {
       if(this.programName === '') {
         alert('Hãy chọn một chương trình')
       } else {
+        const selectedProgram = this.programsOrderedByYearArr.filter((prog) => {
+          if (prog.name === this.programName) {
+            return prog
+          }
+        })
+        console.log(selectedProgram, "selectedProgram pushRouter()")
+        const progId = selectedProgram[0]._id
+        console.log(progId, "progId pushRouter()")
+        localStorage.setItem("progId", progId)
         localStorage.setItem("year", this.year)
         localStorage.setItem("programName", this.programName)
         router.push('/init-page');

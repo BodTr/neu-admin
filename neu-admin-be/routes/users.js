@@ -95,12 +95,43 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
             return res.json({ error: true, message: "User already existed" })
             
         } else {
+            let menuManageArray = []
+            if (permission === 'Super Admin') {
+                menuManageArray = [
+                    {name :'programs-manage-page', stt: 1, title: 'Quản lý chương trình liên kết'},
+                    {name :'programs-manage-page', stt: 2, title: 'TT chương trình liên kết'},
+                    {name :'programs-manage-page', stt: 3, title: 'Các quyết định phê duyệt'},
+                    {name :'programs-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'},
+                    {name :'programs-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'},
+                    {name :'programs-manage-page', stt: 6, title: 'Quản lý đối tác'},
+                    {name :'programs-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'},
+                    {name :'programs-manage-page', stt: 8, title: 'Mục tiêu chương trình'},
+                    {name :'programs-manage-page', stt: 9, title: 'Quản lý nội dung đề án'},
+                    {name :'programs-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'},
+                    {name :'programs-manage-page', stt: 11, title: 'Thông tin khung chương trình'},
+                    {name :'programs-manage-page', stt: 12, title: 'Quản lý tuyển sinh'},
+                    {name :'programs-manage-page', stt: 13, title: 'Quản lý giảng viên'},
+                    {name :'programs-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'},
+                    {name :'programs-manage-page', stt: 15, title: 'Quản lý môn học'},
+                    {name :'programs-manage-page', stt: 16, title: 'Quản lý MOU.MOA'},
+                    {name :'programs-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'},
+                    {name :'programs-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'},
+                    {name :'programs-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'},
+                    {name :'programs-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'},
+                    {name :'programs-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'},
+                    {name :'programs-manage-page', stt: 22, title: 'Quản lý tài khoản'},
+
+                ]
+            } else {
+                menuManageArray = []
+            }
             const saving_user = await UserSchema.create({
                 name: name,
                 phoneNumber:phoneNumber,
                 username: username,
                 permission: permission,
-                password: encryptedPassword
+                password: encryptedPassword,
+                menuManageArray: menuManageArray,
             })
             console.log('User saved successfully', saving_user)
             res.json({ error: false, message: 'user saved successfully' })
