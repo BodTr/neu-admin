@@ -1,6 +1,4 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-</script>
+
 <template>
   <aside v-if="!['/login'].includes($route.path) && !['/init-program'].includes($route.path)" class="navbar navbar-vertical navbar-expand-lg navbar-dark">
     <div class="container-fluid">
@@ -447,7 +445,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { useToast } from "vue-toastification";
 import router from "@/router";
 import instance from "./instance";
-
+import { RouterLink, RouterView } from "vue-router";
 export default {
   name: "VerticalNavbar",
   data() {
@@ -748,4 +746,8 @@ export default {
 .modal-content {
   border: 2px solid #242424b5;
 }
+.router-link-active{
+  background-color: #484242 !important;
+}
+
 </style>
