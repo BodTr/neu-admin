@@ -80,7 +80,7 @@
             localStorage.setItem("accessToken", result.data.accessToken)
             localStorage.setItem("refreshToken", result.data.refreshToken)
             this.toast.success(result.data.message)
-            router.push('/init-page')
+            router.push('/init-program')
             
             
             

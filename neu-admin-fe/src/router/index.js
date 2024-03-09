@@ -26,10 +26,20 @@ import Admin from '../views/Admin.vue'
 import LoginPage from '../views/LoginScreen.vue'
 
 import EmptyPage from '../views/EmptyPage.vue'
+import InitProgam from '../views/InitProgam.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/init-program',
+      name: 'init-program', // Trang chọn chương trình lúc đầu
+      component: InitProgam,
+      meta: { 
+        
+        requiresAuth: true
+      }
+    },
     {
       path: '/init-page',
       name: 'empty-page', // trang trống mặc định

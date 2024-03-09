@@ -60,6 +60,8 @@ router.get('/api/get-years-array', async(req, res) => {
     }
 })
 
+// api lấy những chương trình chưa gán vs ng dùng nào
+
 router.get('/api/get-programs-by-year', async(req, res) => {
     try {
         console.log(req.query, "req.query, get-programs-by-year api")
@@ -78,6 +80,47 @@ router.get('/api/get-programs-by-year', async(req, res) => {
         res.json({ error: false, programsZeroUserFilterByYear })
     } catch (error) {
         console.log(error, "get-programs-by-year catch block api")
+    }
+})
+
+// api kiểm tra người dùng đã được gắn với chương trình nào chưa
+
+router.get('/api/check-user-has-program-or-not', async(req, res) => {
+    try {
+        const { id } = req.payload // từ authenticateAccessToken()
+        const attachedPrograms = await ProgramSchema.find({ user: { id: new ObjectId(id) } }).lean()
+        console.log(attachedPrograms, "attachedPrograms get-attached-programs api")
+        let hasProgram = null
+        if (attachedPrograms.length == 0) {
+            hasProgram = false
+        } else {
+            hasProgram = true
+        }
+        res.json({ error: false, hasProgram })
+    } catch (error) {
+        console.log(error, "get-attached-programs api catch block error")
+    }
+})
+
+// api tìm các chương trình của người dùng theo năm
+
+router.get('/api/get-attached-programs-by-year', async(req, res) => {
+    try {
+        const userId = req.payload
+        console.log(req.query, "req.query, get-attached-programs-by-year api")
+        const year = req.query.year
+        const attachedPrograms = await ProgramSchema.find({ user: { id: new ObjectId(userId) } }).lean()
+        const attachedProgramsFilterByYear = attachedPrograms.filter((prog) => {
+            console.log(prog.year.toString() === year, "filter function get-attached-programs-by-year api")
+            if (prog.year.toString() === year) {
+                return prog
+            }
+
+        })
+        console.log(attachedProgramsFilterByYear, "attachedProgramsFilterByYear get-attached-programs-by-year api")
+        res.json({ error: false, attachedProgramsFilterByYear })
+    } catch (error) {
+        console.log(error, "get-attached-programs-by-year api catch block error")
     }
 })
 

@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <VerticalNavbar />
+    <!-- <Header /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -854,11 +855,13 @@ import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
+// import Header from "../components/Header.vue";
 
 export default {
   name: "Admin",
   components: {
-    VerticalNavbar,
+    VerticalNavbar
+
   },
   data() {
     return {
