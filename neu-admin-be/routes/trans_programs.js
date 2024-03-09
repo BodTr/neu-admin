@@ -9,16 +9,19 @@ router.use(authenticateAccessToken)
 
 router.get('/api/get-all-trans-programs', async (req, res) => {
     try {
-        
-        
+
         let { page, limit, query, id } = req.query
-        console.log(id, "get api id")
+        if(id == ""){
+
+        }
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const programs = await TransProgramSchema.find({
             program: { id: new ObjectId(id) },
             name: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
-        let count = await TransProgramSchema.estimatedDocumentCount()
+        let count = await TransProgramSchema.countDocuments({
+            program: { id: new ObjectId(id) }
+        })
         let stt = 0
         const aPrograms = programs.map( doc => {
             stt++

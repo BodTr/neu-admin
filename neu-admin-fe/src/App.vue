@@ -135,6 +135,7 @@
                     <router-link
                       v-for="(item, index) in genaralInforItem"
                       class="dropdown-item"
+                      v-data="item.name"
                       :to="{ name: item.name }"
                       >{{ item.title }}</router-link
                     >
@@ -379,7 +380,7 @@
             </div>
           </li>
           <li v-show="visaIsShow" class="nav-item">
-            <router-link class="nav-link" to="/enrollment/htqt-infor">
+            <router-link class="nav-link" to="/enrollment/extend-visa">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -523,6 +524,7 @@ export default {
       const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwo);
+      console.log(filteredArr,"filteredArrfilteredArrfilteredArrfilteredArrfilteredArr")
       return filteredArr;
     },
 
@@ -624,6 +626,9 @@ export default {
       const arrayEight = [18, 19];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
+      // for(var i = 0; i < filteredArr.length;i++){
+      //   alert(filteredArr[i].name)
+      // }
       if (filteredArr.length === 0) {
         return false;
       } else {
