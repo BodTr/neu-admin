@@ -26,30 +26,16 @@
       </div>
       <div class="collapse navbar-collapse show" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
-          <li>
+          <li class="nav-item mb-3">
             <router-link
               class="btn btn-lime d-none d-sm-inline-block"
               to="/init-program"
+              @click="storeRoutePath()"
             >
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M12 5l0 14"></path>
-                <path d="M5 12l14 0"></path>
-              </svg>
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
               Đổi chương trình quản lý
-            </router-link>
+          </router-link>
           </li>
           <li v-show="programsIsShow" class="nav-item">
             <router-link class="nav-link" to="/">
@@ -189,7 +175,7 @@
                     role="button"
                     aria-expanded="true"
                   >
-                    Chất lượng đào tạo
+                    Khung chương trình
                   </a>
                   <div class="dropdown-menu">
                     <router-link
@@ -710,6 +696,10 @@ export default {
 
   },
   methods: {
+    storeRoutePath() {
+      localStorage.setItem("routePath", router.currentRoute.value.path)
+      // router.push('/init-program')
+    },
     arrayFilterer(arr1, arr2) {
       // arr1 là array userMenuArr, và array này có prop stt trong mỗi phần tử, arr2 là array dùng để lọc arr1,
       const filteredArr = arr1.filter((item) => {

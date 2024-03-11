@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">Quản lý giảng viên của :
+              <h2 class="page-title">
                 <b style="color: #ffe1e1; font-size: 22px"
                   >"{{ programName }}"</b
                 >
@@ -361,7 +361,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>

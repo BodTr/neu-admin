@@ -8,7 +8,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <h2 class="page-title">
-                Quản lý TT chương trình liên kết của :
+                
                 <b style="color: #ffe1e1; font-size: 22px"
                   >"{{ programName }}"</b
                 >
@@ -39,7 +39,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm chương trình
+                  Thêm thông tin chương trình
                 </a>
                 <a
                   href="#"

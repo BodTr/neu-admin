@@ -129,22 +129,24 @@ export default {
     pushRouter() {
       // router.push('/init-page');
 
-      console.log(router.push('/init-page'), "pushRouter click event")
+      console.log(router.currentRoute.value.path, "pushRouter click event")
       if(this.programName === '') {
-        alert('Hãy chọn một chương trình')
+        this.toast.warning('Hãy chọn một chương trình')
+        router.push('/init-program')
       } else {
         const selectedProgram = this.programsOrderedByYearArr.filter((prog) => {
           if (prog.name === this.programName) {
             return prog
           }
         })
+        const currentRoute = localStorage.getItem("routePath")
         console.log(selectedProgram, "selectedProgram pushRouter()")
         const progId = selectedProgram[0]._id
         console.log(progId, "progId pushRouter()")
         localStorage.setItem("progId", progId)
         localStorage.setItem("year", this.year)
         localStorage.setItem("programName", this.programName)
-        router.push('/init-page');
+        router.push(`${currentRoute}`);
       }
 
       

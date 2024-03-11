@@ -370,7 +370,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="agencyPhoneNumber"
+                                  v-model="editprogram.agencyPhoneNumber"
                                   placeholder="Nhập số điện thoại"
                                 />
                               </div>
@@ -379,7 +379,7 @@
                                 <input
                                   type="number"
                                   class="form-control"
-                                  v-model="quota"
+                                  v-model="editprogram.quota"
                                   placeholder="Nhập chỉ tiêu"
                                 />
                               </div>
@@ -388,7 +388,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="expiry"
+                                  v-model="editprogram.expiry"
                                   placeholder="Nhập ngày hết hạn"
                                 />
                               </div>
