@@ -135,7 +135,6 @@
                     <router-link
                       v-for="(item, index) in genaralInforItem"
                       class="dropdown-item"
-                      v-data="item.name"
                       :to="{ name: item.name }"
                       >{{ item.title }}</router-link
                     >
@@ -457,7 +456,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a href="#" class="btn btn-ghost-danger" @click="logout()">
+            <a class="btn btn-ghost-danger" @click="logout()">
               Đăng xuất
             </a>
           </li>
@@ -465,18 +464,20 @@
       </div>
     </div>
   </aside>
-  <RouterView />
+  <router-view />
 </template>
 <script>
 import { useToast } from "vue-toastification";
 import router from "@/router";
 import instance from "./instance";
-import { RouterLink, RouterView } from "vue-router";
+
+
+// import { RouterLink, RouterView } from "vue-router";
 export default {
-  name: "VerticalNavbar",
+  name: "AppVue",
   data() {
     return {
-      items: [],
+
       userMenuArr: [],
     };
   },
@@ -524,7 +525,7 @@ export default {
       const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwo);
-      console.log(filteredArr,"filteredArrfilteredArrfilteredArrfilteredArrfilteredArr")
+      console.log(filteredArr,"filteredArr genaralInforItem()")
       return filteredArr;
     },
 
@@ -696,8 +697,6 @@ export default {
     return { toast };
   },
   mounted() {
-    // let self = this;
-    // self.getMenu();
     const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
     console.log(localStorage.getItem("menuManageArray"), "unOrderedUserMenuArr mounted hook");
     if(unOrderedUserMenuArr){

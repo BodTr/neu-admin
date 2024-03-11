@@ -717,6 +717,36 @@ function emptyUserPasswordInputValidation(req, res, next) {
     }
 }
 
+// student inputs validate
+function emptyStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check empty student inputs");
+    const error = new Error("empty student inputs");
+    error.code = "EMPTY_STUDENT_INPUTS_ERROR";
+    const { name, studentCode, birthday, sex, nation, schoolYear, tempResidence, dien, major, courseDuration, monthCount, bgdReceiveNumber, bgdReceiveDate, neuReceiveNumber, neuReceiveDate, expenses, shp, kpck, nationalDayExpenses, tetVnExpenses, tetLaoCamExpenses, travelExpenses, initExpenses} = req.body;
+    if (!name || !studentCode || !birthday || !sex || !nation || !schoolYear || !tempResidence || !dien || !major || !courseDuration || !monthCount || !bgdReceiveNumber || !bgdReceiveDate || !neuReceiveNumber || !neuReceiveDate) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeStudentInputsValidation(req, res, next) {
+    console.log(req.body, "middleware check type student inputs")
+    const error = new Error('wrong type student inputs')
+    error.code = 'STUDENT_INPUTS_TYPE_ERROR'
+    const { name, studentCode, birthday, sex, nation, schoolYear, tempResidence, dien, major, courseDuration, monthCount, bgdReceiveNumber, bgdReceiveDate, neuReceiveNumber, neuReceiveDate, expenses, shp, kpck, nationalDayExpenses, tetVnExpenses, tetLaoCamExpenses, travelExpenses, initExpenses} = req.body;
+    if (typeof name !== 'string' || typeof studentCode !== 'string' || typeof nation !== 'string' || typeof schoolYear !== 'string' || typeof tempResidence !== 'string' || typeof dien !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof courseDuration !== 'string' || isNaN(monthCount) || isNaN(bgdReceiveNumber) || typeof bgdReceiveDate !== 'string' || isNaN(neuReceiveNumber) || typeof neuReceiveDate !== 'string' || isNaN(expenses)  || isNaN(shp) || isNaN(kpck) || isNaN(tetVnExpenses) || isNaN(tetLaoCamExpenses) || isNaN(travelExpenses) || isNaN(nationalDayExpenses) || isNaN(initExpenses)) {
+        console.log(error.code, 'middleware type error')
+        throw error
+    } else {
+        console.log('student inputs type correct')
+        next()
+    }
+}
+
+
 module.exports = {
   emptyProgramInputsValidation,
   typeProgramInputsValidation,
@@ -769,4 +799,6 @@ module.exports = {
   emptyCloseDecisionInputsValidation,
   typeCloseDecisionInputsValidation,
   emptyFileCloseDecisionInputValidation,
+  emptyStudentInputsValidation,
+  typeStudentInputsValidation,
 };

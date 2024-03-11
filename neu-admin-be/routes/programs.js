@@ -165,12 +165,7 @@ router.get('/api/check-user-has-program-or-not', async (req, res) => {
 
 router.get('/api/get-attached-programs-by-year', async (req, res) => {
     try {
-
-
-
         const userId = req.payload
-
-
         var year = req.query.year
         year = parseInt(year)
 
@@ -201,6 +196,14 @@ router.get('/api/get-attached-programs-by-year', async (req, res) => {
     } catch (error) {
         console.log(error, "get-attached-programs-by-year api catch block error")
     }
+})
+
+// api lấy danh sách các chương trình đang gắn với người dùng
+router.get('/api/get/all-attached-program', async (req, res) => {
+    const userId = req.payload
+    const attachedPrograms = await ProgramSchema.find({ user: { id: new ObjectId(userId) } }).lean()
+    res.json({ error: false, attachedPrograms })
+
 })
 
 router.patch('/api/add-programs-for-users/:id', async (req, res) => {
@@ -375,6 +378,26 @@ router.put('/api/edit-program/:id', emptyProgramInputsValidation, typeProgramInp
             message: "something went wrong!"
         })
         // next(error)
+    }
+})
+
+// api bỏ liên kết giữa chương trình và người dùng
+router.patch('/api/delete-attached-program', async(req, res) => {
+    try {
+
+        const userId = req.payload
+        const { programIdArray } = req.body
+        const updatedProgram = programIdArray.map( async (prog) => {
+            const updatingProg = await ProgramSchema.findOneAndUpdate({ _id: prog._id }, { user: { id: new ObjectId('111111111111111111111111') } }, { new: true })
+            return updatingProg
+        })
+        console.log(updatedProgram, "updatedProgram add-programs-for-users")
+        res.json({
+            error: false,
+            message: 'Cập nhật khóa học cho đơn vị thành công'
+        })
+    } catch (error) {
+        console.log(error, "error in  catch block /delete-attached-program api")
     }
 })
 

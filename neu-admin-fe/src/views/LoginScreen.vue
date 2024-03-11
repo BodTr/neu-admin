@@ -86,9 +86,11 @@
             this.toast.success(result.data.message)
             if (result.data.userInfor.permission === 'Super Admin') {
               location.href = "/"
-             // router.push('/init-page')
+              // router.push('/init-page')
+            } else if ( result.data.userInfor.permission === 'Cấp 2') {
+              location.href = "/init-page"
             } else {
-              //router.push('/init-program')
+              // router.push('/init-program')
               location.href = "/init-program"
             }
             

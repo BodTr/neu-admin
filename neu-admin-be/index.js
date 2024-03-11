@@ -44,6 +44,7 @@ app.use(require('./routes/ex_foreign_students'))
 app.use(require('./routes/ex_students'))
 app.use(require('./routes/extend_visa'))
 app.use(require('./routes/users'))
+app.use(require('./routes/students'))
 
 
 app.listen(process.env.PORT || 3000, () => {

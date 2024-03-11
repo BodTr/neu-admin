@@ -460,7 +460,10 @@
                       style="display: block"
                       aria-modal="true"
                     >
-                      <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                      <div
+                        class="modal-dialog modal-dialog-scrollable modal-xl"
+                        role="document"
+                      >
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title">Phân quyền Menu</h5>
@@ -492,7 +495,12 @@
                                       <input
                                         type="checkbox"
                                         id="program_manage"
-                                        :value="{name :'programs-manage-page', stt: 1, title: 'Quản lý chương trình liên kết'}"
+                                        :value="{
+                                          name: 'programs-manage-page',
+                                          stt: 1,
+                                          title:
+                                            'Quản lý chương trình liên kết',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -505,7 +513,11 @@
                                       <input
                                         type="checkbox"
                                         id="program_infor"
-                                        :value="{ name : 'trans-programs-manage-page', stt: 2, title: 'TT chương trình liên kết'}"
+                                        :value="{
+                                          name: 'trans-programs-manage-page',
+                                          stt: 2,
+                                          title: 'TT chương trình liên kết',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -516,7 +528,11 @@
                                       <input
                                         type="checkbox"
                                         id="approval_decision"
-                                        :value="{ name : 'approval-decision-manage-page', stt: 3, title: 'Các quyết định phê duyệt'}"
+                                        :value="{
+                                          name: 'approval-decision-manage-page',
+                                          stt: 3,
+                                          title: 'Các quyết định phê duyệt',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -527,7 +543,12 @@
                                       <input
                                         type="checkbox"
                                         id="close-decision-manage-page"
-                                        :value="{ name: 'close-decision-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'}"
+                                        :value="{
+                                          name: 'close-decision-manage-page',
+                                          stt: 4,
+                                          title:
+                                            'Các quyết định đóng chương trình',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -538,7 +559,11 @@
                                       <input
                                         type="checkbox"
                                         id="document"
-                                        :value="{name: 'documents-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'}"
+                                        :value="{
+                                          name: 'documents-manage-page',
+                                          stt: 5,
+                                          title: 'Quản lý văn bản liên kết',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -549,7 +574,11 @@
                                       <input
                                         type="checkbox"
                                         id="partner"
-                                        :value="{name: 'partners-manage-page', stt: 6, title: 'Quản lý đối tác'}"
+                                        :value="{
+                                          name: 'partners-manage-page',
+                                          stt: 6,
+                                          title: 'Quản lý đối tác',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -560,7 +589,11 @@
                                       <input
                                         type="checkbox"
                                         id="agency"
-                                        :value="{name: 'agencies-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'}"
+                                        :value="{
+                                          name: 'agencies-manage-page',
+                                          stt: 7,
+                                          title: 'Quản lý đơn vị thực hiện',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -571,7 +604,11 @@
                                       <input
                                         type="checkbox"
                                         id="program_goal"
-                                        :value="{name: 'goals-manage-page', stt: 8, title: 'Mục tiêu chương trình'}"
+                                        :value="{
+                                          name: 'goals-manage-page',
+                                          stt: 8,
+                                          title: 'Mục tiêu chương trình',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -583,7 +620,11 @@
                                       <input
                                         type="checkbox"
                                         id="plan"
-                                        :value="{name: 'plans-manage-page', stt: 9, title: 'Quản lý nội dung đề án'}"
+                                        :value="{
+                                          name: 'plans-manage-page',
+                                          stt: 9,
+                                          title: 'Quản lý nội dung đề án',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -595,7 +636,11 @@
                                       <input
                                         type="checkbox"
                                         id="education_quality"
-                                        :value="{name: 'edu-quality-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'}"
+                                        :value="{
+                                          name: 'edu-quality-manage-page',
+                                          stt: 10,
+                                          title: 'Đảm bảo chất lượng đào tạo',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -607,7 +652,11 @@
                                       <input
                                         type="checkbox"
                                         id="curriculum"
-                                        :value="{name: 'curriculums-manage-page', stt: 11, title: 'Thông tin khung chương trình'}"
+                                        :value="{
+                                          name: 'curriculums-manage-page',
+                                          stt: 11,
+                                          title: 'Thông tin khung chương trình',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -619,7 +668,11 @@
                                       <input
                                         type="checkbox"
                                         id="enrollment"
-                                        :value="{name: 'enrollment-manage-page', stt: 12, title: 'Quản lý tuyển sinh'}"
+                                        :value="{
+                                          name: 'enrollment-manage-page',
+                                          stt: 12,
+                                          title: 'Quản lý tuyển sinh',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -630,7 +683,11 @@
                                       <input
                                         type="checkbox"
                                         id="lecturer"
-                                        :value="{name: 'lecturers-manage-page', stt: 13, title: 'Quản lý giảng viên'}"
+                                        :value="{
+                                          name: 'lecturers-manage-page',
+                                          stt: 13,
+                                          title: 'Quản lý giảng viên',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -641,7 +698,11 @@
                                       <input
                                         type="checkbox"
                                         id="unit"
-                                        :value="{name: 'units-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'}"
+                                        :value="{
+                                          name: 'units-manage-page',
+                                          stt: 14,
+                                          title: 'Quản lý đơn vị công tác',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -652,7 +713,11 @@
                                       <input
                                         type="checkbox"
                                         id="subject"
-                                        :value="{name: 'subjects-manage-page', stt: 15, title: 'Quản lý môn học'}"
+                                        :value="{
+                                          name: 'subjects-manage-page',
+                                          stt: 15,
+                                          title: 'Quản lý môn học',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -665,7 +730,11 @@
                                       <input
                                         type="checkbox"
                                         id="moumoa"
-                                        :value="{name: 'moumoa-manage-page', stt: 16, title: 'Quản lý MOU.MOA'}"
+                                        :value="{
+                                          name: 'moumoa-manage-page',
+                                          stt: 16,
+                                          title: 'Quản lý MOU.MOA',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -678,7 +747,11 @@
                                       <input
                                         type="checkbox"
                                         id="htqt"
-                                        :value="{name: 'htqt-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'}"
+                                        :value="{
+                                          name: 'htqt-manage-page',
+                                          stt: 17,
+                                          title: 'Quản lý các dự án HTQT',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -693,7 +766,12 @@
                                       <input
                                         type="checkbox"
                                         id="ex_f_stu"
-                                        :value="{name: 'ex-f-student-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'}"
+                                        :value="{
+                                          name: 'ex-f-student-manage-page',
+                                          stt: 18,
+                                          title:
+                                            'Sinh viên nước ngoài đến trao đổi',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -705,7 +783,12 @@
                                       <input
                                         type="checkbox"
                                         id="ex_stu"
-                                        :value="{name: 'ex-student-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'}"
+                                        :value="{
+                                          name: 'ex-student-manage-page',
+                                          stt: 19,
+                                          title:
+                                            'Sinh viên đi nước ngoài trao đổi',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -718,7 +801,11 @@
                                       <input
                                         type="checkbox"
                                         id="student"
-                                        :value="{name: 'student-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'}"
+                                        :value="{
+                                          name: 'student-manage-page',
+                                          stt: 20,
+                                          title: 'Quản lý lưu sinh viên',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -731,7 +818,11 @@
                                       <input
                                         type="checkbox"
                                         id="visa"
-                                        :value="{name: 'extend-visa-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'}"
+                                        :value="{
+                                          name: 'extend-visa-manage-page',
+                                          stt: 21,
+                                          title: 'Cấp/Gia hạn VISA',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -744,7 +835,11 @@
                                       <input
                                         type="checkbox"
                                         id="user_manage"
-                                        :value="{name: 'admin', stt: 22, title: 'Quản lý tài khoản'}"
+                                        :value="{
+                                          name: 'admin',
+                                          stt: 22,
+                                          title: 'Quản lý tài khoản',
+                                        }"
                                         v-model="menuArray"
                                       />
                                     </td>
@@ -777,7 +872,9 @@
                       <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Phân bổ Chương trình cho đơn vị</h5>
+                            <h5 class="modal-title">
+                              Phân bổ Chương trình cho đơn vị
+                            </h5>
                             <button
                               @click="hideModal4()"
                               type="button"
@@ -787,22 +884,66 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
-                            <div class="col-md-4">
-                              <label class="form-label"
-                                >Năm học</label
-                              >
-                              <select
-                                v-model="year"
-                                class="form-select"
-                                tabindex="-1"
-                                @change="onYearChange()"
-                              >
-                                <option value="" disabled selected>
-                                  Chọn năm học
-                                </option>
-                                <option v-for="(year, index) in yearsArray" :value="year">{{ year }}</option>
-                              </select>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label class="form-label">Năm học</label>
+                                <select
+                                  v-model="year"
+                                  class="form-select"
+                                  tabindex="-1"
+                                  @change="onYearChange()"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn năm học
+                                  </option>
+                                  <option
+                                    v-for="(year, index) in yearsArray"
+                                    :value="year"
+                                  >
+                                    {{ year }}
+                                  </option>
+                                </select>
+                              </div>
+                              <!-- <div class="col-auto text-muted">
+                                <a
+                                  href="#"
+                                  class="btn btn-warning btn-icon"
+                                  data-bs-target="#modal-report-four"
+                                  @click="getAttchedProgram()"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-git-branch-deleted"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      stroke="none"
+                                      d="M0 0h24v24H0z"
+                                      fill="none"
+                                    />
+                                    <path
+                                      d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                                    />
+                                    <path
+                                      d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                                    />
+                                    <path d="M7 8v8" />
+                                    <path d="M9 18h6a2 2 0 0 0 2 -2v-5" />
+                                    <path d="M14 14l3 -3l3 3" />
+                                    <path d="M15 4l4 4" />
+                                    <path d="M15 8l4 -4" />
+                                  </svg>
+                                </a>
+                              </div> -->
                             </div>
+
                             <div class="table-responsive">
                               <table id="menu_table" class="table mb-0">
                                 <thead>
@@ -811,15 +952,21 @@
                                     <th>Hiển thị</th>
                                   </tr>
                                 </thead>
-                                <tbody v-for="(program, index) in programsOrderedByYearArr">
+                                <tbody
+                                  v-for="(
+                                    program, index
+                                  ) in programsOrderedByYearArr"
+                                >
                                   <tr>
                                     <td>{{ program.name }}</td>
-                                    <td><input
+                                    <td>
+                                      <input
                                         type="checkbox"
                                         id="program_manage"
                                         :value="program._id"
                                         v-model="selectedProgramIdArr"
-                                      /></td>
+                                      />
+                                    </td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -835,7 +982,6 @@
                               Lưu
                             </button>
                           </div>
-                          
                         </div>
                       </div>
                     </div>
@@ -911,54 +1057,58 @@ export default {
     return { toast };
   },
 
-  async mounted () {
+  async mounted() {
     try {
-      const yearsArr = await this.getYearsArr()
-      console.log(yearsArr, "yearsArr")
-      this.yearsArray = yearsArr
-      
+      const yearsArr = await this.getYearsArr();
+      console.log(yearsArr, "yearsArr");
+      this.yearsArray = yearsArr;
     } catch (error) {
-      console.log("mounted catch block error")
+      console.log("mounted catch block error");
     }
-    
   },
 
   methods: {
+
     async getYearsArr() {
       try {
-        const result = await instance.get("/api/get-years-array")
-        console.log(result, "result, getYearsArr()")
-        const yearsArr = result.data.data
-        return yearsArr
+        const result = await instance.get("/api/get-years-array");
+        console.log(result, "result, getYearsArr()");
+        const yearsArr = result.data.data;
+        return yearsArr;
       } catch (error) {
-        console.log(error, "getYearsArr() catch block error")
+        console.log(error, "getYearsArr() catch block error");
       }
     },
     onEditAttachedUserProgram(item) {
       console.log("onEditAttachedUserProgram click event");
-      this.editUser.id = item._id
-      this.showModal4()
+      this.editUser.id = item._id;
+      this.showModal4();
     },
     async onYearChange() {
-      console.log(this.year, "onYearChange")
+      console.log(this.year, "onYearChange");
       try {
-        const queryParams = { year: this.year }
-        const result = await instance.get('/api/get-programs-by-year', {params: queryParams})
-        console.log(result, "result, get-programs-by-year api result")
-        this.programsOrderedByYearArr = result.data.programsZeroUserFilterByYear
-      } catch(error) {
-        console.log(error, "onYearChange() catch block error")
+        const queryParams = { year: this.year };
+        const result = await instance.get("/api/get-programs-by-year", {
+          params: queryParams,
+        });
+        console.log(result, "result, get-programs-by-year api result");
+        this.programsOrderedByYearArr =
+          result.data.programsZeroUserFilterByYear;
+      } catch (error) {
+        console.log(error, "onYearChange() catch block error");
       }
     },
-
 
     async onUserChange() {
       try {
         const data = {
-          programIdArr: this.selectedProgramIdArr
-        }
-        const result = await instance.patch(`/api/add-programs-for-users/${this.editUser.id}`, data)
-        console.log(result)
+          programIdArr: this.selectedProgramIdArr,
+        };
+        const result = await instance.patch(
+          `/api/add-programs-for-users/${this.editUser.id}`,
+          data
+        );
+        console.log(result);
         if (result.data.error === true) {
           // alert(result.data.message)
           this.toast.error(result.data.message);
@@ -973,10 +1123,7 @@ export default {
           this.displayModalFour = false;
           this.selectedProgramIdArr = [];
         }
-      } catch (error) {
-        
-      }
-
+      } catch (error) {}
     },
     showModal() {
       this.displayModal = true;
@@ -998,37 +1145,40 @@ export default {
     },
     showModal3() {
       console.log("showModal3 click event");
-      this.displayModalThree = true
+      this.displayModalThree = true;
     },
     hideModal3() {
-      this.displayModalThree = false
+      this.displayModalThree = false;
     },
     showModal4() {
-      this.displayModalFour = true
+      this.displayModalFour = true;
     },
     hideModal4() {
-      this.displayModalFour = false
+      this.displayModalFour = false;
     },
 
     showUserMenu(item) {
       console.log(item);
       this.editUser.id = item._id;
       if (!item.menuManageArray) {
-        this.menuArray = []
+        this.menuArray = [];
       } else {
-        this.menuArray = item.menuManageArray
+        this.menuArray = item.menuManageArray;
       }
-      
+
       this.showModal3();
     },
-    
+
     async onMenuChange() {
       console.log("onMenuChange click event");
       try {
         const data = {
-          menuArray: this.menuArray
-        }
-        const result = await instance.patch(`/api/add-menu/${this.editUser.id}`, data)
+          menuArray: this.menuArray,
+        };
+        const result = await instance.patch(
+          `/api/add-menu/${this.editUser.id}`,
+          data
+        );
         console.log(result, "patch add-menu api result");
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -1045,7 +1195,7 @@ export default {
           this.menuArray = [];
         }
       } catch (error) {
-        console.log(error, "onMenuChange catch block error")
+        console.log(error, "onMenuChange catch block error");
       }
     },
     async submitFile() {
@@ -1182,7 +1332,8 @@ export default {
 </script>
 
 <style scoped>
-  #menu_table td, #menu_table th  {
-    border: 1px solid #ddd;
-  }
+#menu_table td,
+#menu_table th {
+  border: 1px solid #ddd;
+}
 </style>

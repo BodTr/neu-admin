@@ -9,8 +9,33 @@ const {signAccessToken, signRefreshToken, authenticateAccessToken, authenticateR
 const ObjectId = require("mongodb").ObjectId
 
 // api check access token
-router.get('/api/verifiedUser', authenticateAccessToken, (req, res) => {
-    res.json({message: 'verified'})
+router.get('/api/verifiedUser', authenticateAccessToken, async (req, res) => {
+    try {
+        const routeName = req.query.routeName
+        console.log(routeName, "routeName /api/verifiedUser")
+        const userId = req.payload
+        console.log(userId, "userId /api/verifiedUser api")
+        const user = await UserSchema.findOne({ _id: new ObjectId(userId) })
+        const userRouteNameArray = user.menuManageArray.map((item) => {
+            return item.name
+        })
+        const hasMenu = userRouteNameArray.includes(routeName)
+        if (routeName === 'init-program' || routeName === 'empty-page' || routeName === 'login') { // login
+            res.json({message: 'verified'})
+        } else {
+            if (hasMenu) {
+                res.json({message: 'verified'})
+            } else {
+                res.json({error: false, message: `khong duoc phan quyen menu ${routeName} `})
+            }
+        }
+
+
+    } catch (error) {
+        console.log(error, "/api/verifiedUser api catch block error")
+        res.json({error: true, message: "something went wrong!!"})
+    }
+
 })
 
 // api login

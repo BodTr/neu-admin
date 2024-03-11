@@ -5,12 +5,15 @@ import axios from 'axios'
 
 router.beforeEach(async(to, from) => {
     try {
+        const routeName = to.name
+        console.log(routeName, "phần kiểm tra đăng nhập")
+        
         // phần kiểm tra đăng nhập
 
-        const isAuthenticated = await verifyUser()
+        const isAuthenticated = await verifyUser(routeName)
         // console.log(isAuthenticated)
         if (to.meta.requiresAuth && !isAuthenticated) { // khi người dùng chưa đăng nhập mà vào mấy route cần phải đăng nhập thì sẽ tự chuyển đến trang login
-            // console.log(to, "phần kiểm tra đăng nhập")
+            
             localStorage.clear()
             return { name: 'login' }
 
@@ -24,6 +27,7 @@ router.beforeEach(async(to, from) => {
         
 
         // phần kiểm tra đã tích vào chương trình đào tạo chưa
+
 
         
     } catch (error) {
@@ -39,8 +43,8 @@ axios.interceptors.request.use(async config => {
         return config
     }
     const token = localStorage.getItem('accessToken')
-    // console.log(`Truoc khi req duoc gui len server (axios req interceptor):::`)
-    // console.log(token, "")
+    console.log(`Truoc khi req duoc gui len server (axios req interceptor):::`)
+    console.log(token, "axios.interceptors.request")
 
     config.headers['Authorization'] = `Bearer ${token}`
     return config
@@ -49,22 +53,23 @@ axios.interceptors.request.use(async config => {
 })
 
 axios.interceptors.response.use( async (response) => {
-    // console.log('sau khi server response (axios res interceptor) :::', response.data)
+    console.log('sau khi server response (axios res interceptor) :::', response.data)
     const config = response.config;
     
     const {code, message} = response.data
-    // console.log(code, "res code")
+    console.log(code, "res code")
     if (code && code === 1) {
-        // console.log('Truong hop het han:::')
+        console.log('Truong hop het han:::')
         const result = await refreshAcessToken3()
-        // console.log(result, "newAccessToken và newRefreshToken")
+        console.log(result, "newAccessToken và newRefreshToken")
         if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+            console.log("Trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai")
             localStorage.clear()
             router.push('/login')
         } else {
             const newAccessToken = result.newAccessToken
             const newRefreshToken = result.newRefreshToken
-            // console.log(`da lay access token moi::: ${newAccessToken}`)
+            console.log(`da lay access token moi::: ${newAccessToken}`)
             window.localStorage.setItem("accessToken", newAccessToken)
             window.localStorage.setItem("refreshToken", newRefreshToken)
             return axios(config) // trả về config mới
@@ -91,10 +96,10 @@ instance.interceptors.request.use(async (config) => {
         // console.log("api login hoặc api refresh token instance interceptors req")
         return config
     }
-    // console.log(`Truoc khi req duoc gui len server (axios req interceptor):::`)
+    // console.log(`Truoc khi req duoc gui len server (instance req interceptor):::`)
     const token = localStorage.getItem("accessToken")
     config.headers['Authorization'] = `Bearer ${token}` // thêm auth header trc khi api call lên sv vs mỗi api
-    // console.log(`Truoc khi req duoc gui len server (instace req interceptor):::`)
+    console.log(`Truoc khi req duoc gui len server (instace req interceptor):::`)
     return config
 }, err => {
     return Promise.reject(err)
@@ -103,25 +108,26 @@ instance.interceptors.request.use(async (config) => {
 
 // dùng phương thức này để tạo ra một interceptors (đóng vai trò như là một middleware) chặn giữa server và client và ở đây (interceptors.response) nó sẽ xử lí res của server trc khi res đến đc client
 instance.interceptors.response.use( async (response) => {
-    // console.log('sau khi server response (instace res interceptor):::', response.data)
+    console.log('sau khi server response (instace res interceptor):::', response.data)
     const config = response.config;
     // trước khi res trả về cho client thì các url khác sẽ phải kiểm tra access token có hết hạn hay lôiĩ gì không để sử lí tương ứng, còn 2 url '/login' (res sẽ trả về access token và refresh token) và '/refresh token' (res sẽ trả về access token mới) không cần việc đó
     if(config.url.indexOf('/login') >= 0 || config.url.indexOf('/refresh-token') >= 0) { // string indexOf() là để check xem trong url có các cụm như là '/login' hay '/refresh-token' hay không (nếu có thì hàm indexOf() sẽ trả về gtrị >= 0, nếu không có thì trả về gtrị -1)
         return response // nếu kết quả biểu thức trong if là true thì sẽ trả về response (không làm thêm bất cứ hành động gì)
     } 
     const {code, message} = response.data
-    // console.log(code, "res code")
+    console.log(code, "res code")
     if (code && code === 1) {
         if (message && message === 'jwt expired') {
-            // console.log('Truong hop het han:::')
+            console.log('Truong hop het han:::')
             const result = await refreshAcessToken()
             if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+                console.log("Trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai")
                 localStorage.clear()
                 router.push('/login')
             } else {
                 const newAccessToken = result.newAccessToken
                 const newRefreshToken = result.newRefreshToken
-                // console.log(`da lay access token moi::: ${newAccessToken}`)
+                console.log(`da lay access token moi::: ${newAccessToken}`)
                 config.headers['Authorization'] = `Bearer ${newAccessToken}` // phải sửa lại headers cho thành access token mới thì các req mà có access token hết hạn mới làm việc bth
                 window.localStorage.setItem("accessToken", newAccessToken)
                 window.localStorage.setItem("refreshToken", newRefreshToken)
@@ -145,7 +151,7 @@ instance2.interceptors.request.use(async (config) => {
 
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
-    // console.log('Truoc khi req duoc gui len server (instace2 req interceptor)::::')
+    console.log('Truoc khi req duoc gui len server (instace2 req interceptor)::::')
     // console.log(accessToken)
     // console.log(refreshToken)
     return config
@@ -154,21 +160,22 @@ instance2.interceptors.request.use(async (config) => {
 })
 
 instance2.interceptors.response.use(async (response) => {
-    // console.log('sau khi server response (instace2 res interceptor)::::', response.data)
+    console.log('sau khi server response (instace2 res interceptor)::::', response.data)
     const config = response.config
     const { code, message } = response.data
     if (code && code === 1) {
         if (message && message === 'jwt expired') {
-            // console.log('Truong hop het han::::')
+            console.log('Truong hop het han::::')
             const result = await refreshAccessToken2()
             // console.log(result, "instance2 interceptors response")
             if (result === false) { // trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai
+                console.log("Trường hợp ko lấy lại đc access token vì refresh token hết hạn hoặc sai")
                 localStorage.clear()
                 router.push('/login')
             } else {
                 const newAccessToken = result.newAccessToken
                 const newRefreshToken = result.newRefreshToken
-                // console.log('da lay token moi::::')
+                console.log('da lay token moi::::')
                 // console.log(newAccessToken)
                 // console.log(newRefreshToken)
                 config.headers['Authorization'] = `Bearer ${newAccessToken}`
@@ -250,17 +257,20 @@ async function refreshAccessToken2() {
     }
 }
 
-async function verifyUser() {
+async function verifyUser(routeName) {
     const accessToken = localStorage.getItem('accessToken')
     
     try {
-        
+        console.log(routeName, "routeName verifyUser()")
+        const queryParams = { routeName: routeName }
         const result = await instance2.get('/api/verifiedUser',
             {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
-                }
+                },
+                params: queryParams
             }
+            
             )
         if (result.data.message === "verified") {
             return true
