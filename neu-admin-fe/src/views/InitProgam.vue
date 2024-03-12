@@ -151,7 +151,12 @@ export default {
         localStorage.setItem("progId", progId)
         localStorage.setItem("year", this.year)
         localStorage.setItem("programName", this.programName)
-        router.push(`${currentRoute}`);
+        if (currentRoute === null) {
+          router.push('/init-page');
+        } else {
+          router.push(`${currentRoute}`);
+        }
+
       }
 
       

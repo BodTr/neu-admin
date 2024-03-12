@@ -1175,6 +1175,7 @@ export default {
         const data = {
           menuArray: this.menuArray,
         };
+        console.log(this.menuArray, "onMenuChange")
         const result = await instance.patch(
           `/api/add-menu/${this.editUser.id}`,
           data

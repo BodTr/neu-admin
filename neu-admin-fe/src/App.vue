@@ -769,6 +769,6 @@ export default {
 }
 .router-link-active{
   background-color: #484242 !important;
+  
 }
-
 </style>

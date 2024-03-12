@@ -26,7 +26,7 @@ const ExStudentSchema = new mongoose.Schema({
         require: false
     },
     studentCode: {
-        type: Number,
+        type: String,
         require: false
     },
     exchangeTime: {
@@ -50,10 +50,6 @@ const ExStudentSchema = new mongoose.Schema({
         require: false
     },
     result: {
-        type: String,
-        require: false
-    },
-    confirmedResult: {
         type: String,
         require: false
     },
@@ -81,11 +77,10 @@ const ExStudentSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-
-    results: {
-        type: Array, //title,count, point
+    results: [{
+        type: Object,
         require: false
-    }
+    }],
 
 },
     {

@@ -21,7 +21,7 @@ router.beforeEach(async(to, from) => {
         if (!to.meta.requiresAuth && isAuthenticated) { // khi người dùng đã đăng nhập r (đã có token, thì khi vào lại trang login sẽ tự chuyển đến homepage)
             if (to.path === '/login') {
                 // console.log("khi người dùng đã đăng nhập r")
-                return {name: 'programs-manage-page'}
+                return {name: 'empty-page'}
             }
         }
         

@@ -59,10 +59,11 @@ router.get('/api/get-all-ex-students', async (req, res) => {
 
 router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields, emptyFileExStudentInputValidation, emptyExStudentInputsValidation, typeExStudentInputsValidation, async (req, res, next) => {
     try {
-        const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
+        const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, exchangeDecision, convertedScore, results } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         const studentId = req.payload
+        const resultsArr = JSON.parse(results)
         const attachedExchangeDocArr = req.files['attachedExchangeDoc']
         const attachedScoreDocArr = req.files['attachedScoreDoc']
         const attachedExchangeDoc = attachedExchangeDocArr[0]
@@ -87,13 +88,13 @@ router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields,
             partnerUni: partnerUni,
             subject: subject,
             result: result,
-            confirmedResult: confirmedResult,
             exchangeDecision: exchangeDecision,
             convertedScore: convertedScore,
             attachedExDocLink: attachedExDocLink,
             attachedExDocName: attachedExDocName,
             attachedScoreDocLink: attachedScoreDocLink,
             attachedScoreDocName: attachedScoreDocName,
+            results: resultsArr
         }
         console.log(newStudent, "newStudent")
         const storingStudent = await ExStudentSchema.findOneAndUpdate({ _id: studentId }, newStudent, {new: true})
@@ -112,9 +113,11 @@ router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields,
 router.put('/api/edit-ex-student/:id', uploadFileFields1, emptyExStudentInputsValidation, typeExStudentInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore, attachedExDocLink, attachedScoreDocLink, attachedExDocName, attachedScoreDocName } = req.body
+        const { name, birthday, sex, results, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, exchangeDecision, convertedScore, attachedExDocLink, attachedScoreDocLink, attachedExDocName, attachedScoreDocName } = req.body
         console.log(req.files, "req.file put api")
         console.log(req.body, "req.body put api")
+        
+        const resultArr = JSON.parse(results)
         const attachedExchangeDocArr = req.files['attachedExchangeDoc1']
         const attachedScoreDocArr = req.files['attachedScoreDoc1']
         
@@ -168,13 +171,13 @@ router.put('/api/edit-ex-student/:id', uploadFileFields1, emptyExStudentInputsVa
             partnerUni: partnerUni,
             subject: subject,
             result: result,
-            confirmedResult: confirmedResult,
             exchangeDecision: exchangeDecision,
             convertedScore: convertedScore,
             attachedExDocLink: newAttachedExDocLink,
             attachedExDocName: attachedExDocName,
             attachedScoreDocLink: newAttachedScoreDocLink,
             attachedScoreDocName: attachedScoreDocName,
+            results: resultArr
 
         }
         const updatedStudent = await ExStudentSchema.findOneAndUpdate({ _id: id }, updatingStudent, {new: true})

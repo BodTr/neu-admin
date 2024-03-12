@@ -594,8 +594,8 @@ function emptyExStudentInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty exStudent inputs");
     const error = new Error("empty exStudent inputs");
     error.code = "EMPTY_ES_INPUTS_ERROR";
-    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body;
-    if (!name || !birthday || !sex || !department || !academicYear || !major || !studentCode || !exchangeYear || !exchangeTime || !receivingCountry || !partnerUni || !subject || !result || !confirmedResult || !exchangeDecision || !convertedScore) {
+    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, exchangeDecision, convertedScore, results } = req.body;
+    if (!name || !birthday || !sex || !department || !academicYear || !major || !studentCode || !exchangeYear || !exchangeTime || !receivingCountry || !partnerUni || !subject || !result || !exchangeDecision || !convertedScore || !results) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -608,8 +608,8 @@ function typeExStudentInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type exStudent inputs")
     const error = new Error('wrong type exStudent inputs')
     error.code = 'ES_INPUTS_TYPE_ERROR'
-    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
-    if (typeof name !== 'string' || typeof studentCode !== 'string' || typeof department !== 'string' || typeof academicYear !== 'string' || typeof exchangeTime !== 'string' || typeof exchangeYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof receivingCountry !== 'string' || typeof partnerUni !== 'string' || typeof subject !== 'string' || typeof result !== 'string' || typeof confirmedResult !== 'string' || typeof exchangeDecision !== 'string' || typeof convertedScore !== 'string') {
+    const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, exchangeDecision, convertedScore } = req.body
+    if (typeof name !== 'string' || typeof studentCode !== 'string' || typeof department !== 'string' || typeof academicYear !== 'string' || typeof exchangeTime !== 'string' || typeof exchangeYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof receivingCountry !== 'string' || typeof partnerUni !== 'string' || typeof subject !== 'string' || typeof result !== 'string' || typeof exchangeDecision !== 'string' || typeof convertedScore !== 'string') {
         throw error
     } else {
         console.log('exStudent inputs type correct')
