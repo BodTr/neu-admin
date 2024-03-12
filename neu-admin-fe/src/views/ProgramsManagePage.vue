@@ -213,6 +213,10 @@
                       />
                     </label>
                   </template>
+                  <template v-slot:status="item">
+                    <span v-if="item.row.status" class="badge bg-green text-green-fg">Đang hoạt động</span>
+                    <span v-else class="badge bg-red text-red-fg">Đã hết hạn</span>
+                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a

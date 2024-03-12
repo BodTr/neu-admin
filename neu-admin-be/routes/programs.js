@@ -37,9 +37,16 @@ router.get('/api/get-all-programs', async (req, res) => {
         const aPrograms = programs.map(doc => {
             stt++
             // const id = doc._id.toString()
+            var expiry = new Date(doc.expiry)
+            var timeNow = new Date()
+            var status = true
+            if(expiry < timeNow){
+                var status = false
+            }
             return {
                 ...doc,
-                stt: stt
+                stt: stt,
+                status: status
             }
         })
         console.log(aPrograms, "aPrograms")

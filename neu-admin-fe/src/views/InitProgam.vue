@@ -85,7 +85,7 @@ export default {
     try {
       const yearsArr = await this.getYearsArr();
       console.log(yearsArr, "yearsArr mounted hook");
-      this.yearsArray = yearsArr;
+      //this.yearsArray = yearsArr;
 
       const hasProgram = await this.hasAttachedProgram()
       console.log(hasProgram, "hasProgram mounted hook");
@@ -100,6 +100,11 @@ export default {
         const result = await instance.get("/api/get-years-array");
         console.log(result, "result, getYearsArr()");
         const yearsArr = result.data.data;
+        this.yearsArray = yearsArr;
+        this.year = 2024
+        const queryParams = { year: this.year }
+        const resultYear = await instance.get('/api/get-attached-programs-by-year', {params: queryParams})
+        this.programsOrderedByYearArr = resultYear.data.attachedProgramsFilterByYear
         return yearsArr;
       } catch (error) {
         console.log(error, "getYearsArr() catch block error");
