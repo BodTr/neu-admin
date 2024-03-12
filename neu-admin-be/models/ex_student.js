@@ -82,6 +82,11 @@ const ExStudentSchema = new mongoose.Schema({
         require: false
     },
 
+    results: {
+        type: Array, //title,count, point
+        require: false
+    }
+
 },
     {
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
