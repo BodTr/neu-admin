@@ -32,7 +32,7 @@
                 <div class="form-footer">
                   <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
                   <p style="text-align: center; margin-top: 20px; text-decoration: underline;">
-                    <a>Tài liệu hướng dẫn</a>
+                    <a href="https://docs.google.com/document/d/17tQnRKIb-5iZk-oIm7nOP8p_KNfW2U3OCoxKKpYCfmg/edit" target="_blank">Tài liệu hướng dẫn</a>
                   </p>
                 </div>
               </form>
