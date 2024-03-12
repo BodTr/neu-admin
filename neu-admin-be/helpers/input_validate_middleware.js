@@ -609,7 +609,7 @@ function typeExStudentInputsValidation(req, res, next) {
     const error = new Error('wrong type exStudent inputs')
     error.code = 'ES_INPUTS_TYPE_ERROR'
     const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, confirmedResult, exchangeDecision, convertedScore } = req.body
-    if (typeof name !== 'string' || isNaN(studentCode) || typeof department !== 'string' || typeof academicYear !== 'string' || typeof exchangeTime !== 'string' || typeof exchangeYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof receivingCountry !== 'string' || typeof partnerUni !== 'string' || typeof subject !== 'string' || typeof result !== 'string' || typeof confirmedResult !== 'string' || typeof exchangeDecision !== 'string' || typeof convertedScore !== 'string') {
+    if (typeof name !== 'string' || typeof studentCode !== 'string' || typeof department !== 'string' || typeof academicYear !== 'string' || typeof exchangeTime !== 'string' || typeof exchangeYear !== 'string' || typeof birthday !== 'string' || typeof sex !== 'string' || typeof major !== 'string' || typeof receivingCountry !== 'string' || typeof partnerUni !== 'string' || typeof subject !== 'string' || typeof result !== 'string' || typeof confirmedResult !== 'string' || typeof exchangeDecision !== 'string' || typeof convertedScore !== 'string') {
         throw error
     } else {
         console.log('exStudent inputs type correct')

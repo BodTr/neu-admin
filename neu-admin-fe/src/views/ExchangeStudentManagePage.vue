@@ -73,7 +73,7 @@
               style="display: block"
               aria-modal="true"
             >
-              <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Thêm sinh viên</h5>
@@ -85,239 +85,296 @@
                       aria-label="Close"
                     ></button>
                   </div>
-                  <div class="modal-body row row-cards">
-                    <div class="col-md-4">
-                      <div class="mb-3">
-                        <label class="form-label">Họ và tên</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="name"
-                          placeholder="Nhập họ và tên sinh viên"
-                        />
+                  <div class="modal-body">
+                    <div class="mb-3 row row-cards">
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label class="form-label">Họ và tên</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="name"
+                            placeholder="Nhập họ và tên sinh viên"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Ngày sinh</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            v-model="birthday"
+                            placeholder="Nhập ngày sinh"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Giới tính</label>
+                          <select
+                            v-model="sex"
+                            class="form-select"
+                            tabindex="-1"
+                          >
+                            <option value="" disabled selected>
+                              Chọn giới tính
+                            </option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Khoa/Viện đào tạo</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="department"
+                            placeholder="Nhập khoa/viện đào tạo"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Khóa</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="academicYear"
+                            placeholder="Nhập khoa/viện đào tạo"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Lớp chuyên ngành</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="major"
+                            placeholder="Nhập chuyên ngành"
+                          />
+                        </div>
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Ngày sinh</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          v-model="birthday"
-                          placeholder="Nhập ngày sinh"
-                        />
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label class="form-label">Mã sinh viên</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="studentCode"
+                            placeholder="Nhập mã sinh viên"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Năm học trao đổi</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="exchangeYear"
+                            placeholder="Nhập năm học trao đổi"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Thời gian trao đổi</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="exchangeTime"
+                            placeholder="Nhập Thời gian trao đổi"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Quốc gia tiếp nhận</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="receivingCountry"
+                            placeholder="Nhập quốc gia tiếp nhận"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Trường đối tác</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="partnerUni"
+                            placeholder="Nhập Trường đối tác"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Môn học tại trường đối tác</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="subject"
+                            placeholder="Nhập môn học tại trường đối tác"
+                          />
+                        </div>
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Giới tính</label>
-                        <select v-model="sex" class="form-select" tabindex="-1">
-                          <option value="" disabled selected>
-                            Chọn giới tính
-                          </option>
-                          <option value="Nam">Nam</option>
-                          <option value="Nữ">Nữ</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Khoa/Viện đào tạo</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="department"
-                          placeholder="Nhập khoa/viện đào tạo"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Khóa</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="academicYear"
-                          placeholder="Nhập khoa/viện đào tạo"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Lớp chuyên ngành</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="major"
-                          placeholder="Nhập chuyên ngành"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="mb-3">
-                        <label class="form-label">Mã sinh viên</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          v-model="studentCode"
-                          placeholder="Nhập mã sinh viên"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Năm học trao đổi</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="exchangeYear"
-                          placeholder="Nhập năm học trao đổi"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Thời gian trao đổi</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="exchangeTime"
-                          placeholder="Nhập Thời gian trao đổi"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Quốc gia tiếp nhận</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="receivingCountry"
-                          placeholder="Nhập quốc gia tiếp nhận"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Trường đối tác</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="partnerUni"
-                          placeholder="Nhập Trường đối tác"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label"
-                          >Môn học tại trường đối tác</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="subject"
-                          placeholder="Nhập môn học tại trường đối tác"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="mb-3">
-                        <table class="table">
-                          <thead>
-                            <th>Tên môn học</th>
-                            <th>Số tín chỉ</th>
-                            <th>Điểm quy đổi</th>
-                            <th>Thao tác</th>
-                            <th v-on:click="plusResult()"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg></th>
-                          </thead>
-                        </table>
-                        <tbody>
-                          <tr v-for="item in results">
-                            <td>{{ item.title }}</td>
-                            <td>{{ item.count }}</td>
-                            <td>{{ item.point }}</td>
-                            <td><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg></td>
-                          </tr>
-                        </tbody>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Kết quả học tập</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="result"
-                          placeholder="Nhập kết quả học tập"
-                        />
-                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label class="form-label">Kết quả học tập</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="result"
+                            placeholder="Nhập kết quả học tập"
+                          />
+                        </div>
 
-                      <div class="mb-3">
-                        <label class="form-label"
-                          >Công nhận kết quả học tập</label
-                        >
-                        <select
-                          v-model="confirmedResult"
-                          class="form-select"
-                          tabindex="-1"
-                        >
-                          <option value="" disabled selected>
-                            Công nhận kết quả?
-                          </option>
-                          <option value="Có">Có</option>
-                          <option value="Không">Không</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Quyết định cử đi</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="exchangeDecision"
-                          placeholder="Nhập môn học tại trường đối tác"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Điểm số được quy đổi</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="convertedScore"
-                          placeholder="Nhập môn học tại trường đối tác"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label"
-                          >Quyết định cử đi đính kèm</label
-                        >
-                        <input
-                          type="file"
-                          ref="attachedExchangeDoc"
-                          class="form-control"
-                          @change="handleExchangePdfChange()"
-                          style="display: none"
-                        />
-                        <div class="card">
-                          <button
-                            @click="handleExchangePdfUpload()"
-                            class="btn btn-outline-primary w-100"
-                          >
-                            Choose File
-                          </button>
+                        <div class="mb-3">
+                          <label class="form-label">Quyết định cử đi</label>
                           <input
                             type="text"
                             class="form-control"
-                            v-model="attachedExDocName"
-                            disabled
+                            v-model="exchangeDecision"
+                            placeholder="Nhập môn học tại trường đối tác"
                           />
                         </div>
-                        <div v-if="eMessage != ''">{{ eMessage }}</div>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label"
-                          >Quyết định quy đổi điểm số đính kèm</label
-                        >
-                        <input
-                          type="file"
-                          ref="attachedScoreDoc"
-                          class="form-control"
-                          @change="handleScorePdfChange()"
-                          style="display: none"
-                        />
-                        <div class="card">
-                          <button
-                            @click="handleScorePdfUpload()"
-                            class="btn btn-outline-primary w-100"
-                          >
-                            Choose File
-                          </button>
+                        <div class="mb-3">
+                          <label class="form-label">Điểm số được quy đổi</label>
                           <input
                             type="text"
                             class="form-control"
-                            v-model="attachedScoreDocName"
-                            disabled
+                            v-model="convertedScore"
+                            placeholder="Nhập môn học tại trường đối tác"
                           />
                         </div>
-                        <div v-if="sMessage != ''">{{ sMessage }}</div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Quyết định cử đi đính kèm</label
+                          >
+                          <input
+                            type="file"
+                            ref="attachedExchangeDoc"
+                            class="form-control"
+                            @change="handleExchangePdfChange()"
+                            style="display: none"
+                          />
+                          <div class="card">
+                            <button
+                              @click="handleExchangePdfUpload()"
+                              class="btn btn-outline-primary w-100"
+                            >
+                              Choose File
+                            </button>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="attachedExDocName"
+                              disabled
+                            />
+                          </div>
+                          <div v-if="eMessage != ''">{{ eMessage }}</div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Quyết định quy đổi điểm số đính kèm</label
+                          >
+                          <input
+                            type="file"
+                            ref="attachedScoreDoc"
+                            class="form-control"
+                            @change="handleScorePdfChange()"
+                            style="display: none"
+                          />
+                          <div class="card">
+                            <button
+                              @click="handleScorePdfUpload()"
+                              class="btn btn-outline-primary w-100"
+                            >
+                              Choose File
+                            </button>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="attachedScoreDocName"
+                              disabled
+                            />
+                          </div>
+                          <div v-if="sMessage != ''">{{ sMessage }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label"
+                        >Công nhận kết quả học tập</label
+                      >
+                      <div class="table-responsive">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr class="g-2 align-items-center">
+                              <th style="width: 60%">Tên môn học</th>
+                              <th>Số tín chỉ</th>
+                              <th>Điểm quy đổi</th>
+                              <th>Thao tác</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <tr>
+                              <td>
+                                <textarea
+                                  class="form-control"
+                                  row="2"
+                                  placeholder="Nhập tên môn học"
+                                  v-model="resultSubject"
+                                ></textarea>
+                              </td>
+                              <td>
+                                <input type="number" class="form-control" placeholder="Nhập số tín chỉ" v-model="resultCreditsCount" />
+                              </td>
+                              <td>
+                                <input type="number" class="form-control" placeholder="Nhập điểm quy đổi" v-model="resultPoint" />
+                              </td>
+                              <td>
+                                <a
+                                  href="#"
+                                  @click="plusResult()"
+                                  class="btn btn-azure btn-icon"
+                                >
+                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                              </td>
+                            </tr>
+                            <tr v-for="(item, index) in results">
+                              <td>{{ item.subjectName }}</td>
+                              <td>{{ item.creditsCount }}</td>
+                              <td>{{ item.point }}</td>
+                              <td>
+
+                                <a
+                                  href="#"
+                                  @click="deleteResult(index)"
+                                  class="btn btn-ghost-danger btn-icon"
+                                >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                >
+                                  <path
+                                    stroke="none"
+                                    d="M0 0h24v24H0z"
+                                    fill="none"
+                                  />
+                                  <path d="M4 7l16 0" />
+                                  <path d="M10 11l0 6" />
+                                  <path d="M14 11l0 6" />
+                                  <path
+                                    d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                                  />
+                                  <path
+                                    d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+                                  />
+                                </svg>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
@@ -473,7 +530,7 @@
                       style="display: block"
                       aria-modal="true"
                     >
-                      <div class="modal-dialog modal-xl" role="document">
+                      <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title">Chỉnh sửa văn bản</h5>
@@ -555,7 +612,7 @@
                               <div class="mb-3">
                                 <label class="form-label">Mã sinh viên</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   class="form-control"
                                   v-model="editExStudent.studentCode"
                                   placeholder="Nhập mã sinh viên"
@@ -626,22 +683,6 @@
                                   v-model="editExStudent.result"
                                   placeholder="Nhập kết quả học tập"
                                 />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Công nhận kết quả học tập</label
-                                >
-                                <select
-                                  v-model="editExStudent.confirmedResult"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Công nhận kết quả?
-                                  </option>
-                                  <option value="Có">Có</option>
-                                  <option value="Không">Không</option>
-                                </select>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
@@ -811,6 +852,9 @@ export default {
       sMessage: "",
       eMessage: "",
       results: [],
+      resultSubject: "",
+      resultCreditsCount: "",
+      resultPoint: "",
       displayModal: false,
       displayModalOne: false,
 
@@ -920,11 +964,16 @@ export default {
             : "Định dạng file không phù hợp!!";
       }
     },
-    plusResult(){
-      let self = this
-      self.result.push({
-
-      })
+    plusResult() {
+      this.results.push({
+        subjectName: this.resultSubject,
+        creditsCount: this.resultCreditsCount,
+        point: this.resultPoint
+      });
+      this.resultSubject = "";
+      this.resultCreditsCount = "";
+      this.resultPoint = "";
+      return this.results
     },
     handleExchangePdfChange1() {
       const file = this.$refs.attachedExchangeDoc1.files[0];
@@ -1018,7 +1067,7 @@ export default {
           this.attachedExDocName = "";
           this.attachedScoreDoc = null;
           this.attachedScoreDocName = "";
-          this.results = []
+          this.results = [];
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -1117,7 +1166,10 @@ export default {
         console.log(error, "put api catch block error");
       }
     },
-
+    deleteResult(index) {
+      this.results.splice(index, 1) // xóa item bắt đầu từ item có stt là index và xóa 1 item (có nghĩa là chỉ xóa mỗi item có stt là index) 
+      console.log(this.results)
+    },
     async remove(item) {
       console.log(item);
       try {
@@ -1138,4 +1190,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  border: none;
+}
+</style>
