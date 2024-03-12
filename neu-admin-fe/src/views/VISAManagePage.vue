@@ -324,6 +324,11 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:status="item">
+                    <span v-if="item.row.status === 1" class="badge bg-green text-green-fg">Còn hạn</span>
+                    <span v-else-if="item.row.status === 2" class="badge bg-orange">Sắp hết hạn</span>
+                    <span v-else class="badge bg-red text-red-fg">Đã hết hạn</span>
+                  </template>
                   <template v-slot:suggestUnit="item">
                     {{ item.row.suggestUnitName }}
                     <a
@@ -774,6 +779,8 @@ export default {
         "phoneNumber",
         "job",
         "workPermit",
+        "visaEndDay",
+        "status",
         "suggestUnit",
         "decisionNumber",
         "attachedFile",
@@ -788,6 +795,8 @@ export default {
           phoneNumber: "Số điện thoại",
           job: "Nghề nghiệp",
           workPermit: "Số giấy phép lao động",
+          visaEndDay: "Ngày hết hạn",
+          status: "Trạng thái",
           suggestUnit: "Đơn vị đề nghị",
           decisionNumber: "Quyết định số",
           attachedFile: "File pdf hoặc ảnh",

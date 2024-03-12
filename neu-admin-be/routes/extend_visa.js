@@ -40,16 +40,28 @@ router.get('/api/get-all-extend-visas', async (req, res) => {
         let { page, limit, query } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const extendVisas = await ExtendVisaSchema.find({
-            visaCode: {$regex: query}
+            visaEndDay: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await ExtendVisaSchema.estimatedDocumentCount()
         let stt = 0
+        
         const aExtendVisas = extendVisas.map( doc => {
             stt++
             // const id = doc._id.toString()
+            const visaEndDay = new Date(doc.visaEndDay)
+            const timeNow = new Date()
+            let status = 1 // 1 là còn hạn, 2 là sắp hết hạn, 3 là hết hạn
+            if (timeNow > visaEndDay) {
+                status = 3 // Trường hợp hết hạn
+            } else if (visaEndDay - timeNow <= 2592000000) { // visaEndDay - timeNow sẽ ra thời gian chênh lệch theo mili giây, 2592000000ms = 30 ngày
+                status = 2 // Trường hợp sắp hết hạn
+            } else {
+                status = 1 // Trường hợp còn hạn
+            }
             return {
                 ...doc,
-                stt: stt
+                stt: stt,
+                status: status
             }
         })
         console.log(aExtendVisas, "aExtendVisas")

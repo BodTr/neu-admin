@@ -58,7 +58,7 @@ router.post('/api/create-trans-program', emptyTransProgramInputsValidation, type
                 }
             })
             console.log(newProgram, "newProgram")
-            res.json({ error: false, message: 'Lưu thành công chương trình' })
+            res.json({ error: false, message: 'Lưu thành công thông tin chương trình' })
         }
         
         
@@ -83,7 +83,7 @@ router.put('/api/edit-trans-program/:id', emptyTransProgramInputsValidation, typ
         console.log(req.body, "put api req.body")
         const updatedProgram = await TransProgramSchema.findOneAndUpdate({ _id: id }, updatingProgram, {new: true})
         console.log(updatedProgram, "updatedProgram")
-        res.json({ error: false, message: "Chương trình đã được sửa thành công" })
+        res.json({ error: false, message: "Thông tin chương trình đã được sửa thành công" })
     } catch (error) {
         console.log(error, "put catch block error")
         res.json({error: true, message: "something went wrong!"})
@@ -97,7 +97,7 @@ router.delete('/api/delete-trans-program/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const deletingProgram = await TransProgramSchema.findOneAndDelete({ _id: id })
         console.log(deletingProgram, "deletingProgram")
-        res.json({ error: false, message: "Xóa thành công chương trình" })
+        res.json({ error: false, message: "Xóa thành công thông tin chương trình" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})

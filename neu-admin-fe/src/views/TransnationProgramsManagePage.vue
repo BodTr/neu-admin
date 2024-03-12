@@ -412,6 +412,7 @@ export default {
       const data = {
         programId: this.id,
         name: this.name,
+        name_en: this.name_en,
         degreeName: this.degreeName,
         degreeType: this.degreeType,
         issuedBy: this.issuedBy,
