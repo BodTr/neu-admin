@@ -203,6 +203,25 @@
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
+                        <table class="table">
+                          <thead>
+                            <th>Tên môn học</th>
+                            <th>Số tín chỉ</th>
+                            <th>Điểm quy đổi</th>
+                            <th>Thao tác</th>
+                            <th v-on:click="plusResult()"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg></th>
+                          </thead>
+                        </table>
+                        <tbody>
+                          <tr v-for="item in results">
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.count }}</td>
+                            <td>{{ item.point }}</td>
+                            <td><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg></td>
+                          </tr>
+                        </tbody>
+                      </div>
+                      <div class="mb-3">
                         <label class="form-label">Kết quả học tập</label>
                         <input
                           type="text"
@@ -211,6 +230,7 @@
                           placeholder="Nhập kết quả học tập"
                         />
                       </div>
+
                       <div class="mb-3">
                         <label class="form-label"
                           >Công nhận kết quả học tập</label
@@ -790,7 +810,7 @@ export default {
       attachedScoreDocName: "",
       sMessage: "",
       eMessage: "",
-
+      results: [],
       displayModal: false,
       displayModalOne: false,
 
@@ -900,6 +920,12 @@ export default {
             : "Định dạng file không phù hợp!!";
       }
     },
+    plusResult(){
+      let self = this
+      self.result.push({
+
+      })
+    },
     handleExchangePdfChange1() {
       const file = this.$refs.attachedExchangeDoc1.files[0];
       console.log(file, "handleScorePdfChange file");
@@ -951,6 +977,7 @@ export default {
       formData.append("convertedScore", this.convertedScore);
       formData.append("attachedExchangeDoc", this.attachedExchangeDoc);
       formData.append("attachedScoreDoc", this.attachedScoreDoc);
+      formData.append("results", this.results);
 
       try {
         const result = await instance.post("/api/create-ex-student", formData, {
@@ -991,6 +1018,7 @@ export default {
           this.attachedExDocName = "";
           this.attachedScoreDoc = null;
           this.attachedScoreDocName = "";
+          this.results = []
         }
       } catch (error) {
         console.log(error, "post api catch block error");
