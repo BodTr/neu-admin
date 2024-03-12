@@ -202,17 +202,6 @@
                   :options="options"
                   ref="table"
                 >
-                  <template v-slot:isManaged="item">
-                    <label class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        v-model="id"
-                        :value="item.row._id"
-                        @change="getIdArray"
-                      />
-                    </label>
-                  </template>
                   <template v-slot:status="item">
                     <span v-if="item.row.status" class="badge bg-green text-green-fg">Đang hoạt động</span>
                     <span v-else class="badge bg-red text-red-fg">Đã hết hạn</span>

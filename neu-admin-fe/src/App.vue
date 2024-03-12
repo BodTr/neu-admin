@@ -26,7 +26,7 @@
       </div>
       <div class="collapse navbar-collapse show" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
-          <li class="nav-item mb-3">
+          <li v-if="userPermission !== 'Cấp 2'" class="nav-item mb-3">
             <router-link
               class="btn btn-lime d-none d-sm-inline-block"
               to="/init-program"
@@ -465,6 +465,7 @@ export default {
     return {
 
       userMenuArr: [],
+      userPermission: "",
     };
   },
   computed: {
@@ -683,6 +684,7 @@ export default {
     return { toast };
   },
   mounted() {
+    this.userPermission = localStorage.getItem("permission");
     const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
     console.log(localStorage.getItem("menuManageArray"), "unOrderedUserMenuArr mounted hook");
     if(unOrderedUserMenuArr){

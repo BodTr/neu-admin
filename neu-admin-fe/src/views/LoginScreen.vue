@@ -83,6 +83,7 @@
             // localStorage.setItem("menuManageArray", result.data.userInfor.menuManageArray)
             localStorage.setItem("accessToken", result.data.accessToken)
             localStorage.setItem("refreshToken", result.data.refreshToken)
+            localStorage.setItem("permission", result.data.userInfor.permission)
             this.toast.success(result.data.message)
             if (result.data.userInfor.permission === 'Super Admin') {
               location.href = "/"
