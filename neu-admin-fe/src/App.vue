@@ -121,9 +121,7 @@
                     <router-link
                       v-for="(item, index) in genaralInforItem"
                       class="dropdown-item"
-                      :to="{ name: item.name }"
-                      >{{ item.title }}</router-link
-                    >
+                      :to="{ name: item.name }" v-html="item.title"></router-link>
                   </div>
                 </div>
                 <div v-show="planIsShow" class="dropend">
@@ -161,9 +159,7 @@
                     <router-link
                       v-for="(item, index) in educationQualityItem"
                       class="dropdown-item"
-                      :to="{ name: item.name }"
-                      >{{ item.title }}</router-link
-                    >
+                      :to="{ name: item.name }" v-html="item.title"></router-link>
                   </div>
                 </div>
                 <div v-show="curriculumIsShow" class="dropend">
@@ -182,7 +178,7 @@
                       v-for="(item, index) in curriculumItem"
                       class="dropdown-item"
                       :to="{ name: item.name }"
-                      >{{ item.title }}</router-link
+                      v-html="item.title"></router-link
                     >
                   </div>
                 </div>
@@ -313,7 +309,7 @@
                 v-for="(item, index) in shortTermExStuItem"
                 class="dropdown-item"
                 :to="{ name: item.name }"
-                >{{ item.title }}</router-link
+                v-html="item.title"></router-link
               >
             </div>
           </li>
@@ -461,6 +457,24 @@ import instance from "./instance";
 // import { RouterLink, RouterView } from "vue-router";
 export default {
   name: "AppVue",
+  created() {
+    this.userPermission = localStorage.getItem("permission");
+    const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
+    console.log(unOrderedUserMenuArr, "unOrderedUserMenuArr created hook");
+    if(unOrderedUserMenuArr){
+      const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
+      orderedUserMenuArr.sort((a, b) => {
+        return a.stt - b.stt;
+      });
+      this.userMenuArr = orderedUserMenuArr;
+      console.log(this.userMenuArr, "userMenuArr created hook");
+    }
+
+  },
+  // beforeUpdate() {
+  //   const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
+  //   console.log(unOrderedUserMenuArr, "beforeUpdate hook");
+  // },
   data() {
     return {
 
@@ -468,6 +482,7 @@ export default {
       userPermission: "",
     };
   },
+
   computed: {
     programsIsShow() {
       // Quản lý chương trình liên kết
@@ -550,6 +565,7 @@ export default {
       const arrayFour = [10];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayFour);
+      console.log(filteredArr, "educationQualityItem")
       return filteredArr;
     },
     curriculumIsShow() {
@@ -683,20 +699,7 @@ export default {
     const toast = useToast();
     return { toast };
   },
-  mounted() {
-    this.userPermission = localStorage.getItem("permission");
-    const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
-    console.log(localStorage.getItem("menuManageArray"), "unOrderedUserMenuArr mounted hook");
-    if(unOrderedUserMenuArr){
-      const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
-      orderedUserMenuArr.sort((a, b) => {
-        return a.stt - b.stt;
-      });
-      this.userMenuArr = orderedUserMenuArr;
-      console.log(this.userMenuArr, "userMenuArr mounted hook");
-    }
 
-  },
   methods: {
     storeRoutePath() {
       localStorage.setItem("routePath", router.currentRoute.value.path)

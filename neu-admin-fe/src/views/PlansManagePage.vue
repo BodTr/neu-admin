@@ -411,7 +411,7 @@ import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-
+import router from '@/router';
 export default {
   certName: "ProgramManagePage",
   components: {

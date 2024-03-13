@@ -680,10 +680,24 @@ function emptyFileExtendVisaInputValidation(req, res, next) {
 // users inputs validate
 function emptyUserInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty user inputs");
-    const error = new Error("empty goal inputs");
+    const error = new Error("empty user inputs");
     error.code = "EMPTY_USER_INPUTS_ERROR";
     const { name, username, phoneNumber, permission } = req.body;
     if (!name || !username || !phoneNumber || !permission) {
+        console.log(error.code, 'middleware empty error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function emptyUserInputsValidation1(req, res, next) {
+    console.log(req.body, "middleware check empty user inputs");
+    const error = new Error("empty user inputs");
+    error.code = "EMPTY_USER_INPUTS1_ERROR";
+    const { name, username, phoneNumber } = req.body;
+    if (!name || !username || !phoneNumber) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -802,4 +816,5 @@ module.exports = {
   emptyFileCloseDecisionInputValidation,
   emptyStudentInputsValidation,
   typeStudentInputsValidation,
+  emptyUserInputsValidation1,
 };

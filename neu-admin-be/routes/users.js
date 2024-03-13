@@ -5,7 +5,7 @@ const ProgramSchema = require('../models/program')
 const bcrypt = require('bcrypt')
 const ObjectId = require("mongodb").ObjectId
 const { authenticateAccessToken } = require('../helpers/jwt_services')
-const { emptyUserInputsValidation, typeUserInputsValidation, emptyUserPasswordInputValidation } = require('../helpers/input_validate_middleware')
+const { emptyUserInputsValidation, typeUserInputsValidation, emptyUserPasswordInputValidation, emptyUserInputsValidation1 } = require('../helpers/input_validate_middleware')
 
 router.use(authenticateAccessToken)
 
@@ -101,22 +101,22 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
                     {name :'programs-manage-page', stt: 1, title: 'Quản lý chương trình liên kết'},
                     {name :'trans-programs-manage-page', stt: 2, title: 'TT chương trình liên kết'},
                     {name :'approval-decision-manage-page', stt: 3, title: 'Các quyết định phê duyệt'},
-                    {name :'close-decision-manage-page', stt: 4, title: 'Các quyết định đóng chương trình'},
+                    {name :'close-decision-manage-page', stt: 4, title: '<span>Các quyết định đóng <br /> chương trình</span>'},
                     {name :'documents-manage-page', stt: 5, title: 'Quản lý văn bản liên kết'},
                     {name :'partners-manage-page', stt: 6, title: 'Quản lý đối tác'},
                     {name :'agencies-manage-page', stt: 7, title: 'Quản lý đơn vị thực hiện'},
                     {name :'goals-manage-page', stt: 8, title: 'Mục tiêu chương trình'},
                     {name :'plans-manage-page', stt: 9, title: 'Quản lý nội dung đề án'},
-                    {name :'edu-quality-manage-page', stt: 10, title: 'Đảm bảo chất lượng đào tạo'},
-                    {name :'curriculums-manage-page', stt: 11, title: 'Thông tin khung chương trình'},
+                    {name :'edu-quality-manage-page', stt: 10, title: '<span>Đảm bảo chất lượng<br /> đào tạo</span>'},
+                    {name :'curriculums-manage-page', stt: 11, title: '<span>Thông tin khung<br /> chương trình</span>'},
                     {name :'enrollment-manage-page', stt: 12, title: 'Quản lý tuyển sinh'},
                     {name :'lecturers-manage-page', stt: 13, title: 'Quản lý giảng viên'},
                     {name :'units-manage-page', stt: 14, title: 'Quản lý đơn vị công tác'},
                     {name :'subjects-manage-page', stt: 15, title: 'Quản lý môn học'},
                     {name :'moumoa-manage-page', stt: 16, title: 'Quản lý MOU.MOA'},
                     {name :'htqt-manage-page', stt: 17, title: 'Quản lý các dự án HTQT'},
-                    {name :'ex-f-student-manage-page', stt: 18, title: 'Sinh viên nước ngoài đến trao đổi'},
-                    {name :'ex-student-manage-page', stt: 19, title: 'Sinh viên đi nước ngoài trao đổi'},
+                    {name :'ex-f-student-manage-page', stt: 18, title: '<span>Sinh viên nước ngoài đến<br /> trao đổi</span>'},
+                    {name :'ex-student-manage-page', stt: 19, title: '<span>Sinh viên đi nước ngoài<br /> trao đổi</span>'},
                     {name :'student-manage-page', stt: 20, title: 'Quản lý lưu sinh viên'},
                     {name :'extend-visa-manage-page', stt: 21, title: 'Cấp/Gia hạn VISA'},
                     {name :'admin', stt: 22, title: 'Quản lý tài khoản'},
@@ -146,22 +146,22 @@ router.post('/api/create-user', emptyUserInputsValidation, typeUserInputsValidat
 
 
 
-router.put('/api/edit-user/:id', emptyUserInputsValidation, typeUserInputsValidation, async (req, res) => {
+router.put('/api/edit-user/:id', emptyUserInputsValidation1, typeUserInputsValidation, async (req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id::")
         console.log(req.body, "req.body put api")
-        const { name, userName, phoneNumber, permission } = req.body
+        const { name, userName, phoneNumber } = req.body
         const checkedUser = await UserSchema.findOne({ _id: id })
         if (!checkedUser) {
             console.log(checkedUser, "Db error put api")
             res.json({error: true, message: "something went wrong!"})
         } else {
+            const permission = checkedUser.permission
             const updatingUser = {
                 name: name,
                 userName: userName,
                 phoneNumber: phoneNumber,
-                permission: permission,
             }
             const updatedUser = await UserSchema.findOneAndUpdate({ _id: id }, updatingUser, { new: true })
             console.log(updatedUser, "updatedUser")
@@ -233,7 +233,7 @@ router.delete('/api/delete-user/:id', async (req, res) => {
 router.use((error, req, res, next) => {
     if (error) {
         console.log(error, "custom error handler")
-        if (error.code === "EMPTY_USER_INPUTS_ERROR" || error.code === "EMPTY_USER_PASSWORD_INPUT_ERROR") {
+        if (error.code === "EMPTY_USER_INPUTS_ERROR" || error.code === "EMPTY_USER_PASSWORD_INPUT_ERROR" || error.code === "EMPTY_USER_INPUTS1_ERROR") {
             console.log(error.code, "empty input error")
             return res.json({error: true, message: "Hãy điền đầy đủ form"})
         }

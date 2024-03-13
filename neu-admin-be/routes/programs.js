@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const ProgramSchema = require('../models/program')
+const DecisionSchema = require('../models/decision')
 const YearSchema = require('../models/years')
 const {
     emptyProgramInputsValidation,
@@ -25,6 +26,7 @@ router.get('/api/get-all-programs', async (req, res) => {
             query
         } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
+        // const decisions = await DecisionSchema.find().lean()
         const programs = await ProgramSchema.find({
             name: {
                 $regex: query

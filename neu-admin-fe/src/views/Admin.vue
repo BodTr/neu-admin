@@ -371,7 +371,7 @@
                                   placeholder="Nhập số điện thoại"
                                 />
                               </div>
-                              <div class="mb-3">
+                              <!-- <div class="mb-3">
                                 <label class="form-label"
                                   >Phân quyền người dùng</label
                                 >
@@ -389,7 +389,7 @@
                                     Super Admin
                                   </option>
                                 </select>
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -547,7 +547,7 @@
                                           name: 'close-decision-manage-page',
                                           stt: 4,
                                           title:
-                                            'Các quyết định đóng chương trình',
+                                            '<span>Các quyết định đóng <br> chương trình</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -639,7 +639,7 @@
                                         :value="{
                                           name: 'edu-quality-manage-page',
                                           stt: 10,
-                                          title: 'Đảm bảo chất lượng đào tạo',
+                                          title: '<span>Đảm bảo chất lượng <br> đào tạo</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -655,7 +655,7 @@
                                         :value="{
                                           name: 'curriculums-manage-page',
                                           stt: 11,
-                                          title: 'Thông tin khung chương trình',
+                                          title: '<span>Thông tin khung <br> chương trình</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -770,7 +770,7 @@
                                           name: 'ex-f-student-manage-page',
                                           stt: 18,
                                           title:
-                                            'Sinh viên nước ngoài đến trao đổi',
+                                            '<span>Sinh viên nước ngoài đến <br> trao đổi</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -787,7 +787,7 @@
                                           name: 'ex-student-manage-page',
                                           stt: 19,
                                           title:
-                                            'Sinh viên đi nước ngoài trao đổi',
+                                            '<span>Sinh viên đi nước ngoài <br> trao đổi</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -904,44 +904,6 @@
                                   </option>
                                 </select>
                               </div>
-                              <!-- <div class="col-auto text-muted">
-                                <a
-                                  href="#"
-                                  class="btn btn-warning btn-icon"
-                                  data-bs-target="#modal-report-four"
-                                  @click="getAttchedProgram()"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-git-branch-deleted"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  >
-                                    <path
-                                      stroke="none"
-                                      d="M0 0h24v24H0z"
-                                      fill="none"
-                                    />
-                                    <path
-                                      d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                    />
-                                    <path
-                                      d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                    />
-                                    <path d="M7 8v8" />
-                                    <path d="M9 18h6a2 2 0 0 0 2 -2v-5" />
-                                    <path d="M14 14l3 -3l3 3" />
-                                    <path d="M15 4l4 4" />
-                                    <path d="M15 8l4 -4" />
-                                  </svg>
-                                </a>
-                              </div> -->
                             </div>
 
                             <div class="table-responsive">
@@ -1045,7 +1007,6 @@ export default {
         name: "",
         username: "",
         phoneNumber: "",
-        permission: "",
         editedPassword: "",
       },
     };
@@ -1240,7 +1201,6 @@ export default {
       this.editUser.name = item.name;
       this.editUser.username = item.username;
       this.editUser.phoneNumber = item.phoneNumber;
-      this.editUser.permission = item.permission;
       this.editUser.id = item._id;
       this.showModal1();
     },
@@ -1251,7 +1211,6 @@ export default {
           name: this.editUser.name,
           username: this.editUser.username,
           phoneNumber: this.editUser.phoneNumber,
-          permission: this.editUser.permission,
         };
 
         const result = await instance.put(

@@ -402,6 +402,7 @@
 import instance from "../instance";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
+import router from '@/router';
 export default {
   name: "ProgramManagePage",
   components: {
