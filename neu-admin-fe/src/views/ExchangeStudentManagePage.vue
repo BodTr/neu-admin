@@ -226,7 +226,7 @@
                             type="text"
                             class="form-control"
                             v-model="exchangeDecision"
-                            placeholder="Nhập môn học tại trường đối tác"
+                            placeholder="Nhập Quyết định cử đi"
                           />
                         </div>
                         <div class="mb-3">
@@ -235,7 +235,7 @@
                             type="text"
                             class="form-control"
                             v-model="convertedScore"
-                            placeholder="Nhập môn học tại trường đối tác"
+                            placeholder="Nhập điểm số được quy đổi"
                           />
                         </div>
                         <div class="mb-3">
@@ -730,7 +730,7 @@
                                     type="text"
                                     class="form-control"
                                     v-model="editExStudent.exchangeDecision"
-                                    placeholder="Nhập môn học tại trường đối tác"
+                                    placeholder="Nhập Quyết định cử đi"
                                   />
                                 </div>
                                 <div class="mb-3">
@@ -741,7 +741,7 @@
                                     type="text"
                                     class="form-control"
                                     v-model="editExStudent.convertedScore"
-                                    placeholder="Nhập môn học tại trường đối tác"
+                                    placeholder="Nhập điểm được quy đổi"
                                   />
                                 </div>
                                 <div class="mb-3">
@@ -1122,27 +1122,37 @@ export default {
       }
     },
     plusResult() {
-      this.results.push({
-        subjectName: this.resultSubject,
-        creditsCount: this.resultCreditsCount,
-        point: this.resultPoint,
-      });
-      console.log(this.results, "plusResult")
-      this.resultSubject = "";
-      this.resultCreditsCount = "";
-      this.resultPoint = "";
-      return this.results;
+      if (!this.resultSubject || !this.resultCreditsCount || !this.resultPoint) {
+        return this.toast.error('Hãy điền đủ form');
+      } else {
+        this.results.push({
+          subjectName: this.resultSubject,
+          creditsCount: this.resultCreditsCount,
+          point: this.resultPoint,
+        });
+        console.log(this.results, "plusResult")
+        this.resultSubject = "";
+        this.resultCreditsCount = "";
+        this.resultPoint = "";
+        return this.results;
+      }
+
     },
     plusResult1(){
-      this.editExStudent.results.push({
-        subjectName: this.editExStudent.resultSubject,
-        creditsCount: this.editExStudent.resultCreditsCount,
-        point: this.editExStudent.resultPoint,
-      });
-      this.resultSubject = "";
-      this.resultCreditsCount = "";
-      this.resultPoint = "";
-      return this.results;
+      if (!this.editExStudent.resultSubject || !this.editExStudent.resultCreditsCount || !this.editExStudent.resultPoint) {
+        return this.toast.error('Hãy điền đủ form');
+      } else {
+        this.editExStudent.results.push({
+          subjectName: this.editExStudent.resultSubject,
+          creditsCount: this.editExStudent.resultCreditsCount,
+          point: this.editExStudent.resultPoint,
+        });
+        this.editExStudent.resultSubject = "";
+        this.editExStudent.resultCreditsCount = "";
+        this.editExStudent.resultPoint = "";
+        return this.results;
+        }
+
     },
     handleExchangePdfChange1() {
       const file = this.$refs.attachedExchangeDoc1.files[0];

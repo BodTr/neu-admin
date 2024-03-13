@@ -141,6 +141,7 @@
                           <option value="" disabled selected>
                             Chọn bậc học
                           </option>
+                          <option value="Cử nhân">Cử nhân</option>
                           <option value="Thạc sỹ">Thạc sỹ</option>
                           <option value="Tiến sỹ">Tiến sỹ</option>
                           <option value="Sau tiến sỹ">Sau tiến sỹ</option>
@@ -160,12 +161,12 @@
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label class="form-label">Mã sinh viên (NEU)</label>
+                        <label class="form-label">Mã sinh viên/Giảng viên (NEU)</label>
                         <input
                           type="number"
                           class="form-control"
                           v-model="studentCode"
-                          placeholder="Nhập mã sinh viên"
+                          placeholder="Nhập mã sinh viên/giảng viên"
                         />
                       </div>
                       <div class="mb-3">
@@ -445,6 +446,7 @@
                                   <option value="" disabled selected>
                                     Chọn bậc học
                                   </option>
+                                  <option value="Cử nhân">Cử nhân</option>
                                   <option value="Thạc sỹ">Thạc sỹ</option>
                                   <option value="Tiến sỹ">Tiến sỹ</option>
                                   <option value="Sau tiến sỹ">
@@ -467,13 +469,13 @@
                             <div class="col-md-4">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Mã sinh viên (NEU)</label
+                                  >Mã sinh viên/Giảng viên (NEU)</label
                                 >
                                 <input
                                   type="number"
                                   class="form-control"
                                   v-model="editExForeignStudent.studentCode"
-                                  placeholder="Nhập mã sinh viên"
+                                  placeholder="Nhập mã sinh viên/giảng viên"
                                 />
                               </div>
                               <div class="mb-3">
