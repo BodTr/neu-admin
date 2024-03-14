@@ -46,6 +46,11 @@ const ProgramSchema = new mongoose.Schema({
         require: false
     },
 
+    decisionsArray: [{
+        type: Object,
+        require: false
+    }],
+
     user: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

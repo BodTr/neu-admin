@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const DecisionSchema = require('../models/decision')
+const ProgramSchema = require('../models/program')
 const { emptyDecisionInputsValidation, typeDecisionInputsValidation, emptyFileDecisionInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initDecisionDocMiddleware } = require('../helpers/init_doc')
@@ -60,8 +61,18 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
         console.log(attachedDoc, "attachedDoc, post api")
         const attachedDocLink = attachedDoc.location
         const attachedDocName = attachedDoc.originalname
+        // thêm quyết định vừa xong vào chương trình tương ứng
+        const program = await ProgramSchema.findOne({ _id: programId})
+        console.log(program, "oldProgram create decision api")
+        let decisionsArray = program.decisionsArray
+        decisionsArray.push({
+            decisionId: decisionId,
+            decisionName: attachedDocName,
+            decisionLink: attachedDocLink
+        })
 
-
+        const updatingProgram = await ProgramSchema.findOneAndUpdate({ _id: programId }, {decisionsArray: decisionsArray}, {new: true})
+        console.log(updatingProgram, "updatingProgram create decision api")
 
         const newDecision = {
             name: name,
@@ -88,7 +99,7 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
 router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"),emptyDecisionInputsValidation, typeDecisionInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName} = req.body
+        const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName, programId} = req.body
         console.log(id, "::put api id::")
         const attachedDoc1 = req.file
         let newAttachedDocLink = ''
@@ -107,7 +118,27 @@ router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"),empt
             newAttachedDocLink = attachedDocLink
         }
 
-        
+        const program = await ProgramSchema.findOne({ _id: programId })
+        console.log(program, "before update program edit-decision api")
+        const decisionArray = program.decisionsArray
+        console.log(decisionArray, "old decisionArray edit-decision api")
+        const editDecision = {
+            decisionId: id,
+            decisionName: attachedDocName,
+            decisionLink: newAttachedDocLink
+        }
+
+        const newDecisionArray = decisionArray.map((item) => {
+            console.log(item.decisionId, "vs", editDecision.id, "map function")
+            if (item.decisionId === editDecision.decisionId) {
+                return item = editDecision
+            } else {
+                return item
+            }
+        })
+        console.log(newDecisionArray, "newDecisionArray edit-decision api")
+        const updatingProgram = await ProgramSchema.findOneAndUpdate({ _id: programId }, {decisionsArray: newDecisionArray}, {new: true})
+        console.log(updatingProgram, "updatingProgram edit-decision api")
         const updatingDecision = {
             name: name,
             detail: detail,
@@ -141,7 +172,18 @@ router.delete('/api/delete-decision/:id', async(req, res) => {
         })
         const result = await s3.send(newDeleteCommand)
         console.log(result, "newDeleteCommand result delete api")
+        const programId = delDecision.program.id.toString()
+        const program = await ProgramSchema.findOne({ _id: programId })
+        let decisionArray = program.decisionsArray
+        const newDecisionArray = decisionArray.filter((item) => {
+            if (item.decisionId !== id) {
+                return item
+            }
+        })
+        const updatingProgram = await ProgramSchema.findOneAndUpdate({ _id: programId }, {decisionsArray: newDecisionArray}, {new: true})
+        console.log(updatingProgram, "updatingProgram delete-decision api")
         const deletingDecision = await DecisionSchema.findOneAndDelete({ _id: id })
+        console.log(deletingDecision, "deletingDecision delete-decision api")
         res.json({ error: false, message: "Xóa thành công quyết định" })
     } catch (error) {
         console.log(error, "delete catch block error")

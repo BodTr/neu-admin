@@ -601,7 +601,8 @@ export default {
       formData.append("expireIn", this.editDecision.expireIn);
       formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
       formData.append("attachedDocLink", this.editDecision.attachedDocLink);
-      formData.append("attachedDocName", this.editDecision.attachedDocName)
+      formData.append("attachedDocName", this.editDecision.attachedDocName);
+      formData.append("programId", this.id);
 
       try {
         const result = await instance.put(

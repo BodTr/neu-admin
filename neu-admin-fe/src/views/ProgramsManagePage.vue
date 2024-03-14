@@ -120,15 +120,7 @@
                           placeholder="Nhập tên chuyên ngành"
                         />
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Trình độ đào tạo</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="level"
-                          placeholder="Nhập trình độ đào tạo"
-                        />
-                      </div>
+
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
@@ -138,24 +130,6 @@
                           class="form-control"
                           v-model="year"
                           placeholder="Nhập năm"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Đơn vị quản lý</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="agency"
-                          placeholder="Nhập đơn vị quản lý"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">SĐT đơn vị quản lý</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="agencyPhoneNumber"
-                          placeholder="Nhập số điện thoại"
                         />
                       </div>
                       <div class="mb-3">
@@ -174,6 +148,15 @@
                           class="form-control"
                           v-model="expiry"
                           placeholder="Nhập ngày hết hạn"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Trình độ đào tạo</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="level"
+                          placeholder="Nhập trình độ đào tạo"
                         />
                       </div>
                     </div>
@@ -202,9 +185,66 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:agency="item">
+                    <span v-if="!item.row.agency">Chưa liên kết</span>
+                    <span v-else>{{ item.row.agency }}</span>
+                  </template>
+                  <template v-slot:agencyPhoneNumber="item">
+                    <span v-if="!item.row.agencyPhoneNumber">Chưa liên kết</span>
+                    <span v-else>{{ item.row.agencyPhoneNumber }}</span>
+                  </template>
                   <template v-slot:status="item">
-                    <span v-if="item.row.status" class="badge bg-green text-green-fg">Đang hoạt động</span>
-                    <span v-else class="badge bg-red text-red-fg">Đã hết hạn</span>
+                    <span
+                      v-if="item.row.status"
+                      class="badge bg-green text-green-fg"
+                      >Đang hoạt động</span
+                    >
+                    <span v-else class="badge bg-red text-red-fg"
+                      >Đã hết hạn</span
+                    >
+                  </template>
+                  <template v-slot:decisionsArray="item">
+                    <div v-if="!item.row.decisionsArray">
+                      Chưa có quyết định nào
+                    </div>
+                    <div v-else>
+                      <div v-for="(ele, index) in item.row.decisionsArray">
+                        <span
+                          >{{ ele.decisionName }}
+                          <a
+                            :href="ele.decisionLink"
+                            class="btn btn-success btn-icon"
+                          >
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="icon icon-tabler icon-tabler-files"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              stroke-width="2"
+                              stroke="currentColor"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                              />
+                              <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                              <path
+                                d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                              />
+                              <path
+                                d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                              />
+                            </svg>
+                          </a>
+                        </span>
+                      </div>
+                    </div>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -325,17 +365,7 @@
                                   placeholder="Nhập tên chuyên ngành"
                                 />
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trình độ đào tạo</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.level"
-                                  placeholder="Nhập trình độ đào tạo"
-                                />
-                              </div>
+
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
@@ -347,25 +377,22 @@
                                   placeholder="Nhập năm"
                                 />
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị quản lý</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.agency"
-                                  placeholder="Nhập đơn vị quản lý"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >SĐT đơn vị quản lý</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.agencyPhoneNumber"
-                                  placeholder="Nhập số điện thoại"
-                                />
+                              <div class="mb-3 row row-cards">
+                                <div class="col-md-10">
+                                  <label class="form-label">Đơn vị quản lý</label>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="editprogram.agency"
+                                    disabled
+                                  />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 44px;">
+                                  <a href="#" class="btn btn-google w-100 btn-icon" aria-label="Google" @click="unAttachedProgram()">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/brand-google -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path></svg>
+                                  </a>
+                                </div>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Chỉ tiêu</label>
@@ -383,6 +410,17 @@
                                   class="form-control"
                                   v-model="editprogram.expiry"
                                   placeholder="Nhập ngày hết hạn"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Trình độ đào tạo</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editprogram.level"
+                                  placeholder="Nhập trình độ đào tạo"
                                 />
                               </div>
                             </div>
@@ -416,11 +454,25 @@ import { useToast } from "vue-toastification";
 
 export default {
   name: "ProgramManagePage",
-  components: {
-  },
+  components: {},
   data() {
     return {
-      columns: ["stt", "year", "name", "nation", "parterUni", "major", "quota", "level", "agency", "agencyPhoneNumber", "expiry", "status", "approvalDecision", "tool"],
+      columns: [
+        "stt",
+        "year",
+        "name",
+        "nation",
+        "parterUni",
+        "major",
+        "quota",
+        "level",
+        "agency",
+        "agencyPhoneNumber",
+        "expiry",
+        "status",
+        "decisionsArray",
+        "tool",
+      ],
       options: {
         headings: {
           name: "Tên chương trình",
@@ -434,9 +486,8 @@ export default {
           agencyPhoneNumber: "SĐT đơn vị quản lý",
           expiry: "Ngày hết hạn",
           status: "Trạng thái",
-          approvalDecision: "Quyết định phê duyệt",
+          decisionsArray: "Quyết định phê duyệt",
           tool: "Thao tác",
-
         },
       },
       name: "",
@@ -446,8 +497,6 @@ export default {
       major: "",
       quota: "",
       level: "",
-      agency: "",
-      agencyPhoneNumber: "",
       expiry: "",
       status: "",
       approvalDecisionLink: "",
@@ -464,7 +513,6 @@ export default {
         quota: "",
         level: "",
         agency: "",
-        agencyPhoneNumber: "",
         expiry: "",
         status: "",
         approvalDecisionLink: "",
@@ -478,8 +526,6 @@ export default {
     const toast = useToast();
     return { toast };
   },
-
-
 
   methods: {
     showModal() {
@@ -503,10 +549,7 @@ export default {
         major: this.major,
         quota: this.quota,
         level: this.level,
-        agency: this.agency,
-        agencyPhoneNumber: this.agencyPhoneNumber,
         expiry: this.expiry,
-
       };
 
       try {
@@ -532,10 +575,7 @@ export default {
           this.major = "";
           this.quota = "";
           this.level = "";
-          this.agency = "";
-          this.agencyPhoneNumber = "";
           this.expiry = "";
-
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -551,7 +591,6 @@ export default {
       this.editprogram.quota = item.quota;
       this.editprogram.level = item.level;
       this.editprogram.agency = item.agency;
-      this.editprogram.agencyPhoneNumber = item.agencyPhoneNumber;
       this.editprogram.expiry = item.expiry;
       this.editprogram.id = item._id;
       this.showModal1();
@@ -568,10 +607,7 @@ export default {
         major: this.editprogram.major,
         quota: this.editprogram.quota,
         level: this.editprogram.level,
-        agency: this.editprogram.agency,
-        agencyPhoneNumber: this.editprogram.agencyPhoneNumber,
         expiry: this.editprogram.expiry,
-
       };
       try {
         const result = await instance.put(
@@ -617,6 +653,20 @@ export default {
       console.log(idArr, "id Array");
       localStorage.setItem("idArr", JSON.stringify(idArr));
     },
+    async unAttachedProgram() {
+      this.editprogram.agency = ''
+      const result = await instance.patch(`/api/delete-attached-program/${this.editprogram.id}`)
+      if (result.data.error === true) {
+        // alert(result.data.message)
+        this.toast.error(result.data.message);
+        this.$refs.table.refresh();
+      } else {
+        // alert('Project has been updated')
+        this.toast.success(result.data.message);
+        this.$refs.table.refresh();
+        console.log(result.data);
+      }
+    }
   },
 };
 </script>

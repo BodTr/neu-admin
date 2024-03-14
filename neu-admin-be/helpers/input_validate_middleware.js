@@ -3,8 +3,8 @@ function emptyProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty program inputs");
     const error = new Error("empty program inputs");
     error.code = "EMPTY_PROGRAM_INPUTS_ERROR";
-    const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body;
-    if (!name || !year || !nation || !parterUni || !major || !quota || !level || !agency || !agencyPhoneNumber || !expiry) {
+    const { name, year, nation, parterUni, major, quota, level, expiry } = req.body;
+    if (!name || !year || !nation || !parterUni || !major || !quota || !level || !expiry) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -17,9 +17,9 @@ function typeProgramInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type program inputs")
     const error = new Error('wrong type program inputs')
     error.code = 'PROGRAM_INPUTS_TYPE_ERROR'
-    const { name, year, nation, parterUni, major, quota, level, agency, agencyPhoneNumber, expiry } = req.body
+    const { name, year, nation, parterUni, major, quota, level, expiry } = req.body
     
-    if (typeof name !== 'string' || isNaN(year) || typeof nation !== 'string' || typeof parterUni !== 'string' || typeof major !== 'string' || isNaN(quota) || typeof level !== 'string' || typeof agency !== 'string' || isNaN(agencyPhoneNumber) || typeof expiry !== 'string') {
+    if (typeof name !== 'string' || isNaN(year) || typeof nation !== 'string' || typeof parterUni !== 'string' || typeof major !== 'string' || isNaN(quota) || typeof level !== 'string' || typeof expiry !== 'string') {
         console.log("type input incorrect")
         throw error
     } else {

@@ -88,12 +88,12 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên tài khoản</label>
+                        <label class="form-label">Tên đơn vị</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên tài khoản"
+                          placeholder="Nhập Tên đơn vị"
                         />
                       </div>
 
@@ -343,12 +343,12 @@
                           <div class="modal-body row row-cards mb-5">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên tài khoản</label>
+                                <label class="form-label">Tên đơn vị</label>
                                 <input
                                   type="text"
                                   class="form-control"
                                   v-model="editUser.name"
-                                  placeholder="Nhập tên tài khoản"
+                                  placeholder="Nhập Tên đơn vị"
                                 />
                               </div>
                               <div class="mb-3">
@@ -884,7 +884,7 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
-                            <div class="row">
+                            <!-- <div class="row">
                               <div class="col-md-4">
                                 <label class="form-label">Năm học</label>
                                 <select
@@ -932,6 +932,17 @@
                                   </tr>
                                 </tbody>
                               </table>
+                            </div> -->
+                            <div class="card">
+                              <v-server-table
+                                class="table table-vcenter table-mobile-md card-table"
+                                url="/api/get-all-programs-one"
+                                :columns="columns1"
+                                :options="options1"
+                                ref="table1"
+                              >
+
+                              </v-server-table>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -973,10 +984,11 @@ export default {
   },
   data() {
     return {
+      columns1: ["stt", ],
       columns: ["stt", "name", "username", "phoneNumber", "permission", "tool"],
       options: {
         headings: {
-          name: "Tên tài khoản",
+          name: "Tên đơn vị",
           username: "Tên đăng nhập",
           phoneNumber: "Số điện thoại",
           permission: "phân quyền",

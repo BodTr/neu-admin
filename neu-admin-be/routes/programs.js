@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const ProgramSchema = require('../models/program')
-const DecisionSchema = require('../models/decision')
 const YearSchema = require('../models/years')
 const {
     emptyProgramInputsValidation,
@@ -26,12 +25,58 @@ router.get('/api/get-all-programs', async (req, res) => {
             query
         } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        // const decisions = await DecisionSchema.find().lean()
         const programs = await ProgramSchema.find({
             name: {
                 $regex: query
             }
         }).lean().sort({
+            _id: -1
+        }).skip(skip).limit(limit)
+        let count = await ProgramSchema.estimatedDocumentCount()
+        let stt = 0
+        const aPrograms = programs.map(doc => {
+            stt++
+            // const id = doc._id.toString()
+            var expiry = new Date(doc.expiry)
+            var timeNow = new Date()
+            var status = true
+            if(expiry < timeNow){
+                var status = false
+            }
+            return {
+                ...doc,
+                stt: stt,
+                status: status
+            }
+        })
+        console.log(aPrograms, "aPrograms")
+        res.json({
+            data: aPrograms,
+            count: count,
+            error: false
+        })
+    } catch (error) {
+        console.log(error, "get programs api catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong"
+        })
+    }
+})
+
+router.get('/api/get-all-programs-one', async (req, res) => {
+    try {
+        let {
+            page,
+            limit,
+            query
+        } = req.query
+        let skip = (parseInt(page) - 1) * parseInt(limit)
+        const programs = await ProgramSchema.find({
+            name: {
+                $regex: query
+            }
+        }).select({}).lean().sort({
             _id: -1
         }).skip(skip).limit(limit)
         let count = await ProgramSchema.estimatedDocumentCount()
@@ -223,6 +268,16 @@ router.patch('/api/add-programs-for-users/:id', async (req, res) => {
         } = req.body
         console.log(userId, "user id add-programs-for-users patch api")
         console.log(programIdArr, "programIdArr add-programs-for-users patch api")
+        const user = await UserSchema.findOne({_id: userId})
+        const userName = user.name
+        const userPhoneNumber = user.phoneNumber
+        const updatingProgram = {
+            agency: userName,
+            agencyPhoneNumber: userPhoneNumber,
+            user: {
+                id: new ObjectId(userId)
+            }
+        }
         if (programIdArr.length === 0) {
             res.json({
                 error: false,
@@ -232,11 +287,9 @@ router.patch('/api/add-programs-for-users/:id', async (req, res) => {
             const addedUserProgramsArr = programIdArr.map(async (id) => {
                 const updatedProgram = await ProgramSchema.findOneAndUpdate({
                     _id: id
-                }, {
-                    user: {
-                        id: new ObjectId(userId)
-                    }
-                }, {
+                }, 
+                updatingProgram
+                , {
                     new: true
                 })
                 return updatedProgram
@@ -262,8 +315,6 @@ router.post('/api/create-program', emptyProgramInputsValidation, typeProgramInpu
             major,
             quota,
             level,
-            agency,
-            agencyPhoneNumber,
             expiry
         } = req.body
         console.log(req.body, "req.body post api")
@@ -284,8 +335,6 @@ router.post('/api/create-program', emptyProgramInputsValidation, typeProgramInpu
                 major: major,
                 quota: quota,
                 level: level,
-                agency: agency,
-                agencyPhoneNumber: agencyPhoneNumber,
                 expiry: expiry,
                 user: {
                     id: new ObjectId('111111111111111111111111')
@@ -352,8 +401,6 @@ router.put('/api/edit-program/:id', emptyProgramInputsValidation, typeProgramInp
             major,
             quota,
             level,
-            agency,
-            agencyPhoneNumber,
             expiry
         } = req.body
         console.log(id, "::put api id::")
@@ -365,8 +412,6 @@ router.put('/api/edit-program/:id', emptyProgramInputsValidation, typeProgramInp
             major: major,
             quota: quota,
             level: level,
-            agency: agency,
-            agencyPhoneNumber: agencyPhoneNumber,
             expiry: expiry,
         }
         console.log(req.body, "put api req.body")
@@ -391,19 +436,20 @@ router.put('/api/edit-program/:id', emptyProgramInputsValidation, typeProgramInp
 })
 
 // api bỏ liên kết giữa chương trình và người dùng
-router.patch('/api/delete-attached-program', async(req, res) => {
+router.patch('/api/delete-attached-program/:id', async(req, res) => {
     try {
+        const { id } = req.params
+        const updatingProgram = {
+            agency: '',
+            agencyPhoneNumber: '',
+            user: { id: new ObjectId('111111111111111111111111') }
+        }
+        const updatingProg = await ProgramSchema.findOneAndUpdate({ _id: id }, updatingProgram, { new: true })
 
-        const userId = req.payload
-        const { programIdArray } = req.body
-        const updatedProgram = programIdArray.map( async (prog) => {
-            const updatingProg = await ProgramSchema.findOneAndUpdate({ _id: prog._id }, { user: { id: new ObjectId('111111111111111111111111') } }, { new: true })
-            return updatingProg
-        })
-        console.log(updatedProgram, "updatedProgram add-programs-for-users")
+        console.log(updatingProg, "updatedProgram delete-programs-for-users")
         res.json({
             error: false,
-            message: 'Cập nhật khóa học cho đơn vị thành công'
+            message: 'Đã bỏ liên kết giữa tài khoản và chương trình'
         })
     } catch (error) {
         console.log(error, "error in  catch block /delete-attached-program api")
