@@ -14,6 +14,7 @@ const ObjectId = require("mongodb").ObjectId
 const initYearId = '65e968d440e62c9bf7a39996'
 
 const UserSchema = require('../models/user')
+const { Query } = require('mongoose')
 
 router.use(authenticateAccessToken)
 
@@ -69,32 +70,38 @@ router.get('/api/get-all-programs-one', async (req, res) => {
         let {
             page,
             limit,
-            query
+            query,
+            id
         } = req.query
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const programs = await ProgramSchema.find({
-            name: {
-                $regex: query
-            }
-        }).select({}).lean().sort({
+        let filter = {}
+        if (query) {
+            filter = {year: query}
+        }
+        const programs = await ProgramSchema.find(
+            // year: { $eq: query }
+            filter
+        ).select({name: 1, agency: 1, year: 1, user: 1}).lean().sort({
             _id: -1
         }).skip(skip).limit(limit)
         let count = await ProgramSchema.estimatedDocumentCount()
         let stt = 0
         const aPrograms = programs.map(doc => {
             stt++
-            // const id = doc._id.toString()
-            var expiry = new Date(doc.expiry)
-            var timeNow = new Date()
-            var status = true
-            if(expiry < timeNow){
-                var status = false
+            if(doc.agency && doc.user.id.toString() === id) {
+                return {
+                    ...doc,
+                    stt: stt,
+                    isManage: true
+                }
+            } else {
+                return {
+                    ...doc,
+                    stt: stt,
+                    isManage: false
+                }
             }
-            return {
-                ...doc,
-                stt: stt,
-                status: status
-            }
+            
         })
         console.log(aPrograms, "aPrograms")
         res.json({
@@ -264,10 +271,28 @@ router.patch('/api/add-programs-for-users/:id', async (req, res) => {
     try {
         const userId = req.params.id
         const {
-            programIdArr
+            programIdArr,
+            unattachedProgramIdArr
         } = req.body
         console.log(userId, "user id add-programs-for-users patch api")
         console.log(programIdArr, "programIdArr add-programs-for-users patch api")
+        console.log(unattachedProgramIdArr, "unattachedProgramIdArr add-programs-for-users patch api")
+        if (unattachedProgramIdArr.length === 0) {
+            console.log("ko có program nào bị bỏ liên kết với user")
+        } else {
+            const upDatedProgram = unattachedProgramIdArr.map(async (item) => {
+                const updatingProgram = {
+                    agency: '',
+                    agencyPhoneNumber: '',
+                    user: {id : new ObjectId('111111111111111111111111')}
+
+                }
+                const upDatingDoc = await ProgramSchema.findOneAndUpdate({_id: item}, updatingProgram, {new: true})
+                return upDatingDoc
+            })
+            
+            console.log(upDatedProgram, "upDatedProgram, add-programs-for-users patch api")
+        }
         const user = await UserSchema.findOne({_id: userId})
         const userName = user.name
         const userPhoneNumber = user.phoneNumber
@@ -278,28 +303,22 @@ router.patch('/api/add-programs-for-users/:id', async (req, res) => {
                 id: new ObjectId(userId)
             }
         }
-        if (programIdArr.length === 0) {
-            res.json({
-                error: false,
-                message: 'Chưa chọn bất kì chương trình nào'
+        const addedUserProgramsArr = programIdArr.map(async (id) => {
+            const updatedProgram = await ProgramSchema.findOneAndUpdate({
+                _id: id
+            }, 
+            updatingProgram
+            , {
+                new: true
             })
-        } else {
-            const addedUserProgramsArr = programIdArr.map(async (id) => {
-                const updatedProgram = await ProgramSchema.findOneAndUpdate({
-                    _id: id
-                }, 
-                updatingProgram
-                , {
-                    new: true
-                })
-                return updatedProgram
-            })
-            console.log(addedUserProgramsArr, "addedUserProgramsArr add-programs-for-users")
-            res.json({
-                error: false,
-                message: 'Cập nhật khóa học cho đơn vị thành công'
-            })
-        }
+            return updatedProgram
+        })
+        console.log(addedUserProgramsArr, "addedUserProgramsArr add-programs-for-users")
+        res.json({
+            error: false,
+            message: 'Cập nhật khóa học cho đơn vị thành công'
+        })
+        
     } catch (error) {
         console.log(error, "add-programs-for-users api catch block error")
     }

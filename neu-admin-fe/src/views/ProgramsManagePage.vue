@@ -144,7 +144,7 @@
                       <div class="mb-3">
                         <label class="form-label">Ngày hết hạn</label>
                         <input
-                          type="text"
+                          type="date"
                           class="form-control"
                           v-model="expiry"
                           placeholder="Nhập ngày hết hạn"
@@ -204,7 +204,7 @@
                     >
                   </template>
                   <template v-slot:decisionsArray="item">
-                    <div v-if="!item.row.decisionsArray">
+                    <div v-if="item.row.decisionsArray.length === 0">
                       Chưa có quyết định nào
                     </div>
                     <div v-else>
@@ -377,7 +377,7 @@
                                   placeholder="Nhập năm"
                                 />
                               </div>
-                              <div class="mb-3 row row-cards">
+                              <!-- <div class="mb-3 row row-cards">
                                 <div class="col-md-10">
                                   <label class="form-label">Đơn vị quản lý</label>
                                   <input
@@ -389,11 +389,11 @@
                                 </div>
                                 <div class="col-md-2" style="margin-top: 44px;">
                                   <a href="#" class="btn btn-google w-100 btn-icon" aria-label="Google" @click="unAttachedProgram()">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/brand-google -->
+                                   
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path></svg>
                                   </a>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="mb-3">
                                 <label class="form-label">Chỉ tiêu</label>
                                 <input
@@ -406,7 +406,7 @@
                               <div class="mb-3">
                                 <label class="form-label">Ngày hết hạn</label>
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
                                   v-model="editprogram.expiry"
                                   placeholder="Nhập ngày hết hạn"
@@ -653,20 +653,20 @@ export default {
       console.log(idArr, "id Array");
       localStorage.setItem("idArr", JSON.stringify(idArr));
     },
-    async unAttachedProgram() {
-      this.editprogram.agency = ''
-      const result = await instance.patch(`/api/delete-attached-program/${this.editprogram.id}`)
-      if (result.data.error === true) {
-        // alert(result.data.message)
-        this.toast.error(result.data.message);
-        this.$refs.table.refresh();
-      } else {
-        // alert('Project has been updated')
-        this.toast.success(result.data.message);
-        this.$refs.table.refresh();
-        console.log(result.data);
-      }
-    }
+    // async unAttachedProgram() {
+    //   this.editprogram.agency = ''
+    //   const result = await instance.patch(`/api/delete-attached-program/${this.editprogram.id}`)
+    //   if (result.data.error === true) {
+    //     // alert(result.data.message)
+    //     this.toast.error(result.data.message);
+    //     this.$refs.table.refresh();
+    //   } else {
+    //     // alert('Project has been updated')
+    //     this.toast.success(result.data.message);
+    //     this.$refs.table.refresh();
+    //     console.log(result.data);
+    //   }
+    // }
   },
 };
 </script>

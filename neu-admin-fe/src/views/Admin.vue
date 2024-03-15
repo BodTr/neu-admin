@@ -639,7 +639,8 @@
                                         :value="{
                                           name: 'edu-quality-manage-page',
                                           stt: 10,
-                                          title: '<span>Đảm bảo chất lượng <br> đào tạo</span>',
+                                          title:
+                                            '<span>Đảm bảo chất lượng <br> đào tạo</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -655,7 +656,8 @@
                                         :value="{
                                           name: 'curriculums-manage-page',
                                           stt: 11,
-                                          title: '<span>Thông tin khung <br> chương trình</span>',
+                                          title:
+                                            '<span>Thông tin khung <br> chương trình</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -861,107 +863,82 @@
                         </div>
                       </div>
                     </div>
-                    <div
-                      v-if="displayModalFour"
-                      class="modal modal-blur fade show"
-                      id="modal-report-four"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">
-                              Phân bổ Chương trình cho đơn vị
-                            </h5>
-                            <button
-                              @click="hideModal4()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <!-- <div class="row">
-                              <div class="col-md-4">
-                                <label class="form-label">Năm học</label>
-                                <select
-                                  v-model="year"
-                                  class="form-select"
-                                  tabindex="-1"
-                                  @change="onYearChange()"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn năm học
-                                  </option>
-                                  <option
-                                    v-for="(year, index) in yearsArray"
-                                    :value="year"
-                                  >
-                                    {{ year }}
-                                  </option>
-                                </select>
-                              </div>
-                            </div>
-
-                            <div class="table-responsive">
-                              <table id="menu_table" class="table mb-0">
-                                <thead>
-                                  <tr>
-                                    <th>Tên chương trình</th>
-                                    <th>Hiển thị</th>
-                                  </tr>
-                                </thead>
-                                <tbody
-                                  v-for="(
-                                    program, index
-                                  ) in programsOrderedByYearArr"
-                                >
-                                  <tr>
-                                    <td>{{ program.name }}</td>
-                                    <td>
-                                      <input
-                                        type="checkbox"
-                                        id="program_manage"
-                                        :value="program._id"
-                                        v-model="selectedProgramIdArr"
-                                      />
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div> -->
-                            <div class="card">
-                              <v-server-table
-                                class="table table-vcenter table-mobile-md card-table"
-                                url="/api/get-all-programs-one"
-                                :columns="columns1"
-                                :options="options1"
-                                ref="table1"
-                              >
-
-                              </v-server-table>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              data-bs-dismiss="modal"
-                              @click="onUserChange()"
-                            >
-                              Lưu
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </template>
                 </v-server-table>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="displayModalFour"
+      class="modal modal-blur fade show"
+      id="modal-report-four"
+      tabindex="-1"
+      style="display: block"
+      aria-modal="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Phân bổ Chương trình cho đơn vị {{ unitName }}</h5>
+            <button
+              @click="hideModal4()"
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row row-cards">
+            <div class="card">
+              <v-server-table
+                class="table table-vcenter table-mobile-md card-table"
+                url="/api/get-all-programs-one"
+                :columns="columns1"
+                :options="options1"
+                ref="table1"
+                @loaded="onLoaded"
+              >
+                <template v-slot:agency="item">
+                  <span v-if="!item.row.agency">Chưa liên kết</span>
+                  <span v-else>{{ item.row.agency }}</span>
+                </template>
+                <template v-slot:tool="item">
+                  <div
+                    v-if="item.row.agency && item.row.user.id !== editUser.id"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      disabled
+                      checked
+                    />
+                  </div>
+                  <div v-else>
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      :id="item.row._id"
+                      :value="item.row._id"
+                      v-model="selectedProgramIdArr"
+                      @change="isManageChange(item.row)"
+                    />
+                  </div>
+                </template>
+              </v-server-table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="onProgramChange()"
+            >
+              Lưu
+            </button>
           </div>
         </div>
       </div>
@@ -972,19 +949,13 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-// import Header from "../components/Header.vue";
 
 export default {
   name: "Admin",
-  components: {
-    VerticalNavbar,
-    // Header,
-  },
   data() {
     return {
-      columns1: ["stt", ],
+      columns1: ["stt", "name", "agency", "year", "tool"],
       columns: ["stt", "name", "username", "phoneNumber", "permission", "tool"],
       options: {
         headings: {
@@ -995,8 +966,21 @@ export default {
           tool: "Thao tác",
         },
       },
+      options1: {
+        params: {
+          id: localStorage.getItem("userId"),
+        },
+
+        headings: {
+          name: "Tên chương trình",
+          agency: "Đơn vị quản lý",
+          year: "Năm",
+          tool: "Quản lý",
+        },
+      },
 
       name: "",
+      unitName: "",
       username: "",
       phoneNumber: "",
       permission: "",
@@ -1012,6 +996,7 @@ export default {
       yearsArray: [],
       programsOrderedByYearArr: [],
       selectedProgramIdArr: [],
+      oldProgramIdArray: [],
       year: "",
 
       editUser: {
@@ -1041,6 +1026,24 @@ export default {
   },
 
   methods: {
+    onLoaded() {
+      console.log(this.$refs.table1.data, "console.log(table1 ref)")
+      console.log(this.editUser.id, "editUserId")
+      const editUserId = this.editUser.id
+      const tableData = this.$refs.table1.data
+      const filteredTableDatabyUserId = tableData.filter((item) => {
+        if (item.user.id === editUserId) {
+          return item
+        }
+      })
+      this.selectedProgramIdArr = filteredTableDatabyUserId.map((item) => {
+        return item._id
+      })
+      this.oldProgramIdArray = this.selectedProgramIdArr
+    },
+    isManageChange(item) {
+      console.log(this.$refs.table1, "table1", item, "item");
+    },
 
     async getYearsArr() {
       try {
@@ -1054,28 +1057,36 @@ export default {
     },
     onEditAttachedUserProgram(item) {
       console.log("onEditAttachedUserProgram click event");
+      this.unitName = item.name
       this.editUser.id = item._id;
+      localStorage.setItem("userId", this.editUser.id);
       this.showModal4();
     },
-    async onYearChange() {
-      console.log(this.year, "onYearChange");
-      try {
-        const queryParams = { year: this.year };
-        const result = await instance.get("/api/get-programs-by-year", {
-          params: queryParams,
-        });
-        console.log(result, "result, get-programs-by-year api result");
-        this.programsOrderedByYearArr =
-          result.data.programsZeroUserFilterByYear;
-      } catch (error) {
-        console.log(error, "onYearChange() catch block error");
-      }
-    },
+    // async onYearChange() {
+    //   console.log(this.year, "onYearChange");
+    //   try {
+    //     const queryParams = { year: this.year };
+    //     const result = await instance.get("/api/get-programs-by-year", {
+    //       params: queryParams,
+    //     });
+    //     console.log(result, "result, get-programs-by-year api result");
+    //     this.programsOrderedByYearArr =
+    //       result.data.programsZeroUserFilterByYear;
+    //   } catch (error) {
+    //     console.log(error, "onYearChange() catch block error");
+    //   }
+    // },
 
-    async onUserChange() {
+    async onProgramChange() {
       try {
+        const unAttachedProgramIdArray = this.oldProgramIdArray.filter((item) => { //
+          if(!this.selectedProgramIdArr.includes(item)){ // item nào có trong array cũ mà ko có trong array mới là những item bị xóa
+            return item
+          }
+        })
         const data = {
           programIdArr: this.selectedProgramIdArr,
+          unattachedProgramIdArr: unAttachedProgramIdArray
         };
         const result = await instance.patch(
           `/api/add-programs-for-users/${this.editUser.id}`,
@@ -1148,7 +1159,7 @@ export default {
         const data = {
           menuArray: this.menuArray,
         };
-        console.log(this.menuArray, "onMenuChange")
+        console.log(this.menuArray, "onMenuChange");
         const result = await instance.patch(
           `/api/add-menu/${this.editUser.id}`,
           data
