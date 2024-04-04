@@ -21,10 +21,6 @@ const CurriculumSchema = new mongoose.Schema({
         type: Number,
         require: false
     },
-    trainingUni: {
-        type: String,
-        require: false
-    },
 
     program: {
         id: {

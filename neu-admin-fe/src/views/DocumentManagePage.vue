@@ -136,12 +136,12 @@
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Nội dung</label>
-                        <input
-                          type="text"
+                        <textarea
                           class="form-control"
+                          rows="5"
                           v-model="content"
                           placeholder="Nhập nội dung"
-                        />
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Thời hạn hiệu lực</label>
@@ -341,12 +341,12 @@
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label">Nội dung</label>
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control"
+                                  rows="5"
                                   v-model="editDoc.content"
                                   placeholder="Nhập nội dung"
-                                />
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"

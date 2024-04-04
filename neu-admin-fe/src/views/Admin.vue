@@ -497,7 +497,6 @@
                                         id="program_manage"
                                         :value="{
                                           name: 'programs-manage-page',
-                                          stt: 1,
                                           title:
                                             'Quản lý chương trình liên kết',
                                         }"
@@ -506,7 +505,7 @@
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td rowspan="14">CTLKĐT với nước ngoài</td>
+                                    <td rowspan="15">CTLKĐT với nước ngoài</td>
                                     <td rowspan="7">Thông tin chung</td>
                                     <td>Thông tin chương trình liên kết</td>
                                     <td>
@@ -515,7 +514,6 @@
                                         id="program_infor"
                                         :value="{
                                           name: 'trans-programs-manage-page',
-                                          stt: 2,
                                           title: 'TT chương trình liên kết',
                                         }"
                                         v-model="menuArray"
@@ -530,7 +528,6 @@
                                         id="approval_decision"
                                         :value="{
                                           name: 'approval-decision-manage-page',
-                                          stt: 3,
                                           title: 'Các quyết định phê duyệt',
                                         }"
                                         v-model="menuArray"
@@ -545,7 +542,6 @@
                                         id="close-decision-manage-page"
                                         :value="{
                                           name: 'close-decision-manage-page',
-                                          stt: 4,
                                           title:
                                             '<span>Các quyết định đóng <br> chương trình</span>',
                                         }"
@@ -561,7 +557,6 @@
                                         id="document"
                                         :value="{
                                           name: 'documents-manage-page',
-                                          stt: 5,
                                           title: 'Quản lý văn bản liên kết',
                                         }"
                                         v-model="menuArray"
@@ -576,7 +571,6 @@
                                         id="partner"
                                         :value="{
                                           name: 'partners-manage-page',
-                                          stt: 6,
                                           title: 'Quản lý đối tác',
                                         }"
                                         v-model="menuArray"
@@ -591,7 +585,6 @@
                                         id="agency"
                                         :value="{
                                           name: 'agencies-manage-page',
-                                          stt: 7,
                                           title: 'Quản lý đơn vị thực hiện',
                                         }"
                                         v-model="menuArray"
@@ -606,7 +599,6 @@
                                         id="program_goal"
                                         :value="{
                                           name: 'goals-manage-page',
-                                          stt: 8,
                                           title: 'Mục tiêu chương trình',
                                         }"
                                         v-model="menuArray"
@@ -622,8 +614,22 @@
                                         id="plan"
                                         :value="{
                                           name: 'plans-manage-page',
-                                          stt: 9,
                                           title: 'Quản lý nội dung đề án',
+                                        }"
+                                        v-model="menuArray"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Các cam kết của chương trình</td>
+                                    <td>Các cam kết của chương trình</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id="plan"
+                                        :value="{
+                                          name: 'program-commitments-manage-page',
+                                          title: '<span>Các cam kết của <br> chương trình</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -638,7 +644,6 @@
                                         id="education_quality"
                                         :value="{
                                           name: 'edu-quality-manage-page',
-                                          stt: 10,
                                           title:
                                             '<span>Đảm bảo chất lượng <br> đào tạo</span>',
                                         }"
@@ -655,9 +660,8 @@
                                         id="curriculum"
                                         :value="{
                                           name: 'curriculums-manage-page',
-                                          stt: 11,
                                           title:
-                                            '<span>Thông tin khung <br> chương trình</span>',
+                                            '<span>Thông tin khung<br> chương trình</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -672,7 +676,6 @@
                                         id="enrollment"
                                         :value="{
                                           name: 'enrollment-manage-page',
-                                          stt: 12,
                                           title: 'Quản lý tuyển sinh',
                                         }"
                                         v-model="menuArray"
@@ -687,7 +690,6 @@
                                         id="lecturer"
                                         :value="{
                                           name: 'lecturers-manage-page',
-                                          stt: 13,
                                           title: 'Quản lý giảng viên',
                                         }"
                                         v-model="menuArray"
@@ -702,7 +704,6 @@
                                         id="unit"
                                         :value="{
                                           name: 'units-manage-page',
-                                          stt: 14,
                                           title: 'Quản lý đơn vị công tác',
                                         }"
                                         v-model="menuArray"
@@ -717,7 +718,6 @@
                                         id="subject"
                                         :value="{
                                           name: 'subjects-manage-page',
-                                          stt: 15,
                                           title: 'Quản lý môn học',
                                         }"
                                         v-model="menuArray"
@@ -734,7 +734,6 @@
                                         id="moumoa"
                                         :value="{
                                           name: 'moumoa-manage-page',
-                                          stt: 16,
                                           title: 'Quản lý MOU.MOA',
                                         }"
                                         v-model="menuArray"
@@ -751,7 +750,6 @@
                                         id="htqt"
                                         :value="{
                                           name: 'htqt-manage-page',
-                                          stt: 17,
                                           title: 'Quản lý các dự án HTQT',
                                         }"
                                         v-model="menuArray"
@@ -770,9 +768,8 @@
                                         id="ex_f_stu"
                                         :value="{
                                           name: 'ex-f-student-manage-page',
-                                          stt: 18,
                                           title:
-                                            '<span>Sinh viên nước ngoài đến <br> trao đổi</span>',
+                                            '<span>Sinh viên nước ngoài đến<br> trao đổi</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -787,9 +784,8 @@
                                         id="ex_stu"
                                         :value="{
                                           name: 'ex-student-manage-page',
-                                          stt: 19,
                                           title:
-                                            '<span>Sinh viên đi nước ngoài <br> trao đổi</span>',
+                                            '<span>Sinh viên đi nước ngoài<br> trao đổi</span>',
                                         }"
                                         v-model="menuArray"
                                       />
@@ -805,7 +801,6 @@
                                         id="student"
                                         :value="{
                                           name: 'student-manage-page',
-                                          stt: 20,
                                           title: 'Quản lý lưu sinh viên',
                                         }"
                                         v-model="menuArray"
@@ -822,7 +817,6 @@
                                         id="visa"
                                         :value="{
                                           name: 'extend-visa-manage-page',
-                                          stt: 21,
                                           title: 'Cấp/Gia hạn VISA',
                                         }"
                                         v-model="menuArray"
@@ -839,7 +833,6 @@
                                         id="user_manage"
                                         :value="{
                                           name: 'admin',
-                                          stt: 22,
                                           title: 'Quản lý tài khoản',
                                         }"
                                         v-model="menuArray"
@@ -1235,7 +1228,7 @@ export default {
           username: this.editUser.username,
           phoneNumber: this.editUser.phoneNumber,
         };
-
+        console.log(data, "data onSubmit()")
         const result = await instance.put(
           `/api/edit-user/${this.editUser.id}`,
           data

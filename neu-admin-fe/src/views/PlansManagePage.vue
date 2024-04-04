@@ -90,15 +90,6 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label class="form-label">Tên văn bằng</label>
-                        <textarea
-                          class="form-control"
-                          row="1"
-                          v-model="certName"
-                          placeholder="Nhập tên văn bằng chứng chỉ"
-                        ></textarea>
-                      </div>
-                      <div class="mb-3">
                         <label class="form-label">Điều kiện giảng viên</label>
                         <textarea
                           v-model="qualifiedLecturer"
@@ -116,25 +107,27 @@
                           placeholder="Nhập điều kiện tuyển sinh"
                         ></textarea>
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Quy mô và địa điểm đào tạo</label>
+                        <textarea
+                          v-model="ecoManage"
+                          row="1"
+                          class="form-control"
+                          placeholder="Quy mô và địa điểm đào tạo"
+                        ></textarea>
+                      </div>
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label class="form-label">Hình thức giảng dạy</label>
+                        <label class="form-label">Hình thức liên kết đào tạo</label>
                         <textarea
                           class="form-control"
                           row="1"
                           v-model="planStructure"
-                          placeholder="Nhập hình thức đào tạo"
+                          placeholder="Nhập hình thức liên kết đào tạo"
                         ></textarea>
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Kinh phí đào tạo</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="tuition"
-                        />
-                      </div>
+
                       <div class="mb-3">
                         <label class="form-label"
                           >Điều kiện cơ sở vật chất, thiết bị</label
@@ -158,23 +151,16 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Quản lý tài chính</label>
-                        <textarea
-                          v-model="ecoManage"
-                          row="1"
+                        <label class="form-label">Học phí</label>
+                        <input
+                          type="text"
                           class="form-control"
-                          placeholder="Quản lý tài chính"
-                        ></textarea>
+                          placeholder="Nhập học phí"
+                          v-model="tuition"
+                        />
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Thực hiện báo cáo</label>
-                        <textarea
-                          v-model="report"
-                          row="1"
-                          class="form-control"
-                          placeholder="Thực hiện báo cáo"
-                        ></textarea>
-                      </div>
+                      
+
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -283,15 +269,6 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-4">
                               <div class="mb-3">
-                                <label class="form-label">Tên văn bằng</label>
-                                <textarea
-                                  class="form-control"
-                                  row="1"
-                                  v-model="editPlan.certName"
-                                  placeholder="Nhập tên văn bằng chứng chỉ"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
                                 <label class="form-label"
                                   >Điều kiện giảng viên</label
                                 >
@@ -313,29 +290,31 @@
                                   placeholder="Nhập điều kiện tuyển sinh"
                                 ></textarea>
                               </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Quy mô và địa điểm đào tạo</label
+                                >
+                                <textarea
+                                  v-model="editPlan.ecoManage"
+                                  row="1"
+                                  class="form-control"
+                                  placeholder="Quy mô và địa điểm đào tạo"
+                                ></textarea>
+                              </div>
                             </div>
                             <div class="col-md-4">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Hình thức giảng dạy</label
+                                  >Hình thức liên kết đào tạo</label
                                 >
                                 <textarea
                                   class="form-control"
                                   row="1"
                                   v-model="editPlan.planStructure"
-                                  placeholder="Nhập hình thức đào tạo"
+                                  placeholder="Nhập hình thức liên kết đào tạo"
                                 ></textarea>
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Kinh phí đào tạo</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPlan.tuition"
-                                />
-                              </div>
+
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Điều kiện cơ sở vật chất, thiết bị</label
@@ -362,26 +341,16 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Quản lý tài chính</label
+                                  >Học phí</label
                                 >
-                                <textarea
-                                  v-model="editPlan.ecoManage"
-                                  row="1"
+                                <input
+                                  type="text"
                                   class="form-control"
-                                  placeholder="Quản lý tài chính"
-                                ></textarea>
+                                  placeholder="Nhập học phí"
+                                  v-model="editPlan.tuition"
+                                />
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thực hiện báo cáo</label
-                                >
-                                <textarea
-                                  v-model="editPlan.report"
-                                  row="1"
-                                  class="form-control"
-                                  placeholder="Thực hiện báo cáo"
-                                ></textarea>
-                              </div>
+
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -409,20 +378,16 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 import router from '@/router';
 export default {
-  certName: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
+  name: "ProgramManagePage",
+
 
   data() {
     return {
       columns: [
         "stt",
-        "certName",
         "planStructure",
         "language",
         "qualifiedLecturer",
@@ -430,7 +395,6 @@ export default {
         "tuition",
         "ecoManage",
         "infraCondition",
-        "report",
         "tool",
       ],
       options: {
@@ -438,21 +402,18 @@ export default {
           id: localStorage.getItem("progId"),
         },
         headings: {
-          certName: "Tên văn bằng và chứng chỉ",
-          planStructure: "Hình thức đào tạo",
+          planStructure: "Hình thức liên kết đào tạo",
           language: "Ngôn ngữ giảng dạy",
           qualifiedLecturer: "Điều kiện về giảng viên",
           qualifiedStudent: "Điều kiện tuyển sinh",
-          tuition: "Kinh phí đào tạo",
-          ecoManage: "Quản lý tài chính",
+          tuition: "Học phí",
+          ecoManage: "Quy mô và địa điểm đào tạo",
           infraCondition: "Điều kiện cơ sở vật chất",
-          report: "Thực hiện báo cáo",
           tool: "Thao tác",
         },
       },
       programName: "",
       id: "",
-      certName: "",
       qualifiedLecturer: "",
       qualifiedStudent: "",
       planStructure: "",
@@ -460,13 +421,11 @@ export default {
       infraCondition: "",
       language: "",
       ecoManage: "",
-      report: "",
       displayModal: false,
       displayModalOne: false,
 
       editPlan: {
         id: "",
-        certName: "",
         qualifiedLecturer: "",
         qualifiedStudent: "",
         planStructure: "",
@@ -474,7 +433,6 @@ export default {
         infraCondition: "",
         language: "",
         ecoManage: "",
-        report: "",
       },
     };
   },
@@ -507,7 +465,6 @@ export default {
     async submitForm() {
       const data = {
         programId: this.id,
-        certName: this.certName,
         qualifiedLecturer: this.qualifiedLecturer,
         qualifiedStudent: this.qualifiedStudent,
         planStructure: this.planStructure,
@@ -515,7 +472,6 @@ export default {
         infraCondition: this.infraCondition,
         language: this.language,
         ecoManage: this.ecoManage,
-        report: this.report
       };
 
       try {
@@ -533,7 +489,6 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.certName = "";
           this.qualifiedLecturer = "";
           this.qualifiedStudent = "";
           this.planStructure = "";
@@ -541,7 +496,6 @@ export default {
           this.infraCondition = "";
           this.language = "";
           this.ecoManage = "";
-          this.report = "";
 
         }
       } catch (error) {
@@ -550,7 +504,6 @@ export default {
     },
 
     onEdit(item) {
-      this.editPlan.certName = item.certName;
       this.editPlan.qualifiedLecturer = item.qualifiedLecturer;
       this.editPlan.qualifiedStudent = item.qualifiedStudent;
       this.editPlan.planStructure = item.planStructure;
@@ -558,14 +511,12 @@ export default {
       this.editPlan.infraCondition = item.infraCondition;
       this.editPlan.language = item.language;
       this.editPlan.ecoManage = item.ecoManage;
-      this.editPlan.report = item.report
       this.editPlan.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
       const data = {
-        certName: this.editPlan.certName,
         qualifiedLecturer: this.editPlan.qualifiedLecturer,
         qualifiedStudent: this.editPlan.qualifiedStudent,
         planStructure: this.editPlan.planStructure,
@@ -573,7 +524,6 @@ export default {
         infraCondition: this.editPlan.infraCondition,
         language: this.editPlan.language,
         ecoManage: this.editPlan.ecoManage,
-        report: this.editPlan.report
       };
       try {
         const result = await instance.put(

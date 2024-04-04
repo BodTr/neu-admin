@@ -1,35 +1,46 @@
 const mongoose = require('mongoose')
 
 const EnrollmentSchema = new mongoose.Schema({
-    year: {
+    year: { //*
         type: Number,
         require: false
     },
-    admissionCount: {
+    enrollmentCount: { //*
         type: Number,
         require: false
     },
-    graduatedCount: {
+    admissionCount: { //*
         type: Number,
         require: false
     },
-    tuitionSum: {
+    transferStudents: { //*
+        type: Number,
+        require: false 
+    },
+    graduatedCount: { //*
         type: Number,
         require: false
     },
-    applicantsCount: {
+    admittedStudents: { //*
         type: Number,
         require: false
     },
-    dropoutCount: {
+    applicantsCount: { //*
         type: Number,
         require: false
     },
-    graduatedPercentage: {
-        type: String,
+    dropoutCount: { //*
+        type: Number,
         require: false
     },
-
+    reservedStudents: { //*
+        type: Number,
+        require: false
+    },
+    trainingStudents: { //*
+        type: Number,
+        require: false 
+    },
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

@@ -37,7 +37,7 @@
               Đổi chương trình quản lý
           </router-link>
           </li>
-          <li v-show="programsIsShow" class="nav-item">
+          <li v-if="programsIsShow" class="nav-item">
             <router-link class="nav-link" to="/">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -66,7 +66,7 @@
               </span>
             </router-link>
           </li>
-          <li v-show="lvOneProgramManageIsShow" class="nav-item dropdown">
+          <li v-if="lvOneProgramManageIsShow" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle show"
               href="#navbar-base"
@@ -106,7 +106,7 @@
             </a>
             <div class="dropdown-menu">
               <div class="dropdown-menu-column">
-                <div v-show="genaralInforIsShow" class="dropend">
+                <div v-if="genaralInforItem.length > 0" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
                     href="#"
@@ -120,11 +120,12 @@
                   <div class="dropdown-menu">
                     <router-link
                       v-for="(item, index) in genaralInforItem"
+                      :key="index"
                       class="dropdown-item"
                       :to="{ name: item.name }" v-html="item.title"></router-link>
                   </div>
                 </div>
-                <div v-show="planIsShow" class="dropend">
+                <div v-if="planItem.length > 0" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
                     href="#"
@@ -138,13 +139,33 @@
                   <div class="dropdown-menu">
                     <router-link
                       v-for="(item, index) in planItem"
+                      :key="index"
                       class="dropdown-item"
                       :to="{ name: item.name }"
                       >{{ item.title }}</router-link
                     >
                   </div>
                 </div>
-                <div v-show="educationQualityIsShow" class="dropend">
+                <div v-if="programCommitmentItem.length > 0" class="dropend">
+                  <a
+                    class="dropdown-item dropdown-toggle show"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    Cam kết của chương trình
+                  </a>
+                  <div class="dropdown-menu">
+                    <router-link
+                      v-for="(item, index) in programCommitmentItem"
+                      class="dropdown-item"
+                      :key="index"
+                      :to="{ name: item.name }" v-html="item.title"></router-link>
+                  </div>
+                </div>
+                <div v-if="educationQualityItem.length > 0" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
                     href="#"
@@ -159,10 +180,11 @@
                     <router-link
                       v-for="(item, index) in educationQualityItem"
                       class="dropdown-item"
+                      :key="index"
                       :to="{ name: item.name }" v-html="item.title"></router-link>
                   </div>
                 </div>
-                <div v-show="curriculumIsShow" class="dropend">
+                <div v-if="curriculumItem.length > 0" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
                     href="#"
@@ -177,12 +199,13 @@
                     <router-link
                       v-for="(item, index) in curriculumItem"
                       class="dropdown-item"
+                      :key="index"
                       :to="{ name: item.name }"
                       v-html="item.title"></router-link
                     >
                   </div>
                 </div>
-                <div v-show="enrollmentIsShow" class="dropend">
+                <div v-show="enrollmentItem.length > 0" class="dropend">
                   <a
                     class="dropdown-item dropdown-toggle show"
                     href="#"
@@ -197,6 +220,7 @@
                     <router-link
                       v-for="(item, index) in enrollmentItem"
                       class="dropdown-item"
+                      :key="index"
                       :to="{ name: item.name }"
                       >{{ item.title }}</router-link
                     >
@@ -205,7 +229,7 @@
               </div>
             </div>
           </li>
-          <li v-show="moumoaIsShow" class="nav-item">
+          <li v-if="moumoaIsShow" class="nav-item">
             <router-link class="nav-link" to="/enrollment/moumoa-infor">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -235,7 +259,7 @@
               </span>
             </router-link>
           </li>
-          <li v-show="htqtIsShow" class="nav-item">
+          <li v-if="htqtIsShow" class="nav-item">
             <router-link class="nav-link" to="/enrollment/htqt-infor">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -265,7 +289,7 @@
               </span>
             </router-link>
           </li>
-          <li v-show="shortTermExStuIsShow" class="nav-item dropdown">
+          <li v-if="shortTermExStuItem.length > 0" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle show"
               href="#navbar-base"
@@ -308,12 +332,13 @@
               <router-link
                 v-for="(item, index) in shortTermExStuItem"
                 class="dropdown-item"
+                :key="index"
                 :to="{ name: item.name }"
                 v-html="item.title"></router-link
               >
             </div>
           </li>
-          <li v-show="studentIsShow" class="nav-item dropdown">
+          <li v-if="studentItem.length > 0" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle show"
               href="#navbar-base"
@@ -355,12 +380,13 @@
               <router-link
                 v-for="(item, index) in studentItem"
                 class="dropdown-item"
+                :key="index"
                 :to="{ name: item.name }"
                 >{{ item.title }}</router-link
               >
             </div>
           </li>
-          <li v-show="visaIsShow" class="nav-item">
+          <li v-if="visaIsShow" class="nav-item">
             <router-link class="nav-link" to="/enrollment/extend-visa">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -390,7 +416,7 @@
               </span>
             </router-link>
           </li>
-          <li v-show="userIsShow" class="nav-item dropdown">
+          <li v-if="userItem.length > 0" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle show"
               href="#navbar-base"
@@ -432,6 +458,7 @@
               <router-link
                 v-for="(item, index) in userItem"
                 class="dropdown-item"
+                :key="index"
                 :to="{ name: item.name }"
                 >{{ item.title }}</router-link
               >
@@ -459,14 +486,14 @@ export default {
   name: "AppVue",
   created() {
     this.userPermission = localStorage.getItem("permission");
-    const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
-    console.log(unOrderedUserMenuArr, "unOrderedUserMenuArr created hook");
-    if(unOrderedUserMenuArr){
-      const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
-      orderedUserMenuArr.sort((a, b) => {
-        return a.stt - b.stt;
-      });
-      this.userMenuArr = orderedUserMenuArr;
+    const userMenuArr = localStorage.getItem("menuManageArray");
+    console.log(userMenuArr, "userMenuArr created hook");
+    if(userMenuArr){
+      // const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
+      // orderedUserMenuArr.sort((a, b) => {
+      //   return a.stt - b.stt;
+      // });
+      this.userMenuArr = JSON.parse(userMenuArr);
       console.log(this.userMenuArr, "userMenuArr created hook");
     }
 
@@ -486,7 +513,7 @@ export default {
   computed: {
     programsIsShow() {
       // Quản lý chương trình liên kết
-      const arrayZero = [1];
+      const arrayZero = ['programs-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayZero);
       if (filteredArr.length === 0) {
@@ -496,10 +523,10 @@ export default {
       }
     },
     lvOneProgramManageIsShow() {
-      // CTLKĐT với nước ngoài
-      const arrayOne = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+      // CTLKĐT với nước ngoài: TT chương trình liên kết, Các quyết định phê duyệt, Các quyết định đóng chương trình, Quản lý văn bản liên kết, Quản lý đối tác, Quản lý đơn vị thực hiện, Mục tiêu chương trình, Quản lý nội dung đề án, Các cam kết của chương trình, đảm bảo chất lượng đào tạo, Thông tin khung chương trình, quản lý tuyển sinh, quản lý giảng viên, quản lý đơn vị công tác, quản lý môn học
+      const arrayOne = ['trans-programs-manage-page', 'approval-decision-manage-page', 'close-decision-manage-page', 'documents-manage-page', 'partners-manage-page', 'agencies-manage-page', 'goals-manage-page', 'plans-manage-page', 'program-commitments-manage-page', 'edu-quality-manage-page', 'curriculums-manage-page', 'enrollment-manage-page', 'lecturers-manage-page', 'units-manage-page', 'subjects-manage-page' ];
       const filteredUserMenuArr = this.userMenuArr.filter((item) => {
-        if (arrayOne.includes(item.stt)) {
+        if (arrayOne.includes(item.name)) {
           return item;
         }
       });
@@ -510,103 +537,110 @@ export default {
       }
     },
 
-    genaralInforIsShow() {
-      // Thông tin chung
-      const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayTwo);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // genaralInforIsShow() {
+    //   // Thông tin chung
+    //   const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayTwo);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
 
     genaralInforItem() {
-      // Thông tin chung các item
-      const arrayTwo = [2, 3, 4, 5, 6, 7, 8];
+      // Thông tin chung các item: TT chương trình liên kết, Các quyết định phê duyệt, Các quyết định đóng chương trình, Quản lý văn bản liên kết, Quản lý đối tác, Quản lý đơn vị thực hiện, Mục tiêu chương trình
+      const arrayTwo = ['trans-programs-manage-page', 'approval-decision-manage-page', 'close-decision-manage-page', 'documents-manage-page', 'partners-manage-page', 'agencies-manage-page', 'goals-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwo);
       console.log(filteredArr,"filteredArr genaralInforItem()")
       return filteredArr;
     },
 
-    planIsShow() {
-      // Đề án
-      const arrayThree = [9];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayThree);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // planIsShow() {
+    //   // Đề án
+    //   const arrayThree = ['plans-manage-page'];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayThree);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     planItem() {
       // Nội dung đề án
-      const arrayThree = [9];
+      const arrayThree = ['plans-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayThree);
       return filteredArr;
     },
-    educationQualityIsShow() {
-      // Chất lượng đào tạo
-      const arrayFour = [10];
+    programCommitmentItem() {
+      // Các cam kết của chương trình
+      const arrayThreePointOne = ['program-commitments-manage-page'];
       const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayFour);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
+      const filteredArr = this.arrayFilterer(arr1, arrayThreePointOne)
+      return filteredArr;
     },
+    // educationQualityIsShow() {
+    //   // Chất lượng đào tạo
+    //   const arrayFour = [10];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayFour);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     educationQualityItem() {
       // Đảm bảo chất lượng đào tạo
-      const arrayFour = [10];
+      const arrayFour = ['edu-quality-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayFour);
       console.log(filteredArr, "educationQualityItem")
       return filteredArr;
     },
-    curriculumIsShow() {
-      // Khung chương trình
-      const arrayFive = [11];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayFive);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // curriculumIsShow() {
+    //   // Khung chương trình
+    //   const arrayFive = [11];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayFive);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     curriculumItem() {
       // Thông tin khung chương trình
-      const arrayFive = [11];
+      const arrayFive = ['curriculums-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayFive);
       return filteredArr;
     },
-    enrollmentIsShow() {
-      // Tuyển sinh
-      const arraySix = [12, 13, 14, 15];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arraySix);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // enrollmentIsShow() {
+    //   // Tuyển sinh
+    //   const arraySix = [12, 13, 14, 15];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arraySix);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     enrollmentItem() {
       // quản lý tuyển sinh, giảng viên, đơn vị công tác, môn học
-      const arraySix = [12, 13, 14, 15];
+      const arraySix = ['enrollment-manage-page', 'lecturers-manage-page', 'units-manage-page', 'subjects-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySix);
       return filteredArr;
     },
     moumoaIsShow() {
       // quản lý MOU.MOA
-      const arraySix = [16];
+      const arraySix = ['moumoa-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySix);
       if (filteredArr.length === 0) {
@@ -616,7 +650,7 @@ export default {
       }
     },
     htqtIsShow() {
-      const arraySeven = [17];
+      const arraySeven = ['htqt-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySeven);
       if (filteredArr.length === 0) {
@@ -627,7 +661,7 @@ export default {
     },
     shortTermExStuIsShow() {
       // Quản lý sinh viên trao đổi ngắn hạn
-      const arrayEight = [18, 19];
+      const arrayEight = ['ex-f-student-manage-page', 'ex-student-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
       // for(var i = 0; i < filteredArr.length;i++){
@@ -641,32 +675,32 @@ export default {
     },
     shortTermExStuItem() {
       // Sinh viên nước ngoài đến trao đổi, sinh viên đi nước ngoài
-      const arrayEight = [18, 19];
+      const arrayEight = ['ex-f-student-manage-page', 'ex-student-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
       return filteredArr;
     },
-    studentIsShow() {
-      // Quản lý lưu sinh viên
-      const arrayNine = [20];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayNine);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // studentIsShow() {
+    //   // Quản lý lưu sinh viên
+    //   const arrayNine = ['student-manage-page'];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayNine);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     studentItem() {
       // Quản lý lưu sinh viên
-      const arrayNine = [20];
+      const arrayNine = ['student-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayNine);
       return filteredArr;
     },
     visaIsShow() {
       // Cấp/Gia hạn VISA
-      const arrayTen = [21];
+      const arrayTen = ['extend-visa-manage-page'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTen);
       if (filteredArr.length === 0) {
@@ -675,20 +709,20 @@ export default {
         return true;
       }
     },
-    userIsShow() {
-      // Quản lý tài khoản
-      const arrayEleven = [22];
-      const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayEleven);
-      if (filteredArr.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    // userIsShow() {
+    //   // Quản lý tài khoản
+    //   const arrayEleven = ['admin'];
+    //   const arr1 = this.userMenuArr;
+    //   const filteredArr = this.arrayFilterer(arr1, arrayEleven);
+    //   if (filteredArr.length === 0) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // },
     userItem() {
       // Quản lý tài khoản
-      const arrayTwelve = [22];
+      const arrayTwelve = ['admin'];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwelve);
       return filteredArr;
@@ -708,7 +742,7 @@ export default {
     arrayFilterer(arr1, arr2) {
       // arr1 là array userMenuArr, và array này có prop stt trong mỗi phần tử, arr2 là array dùng để lọc arr1,
       const filteredArr = arr1.filter((item) => {
-        if (arr2.includes(item.stt)) {
+        if (arr2.includes(item.name)) {
           return item;
         }
       });

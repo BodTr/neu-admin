@@ -12,10 +12,14 @@ router.get('/api/get-all-lecturers', async (req, res) => {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const lecturers = await LecturerSchema.find({
-            program: { id: new ObjectId(id) },
-            name: {$regex: query},
-        }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
+        let filter = {program: { id: new ObjectId(id) }}
+        if (query) {
+            filter = {
+                birthyear: { $eq: query },
+                program: { id: new ObjectId(id) }
+            }
+        }
+        const lecturers = await LecturerSchema.find(filter).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await LecturerSchema.countDocuments({
             program: { id: new ObjectId(id) }
         })
@@ -38,15 +42,16 @@ router.get('/api/get-all-lecturers', async (req, res) => {
 
 router.post('/api/create-lecturer', emptyLecturerInputsValidation, typeLecturerInputsValidation, async (req, res) => {
     try {
-        const { programId, name, nationality, unit, birthyear, level, experience } = req.body
+        const { programId, name, nationality, unit, birthyear, contractStatus, level, subject } = req.body;
         console.log(req.body, "req.body post api")
         const newLecturer = await LecturerSchema.create({
             name: name,
             nationality: nationality,
             unit: unit,
             birthyear: birthyear,
+            contractStatus: contractStatus,
             level: level,
-            experience: experience,
+            subject: subject,
             program: {
                 id: programId
             }
@@ -63,15 +68,16 @@ router.post('/api/create-lecturer', emptyLecturerInputsValidation, typeLecturerI
 router.put('/api/edit-lecturer/:id', emptyLecturerInputsValidation, typeLecturerInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, nationality, unit, birthyear, level, experience } = req.body
+        const { name, nationality, unit, birthyear, contractStatus, level, subject } = req.body;
         console.log(id, "::put api id::")
         const updatingLecturer = {
             name: name,
             nationality: nationality,
             unit: unit,
             birthyear: birthyear,
+            contractStatus: contractStatus,
             level: level,
-            experience: experience,
+            subject: subject,
         }
         console.log(req.body, "put api req.body")
         const updatedLecturer = await LecturerSchema.findOneAndUpdate({ _id: id }, updatingLecturer, {new: true})

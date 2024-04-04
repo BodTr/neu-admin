@@ -11,9 +11,7 @@ router.get('/api/get-all-trans-programs', async (req, res) => {
     try {
 
         let { page, limit, query, id } = req.query
-        if(id == ""){
 
-        }
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const programs = await TransProgramSchema.find({
             program: { id: new ObjectId(id) },

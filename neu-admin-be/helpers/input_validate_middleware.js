@@ -188,8 +188,8 @@ function emptyPartnerInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty partner inputs");
     const error = new Error("empty partner inputs");
     error.code = "EMPTY_PARTNER_INPUTS_ERROR";
-    const { name, test, testDetail, address, website } = req.body;
-    if (!name || !test || !testDetail || !address || !website) {
+    const { vn_name, en_name, address, internationalRanking, website, contacterName, contacterPosition, contacterEmail, contacterUnit, uniLeaderName, uniLeaderPosition, uniLeaderEmail, uniLeaderUnit, unitLeaderName, unitLeaderPosition, unitLeaderEmail, unitLeaderUnit, farName, farPosition, farEmail, farUnit, progManagerName, progManagerPosition, progManagerEmail, progManagerUnit } = req.body;
+    if (!vn_name || !en_name || !website || !address || !internationalRanking || !contacterName || !contacterPosition || !contacterEmail || !contacterUnit || !uniLeaderName || !uniLeaderPosition || !uniLeaderEmail || !uniLeaderUnit || !unitLeaderName || !unitLeaderPosition || !unitLeaderEmail || !unitLeaderUnit || !farName || !farPosition || !farEmail || !farUnit || !progManagerName || !progManagerPosition || !progManagerEmail || !progManagerUnit) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -198,15 +198,28 @@ function emptyPartnerInputsValidation(req, res, next) {
     }
 }
 
-function typePartnerInputsValidation(req, res, next) {
-    console.log(req.body, "middleware check type partner inputs")
-    const error = new Error('wrong type partner inputs')
-    error.code = 'PARTNER_INPUTS_TYPE_ERROR'
-    const { name, test, testDetail, address, website } = req.body
-    if (typeof name !== 'string' || typeof test !== 'string' || typeof address !== 'string' || typeof testDetail !== 'string' || typeof website !== 'string') {
+// function typePartnerInputsValidation(req, res, next) {
+//     console.log(req.body, "middleware check type partner inputs")
+//     const error = new Error('wrong type partner inputs')
+//     error.code = 'PARTNER_INPUTS_TYPE_ERROR'
+//     const { name, address, website } = req.body
+//     if (typeof name !== 'string' || typeof address !== 'string' || typeof website !== 'string') {
+//         throw error
+//     } else {
+//         console.log('program inputs type correct')
+//         next()
+//     }
+// }
+
+function emptyPartnerFileInputValidation(req, res, next) {
+    console.log(req.files, "req.files emptyPartnerFileInputsValidation() middleware")
+    const error = new Error('empty partner file input')
+    error.code = 'EMPTY_PARTNER_FILE_INPUT_ERROR'
+    const files = req.files
+    if (!files) {
         throw error
     } else {
-        console.log('program inputs type correct')
+        console.log("partner files input filled")
         next()
     }
 }
@@ -216,8 +229,8 @@ function emptyAgencyInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty agency inputs");
     const error = new Error("empty agency inputs");
     error.code = "EMPTY_AGENCY_INPUTS_ERROR";
-    const { name, email, phoneNumber, unit, content, position } = req.body;
-    if (!name || !email || !phoneNumber || !unit || !content || !position) {
+    const { unit, progLeaderName, progLeaderPosition, progLeaderPhoneNumber, progLeaderEmail, progLeaderUnit, progManagementName, progManagementPosition, progManagementPhoneNumber, progManagementEmail, progManagementUnit, coordinatorName, coordinatorPosition, coordinatorPhoneNumber, coordinatorEmail, coordinatorUnit } = req.body;
+    if (!unit || !progLeaderName || !progLeaderPosition || !progLeaderPhoneNumber || !progLeaderEmail || !progLeaderUnit || !progManagementName || !progManagementPosition || !progManagementPhoneNumber || !progManagementEmail || !progManagementUnit || !coordinatorName || !coordinatorPosition || !coordinatorPhoneNumber || !coordinatorEmail || !coordinatorUnit) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -230,8 +243,8 @@ function typeAgencyInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type agency inputs")
     const error = new Error('wrong type agency inputs')
     error.code = 'AGENCY_INPUTS_TYPE_ERROR'
-    const { name, email, phoneNumber, unit, content, position } = req.body
-    if (typeof name !== 'string' || typeof email !== 'string' || typeof Number(phoneNumber) !== 'number' || typeof unit !== 'string' || typeof content !== 'string' ||  typeof position !== 'string') {
+    const { progLeaderPhoneNumber, progManagementPhoneNumber, coordinatorPhoneNumber } = req.body
+    if (isNaN(progLeaderPhoneNumber) || isNaN(progManagementPhoneNumber) || isNaN(coordinatorPhoneNumber)) {
         throw error
     } else {
         console.log('program inputs type correct')
@@ -328,8 +341,8 @@ function emptyCurriculumInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty curriculum inputs");
     const error = new Error("empty curriculum inputs");
     error.code = "EMPTY_CURRICULUM_INPUTS_ERROR";
-    const { name, year, location, subjectType, creditsCount, trainingUni } = req.body;
-    if (!name || !year || !location || !subjectType || !creditsCount || !trainingUni) {
+    const { name, year, location, subjectType, creditsCount } = req.body;
+    if (!name || !year || !location || !subjectType || !creditsCount) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -342,8 +355,8 @@ function typeCurriculumInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type curriculum inputs")
     const error = new Error('wrong type curriculum inputs')
     error.code = 'CURRICULUM_INPUTS_TYPE_ERROR'
-    const { name, year, location, subjectType, creditsCount, trainingUni } = req.body
-    if (typeof name !== 'string' || typeof year !== 'string' || typeof location !== 'string' || typeof subjectType !== 'string' || isNaN(creditsCount) || typeof trainingUni !== 'string') {
+    const { name, year, location, subjectType, creditsCount } = req.body
+    if (typeof name !== 'string' || typeof year !== 'string' || typeof location !== 'string' || typeof subjectType !== 'string' || isNaN(creditsCount)) {
         throw error
     } else {
         console.log('process inputs type correct')
@@ -356,8 +369,8 @@ function emptyEnrollmentInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty enrollment inputs");
     const error = new Error("empty enrollment inputs");
     error.code = "EMPTY_ENROLLMENT_INPUTS_ERROR";
-    const { year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body;
-    if (!year || !admissionCount || !graduatedCount || !tuitionSum || !applicantsCount || !dropoutCount || !graduatedPercentage) {
+    const { year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
+    if (!year || !enrollmentCount || !admissionCount || !transferStudents || !graduatedCount || !admittedStudents || !applicantsCount || !dropoutCount || !reservedStudents || !trainingStudents) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -370,8 +383,9 @@ function typeEnrollmentInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type enrollment inputs")
     const error = new Error('wrong type enrollment inputs')
     error.code = 'ENROLLMENT_INPUTS_TYPE_ERROR'
-    const { year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body
-    if (isNaN(admissionCount) || isNaN(year) || isNaN(graduatedCount) || isNaN(tuitionSum) || isNaN(applicantsCount) || isNaN(dropoutCount) || typeof graduatedPercentage !== 'string') {
+    const { year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
+
+    if (isNaN(year) || isNaN(enrollmentCount) || isNaN(admissionCount) || isNaN(transferStudents) || isNaN(graduatedCount) || isNaN(admittedStudents) || isNaN(applicantsCount) || isNaN(dropoutCount) || isNaN(reservedStudents) || isNaN(trainingStudents)) {
         throw error
     } else {
         console.log('process inputs type correct')
@@ -384,8 +398,8 @@ function emptyLecturerInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty lecturer inputs");
     const error = new Error("empty lecturer inputs");
     error.code = "EMPTY_LECTURER_INPUTS_ERROR";
-    const { name, nationality, unit, birthyear, level, experience } = req.body;
-    if (!name || !nationality || !unit || !birthyear || !level || !experience) {
+    const { name, nationality, unit, birthyear, contractStatus, level, subject } = req.body;
+    if (!name || !nationality || !unit || !birthyear || !contractStatus || !level || !subject) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -398,11 +412,11 @@ function typeLecturerInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type lecturer inputs")
     const error = new Error('wrong type lecturer inputs')
     error.code = 'LECTURER_INPUTS_TYPE_ERROR'
-    const { name, nationality, unit, birthyear, level } = req.body
-    if (typeof name !== 'string' || typeof nationality !== 'string' || typeof unit !== 'string' || typeof level !== 'string' || isNaN(birthyear)) {
+    const { birthyear } = req.body
+    if (isNaN(birthyear)) {
         throw error
     } else {
-        console.log('process inputs type correct')
+        console.log('lecturer inputs type correct')
         next()
     }
 }
@@ -440,8 +454,8 @@ function emptySubjectInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty subject inputs");
     const error = new Error("empty subject inputs");
     error.code = "EMPTY_SUBJECT_INPUTS_ERROR";
-    const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note } = req.body;
-    if (!name || !lecturer || !teachingAssistant || !executionTime || !year || !creditsCount || !note) {
+    const { name, lecturer, teachingAssistant, timeFrom, timeTo, year, subjectCode, review } = req.body;
+    if (!name || !lecturer || !teachingAssistant || !timeFrom || !timeTo  || !year || !subjectCode || !review) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -454,8 +468,8 @@ function typeSubjectInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type subject inputs")
     const error = new Error('wrong type subject inputs')
     error.code = 'SUBJECT_INPUTS_TYPE_ERROR'
-    const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note } = req.body
-    if (typeof name !== 'string' || typeof lecturer !== 'string' || typeof teachingAssistant !== 'string' || typeof executionTime !== 'string' || isNaN(year) || isNaN(creditsCount) || typeof note !== 'string') {
+    const { year } = req.body;
+    if ( isNaN(year)) {
         throw error
     } else {
         console.log('process inputs type correct')
@@ -761,6 +775,35 @@ function typeStudentInputsValidation(req, res, next) {
     }
 }
 
+// program_commitment inputs validate
+function emptyProgramCommitmentInputValidation(req, res, next) {
+    console.log(req.body, "middleware check empty program commitment inputs");
+    const error = new Error("empty program commitment inputs");
+    error.code = "EMPTY_PROGRAM_COMMITMENT_INPUTS_ERROR";
+    const { neuCommitment, responsibilityToStudents, partnerCommitment, riskManagement, minStudents, securityRegulation, intellectualPropertyRegulation } = req.body
+    if (!neuCommitment || !responsibilityToStudents || !partnerCommitment || !riskManagement || !minStudents || !securityRegulation || !intellectualPropertyRegulation ) {
+        console.log(error.code, 'middleware empty program commitment inputs error')
+        throw error;
+    } else {
+        console.log('inputs filled')
+        next()
+    }
+}
+
+function typeProgramCommitmentInputValidation(req, res, next) {
+    console.log(req.body, "middleware check type program commitment inputs")
+    const { minStudents } = req.body
+    const error = new Error('wrong type program commitment inputs')
+    error.code = "PROGRAM_COMMITMENT_INPUTS_TYPE_ERROR"
+    if ( isNaN(minStudents) ) {
+        console.log(error.code, 'middleware program commitment inputs type error')
+        throw error;
+    } else {
+        console.log('program commitment inputs type correct')
+        next()
+    }
+}
+
 
 module.exports = {
   emptyProgramInputsValidation,
@@ -774,7 +817,7 @@ module.exports = {
   typeDocumentInputsValidation,
   emptyFileDocumentInputValidation,
   emptyPartnerInputsValidation,
-  typePartnerInputsValidation,
+  emptyPartnerFileInputValidation,
   emptyAgencyInputsValidation,
   typeAgencyInputsValidation,
   emptyGoalInputsValidation,
@@ -817,4 +860,6 @@ module.exports = {
   emptyStudentInputsValidation,
   typeStudentInputsValidation,
   emptyUserInputsValidation1,
+  emptyProgramCommitmentInputValidation,
+  typeProgramCommitmentInputValidation
 };

@@ -276,7 +276,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -289,14 +288,10 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 import router from '@/router';
 export default {
   name: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
   data() {
     return {
       columns: ["stt", "mechanism", "hasProcess", "detail", "tool"],

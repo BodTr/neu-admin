@@ -11,10 +11,18 @@ router.get('/api/get-all-enrollments', async (req, res) => {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const enrollments = await EnrollmentSchema.find({
-            program: { id: new ObjectId(id) },
-            graduatedPercentage: {$regex: query}
-        }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
+        let filter = {program: { id: new ObjectId(id) }}
+        if (query) {
+            filter = {
+                year: { $eq: query },
+                program: { id: new ObjectId(id) }
+            }
+        }
+        const enrollments = await EnrollmentSchema.find(
+            filter
+            // year : { $eq: query }
+            
+        ).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await EnrollmentSchema.countDocuments({
             program: { id: new ObjectId(id) }
         })
@@ -37,28 +45,26 @@ router.get('/api/get-all-enrollments', async (req, res) => {
 
 router.post('/api/create-enrollment', emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation, async (req, res) => {
     try {
-        const { programId, year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body
+        const { programId, year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
         console.log(req.body, "req.body post api")
         
-        const existedEnrollment = await EnrollmentSchema.findOne({ year: year })
-        if (existedEnrollment) {
-            res.json({ error: true, message: "Văn bản đã tồn tại" })
-        } else {
-            const newEnrollment = await EnrollmentSchema.create({
-                year: year,
-                admissionCount: admissionCount,
-                graduatedCount: graduatedCount,
-                tuitionSum: tuitionSum,
-                applicantsCount: applicantsCount,
-                dropoutCount: dropoutCount,
-                graduatedPercentage: graduatedPercentage,
-                program: {
-                    id: programId
-                }
-            })
-            console.log(newEnrollment, "newEnrollment")
-            res.json({ error: false, message: 'Lưu thành công' })
-        }
+        const newEnrollment = await EnrollmentSchema.create({
+            year: year,
+            enrollmentCount: enrollmentCount,
+            admissionCount: admissionCount,
+            transferStudents: transferStudents,
+            graduatedCount: graduatedCount,
+            admittedStudents: admittedStudents,
+            applicantsCount: applicantsCount,
+            dropoutCount: dropoutCount,
+            reservedStudents: reservedStudents,
+            trainingStudents: trainingStudents,
+            program: {
+                id: programId
+            }
+        })
+        console.log(newEnrollment, "newEnrollment")
+        res.json({ error: false, message: 'Lưu thành công' })
         
         
     } catch (error) {
@@ -70,16 +76,19 @@ router.post('/api/create-enrollment', emptyEnrollmentInputsValidation, typeEnrol
 router.put('/api/edit-enrollment/:id', emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { year, admissionCount, graduatedCount, tuitionSum, applicantsCount, dropoutCount, graduatedPercentage } = req.body
+        const { year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
         console.log(id, "::put api id::")
         const updatingEnrollment = {
             year: year,
+            enrollmentCount: enrollmentCount,
             admissionCount: admissionCount,
+            transferStudents: transferStudents,
             graduatedCount: graduatedCount,
-            tuitionSum: tuitionSum,
+            admittedStudents: admittedStudents,
             applicantsCount: applicantsCount,
             dropoutCount: dropoutCount,
-            graduatedPercentage: graduatedPercentage,
+            reservedStudents: reservedStudents,
+            trainingStudents: trainingStudents,
         }
         console.log(req.body, "put api req.body")
         const updatedEnrollment = await EnrollmentSchema.findOneAndUpdate({ _id: id }, updatingEnrollment, {new: true})

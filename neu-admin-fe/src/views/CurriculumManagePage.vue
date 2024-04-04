@@ -90,21 +90,23 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Tên môn học</label>
+                        <label class="form-label"
+                          >Khung chương trình theo đề án</label
+                        >
                         <input
                           type="text"
                           class="form-control"
                           v-model="name"
-                          placeholder="Nhập tên môn học"
+                          placeholder="Nhập khung chương trình"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Năm học/học kì</label>
+                        <label class="form-label">Năm học/học kỳ</label>
                         <input
                           type="text"
                           v-model="year"
                           class="form-control"
-                          placeholder="Nhập năm học/học kì"
+                          placeholder="Nhập năm học/học kỳ"
                         />
                       </div>
                       <div class="mb-3">
@@ -119,13 +121,20 @@
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Phân loại/Học phần</label>
-                        <input
-                          type="text"
-                          class="form-control"
+                        <label class="form-label"
+                          >Giảng dạy theo giáo trình của bên nào</label
+                        >
+                        <select
                           v-model="subjectType"
-                          placeholder="Nhập phân loại/học phần"
-                        />
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Chọn giáo trình
+                          </option>
+                          <option value="NEU">NEU</option>
+                          <option value="Đối tác">Đối tác</option>
+                        </select>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Số tín chỉ</label>
@@ -134,15 +143,6 @@
                           class="form-control"
                           v-model="creditsCount"
                           placeholder="Nhập số tín chỉ"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Trường đào tạo</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="trainingUni"
-                          placeholder="Nhập trường đào tạo"
                         />
                       </div>
                     </div>
@@ -241,7 +241,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                            <h5 class="modal-title">Chỉnh sửa khung chương trình</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -253,21 +253,23 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Tên môn học</label>
+                                <label class="form-label"
+                                  >Khung chương trình theo đề án</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
                                   v-model="editCurriculum.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                  placeholder="Nhập khung chương trình"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Năm học/học kì</label>
+                                <label class="form-label">Năm học/học kỳ</label>
                                 <input
                                   type="text"
                                   class="form-control"
                                   v-model="editCurriculum.year"
-                                  placeholder="Nhập năm học/học kì"
+                                  placeholder="Nhập năm học/học kỳ"
                                 />
                               </div>
                               <div class="mb-3">
@@ -285,14 +287,19 @@
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Phân loại/học phần</label
+                                  >Giảng dạy theo giáo trình của bên nào</label
                                 >
-                                <input
-                                  type="text"
-                                  class="form-control"
+                                <select
                                   v-model="editCurriculum.subjectType"
-                                  placeholder="Nhập phân loại/học phần"
-                                />
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Chọn giáo trình
+                                  </option>
+                                  <option value="NEU">NEU</option>
+                                  <option value="Đối tác">Đối tác</option>
+                                </select>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Số tín chỉ</label>
@@ -301,17 +308,6 @@
                                   class="form-control"
                                   v-model="editCurriculum.creditsCount"
                                   placeholder="Nhập số tín chỉ"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên trường đào tạo</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editCurriculum.trainingUni"
-                                  placeholder="Nhập nội dung phụ trách"
                                 />
                               </div>
                             </div>
@@ -329,7 +325,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                {{ id }}
               </div>
             </div>
           </div>
@@ -342,14 +337,10 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
-  name: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
+  name: "CurriculumManagePage",
 
   data() {
     return {
@@ -360,7 +351,6 @@ export default {
         "year",
         "location",
         "creditsCount",
-        "trainingUni",
         "tool",
       ],
       options: {
@@ -368,12 +358,11 @@ export default {
           id: localStorage.getItem("progId"),
         },
         headings: {
-          name: "Họ tên người thực hiện",
-          subjectType: "Phân loại/học phần",
-          year: "Năm học/học kì",
+          name: "Khung chương trình theo đề án",
+          subjectType: "Giáo trình",
+          year: "Năm học/học kỳ",
           creditsCount: "Số tín chỉ",
           location: "Địa điểm đào tạo",
-          trainingUni: "Trường đào tạo",
           tool: "Thao tác",
         },
       },
@@ -384,7 +373,6 @@ export default {
       location: "",
       subjectType: "",
       creditsCount: "",
-      trainingUni: "",
 
       displayModal: false,
       displayModalOne: false,
@@ -396,7 +384,6 @@ export default {
         location: "",
         subjectType: "",
         creditsCount: "",
-        trainingUni: "",
       },
     };
   },
@@ -407,7 +394,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -434,7 +421,6 @@ export default {
         location: this.location,
         subjectType: this.subjectType,
         creditsCount: this.creditsCount,
-        trainingUni: this.trainingUni,
       };
 
       try {
@@ -457,7 +443,6 @@ export default {
           this.location = "";
           this.subjectType = "";
           this.creditsCount = "";
-          this.trainingUni = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -470,21 +455,20 @@ export default {
       this.editCurriculum.location = item.location;
       this.editCurriculum.subjectType = item.subjectType;
       this.editCurriculum.creditsCount = item.creditsCount;
-      this.editCurriculum.trainingUni = item.trainingUni;
       this.editCurriculum.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
-      const data = {
-        name: this.editCurriculum.name,
-        year: this.editCurriculum.year,
-        location: this.editCurriculum.location,
-        subjectType: this.editCurriculum.subjectType,
-        creditsCount: this.editCurriculum.creditsCount,
-        trainingUni: this.editCurriculum.trainingUni,
-      };
+
       try {
+        const data = {
+          name: this.editCurriculum.name,
+          year: this.editCurriculum.year,
+          location: this.editCurriculum.location,
+          subjectType: this.editCurriculum.subjectType,
+          creditsCount: this.editCurriculum.creditsCount,
+        };
         const result = await instance.put(
           `/api/edit-curriculum/${this.editCurriculum.id}`,
           data

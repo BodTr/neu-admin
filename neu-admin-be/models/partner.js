@@ -1,49 +1,11 @@
 const mongoose = require('mongoose')
 
 const PartnerSchema = new mongoose.Schema({
-    name: {
+    vn_name: {
         type: String,
         require: false
     },
-    name_en: {
-        type: String,
-        require: false
-    },
-    rank: {
-        type: String,
-        require: false
-    },
-
-    contact: {
-        type: Object,
-        require: false
-    },
-
-    leader_school: {
-        type: Object,
-        require: false
-    },
-
-    leader_org: {
-        type: Object,
-        require: false
-    },
-    
-    represent_foreign: {
-        type: Object,
-        require: false
-    },
-
-    charge:{
-        type: Object,
-        require: false
-    },
-
-    test: {
-        type: String,
-        require: false
-    },
-    testDetail: {
+    en_name: {
         type: String,
         require: false
     },
@@ -51,10 +13,113 @@ const PartnerSchema = new mongoose.Schema({
         type: String,
         require: false
     },
+    internationalRanking: {
+        type: String,
+        require: false
+    },
     website: {
         type: String,
         require: false
     },
+
+    contacterName: {
+        type: String,
+        require: false
+    },
+
+    contacterPosition: {
+        type: String,
+        require: false
+    },
+
+    contacterEmail: {
+        type: String,
+        require: false
+    },
+
+    contacterUnit: {
+        type: String,
+        require: false
+    },
+
+    uniLeaderName: {
+        type: String,
+        require: false
+    },
+
+    uniLeaderPosition: {
+        type: String,
+        require: false,
+    },
+
+    uniLeaderEmail: {
+        type: String,
+        require: false,
+    },
+    uniLeaderUnit: {
+        type: String,
+        require: false,
+    },
+
+    unitLeaderName: {
+        type: String,
+        require: false,
+    },
+
+    unitLeaderPosition: {
+        type: String,
+        require: false,
+    },
+
+    unitLeaderEmail: {
+        type: String,
+        require: false,
+    },
+    unitLeaderUnit: {
+        type: String,
+        require: false,
+    },
+
+    farName: {
+        type: String,
+        require: false,
+    },
+
+    farPosition: {
+        type: String,
+        require: false,
+    },
+
+    farEmail: {
+        type: String,
+        require: false,
+    },
+
+    farUnit: {
+        type: String,
+        require: false,
+    },
+
+    progManagerName: {
+        type: String,
+        require: false,
+    },
+
+    progManagerPosition: {
+        type: String,
+        require: false,
+    },
+
+    progManagerEmail: {
+        type: String,
+        require: false,
+    },
+
+    progManagerUnit: {
+        type: String,
+        require: false,
+    },
+
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

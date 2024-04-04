@@ -37,7 +37,7 @@ router.get('/api/get-all-curriculums', async (req, res) => {
 
 router.post('/api/create-curriculum', emptyCurriculumInputsValidation, typeCurriculumInputsValidation, async (req, res) => {
     try {
-        const { programId, name, year, location, subjectType, creditsCount, trainingUni } = req.body
+        const { programId, name, year, location, subjectType, creditsCount } = req.body
         console.log(req.body, "req.body post api")
         
         const existedCurriculum = await CurriculumSchema.findOne({ name: name })
@@ -50,7 +50,6 @@ router.post('/api/create-curriculum', emptyCurriculumInputsValidation, typeCurri
                 location: location,
                 subjectType: subjectType,
                 creditsCount: creditsCount,
-                trainingUni: trainingUni,
                 program: {
                     id: programId
                 }
@@ -69,13 +68,14 @@ router.post('/api/create-curriculum', emptyCurriculumInputsValidation, typeCurri
 router.put('/api/edit-curriculum/:id', emptyCurriculumInputsValidation, typeCurriculumInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, content, effDate, expireIn } = req.body
+        const { name, year, location, subjectType, creditsCount } = req.body
         console.log(id, "::put api id::")
         const updatingCurriculum = {
             name: name,
-            content: content,
-            effDate: effDate,
-            expireIn: expireIn
+            year: year,
+            location: location,
+            subjectType: subjectType,
+            creditsCount: creditsCount
         }
         console.log(req.body, "put api req.body")
         const updatedCurriculum = await CurriculumSchema.findOneAndUpdate({ _id: id }, updatingCurriculum, {new: true})

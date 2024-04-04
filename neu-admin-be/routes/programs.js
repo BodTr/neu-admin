@@ -76,10 +76,10 @@ router.get('/api/get-all-programs-one', async (req, res) => {
         let skip = (parseInt(page) - 1) * parseInt(limit)
         let filter = {}
         if (query) {
-            filter = {year: query}
+            filter = {year: { $eq: query }}
         }
         const programs = await ProgramSchema.find(
-            // year: { $eq: query }
+            // {year: { $eq: query }}
             filter
         ).select({name: 1, agency: 1, year: 1, user: 1}).lean().sort({
             _id: -1

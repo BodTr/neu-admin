@@ -12,10 +12,14 @@ router.get('/api/get-all-subjects', async (req, res) => {
         let { page, limit, query, id } = req.query
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const subjects = await SubjectSchema.find({
-            program: { id: new ObjectId(id) },
-            name: {$regex: query}
-        }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
+        let filter = {program: { id: new ObjectId(id) }}
+        if (query) {
+            filter = {
+                year: { $eq: query },
+                program: { id: new ObjectId(id) }
+            }
+        }
+        const subjects = await SubjectSchema.find(filter).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await SubjectSchema.countDocuments({
             program: { id: new ObjectId(id) }
         })
@@ -38,7 +42,7 @@ router.get('/api/get-all-subjects', async (req, res) => {
 
 router.post('/api/create-subject', emptySubjectInputsValidation, typeSubjectInputsValidation, async (req, res) => {
     try {
-        const { programId, name, lecturer, teachingAssistant, executionTime, year, creditsCount, note, studentsCount } = req.body
+        const { name, lecturer, teachingAssistant, timeFrom, timeTo, year, subjectCode, review, programId } = req.body;
         console.log(req.body, "req.body post api")
         
         const existedSubject = await SubjectSchema.findOne({ name: name })
@@ -49,11 +53,11 @@ router.post('/api/create-subject', emptySubjectInputsValidation, typeSubjectInpu
                 name: name,
                 lecturer: lecturer,
                 teachingAssistant: teachingAssistant,
-                executionTime: executionTime,
+                timeFrom: timeFrom,
+                timeTo: timeTo,
                 year: year,
-                creditsCount: creditsCount,
-                studentsCount: studentsCount,
-                note: note,
+                subjectCode: subjectCode,
+                review: review,
                 program: {
                     id: programId
                 }
@@ -72,17 +76,17 @@ router.post('/api/create-subject', emptySubjectInputsValidation, typeSubjectInpu
 router.put('/api/edit-subject/:id', emptySubjectInputsValidation, typeSubjectInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, lecturer, teachingAssistant, executionTime, year, creditsCount, note, studentsCount } = req.body
+        const { name, lecturer, teachingAssistant, timeFrom, timeTo, year, subjectCode, review } = req.body;
         console.log(id, "::put api id::")
         const updatingSubject = {
             name: name,
             lecturer: lecturer,
             teachingAssistant: teachingAssistant,
-            executionTime: executionTime,
+            timeFrom: timeFrom,
+            timeTo: timeTo,
             year: year,
-            creditsCount: creditsCount,
-            studentsCount: studentsCount,
-            note: note,
+            subjectCode: subjectCode,
+            review: review,
         }
         console.log(req.body, "put api req.body")
         const updatedSubject = await SubjectSchema.findOneAndUpdate({ _id: id }, updatingSubject, {new: true})

@@ -65,6 +65,8 @@ const upload = multer({
                 fileName = `program-${programId}/approval-decision-doc-${getId()}/${Date.now()}_${file.originalname}`
             } else if (fieldname === "documentFile" || fieldname === "documentFile1") {
                 fileName = `program-${programId}/document-file-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "docs" || fieldname === "docs1") {
+                fileName = `program-${programId}/partner-file-${getId()}/${Date.now()}_${file.originalname}`
             }
 
             cb(null, fileName)

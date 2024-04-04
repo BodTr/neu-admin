@@ -117,12 +117,12 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Thời gian thực hiện</label>
+                        <label class="form-label">Thời gian học - từ</label>
                         <input
-                          type="text"
-                          v-model="executionTime"
+                          type="date"
+                          v-model="timeFrom"
                           class="form-control"
-                          placeholder="Nhập thời gian thực hiện"
+                          placeholder="Nhập Thời gian học - từ"
                         />
                       </div>
                     </div>
@@ -130,40 +130,48 @@
                       <div class="mb-3">
                         <label class="form-label">Năm học</label>
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
                           v-model="year"
-                          placeholder="Nhập phân loại/học phần"
+                          placeholder="Nhập năm học"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số tín chỉ</label>
+                        <label class="form-label">Mã môn học</label>
                         <input
                           type="text"
                           class="form-control"
-                          v-model="creditsCount"
-                          placeholder="Nhập số tín chỉ giảng dạy"
+                          v-model="subjectCode"
+                          placeholder="Nhập mã môn học"
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số lượng học viên</label>
+                        <label class="form-label"
+                          >Điều tra đánh giá</label
+                        >
+                        <select
+                          v-model="review"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Đánh giá
+                          </option>
+                          <option value="Có">Có</option>
+                          <option value="Không">Không</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Thời gian học - đến</label>
                         <input
-                          type="text"
+                          type="date"
+                          v-model="timeTo"
                           class="form-control"
-                          v-model="studentsCount"
-                          placeholder="Nhập số lượng học viên"
+                          placeholder="Nhập Thời gian học - đến"
                         />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Ghi chú</label>
-                        <textarea
-                          class="form-control"
-                          rows="5"
-                          v-model="note"
-                          placeholder="Nhập ghi chú"
-                        ></textarea>
                       </div>
                     </div>
+
                   </div>
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
@@ -299,56 +307,61 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Thời gian thực hiện</label
+                                  >Thời gian học - từ</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editSubject.executionTime"
-                                  placeholder="Nhập thời gian thực hiện"
+                                  v-model="editSubject.timeFrom"
+                                  placeholder="Nhập Thời gian học - từ"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Phân loại/học phần</label
+                                  >Năm học</label
                                 >
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control"
                                   v-model="editSubject.year"
-                                  placeholder="Nhập phân loại/học phần"
+                                  placeholder="Nhập năm học"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Số tín chỉ</label>
+                                <label class="form-label">Mã môn học</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editSubject.creditsCount"
-                                  placeholder="Nhập số tín chỉ giảng dạy"
+                                  v-model="editSubject.subjectCode"
+                                  placeholder="Nhập mã môn học"
                                 />
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Số lượng học viên</label
+                                  >Điều tra đánh giá</label
                                 >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.studentsCount"
-                                  placeholder="Nhập số lượng học viên"
-                                />
+                                <select
+                                  v-model="editSubject.review"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Đánh giá
+                                  </option>
+                                  <option value="Có">Có</option>
+                                  <option value="Không">Không</option>
+                                </select>
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea
+                                <label class="form-label">Thời gian học - đến</label>
+                                <input
+                                  type="date"
+                                  v-model="editSubject.timeTo"
                                   class="form-control"
-                                  rows="5"
-                                  v-model="editSubject.note"
-                                  placeholder="Nhập ghi chú"
-                                ></textarea>
+                                  placeholder="Nhập Thời gian học - đến"
+                                />
                               </div>
                             </div>
                           </div>
@@ -392,12 +405,10 @@ export default {
         "stt",
         "name",
         "year",
+        "subjectCode",
         "lecturer",
-        "teachingAssistant",
-        "executionTime",
-        "creditsCount",
-        "studentsCount",
-        "note",
+        "timeFrom",
+        "timeTo",
         "tool",
       ],
       options: {
@@ -405,14 +416,12 @@ export default {
           id: localStorage.getItem("progId"),
         },
         headings: {
-          name: "Họ tên người thực hiện",
-          year: "Phân loại/học phần",
-          lecturer: "Số điện thoại",
-          creditsCount: "Đơn vị thực hiện",
-          teachingAssistant: "Chức vụ",
-          executionTime: "Thời gian thực hiện",
-          studentsCount: "Trường đào tạo",
-          note: "Ghi chú",
+          name: "Tên môn học",
+          year: "Năm học",
+          subjectCode: "Mã môn học",
+          lecturer: "Giảng viên",
+          timeFrom: "Thời gian học - từ",
+          timeTo: "Thời gian học - đến",
           tool: "Thao tác",
         },
       },
@@ -421,11 +430,11 @@ export default {
       name: "",
       lecturer: "",
       teachingAssistant: "",
-      executionTime: "",
+      timeFrom: "",
+      timeTo: "",
       year: "",
-      creditsCount: "",
-      studentsCount: "",
-      note: "",
+      subjectCode: "",
+      review: "",
 
       displayModal: false,
       displayModalOne: false,
@@ -435,11 +444,11 @@ export default {
         name: "",
         lecturer: "",
         teachingAssistant: "",
-        executionTime: "",
+        timeFrom: "",
+        timeTo: "",
         year: "",
-        creditsCount: "",
-        studentsCount: "",
-        note: "",
+        subjectCode: "",
+        review: "",
       },
     };
   },
@@ -475,11 +484,11 @@ export default {
         name: this.name,
         lecturer: this.lecturer,
         teachingAssistant: this.teachingAssistant,
-        executionTime: this.executionTime,
+        timeFrom: this.timeFrom,
+        timeTo: this.timeTo,
         year: this.year,
-        creditsCount: this.creditsCount,
-        studentsCount: this.studentsCount,
-        note: this.note,
+        subjectCode: this.subjectCode,
+        review: this.review,
       };
 
       try {
@@ -500,11 +509,11 @@ export default {
           this.name = "";
           this.lecturer = "";
           this.teachingAssistant = "";
-          this.executionTime = "";
+          this.timeFrom = "";
+          this.timeTo = "";
           this.year = "";
-          this.creditsCount = "";
-          this.studentsCount = "";
-          this.note = "";
+          this.subjectCode = "";
+          this.review = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -515,11 +524,11 @@ export default {
       this.editSubject.name = item.name;
       this.editSubject.lecturer = item.lecturer;
       this.editSubject.teachingAssistant = item.teachingAssistant;
-      this.editSubject.executionTime = item.executionTime;
+      this.editSubject.timeFrom = item.timeFrom;
+      this.editSubject.timeTo = item.timeTo;
       this.editSubject.year = item.year;
-      this.editSubject.creditsCount = item.creditsCount;
-      this.editSubject.studentsCount = item.studentsCount;
-      this.editSubject.note = item.note;
+      this.editSubject.subjectCode = item.subjectCode;
+      this.editSubject.review = item.review
       this.editSubject.id = item._id;
       this.showModal1();
     },
@@ -529,11 +538,11 @@ export default {
         name: this.editSubject.name,
         lecturer: this.editSubject.lecturer,
         teachingAssistant: this.editSubject.teachingAssistant,
-        executionTime: this.editSubject.executionTime,
+        timeFrom: this.editSubject.timeFrom,
+        timeTo: this.editSubject.timeTo,
         year: this.editSubject.year,
-        creditsCount: this.editSubject.creditsCount,
-        studentsCount: this.editSubject.studentsCount,
-        note: this.editSubject.note,
+        subjectCode: this.editSubject.subjectCode,
+        review: this.editSubject.review,
       };
       try {
         const result = await instance.put(

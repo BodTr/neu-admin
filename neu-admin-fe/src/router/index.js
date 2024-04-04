@@ -18,6 +18,7 @@ import MOUMOAManagePage from '../views/MOUMOAManagePage.vue'
 import HTQTManagePage from '../views/HTQTManagePage.vue'
 import ExchangeForeignStudentManagePage from '../views/ExchangeForeignStudentManagePage.vue'
 import StudentManagePage from '../views/StudentManagePage.vue'
+import ProgramCommitment from '../views/ProgramCommitmentsManagePage.vue'
 
 import ExchangeStudentManagePage from '../views/ExchangeStudentManagePage.vue'
 import VISAManagePage from '../views/VISAManagePage.vue'
@@ -258,6 +259,14 @@ const router = createRouter({
         requiresAuth: false
       },
     },
+    {
+      path: '/program-commitment',
+      name: 'program-commitments-manage-page',
+      component: ProgramCommitment,
+      meta: { 
+        requiresAuth: true
+      },
+    }
 
   ]
 })

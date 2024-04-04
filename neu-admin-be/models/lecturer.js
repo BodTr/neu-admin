@@ -13,6 +13,10 @@ const LecturerSchema = new mongoose.Schema({
         type: String,
         require: false
     },
+    contractStatus: {
+        type: String,
+        require: false
+    },
     birthyear: {
         type: Number,
         require: false
@@ -21,7 +25,7 @@ const LecturerSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    experience: {
+    subject: {
         type: String,
         require: false
     },

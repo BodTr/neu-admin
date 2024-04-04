@@ -5,23 +5,70 @@ const AgencySchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    email: {
-        type: String,
-        require: false
-    },
-    phoneNumber: {
-        type: String,
-        require: false
-    },
     unit: {
         type: String,
         require: false
     },
-    content: {
+
+    progLeaderName: {
         type: String,
         require: false
     },
-    position: {
+    progLeaderPosition: {
+        type: String,
+        require: false
+    },
+    progLeaderPhoneNumber: {
+        type: String,
+        require: false
+    },
+    progLeaderEmail: {
+        type: String,
+        require: false
+    },
+    progLeaderUnit: {
+        type: String,
+        require: false
+    },
+
+    progManagementName: {
+        type: String,
+        require: false
+    },
+    progManagementPosition: {
+        type: String,
+        require: false
+    },
+    progManagementPhoneNumber: {
+        type: String,
+        require: false
+    },
+    progManagementEmail: {
+        type: String,
+        require: false
+    },
+    progManagementUnit: {
+        type: String,
+        require: false
+    },
+
+    coordinatorName: {
+        type: String,
+        require: false
+    },
+    coordinatorPosition: {
+        type: String,
+        require: false
+    },
+    coordinatorPhoneNumber: {
+        type: String,
+        require: false
+    },
+    coordinatorEmail: {
+        type: String,
+        require: false
+    },
+    coordinatorUnit: {
         type: String,
         require: false
     },

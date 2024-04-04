@@ -17,9 +17,9 @@
             <div class="col-auto ms-auto d-print-none">
               <div class="btn-list">
                 <a
+                  @click="showModal()"
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
-                  @click="showModal()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -90,103 +90,85 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Năm học</label>
-                        <input
-                          type="number"
+                        <label class="form-label">Trách nhiệm của NEU</label>
+                        <textarea
                           class="form-control"
-                          v-model="year"
-                          placeholder="Nhập năm học"
-                        />
+                          rows="2"
+                          v-model="neuCommitment"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label"
-                          >Chỉ tiêu tuyển sinh</label
+                          >Trách nhiệm với học viên</label
                         >
-                        <input
-                          type="number"
+                        <textarea
                           class="form-control"
-                          v-model="enrollmentCount"
-                          placeholder="Nhập chỉ tiêu tuyển sinh"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Số sinh viên nhập học</label>
-                        <input
-                          type="number"
-                          v-model="admissionCount"
-                          class="form-control"
-                          placeholder="Nhập số sinh viên nhập học"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Số sinh viên chuyển tiếp</label>
-                        <input
-                          type="number"
-                          v-model="transferStudents"
-                          class="form-control"
-                          placeholder="Nhập số sinh viên chuyển tiếp"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Số sinh viên tốt nghiệp</label>
-                        <input
-                          type="number"
-                          v-model="graduatedCount"
-                          class="form-control"
-                          placeholder="Nhập số sinh viên tốt nghiệp"
-                        />
+                          rows="2"
+                          v-model="responsibilityToStudents"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label"
-                          >Quy mô tuyển sinh theo đề án</label
+                          >Trách nhiệm của trường đối tác</label
                         >
-                        <input
-                          type="number"
+                        <textarea
                           class="form-control"
-                          v-model="applicantsCount"
-                          placeholder="Nhập Quy mô tuyển sinh theo đề án"
-                        />
+                          rows="2"
+                          v-model="partnerCommitment"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label"
-                          >Số sinh viên trúng tuyển</label
+                          >Quản lý rủi ro chấm dứt liên kết</label
+                        >
+                        <textarea
+                          class="form-control"
+                          rows="2"
+                          v-model="riskManagement"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <h3>Các cam kết với đối tác</h3>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label"
+                          >Số lượng học viên tối thiểu</label
                         >
                         <input
                           type="number"
                           class="form-control"
-                          v-model="admittedStudents"
-                          placeholder="Nhập số sinh viên trúng tuyển"
+                          placeholder="Nhập số lượng học viên tối thiểu"
+                          v-model="minStudents"
                         />
                       </div>
+                    </div>
+                    <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Số sinh viên thôi học</label>
-                        <input
-                          type="number"
+                        <label class="form-label">Quy định về bảo mật</label>
+                        <textarea
                           class="form-control"
-                          v-model="dropoutCount"
-                          placeholder="Nhập số sinh viên thôi học"
-                        />
+                          rows="2"
+                          v-model="securityRegulation"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
-                      <div class="mb-3">
-                        <label class="form-label">Số sinh viên bảo lưu</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          v-model="reservedStudents"
-                          placeholder="Nhập số sinh viên bảo lưu"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Tổng số sinh viên đang đào tạo</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          v-model="trainingStudents"
-                          placeholder="Nhập số sinh viên đang đào tạo"
-                        />
-                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label"
+                        >Quy định về sở hữu trí tuệ</label
+                      >
+                      <textarea
+                        class="form-control"
+                        rows="2"
+                        v-model="intellectualPropertyRegulation"
+                        placeholder="Nhập nội dung"
+                      ></textarea>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -207,7 +189,7 @@
               <div class="card">
                 <v-server-table
                   class="table table-vcenter table-mobile-md card-table"
-                  url="/api/get-all-enrollments"
+                  url="/api/get-all-commitments"
                   id="ProjectList"
                   :columns="columns"
                   :options="options"
@@ -220,7 +202,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -250,7 +232,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -283,7 +265,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                            <h5 class="modal-title">Chỉnh sửa qui trình</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -295,109 +277,89 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Năm học</label>
-                                <input
-                                  type="number"
+                                <label class="form-label"
+                                  >Trách nhiệm của NEU</label
+                                >
+                                <textarea
                                   class="form-control"
-                                  v-model="editEnroll.year"
-                                  placeholder="Nhập năm học"
-                                />
+                                  rows="2"
+                                  v-model="editProgramCommitment.neuCommitment"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Chỉ tiêu tuyển sinh</label
+                                  >Trách nhiệm với học viên</label
+                                >
+                                <textarea
+                                  class="form-control"
+                                  rows="2"
+                                  v-model="editProgramCommitment.responsibilityToStudents"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Trách nhiệm của trường đối tác</label
+                                >
+                                <textarea
+                                  class="form-control"
+                                  rows="2"
+                                  v-model="editProgramCommitment.partnerCommitment"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Quản lý rủi ro chấm dứt liên kết</label
+                                >
+                                <textarea
+                                  class="form-control"
+                                  rows="2"
+                                  v-model="editProgramCommitment.riskManagement"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
+                              </div>
+                            </div>
+                            <h3>Các cam kết với đối tác</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Số lượng học viên tối thiểu</label
                                 >
                                 <input
                                   type="number"
                                   class="form-control"
-                                  v-model="editEnroll.enrollmentCount"
-                                  placeholder="Nhập chỉ tiêu tuyển sinh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên nhập học</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.admissionCount"
-                                  placeholder="Nhập số sinh viên nhập học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số sinh viên chuyển tiếp</label>
-                                <input
-                                  type="number"
-                                  v-model="editEnroll.transferStudents"
-                                  class="form-control"
-                                  placeholder="Nhập số sinh viên chuyển tiếp"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên tốt nghiệp</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.graduatedCount"
-                                  placeholder="Nhập tên văn bằng"
+                                  placeholder="Nhập số lượng học viên tối thiểu"
+                                  v-model="editProgramCommitment.minStudents"
                                 />
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Quy mô tuyển sinh theo đề án</label
+                                  >Quy định về bảo mật</label
                                 >
-                                <input
-                                  type="number"
+                                <textarea
                                   class="form-control"
-                                  v-model="editEnroll.applicantsCount"
-                                  placeholder="Nhập Quy mô tuyển sinh theo đề án"
-                                />
+                                  rows="2"
+                                  v-model="editProgramCommitment.securityRegulation"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
                               </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên trúng tuyển</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.admittedStudents"
-                                  placeholder="Nhập số sinh viên trúng tuyển"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên thôi học</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.dropoutCount"
-                                  placeholder="Nhập số sinh viên thôi học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số sinh viên bảo lưu</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.reservedStudents"
-                                  placeholder="Nhập số sinh viên bảo lưu"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Tổng số sinh viên đang đào tạo</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.trainingStudents"
-                                  placeholder="Nhập số sinh viên đang đào tạo"
-                                />
-                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Quy định về sở hữu trí tuệ</label
+                              >
+                              <textarea
+                                class="form-control"
+                                rows="2"
+                                v-model="editProgramCommitment.intellectualPropertyRegulation"
+                                placeholder="Nhập nội dung"
+                              ></textarea>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -425,68 +387,48 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
-  name: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
+  name: "ProgramCommitmentManagePage",
 
   data() {
     return {
-      columns: [
-        "stt",
-        "year",
-        "applicantsCount",
-        "admissionCount",
-        "dropoutCount",
-        "graduatedCount",
-        "trainingStudents",
-        "tool",
-      ],
+      columns: ["stt", "neuCommitment", "partnerCommitment", "minStudents", "securityRegulation", "tool"],
       options: {
         params: {
           id: localStorage.getItem("progId"),
         },
         headings: {
-          year: "Năm học",
-          applicantsCount: "Quy mô tuyển sinh theo đề án",
-          admissionCount: "Số sinh viên nhập học",
-          dropoutCount: "Số sinh viên thôi học",
-          graduatedCount: "Số sinh viên tốt nghiệp",
-          trainingStudents: "Tổng số sinh viên đang đào tạo",
+          neuCommitment: "Trách nhiệm của NEU",
+          partnerCommitment: "Trách nhiệm của trường đối tác",
+          minStudents: "Số lượng học viên tối thiểu",
+          securityRegulation: "Quy định về sở hữu trí tuệ",
           tool: "Thao tác",
         },
       },
       programName: "",
       id: "",
-      year: "",
-      enrollmentCount: "",
-      admissionCount: "",
-      transferStudents: "",
-      graduatedCount: "",
-      applicantsCount: "",
-      admittedStudents: "",
-      dropoutCount: "",
-      reservedStudents: "",
-      trainingStudents: "",
+      neuCommitment: "",
+      responsibilityToStudents: "",
+      partnerCommitment: "",
+      riskManagement: "",
+      minStudents: "",
+      securityRegulation: "",
+      intellectualPropertyRegulation: "",
+
       displayModal: false,
       displayModalOne: false,
 
-      editEnroll: {
+      editProgramCommitment: {
         id: "",
-        year: "",
-        enrollmentCount: "",
-        admissionCount: "",
-        transferStudents: "",
-        graduatedCount: "",
-        applicantsCount: "",
-        admittedStudents: "",
-        dropoutCount: "",
-        reservedStudents: "",
-        trainingStudents: "",
+        neuCommitment: "",
+        responsibilityToStudents: "",
+        partnerCommitment: "",
+        riskManagement: "",
+        minStudents: "",
+        securityRegulation: "",
+        intellectualPropertyRegulation: "",
       },
     };
   },
@@ -497,7 +439,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -517,22 +459,20 @@ export default {
       this.displayModalOne = false;
     },
     async submitForm() {
+      console.log(this.id, "post api program id");
       const data = {
         programId: this.id,
-        year: this.year,
-        enrollmentCount: this.enrollmentCount,
-        admissionCount: this.admissionCount,
-        transferStudents: this.transferStudents,
-        graduatedCount: this.graduatedCount,
-        applicantsCount: this.applicantsCount,
-        trainingStudents: this.trainingStudents,
-        admittedStudents: this.admittedStudents,
-        dropoutCount: this.dropoutCount,
-        reservedStudents: this.reservedStudents,
+        neuCommitment: this.neuCommitment,
+        responsibilityToStudents: this.responsibilityToStudents,
+        partnerCommitment: this.partnerCommitment,
+        riskManagement: this.riskManagement,
+        minStudents: this.minStudents,
+        securityRegulation: this.securityRegulation,
+        intellectualPropertyRegulation: this.intellectualPropertyRegulation
       };
 
       try {
-        const result = await instance.post("/api/create-enrollment", data);
+        const result = await instance.post("/api/create-commitment", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -546,16 +486,14 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.year = "";
-          this.enrollmentCount = "";
-          this.admissionCount = "";
-          this.transferStudents = "";
-          this.graduatedCount = "";
-          this.applicantsCount = "";
-          this.trainingStudents = "";
-          this.admittedStudents = "";
-          this.dropoutCount = "";
-          this.reservedStudents = "";
+          this.neuCommitment = "";
+          this.responsibilityToStudents = "";
+          this.partnerCommitment = "";
+          this.riskManagement = "";
+          this.minStudents = "";
+          this.securityRegulation = "";
+          this.intellectualPropertyRegulation = "";
+          
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -563,36 +501,33 @@ export default {
     },
 
     onEdit(item) {
-      this.editEnroll.year = item.year;
-      this.editEnroll.enrollmentCount = item.enrollmentCount 
-      this.editEnroll.admissionCount = item.admissionCount;
-      this.editEnroll.transferStudents = item.transferStudents;
-      this.editEnroll.graduatedCount = item.graduatedCount;
-      this.editEnroll.applicantsCount = item.applicantsCount;
-      this.editEnroll.trainingStudents = item.trainingStudents;
-      this.editEnroll.admittedStudents = item.admittedStudents;
-      this.editEnroll.dropoutCount = item.dropoutCount;
-      this.editEnroll.reservedStudents = item.reservedStudents;
-      this.editEnroll.id = item._id;
+      this.editProgramCommitment.neuCommitment = item.neuCommitment;
+      this.editProgramCommitment.responsibilityToStudents = item.responsibilityToStudents;
+      this.editProgramCommitment.partnerCommitment = item.partnerCommitment;
+      this.editProgramCommitment.riskManagement = item.riskManagement;
+      this.editProgramCommitment.minStudents = item.minStudents;
+      this.editProgramCommitment.securityRegulation = item.securityRegulation;
+      this.editProgramCommitment.intellectualPropertyRegulation = item.intellectualPropertyRegulation
+
+      this.editProgramCommitment.id = item._id;
       this.showModal1();
+
+      // console.log('content', this.content);
     },
 
     async onSubmit() {
       const data = {
-        year: this.editEnroll.year,
-        enrollmentCount: this.enrollmentCount.enrollmentCount,
-        admissionCount: this.editEnroll.admissionCount,
-        transferStudents: this. editEnroll.transferStudents,
-        graduatedCount: this.editEnroll.graduatedCount,
-        applicantsCount: this.editEnroll.applicantsCount,
-        trainingStudents: this.editEnroll.trainingStudents,
-        admittedStudents: this.editEnroll.admittedStudents,
-        dropoutCount: this.editEnroll.dropoutCount,
-        reservedStudents: this.editEnroll.reservedStudents,
+        neuCommitment: this.editProgramCommitment.neuCommitment,
+        responsibilityToStudents: this.editProgramCommitment.responsibilityToStudents,
+        partnerCommitment: this.editProgramCommitment.partnerCommitment,
+        riskManagement: this.editProgramCommitment.riskManagement,
+        minStudents: this.editProgramCommitment.minStudents,
+        securityRegulation: this.editProgramCommitment.securityRegulation,
+        intellectualPropertyRegulation: this.editProgramCommitment.intellectualPropertyRegulation
       };
       try {
         const result = await instance.put(
-          `/api/edit-enrollment/${this.editEnroll.id}`,
+          `/api/edit-commitment/${this.editProgramCommitment.id}`,
           data
         );
 
@@ -603,7 +538,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("Văn bản đã được sửa");
+          this.toast.success(result.data.message);
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
@@ -616,8 +551,10 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa văn bản này?")) {
-          const result = await instance.delete(`/api/delete-enrollment/${item._id}`);
+        if (confirm("Xóa quy trình này?")) {
+          const result = await instance.delete(
+            `/api/delete-commitment/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

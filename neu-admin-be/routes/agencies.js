@@ -15,7 +15,7 @@ router.get('/api/get-all-agencies', async (req, res) => {
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const agencies = await AgencySchema.find({
             program: { id: new ObjectId(id) },
-            name: {$regex: query}
+            unit: {$regex: query}
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await AgencySchema.countDocuments({
             program: { id: new ObjectId(id) }
@@ -39,21 +39,36 @@ router.get('/api/get-all-agencies', async (req, res) => {
 
 router.post('/api/create-agency', emptyAgencyInputsValidation, typeAgencyInputsValidation, async (req, res) => {
     try {
-        const { programId, name, email, phoneNumber, unit, content, position } = req.body
+        const { programId, unit, progLeaderName, progLeaderPosition, progLeaderPhoneNumber, progLeaderEmail, progLeaderUnit, progManagementName, progManagementPosition, progManagementPhoneNumber, progManagementEmail, progManagementUnit, coordinatorName, coordinatorPosition, coordinatorPhoneNumber, coordinatorEmail, coordinatorUnit } = req.body;
+
         console.log(req.body, "req.body post api")
         
-        const existedAgency = await AgencySchema.findOne({ name: name })
+        const existedAgency = await AgencySchema.findOne({ unit: unit })
         if (existedAgency) {
             res.json({ error: true, message: "Đơn vị đã tồn tại" })
         } else {
 
             const newAgency = await AgencySchema.create({
-                name: name,
-                email: email,
-                phoneNumber: phoneNumber,
                 unit: unit,
-                content: content,
-                position: position,
+
+                progLeaderName: progLeaderName,
+                progLeaderPosition: progLeaderPosition,
+                progLeaderPhoneNumber: progLeaderPhoneNumber,
+                progLeaderEmail: progLeaderEmail,
+                progLeaderUnit: progLeaderUnit,
+
+                progManagementName: progManagementName,
+                progManagementPosition: progManagementPosition,
+                progManagementPhoneNumber: progManagementPhoneNumber,
+                progManagementEmail: progManagementEmail,
+                progManagementUnit: progManagementUnit,
+
+                coordinatorName: coordinatorName,
+                coordinatorPosition: coordinatorPosition,
+                coordinatorPhoneNumber: coordinatorPhoneNumber,
+                coordinatorEmail: coordinatorEmail,
+                coordinatorUnit: coordinatorUnit,
+
                 program: {
                     id: programId
                 }
@@ -72,15 +87,28 @@ router.post('/api/create-agency', emptyAgencyInputsValidation, typeAgencyInputsV
 router.put('/api/edit-agency/:id', emptyAgencyInputsValidation, typeAgencyInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { name, email, phoneNumber, unit, content, position } = req.body
+        const { unit, progLeaderName, progLeaderPosition, progLeaderPhoneNumber, progLeaderEmail, progLeaderUnit, progManagementName, progManagementPosition, progManagementPhoneNumber, progManagementEmail, progManagementUnit, coordinatorName, coordinatorPosition, coordinatorPhoneNumber, coordinatorEmail, coordinatorUnit } = req.body;
         console.log(id, "::put api id::")
         const updatingAgency = {
-            name: name,
-            email: email,
-            phoneNumber: phoneNumber,
             unit: unit,
-            content: content,
-            position: position
+
+            progLeaderName: progLeaderName,
+            progLeaderPosition: progLeaderPosition,
+            progLeaderPhoneNumber: progLeaderPhoneNumber,
+            progLeaderEmail: progLeaderEmail,
+            progLeaderUnit: progLeaderUnit,
+
+            progManagementName: progManagementName,
+            progManagementPosition: progManagementPosition,
+            progManagementPhoneNumber: progManagementPhoneNumber,
+            progManagementEmail: progManagementEmail,
+            progManagementUnit: progManagementUnit,
+
+            coordinatorName: coordinatorName,
+            coordinatorPosition: coordinatorPosition,
+            coordinatorPhoneNumber: coordinatorPhoneNumber,
+            coordinatorEmail: coordinatorEmail,
+            coordinatorUnit: coordinatorUnit,
         }
         console.log(req.body, "put api req.body")
         const updatedAgency = await AgencySchema.findOneAndUpdate({ _id: id }, updatingAgency, {new: true})

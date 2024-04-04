@@ -1,39 +1,34 @@
 const mongoose = require('mongoose')
 
-const SubjectSchema = new mongoose.Schema({
-    name: {
+const ProgramCommitmentSchema = new mongoose.Schema({
+    neuCommitment: {
         type: String,
         require: false
     },
-    lecturer: {
+    responsibilityToStudents: {
         type: String,
         require: false
     },
-    teachingAssistant: {
+    partnerCommitment: {
         type: String,
         require: false
     },
-    timeFrom: {
+    riskManagement: {
         type: String,
         require: false
     },
-    timeTo: {
-        type: String,
-        require: false
-    },
-    year: {
+    minStudents: {
         type: Number,
         require: false
     },
-    subjectCode: {
+    securityRegulation: {
         type: String,
         require: false
     },
-    review: {
+    intellectualPropertyRegulation: {
         type: String,
         require: false
     },
-
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -47,4 +42,4 @@ const SubjectSchema = new mongoose.Schema({
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
     })
 
-module.exports = mongoose.model('SubjectSchema', SubjectSchema)
+module.exports = mongoose.model('ProgramCommitmentSchema', ProgramCommitmentSchema)

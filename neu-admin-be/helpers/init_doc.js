@@ -6,6 +6,7 @@ const ExtendVisaSchema = require('../models/extend_visa')
 const DecisionSchema = require('../models/decision')
 const CloseDecisionSchema = require('../models/close_decision')
 const DocumentSchema = require('../models/document')
+const PartnerSchema = require('../models/partner')
 
 async function initCloseDecisionDocMiddleware(req, res, next) {
     try {
@@ -89,7 +90,7 @@ async function initexForeignStudentDocMiddleware(req, res, next) {
         req.payload = studentId
         next()
     } catch (error) {
-        console.log(error, "::: middleware init_htqt_doc :::")
+        console.log(error, "::: middleware init_ex_f_student_doc :::")
         res.json({ error: true, message: "Something went wrong!!" })
     }
 }
@@ -104,7 +105,7 @@ async function initExStudentMiddleware(req, res, next) {
         req.payload = exStudentId
         next()
     } catch (error) {
-        console.log(error, "::: middleware init_moumoa_doc :::")
+        console.log(error, "::: middleware init_ex_student_doc :::")
         res.json({ error: true, message: "Something went wrong!!" })
     }
 }
@@ -119,10 +120,26 @@ async function initExtendVisaMiddleware(req, res, next) {
         req.payload = extendVisaId
         next()
     } catch (error) {
-        console.log(error, "::: middleware init_moumoa_doc :::")
+        console.log(error, "::: middleware init_ex_visa_doc :::")
         res.json({ error: true, message: "Something went wrong!!" })
     }
 }
+
+async function initPartnerMiddleware(req, res, next) {
+    try {
+        const initDoc = await PartnerSchema.create({
+            vn_name: 'init name'
+        })
+
+        const partnerId = initDoc._id.toString()
+        req.payload = partnerId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_partner_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
 module.exports = {
     initMoumoaDocMiddleware,
     initHTQTDocMiddleware,
@@ -132,4 +149,5 @@ module.exports = {
     initDecisionDocMiddleware,
     initCloseDecisionDocMiddleware,
     initDocumentMiddleware,
+    initPartnerMiddleware,
 }

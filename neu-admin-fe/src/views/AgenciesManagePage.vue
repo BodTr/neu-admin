@@ -1,13 +1,12 @@
 <template>
   <div class="page">
-    <!-- <VerticalNavbar /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title">  
+              <h2 class="page-title">
                 <b style="color: #ffe1e1; font-size: 22px"
                   >"{{ programName }}"</b
                 >
@@ -90,65 +89,13 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Họ tên người thực hiện</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="name"
-                          placeholder="Nhập họ và tên người thực hiện"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Số điện thoại</label>
-                        <input
-                          type="text"
-                          v-model="phoneNumber"
-                          class="form-control"
-                          placeholder="Nhập số điện thoại"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Chức vụ</label>
-                        <input
-                          type="text"
-                          v-model="position"
-                          class="form-control"
-                          placeholder="Nhập chức vụ"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="email"
-                          placeholder="Nhập email"
-                        />
-                      </div>
-                      <div class="mb-3">
                         <label class="form-label">Đơn vị thực hiện</label>
-                        <select
-                          v-model="unit"
-                          class="form-select"
-                          tabindex="-1"
-                        >
-                          <option value="" disabled selected>
-                            Chọn đơn vị thực hiện
-                          </option>
-                          <option value="Đơn vị 1">Đơn vị 1</option>
-                          <option value="Đơn vị 2">Đơn vị 2</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Nội dung phụ trách</label>
-                        <textarea
+                        <input
+                          type="text"
                           class="form-control"
-                          row="1"
-                          v-model="content"
-                          placeholder="Nhập nội dung phụ trách"
-                        ></textarea>
+                          placeholder="Nhập đơn vị thực hiện"
+                          v-model="unit"
+                        />
                       </div>
                     </div>
                     <h3>Lãnh đạo phụ trách chương trình</h3>
@@ -159,6 +106,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Họ tên"
+                          v-model="progLeaderName"
                         />
                       </div>
                       <div class="mb-3">
@@ -167,6 +115,16 @@
                           type="text"
                           class="form-control"
                           placeholder="Chức vụ"
+                          v-model="progLeaderPosition"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Số điện thoại"
+                          v-model="progLeaderPhoneNumber"
                         />
                       </div>
                     </div>
@@ -177,6 +135,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Email"
+                          v-model="progLeaderEmail"
                         />
                       </div>
                       <div class="mb-3">
@@ -185,6 +144,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Đơn vị"
+                          v-model="progLeaderUnit"
                         />
                       </div>
                     </div>
@@ -196,6 +156,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Họ tên"
+                          v-model="progManagementName"
                         />
                       </div>
                       <div class="mb-3">
@@ -204,6 +165,16 @@
                           type="text"
                           class="form-control"
                           placeholder="Chức vụ"
+                          v-model="progManagementPosition"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Số điện thoại"
+                          v-model="progManagementPhoneNumber"
                         />
                       </div>
                     </div>
@@ -214,6 +185,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Email"
+                          v-model="progManagementEmail"
                         />
                       </div>
                       <div class="mb-3">
@@ -222,6 +194,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Đơn vị"
+                          v-model="progManagementUnit"
                         />
                       </div>
                     </div>
@@ -233,6 +206,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Họ tên"
+                          v-model="coordinatorName"
                         />
                       </div>
                       <div class="mb-3">
@@ -241,6 +215,16 @@
                           type="text"
                           class="form-control"
                           placeholder="Chức vụ"
+                          v-model="coordinatorPosition"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Số điện thoại"
+                          v-model="coordinatorPhoneNumber"
                         />
                       </div>
                     </div>
@@ -251,6 +235,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Email"
+                          v-model="coordinatorEmail"
                         />
                       </div>
                       <div class="mb-3">
@@ -259,6 +244,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Đơn vị"
+                          v-model="coordinatorUnit"
                         />
                       </div>
                     </div>
@@ -370,22 +356,25 @@
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Tên văn bản liên kết</label
+                                  >Đơn vị thực hiện</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editAgency.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
+                                  placeholder="Nhập đơn vị thực hiện"
+                                  v-model="editAgency.unit"
                                 />
                               </div>
+                            </div>
+                            <h3>Lãnh đạo phụ trách chương trình</h3>
+                            <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Số điện thoại</label>
+                                <label class="form-label">Họ tên</label>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editAgency.phoneNumber"
-                                  placeholder="Nhập tên văn bằng"
+                                  placeholder="Họ tên"
+                                  v-model="editAgency.progLeaderName"
                                 />
                               </div>
                               <div class="mb-3">
@@ -393,8 +382,17 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editAgency.position"
-                                  placeholder="Nhập tên văn bằng"
+                                  placeholder="Chức vụ"
+                                  v-model="editAgency.progLeaderPosition"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Số điện thoại"
+                                  v-model="editAgency.progLeaderPhoneNumber"
                                 />
                               </div>
                             </div>
@@ -404,36 +402,118 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  v-model="editAgency.email"
-                                  placeholder="Nhập email"
+                                  placeholder="Email"
+                                  v-model="editAgency.progLeaderEmail"
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Đơn vị thực hiện</label
-                                >
-                                <select
-                                  v-model="editAgency.unit"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn đơn vị thực hiện
-                                  </option>
-                                  <option value="Đơn vị 1">Đơn vị 1</option>
-                                  <option value="Đơn vị 2">Đơn vị 2</option>
-                                </select>
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                  v-model="editAgency.progLeaderUnit"
+                                />
+                              </div>
+                            </div>
+                            <h3>Chủ nhiệm chương trình</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                  v-model="editAgency.progManagementName"
+                                />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Nội dung phụ trách</label
-                                >
-                                <textarea
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
                                   class="form-control"
-                                  row="1"
-                                  v-model="editAgency.content"
-                                  placeholder="Nhập nội dung phụ trách"
-                                ></textarea>
+                                  placeholder="Chức vụ"
+                                  v-model="editAgency.progManagementPosition"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Số điện thoại"
+                                  v-model="editAgency.progManagementPhoneNumber"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                  v-model="editAgency.progManagementEmail"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                  v-model="editAgency.progManagementUnit"
+                                />
+                              </div>
+                            </div>
+                            <h3>Điều phối viên chương trình</h3>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Họ tên"
+                                  v-model="editAgency.coordinatorName"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Chức vụ</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Chức vụ"
+                                  v-model="editAgency.coordinatorPosition"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Số điện thoại"
+                                  v-model="editAgency.coordinatorPhoneNumber"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email"
+                                  v-model="editAgency.coordinatorEmail"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Đơn vị</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Đơn vị"
+                                  v-model="editAgency.coordinatorUnit"
+                                />
                               </div>
                             </div>
                           </div>
@@ -450,7 +530,6 @@
                     </div>
                   </template>
                 </v-server-table>
-                
               </div>
             </div>
           </div>
@@ -463,25 +542,18 @@
 <script>
 // import { ref } from 'vue'
 import instance from "../instance";
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
   name: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
-
   data() {
     return {
       columns: [
         "stt",
-        "name",
-        "email",
-        "phoneNumber",
         "unit",
-        "content",
-        "position",
+        "progLeaderName",
+        "progManagementName",
+        "coordinatorName",
         "tool",
       ],
       options: {
@@ -490,34 +562,59 @@ export default {
         },
 
         headings: {
-          name: "Họ tên người thực hiện",
-          email: "Email",
-          phoneNumber: "Số điện thoại",
           unit: "Đơn vị thực hiện",
-          content: "Nội dung phụ trách",
-          position: "Chức vụ",
+          progLeaderName: "Tên lãnh đạo chương trình",
+          progManagementName: "Tên chủ nhiệm chương trình",
+          coordinatorName: "Tên điều phối viên",
           tool: "Thao tác",
         },
       },
       programName: "",
       id: "",
-      name: "",
-      phoneNumber: "",
-      position: "",
-      email: "",
       unit: "",
-      content: "",
+
+      progLeaderName: "",
+      progLeaderPosition: "",
+      progLeaderPhoneNumber: "",
+      progLeaderEmail: "",
+      progLeaderUnit: "",
+
+      progManagementName: "",
+      progManagementPosition: "",
+      progManagementPhoneNumber: "",
+      progManagementEmail: "",
+      progManagementUnit: "",
+
+      coordinatorName: "",
+      coordinatorPosition: "",
+      coordinatorPhoneNumber: "",
+      coordinatorEmail: "",
+      coordinatorUnit: "",
+
       displayModal: false,
       displayModalOne: false,
 
       editAgency: {
         id: "",
-        name: "",
-        phoneNumber: "",
-        position: "",
-        email: "",
         unit: "",
-        content: "",
+
+        progLeaderName: "",
+        progLeaderPosition: "",
+        progLeaderPhoneNumber: "",
+        progLeaderEmail: "",
+        progLeaderUnit: "",
+
+        progManagementName: "",
+        progManagementPosition: "",
+        progManagementPhoneNumber: "",
+        progManagementEmail: "",
+        progManagementUnit: "",
+
+        coordinatorName: "",
+        coordinatorPosition: "",
+        coordinatorPhoneNumber: "",
+        coordinatorEmail: "",
+        coordinatorUnit: "",
       },
     };
   },
@@ -528,7 +625,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
@@ -551,12 +648,26 @@ export default {
     async submitForm() {
       const data = {
         programId: this.id,
-        name: this.name,
-        phoneNumber: this.phoneNumber,
-        position: this.position,
-        email: this.email,
         unit: this.unit,
-        content: this.content,
+
+        progLeaderName: this.progLeaderName,
+        progLeaderPosition: this.progLeaderPosition,
+        progLeaderPhoneNumber: this.progLeaderPhoneNumber,
+        progLeaderEmail: this.progLeaderEmail,
+        progLeaderUnit: this.progLeaderUnit,
+
+        progManagementName: this.progManagementName,
+        progManagementPosition: this.progManagementPosition,
+        progManagementPhoneNumber: this.progManagementPhoneNumber,
+        progManagementEmail: this.progManagementEmail,
+        progManagementUnit: this.progManagementUnit,
+
+        coordinatorName: this.coordinatorName,
+        coordinatorPosition: this.coordinatorPosition,
+        coordinatorPhoneNumber: this.coordinatorPhoneNumber,
+        coordinatorEmail: this.coordinatorEmail,
+        coordinatorUnit: this.coordinatorUnit,
+
       };
 
       try {
@@ -574,12 +685,25 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.name = "";
-          this.phoneNumber = "";
-          this.position = "";
-          this.email = "";
           this.unit = "";
-          this.content = "";
+
+          this.progLeaderName = "";
+          this.progLeaderPosition = "";
+          this.progLeaderPhoneNumber = "";
+          this.progLeaderEmail = "";
+          this.progLeaderUnit = "";
+
+          this.progManagementName = "";
+          this.progManagementPosition = "";
+          this.progManagementPhoneNumber = "";
+          this.progManagementEmail = "";
+          this.progManagementUnit = "";
+
+          this.coordinatorName = "";
+          this.coordinatorPosition = "";
+          this.coordinatorPhoneNumber = "";
+          this.coordinatorEmail = "";
+          this.coordinatorUnit = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -587,25 +711,52 @@ export default {
     },
 
     onEdit(item) {
-      this.editAgency.name = item.name;
-      this.editAgency.phoneNumber = item.phoneNumber;
-      this.editAgency.position = item.position;
-      this.editAgency.email = item.email;
       this.editAgency.unit = item.unit;
-      this.editAgency.content = item.content;
+
+      this.editAgency.progLeaderName = item.progLeaderName;
+      this.editAgency.progLeaderPosition = item.progLeaderPosition;
+      this.editAgency.progLeaderPhoneNumber = item.progLeaderPhoneNumber;
+      this.editAgency.progLeaderEmail = item.progLeaderEmail;
+      this.editAgency.progLeaderUnit= item.progLeaderUnit;
+
+      this.editAgency.progManagementName = item.progManagementName;
+      this.editAgency.progManagementPosition = item.progManagementPosition;
+      this.editAgency.progManagementPhoneNumber = item.progManagementPhoneNumber;
+      this.editAgency.progManagementEmail = item.progManagementEmail;
+      this.editAgency.progManagementUnit = item.progManagementUnit;
+
+      this.editAgency.coordinatorName = item.coordinatorName;
+      this.editAgency.coordinatorPosition = item.coordinatorPosition;
+      this.editAgency.coordinatorPhoneNumber = item.coordinatorPhoneNumber;
+      this.editAgency.coordinatorEmail = item.coordinatorEmail;
+      this.editAgency.coordinatorUnit = item.coordinatorUnit;
+
       this.editAgency.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
       const data = {
-
-        name: this.editAgency.name,
-        phoneNumber: this.editAgency.phoneNumber,
-        position: this.editAgency.position,
-        email: this.editAgency.email,
+        programId: this.id,
         unit: this.editAgency.unit,
-        content: this.editAgency.content,
+
+        progLeaderName: this.editAgency.progLeaderName,
+        progLeaderPosition: this.editAgency.progLeaderPosition,
+        progLeaderPhoneNumber: this.editAgency.progLeaderPhoneNumber,
+        progLeaderEmail: this.editAgency.progLeaderEmail,
+        progLeaderUnit: this.editAgency.progLeaderUnit,
+
+        progManagementName: this.editAgency.progManagementName,
+        progManagementPosition: this.editAgency.progManagementPosition,
+        progManagementPhoneNumber: this.editAgency.progManagementPhoneNumber,
+        progManagementEmail: this.editAgency.progManagementEmail,
+        progManagementUnit: this.editAgency.progManagementUnit,
+
+        coordinatorName: this.editAgency.coordinatorName,
+        coordinatorPosition: this.editAgency.coordinatorPosition,
+        coordinatorPhoneNumber: this.editAgency.coordinatorPhoneNumber,
+        coordinatorEmail: this.editAgency.coordinatorEmail,
+        coordinatorUnit: this.editAgency.coordinatorUnit,
       };
       try {
         const result = await instance.put(

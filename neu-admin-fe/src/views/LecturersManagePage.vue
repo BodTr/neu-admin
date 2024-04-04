@@ -113,8 +113,27 @@
                           type="text"
                           v-model="unit"
                           class="form-control"
-                          placeholder="Nhập chức vụ"
+                          placeholder="Nhập đơn vị công tác"
                         />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label"
+                          >Tình trạng hợp đồng</label
+                        >
+                        <select
+                          v-model="contractStatus"
+                          class="form-select"
+                          tabindex="-1"
+                        >
+                          <option value="" disabled selected>
+                            Tình trạng hợp đồng
+                          </option>
+                          <option value="Cơ hữu">Cơ hữu</option>
+                          <option value="Kiêm giảng">Kiêm giảng</option>
+                          <option value="Hợp đồng ngoài trường">Hợp đồng ngoài trường</option>
+                          <option value="Thỉnh giảng">Thỉnh giảng</option>
+                          <option value="Trợ giảng">Trợ giảng</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -137,6 +156,15 @@
                         />
                       </div>
                       <div class="mb-3">
+                        <label class="form-label">Tên môn học giảng dạy</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="subject"
+                          placeholder="Nhập tên môn học"
+                        />
+                      </div>
+                      <!-- <div class="mb-3">
                         <div style="margin-top: 3rem; margin-left: 3rem">
                           <label class="form-check form-check-inline">
                             <input
@@ -160,7 +188,7 @@
                             <span class="form-check-label">Thâm niên</span>
                           </label>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -289,13 +317,32 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
+                                <label class="form-label">Đơn vị công tác</label>
                                 <input
                                   type="text"
                                   class="form-control"
                                   v-model="editLecturer.unit"
-                                  placeholder="Nhập tên văn bằng"
+                                  placeholder="Nhập tên đơn vị công tác"
                                 />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Tình trạng hợp đồng</label
+                                >
+                                <select
+                                  v-model="editLecturer.contractStatus"
+                                  class="form-select"
+                                  tabindex="-1"
+                                >
+                                  <option value="" disabled selected>
+                                    Tình trạng hợp đồng
+                                  </option>
+                                  <option value="Cơ hữu">Cơ hữu</option>
+                                  <option value="Kiêm giảng">Kiêm giảng</option>
+                                  <option value="Hợp đồng ngoài trường">Hợp đồng ngoài trường</option>
+                                  <option value="Thỉnh giảng">Thỉnh giảng</option>
+                                  <option value="Trợ giảng">Trợ giảng</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -318,6 +365,15 @@
                                 />
                               </div>
                               <div class="mb-3">
+                                <label class="form-label">Tên môn học giảng dạy</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editLecturer.subject"
+                                  placeholder="Nhập tên môn học"
+                                />
+                              </div>
+                              <!-- <div class="mb-3">
                                 <div
                                   style="margin-top: 3rem; margin-left: 3rem"
                                 >
@@ -345,7 +401,7 @@
                                     >
                                   </label>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -390,8 +446,9 @@ export default {
         "birthyear",
         "nationality",
         "unit",
+        "contractStatus",
         "level",
-        "experience",
+        "subject",
         "tool",
       ],
       options: {
@@ -404,8 +461,9 @@ export default {
           birthyear: "Năm sinh",
           nationality: "Quốc tịch",
           unit: "Đơn vị công tác",
-          experience: "Kinh nghiệm",
+          contractStatus: "Tình trạng hợp đồng",
           level: "Chức vụ",
+          subject: "Tên môn học giảng dạy",
           tool: "Thao tác",
         },
       },
@@ -414,9 +472,10 @@ export default {
       name: "",
       nationality: "",
       unit: "",
+      contractStatus: "",
       birthyear: "",
       level: "",
-      experience: "",
+      subject: "",
       displayModal: false,
       displayModalOne: false,
 
@@ -425,9 +484,10 @@ export default {
         name: "",
         nationality: "",
         unit: "",
+        contractStatus: "",
         birthyear: "",
         level: "",
-        experience: "",
+        subject: "",
       },
     };
   },
@@ -463,9 +523,10 @@ export default {
         name: this.name,
         nationality: this.nationality,
         unit: this.unit,
+        contractStatus: this.contractStatus,
         birthyear: this.birthyear,
         level: this.level,
-        experience: this.experience,
+        subject: this.subject,
       };
 
       try {
@@ -486,9 +547,10 @@ export default {
           this.name = "";
           this.nationality = "";
           this.unit = "";
+          this.contractStatus = "";
           this.birthyear = "";
           this.level = "";
-          this.experience = "";
+          this.subject = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -499,9 +561,10 @@ export default {
       this.editLecturer.name = item.name;
       this.editLecturer.nationality = item.nationality;
       this.editLecturer.unit = item.unit;
+      this.editLecturer.contractStatus = item.contractStatus;
       this.editLecturer.birthyear = item.birthyear;
       this.editLecturer.level = item.level;
-      this.editLecturer.experience = item.experience;
+      this.editLecturer.subject = item.subject;
       this.editLecturer.id = item._id;
       this.showModal1();
     },
@@ -511,9 +574,10 @@ export default {
         name: this.editLecturer.name,
         nationality: this.editLecturer.nationality,
         unit: this.editLecturer.unit,
+        contractStatus: this.editLecturer.contractStatus,
         birthyear: this.editLecturer.birthyear,
         level: this.editLecturer.level,
-        experience: this.editLecturer.experience,
+        subject: this.editLecturer.subject,
       };
       try {
         const result = await instance.put(
