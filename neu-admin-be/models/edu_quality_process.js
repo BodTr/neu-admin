@@ -1,18 +1,18 @@
 const mongoose = require('mongoose')
 
 const ProcessSchema = new mongoose.Schema({
-    mechanism: {
+    evaluationForm: {
         type: String,
         require: false
     },
-    detail: {
+    evaluateProgramQuality: {
         type: String,
         require: false
     },
-    hasProcess: {
-        type: String,
-        
-    },
+    processes: [{
+        type: Object,
+        require: false
+    }],
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

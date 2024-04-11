@@ -285,8 +285,8 @@ function emptyPlanlInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty plan inputs");
     const error = new Error("empty plan inputs");
     error.code = "EMPTY_PLAN_INPUTS_ERROR";
-    const { certName, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, report } = req.body;
-    if (!certName || !qualifiedLecturer || !planStructure || !qualifiedStudent || !tuition || !infraCondition || !language || !ecoManage || !report ) {
+    const { qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage } = req.body;
+    if (!qualifiedLecturer || !planStructure || !qualifiedStudent || !tuition || !infraCondition || !language || !ecoManage ) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -299,11 +299,25 @@ function typePlanInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type plan inputs")
     const error = new Error('wrong type plan inputs')
     error.code = 'PLAN_INPUTS_TYPE_ERROR'
-    const { certName, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, report } = req.body
-    if (typeof certName !== 'string' || typeof qualifiedLecturer !== 'string' || typeof qualifiedStudent !== 'string' || typeof planStructure !== 'string' || typeof tuition !== 'string' || typeof infraCondition !== 'string' || typeof language !== 'string' || typeof ecoManage !== 'string' || typeof report !== 'string') {
+    const { qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage } = req.body
+    if ( typeof qualifiedLecturer !== 'string' || typeof qualifiedStudent !== 'string' || typeof planStructure !== 'string' || typeof tuition !== 'string' || typeof infraCondition !== 'string' || typeof language !== 'string' || typeof ecoManage !== 'string' ) {
         throw error
     } else {
         console.log('plan inputs type correct')
+        next()
+    }
+}
+
+function emptyFilePlanInputValidation(req, res, next) {
+    
+    const error = new Error('Empty plan file input')
+    error.code = 'EMPTY_PLAN_FILE_INPUT_ERROR'
+    const docFile = req.file
+    console.log(docFile, "middleware check empty plan file input")
+    if (!docFile) {
+        throw error
+    } else {
+        console.log('plan file input filled')
         next()
     }
 }
@@ -313,8 +327,8 @@ function emptyProcessInputsValidation(req, res, next) {
     console.log(req.body, "middleware check empty process inputs");
     const error = new Error("empty process inputs");
     error.code = "EMPTY_PROCESS_INPUTS_ERROR";
-    const { mechanism, detail, hasProcess } = req.body;
-    if (!mechanism || !detail || !hasProcess ) {
+    const { evaluationForm, evaluateProgramQuality, processes } = req.body;
+    if (!evaluationForm || !evaluateProgramQuality || processes.length === 0 ) {
         console.log(error.code, 'middleware empty error')
         throw error;
     } else {
@@ -327,8 +341,8 @@ function typeProcessInputsValidation(req, res, next) {
     console.log(req.body, "middleware check type process inputs")
     const error = new Error('wrong type process inputs')
     error.code = 'PROCESS_INPUTS_TYPE_ERROR'
-    const { mechanism, detail, hasProcess } = req.body
-    if (typeof mechanism !== 'string' || typeof detail !== 'string') {
+    const { evaluationForm, evaluateProgramQuality } = req.body
+    if (typeof evaluationForm !== 'string' || typeof evaluateProgramQuality !== 'string') {
         throw error
     } else {
         console.log('process inputs type correct')
@@ -389,6 +403,19 @@ function typeEnrollmentInputsValidation(req, res, next) {
         throw error
     } else {
         console.log('process inputs type correct')
+        next()
+    }
+}
+
+function emptyEnrollmentFileInputValidation(req, res, next) {
+    console.log(req.files, "req.files emptyEnrollmentFileInputValidation() middleware")
+    const error = new Error('empty enrollment files input')
+    error.code = 'EMPTY_ENROLLMENT_FILES_INPUT_ERROR'
+    const files = req.files
+    if (!files) {
+        throw error
+    } else {
+        console.log("enrollment files input filled")
         next()
     }
 }
@@ -824,11 +851,13 @@ module.exports = {
   typeGoalInputsValidation,
   emptyPlanlInputsValidation,
   typePlanInputsValidation,
+  emptyFilePlanInputValidation,
   emptyProcessInputsValidation,
   typeProcessInputsValidation,
   emptyCurriculumInputsValidation,
   typeCurriculumInputsValidation,
   emptyEnrollmentInputsValidation,
+  emptyEnrollmentFileInputValidation,
   typeEnrollmentInputsValidation,
   emptyLecturerInputsValidation,
   typeLecturerInputsValidation,

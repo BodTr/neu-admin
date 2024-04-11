@@ -7,6 +7,36 @@ const DecisionSchema = require('../models/decision')
 const CloseDecisionSchema = require('../models/close_decision')
 const DocumentSchema = require('../models/document')
 const PartnerSchema = require('../models/partner')
+const PlanSchema = require('../models/plan')
+const EnrollmentSchema = require('../models/enrollment')
+
+async function initEnrollmentDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await EnrollmentSchema.create({
+            year: 0
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_enrollment_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
+
+async function initPlanDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await PlanSchema.create({
+            certName: 'init name'
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_plan_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
 
 async function initCloseDecisionDocMiddleware(req, res, next) {
     try {
@@ -150,4 +180,6 @@ module.exports = {
     initCloseDecisionDocMiddleware,
     initDocumentMiddleware,
     initPartnerMiddleware,
+    initPlanDocMiddleware,
+    initEnrollmentDocMiddleware,
 }

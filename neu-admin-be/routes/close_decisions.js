@@ -156,12 +156,12 @@ router.use('/api/create-close-decision', async (error, req, res, next) => {
         console.log(error, "error handle post api midddleware")
         const decisionId = req.payload
         const docFile = req.file
-        const delInitDecision = await MoumoaSchema.deleteOne({ _id: decisionId })
+        const delInitDecision = await CloseDecisionSchema.deleteOne({ _id: decisionId })
         console.log(delInitDecision, "deleted delInitDecision")
         if (!docFile) {
             next(error)
         } else {
-            console.log('POST api error!! So, delete images just uploaded')
+            console.log('POST api error!! So, delete image just uploaded')
             const fileKey = docFile.Key
             const newDeleteCommand = new DeleteObjectCommand({
                 Bucket: 'acvnapps',
@@ -191,7 +191,7 @@ router.use('/api/edit-close-decision/:id', async(error, req, res, next) => {
                 Key: `${fileKey}`
             })
             const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, post api:::")
+            console.log(result, ":::result, error handle put api middleware:::")
             next(error)
         }
     } catch (error) {

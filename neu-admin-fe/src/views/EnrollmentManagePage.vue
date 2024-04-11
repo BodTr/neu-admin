@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <!-- <VerticalNavbar /> -->
     <div class="page-wrapper">
       <div class="page-header d-print-none">
         <div class="container-xl">
@@ -99,9 +98,7 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label"
-                          >Chỉ tiêu tuyển sinh</label
-                        >
+                        <label class="form-label">Chỉ tiêu tuyển sinh</label>
                         <input
                           type="number"
                           class="form-control"
@@ -119,7 +116,9 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số sinh viên chuyển tiếp</label>
+                        <label class="form-label"
+                          >Số sinh viên chuyển tiếp</label
+                        >
                         <input
                           type="number"
                           v-model="transferStudents"
@@ -128,7 +127,9 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Số sinh viên tốt nghiệp</label>
+                        <label class="form-label"
+                          >Số sinh viên tốt nghiệp</label
+                        >
                         <input
                           type="number"
                           v-model="graduatedCount"
@@ -179,13 +180,77 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Tổng số sinh viên đang đào tạo</label>
+                        <label class="form-label"
+                          >Tổng số sinh viên đang đào tạo</label
+                        >
                         <input
                           type="number"
                           class="form-control"
                           v-model="trainingStudents"
                           placeholder="Nhập số sinh viên đang đào tạo"
                         />
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="form-label required">
+                        Các quyết định liên quan đến tuyển sinh
+                      </div>
+                      <input
+                        type="file"
+                        name="docs"
+                        class="form-control"
+                        ref="enrollmentDocs"
+                        @change="handleFilesUpload()"
+                        style="display: none"
+                        id="docs_file"
+                        multiple
+                      />
+
+                      <div id="filesUploadControl" class="card">
+                        <a
+                          id="btnF"
+                          @click="handleDocsUpload()"
+                          class="btn btn-outline-primary w-100"
+                          >Choose Files</a
+                        >
+                        <div
+                          v-for="(doc, index) in docs"
+                          :key="index"
+                          class="list-group card-list-group"
+                        >
+                          <div class="list-group-item">
+                            <div class="row g-2 align-items-center">
+                              <div class="col">
+                                {{ doc.name }}
+                                <div
+                                  class="text-muted"
+                                  v-if="doc.invalidMessage"
+                                >
+                                  {{ doc.invalidMessage }}
+                                </div>
+                              </div>
+                              <div class="col-auto">
+                                <button
+                                  class="btn btn-pinterest w-100 btn-icon"
+                                  @click="deleteDoc(index)"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-x-lg"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path
+                                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -213,6 +278,39 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:enrollmentDocs="item">
+                    <div
+                      v-for="(doc, index) in item.row.enrollmentDocs"
+                      :key="index"
+                      class="mb-1"
+                    >
+                      {{ doc.docName }}
+                      <a :href="doc.docLink" class="btn btn-success btn-icon">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-files"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                          <path
+                            d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                          />
+                          <path
+                            d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -220,7 +318,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -250,7 +348,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -326,7 +424,9 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Số sinh viên chuyển tiếp</label>
+                                <label class="form-label"
+                                  >Số sinh viên chuyển tiếp</label
+                                >
                                 <input
                                   type="number"
                                   v-model="editEnroll.transferStudents"
@@ -381,7 +481,9 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Số sinh viên bảo lưu</label>
+                                <label class="form-label"
+                                  >Số sinh viên bảo lưu</label
+                                >
                                 <input
                                   type="number"
                                   class="form-control"
@@ -390,13 +492,77 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Tổng số sinh viên đang đào tạo</label>
+                                <label class="form-label"
+                                  >Tổng số sinh viên đang đào tạo</label
+                                >
                                 <input
                                   type="number"
                                   class="form-control"
                                   v-model="editEnroll.trainingStudents"
                                   placeholder="Nhập số sinh viên đang đào tạo"
                                 />
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <div class="form-label required">
+                                Các quyết định liên quan đến tuyển sinh
+                              </div>
+                              <input
+                                type="file"
+                                name="docs"
+                                class="form-control"
+                                ref="enrollmentDocs1"
+                                @change="handleFilesUpload1()"
+                                style="display: none"
+                                id="docs_file"
+                                multiple
+                              />
+
+                              <div id="filesUploadControl1" class="card">
+                                <a
+                                  id="btnF"
+                                  @click="handleDocsUpload1()"
+                                  class="btn btn-outline-primary w-100"
+                                  >Choose Files</a
+                                >
+                                <div
+                                  v-for="(doc, index) in editEnroll.docs"
+                                  :key="index"
+                                  class="list-group card-list-group"
+                                >
+                                  <div class="list-group-item">
+                                    <div class="row g-2 align-items-center">
+                                      <div class="col">
+                                        {{ doc.name }}
+                                        <div
+                                          class="text-muted"
+                                          v-if="doc.invalidMessage"
+                                        >
+                                          {{ doc.invalidMessage }}
+                                        </div>
+                                      </div>
+                                      <div class="col-auto">
+                                        <button
+                                          class="btn btn-pinterest w-100 btn-icon"
+                                          @click="deleteDoc1(index)"
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-x-lg"
+                                            viewBox="0 0 16 16"
+                                          >
+                                            <path
+                                              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -425,14 +591,12 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
+import _ from "lodash";
+import { formToJSON } from "axios";
 export default {
-  name: "ProgramManagePage",
-  components: {
-    VerticalNavbar,
-  },
+  name: "EnrollmentManagePage",
 
   data() {
     return {
@@ -444,6 +608,7 @@ export default {
         "dropoutCount",
         "graduatedCount",
         "trainingStudents",
+        "enrollmentDocs",
         "tool",
       ],
       options: {
@@ -457,6 +622,7 @@ export default {
           dropoutCount: "Số sinh viên thôi học",
           graduatedCount: "Số sinh viên tốt nghiệp",
           trainingStudents: "Tổng số sinh viên đang đào tạo",
+          enrollmentDocs: "Các quyết định tuyển sinh",
           tool: "Thao tác",
         },
       },
@@ -472,6 +638,8 @@ export default {
       dropoutCount: "",
       reservedStudents: "",
       trainingStudents: "",
+      docs: [], // array này để quản lí các file chuẩn bị đc up lên sv ở phía fe
+      uploadDocs: [], // array này ms là array các doc thật sự để up lên sv
       displayModal: false,
       displayModalOne: false,
 
@@ -487,6 +655,8 @@ export default {
         dropoutCount: "",
         reservedStudents: "",
         trainingStudents: "",
+        docs: [],
+        uploadDocs: [],
       },
     };
   },
@@ -497,7 +667,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -516,46 +686,156 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    handleFilesUpload() {
+      const docs = this.$refs.enrollmentDocs.files;
+      console.log(docs);
+      this.uploadDocs = [...this.uploadDocs, ...docs];
+      // [1] this.docs = [...this.docs, ...docs] // gộp 2 array this.docs là array lưu trong data, docs là array các files đc lưu lại khi ta chọn các file từ máy
+
+      this.docs = [
+        ...this.docs,
+        ..._.map(docs, (doc) => {
+          return {
+            name: doc.name,
+            size: doc.size,
+            type: doc.type,
+            invalidMessage: this.validate(doc),
+          };
+        }),
+      ];
+      console.log(this.docs);
+    },
+    handleFilesUpload1() {
+      const docs = this.$refs.enrollmentDocs1.files;
+      console.log(docs);
+      this.editEnroll.uploadDocs = [...this.editEnroll.uploadDocs, ...docs];
+      // [1] this.docs = [...this.docs, ...docs] // gộp 2 array this.docs là array lưu trong data, docs là array các files đc lưu lại khi ta chọn các file từ máy
+
+      this.editEnroll.docs = [
+        ...this.editEnroll.docs,
+        ..._.map(docs, (doc) => {
+          return {
+            name: doc.name,
+            size: doc.size,
+            type: doc.type,
+            invalidMessage: this.validate(doc),
+          };
+        }),
+      ];
+      console.log(this.docs);
+    },
+    validate(doc) {
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const allowedTypes = ["application/pdf"];
+
+      if (doc.size > MAX_SIZE) {
+        return `Vượt quá dung lượng: ${MAX_SIZE / (1024 * 1024)}Mb`;
+      } else if (!allowedTypes.includes(doc.type)) {
+        return "Không phải file pdf";
+      } else {
+        return "";
+      }
+    },
+    handleDocsUpload() {
+      this.$refs.enrollmentDocs.click();
+    },
+    handleDocsUpload1() {
+      this.$refs.enrollmentDocs1.click();
+    },
+    deleteDoc1(index) {
+      this.editEnroll.docs.splice(index, 1);
+      console.log(this.editEnroll.docs, "this.editEnroll.docs deleteDoc1");
+      this.editEnroll.uploadDocs.splice(index, 1);
+      console.log(
+        this.editEnroll.uploadDocs,
+        "this.editEnroll.uploadDocs deleteDoc1"
+      );
+    },
+    deleteDoc(index) {
+      this.docs.splice(index, 1);
+      console.log(this.docs, "this.docs deleteDoc");
+      this.uploadDocs.splice(index, 1);
+      console.log(this.uploadDocs, "this.uploadDocs deleteDoc");
+    },
     async submitForm() {
-      const data = {
-        programId: this.id,
-        year: this.year,
-        enrollmentCount: this.enrollmentCount,
-        admissionCount: this.admissionCount,
-        transferStudents: this.transferStudents,
-        graduatedCount: this.graduatedCount,
-        applicantsCount: this.applicantsCount,
-        trainingStudents: this.trainingStudents,
-        admittedStudents: this.admittedStudents,
-        dropoutCount: this.dropoutCount,
-        reservedStudents: this.reservedStudents,
-      };
-
       try {
-        const result = await instance.post("/api/create-enrollment", data);
-
-        if (result.data.error === true) {
-          // alert(result.data.message)
-          this.toast.error(result.data.message);
-          // location.reload()
-          // this.$refs.table.refresh()
+        // files input validate ở fe, check xem các file up lên có lỗi ko
+        let canUpload = false;
+        const trueFalseArr = this.docs.map((doc) => {
+          // nếu trong array docs có phần tử nào không phù hợp invalidMessage !== "" thì sẽ lưu trong trueFalseArr là false
+          if (doc.invalidMessage === "") {
+            return "true";
+          } else {
+            return "false";
+          }
+        });
+        console.log(trueFalseArr, "trueFalseArr submitForm() method");
+        if (trueFalseArr.includes("false")) {
+          // Nếu array trueFalseArr có 1 phần tử mang giá trị 'false' có nghĩa là có file up lên lỗi (có thể sai định dạng hoặc dung lượng lớn), khi đó ta trả về giá trị canUpload = false, ngược lại thì canUpload = true
+          canUpload = false;
+          // return canUpload;
+        } else {
+          canUpload = true;
+          // return canUpload;
         }
+        console.log(canUpload, "canUpload submitForm() method");
 
-        if (result.data.error === false) {
-          // alert(result.data.message)
-          this.toast.success(result.data.message);
-          this.$refs.table.refresh();
-          this.displayModal = false;
-          this.year = "";
-          this.enrollmentCount = "";
-          this.admissionCount = "";
-          this.transferStudents = "";
-          this.graduatedCount = "";
-          this.applicantsCount = "";
-          this.trainingStudents = "";
-          this.admittedStudents = "";
-          this.dropoutCount = "";
-          this.reservedStudents = "";
+        if (!canUpload) {
+          // nếu giá trị canUpload = false ta sẽ không gọi api create-partner, gửi thông báo cho người dùng sửa những file đã up lên
+          this.toast.error("Hãy sửa đúng file upload");
+        } else {
+          // giá trị canUpload = true, gọi api create-partner
+          console.log(this.id, "post api program id");
+          let formData = new FormData();
+          formData.append("programId", this.id);
+          formData.append("year", this.year);
+          formData.append("enrollmentCount", this.enrollmentCount);
+          formData.append("admissionCount", this.admissionCount);
+          formData.append("transferStudents", this.transferStudents);
+          formData.append("graduatedCount", this.graduatedCount);
+          formData.append("applicantsCount", this.applicantsCount);
+          formData.append("trainingStudents", this.trainingStudents);
+          formData.append("admittedStudents", this.admittedStudents);
+          formData.append("dropoutCount", this.dropoutCount);
+          formData.append("reservedStudents", this.reservedStudents);
+          _.forEach(this.uploadDocs, (doc) => {
+            formData.append("enrollmentDocs", doc);
+          });
+          const result = await instance.post(
+            "/api/create-enrollment",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (result.data.error === true) {
+            // alert(result.data.message)
+            this.toast.error(result.data.message);
+            // location.reload()
+            // this.$refs.table.refresh()
+          }
+
+          if (result.data.error === false) {
+            // alert(result.data.message)
+            this.toast.success(result.data.message);
+            this.$refs.table.refresh();
+            this.displayModal = false;
+            this.year = "";
+            this.enrollmentCount = "";
+            this.admissionCount = "";
+            this.transferStudents = "";
+            this.graduatedCount = "";
+            this.applicantsCount = "";
+            this.trainingStudents = "";
+            this.admittedStudents = "";
+            this.dropoutCount = "";
+            this.reservedStudents = "";
+            this.docs = [];
+            this.uploadDocs = [];
+          }
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -563,8 +843,27 @@ export default {
     },
 
     onEdit(item) {
+      const docRefsArr = item.enrollmentDocs.map((doc) => {
+        const MAX_SIZE = 20 * 1024 * 1024;
+        const allowedTypes = ["application/pdf"];
+        let invalidMessage = "";
+        if (doc.docSize > MAX_SIZE) {
+          invalidMessage = `Vượt quá dung lượng: ${MAX_SIZE / (1024 * 1024)}Mb`;
+        } else if (!allowedTypes.includes(doc.docType)) {
+          invalidMessage = "Không phải file pdf";
+        } else {
+          invalidMessage = "";
+        }
+        return {
+          name: doc.docName,
+          size: doc.docSize,
+          type: doc.docType,
+          link: doc.docLink,
+          invalidMessage: invalidMessage,
+        };
+      });
       this.editEnroll.year = item.year;
-      this.editEnroll.enrollmentCount = item.enrollmentCount 
+      this.editEnroll.enrollmentCount = item.enrollmentCount;
       this.editEnroll.admissionCount = item.admissionCount;
       this.editEnroll.transferStudents = item.transferStudents;
       this.editEnroll.graduatedCount = item.graduatedCount;
@@ -573,40 +872,78 @@ export default {
       this.editEnroll.admittedStudents = item.admittedStudents;
       this.editEnroll.dropoutCount = item.dropoutCount;
       this.editEnroll.reservedStudents = item.reservedStudents;
+      this.editEnroll.docs = docRefsArr;
+      this.editEnroll.uploadDocs = [];
       this.editEnroll.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
-      const data = {
-        year: this.editEnroll.year,
-        enrollmentCount: this.enrollmentCount.enrollmentCount,
-        admissionCount: this.editEnroll.admissionCount,
-        transferStudents: this. editEnroll.transferStudents,
-        graduatedCount: this.editEnroll.graduatedCount,
-        applicantsCount: this.editEnroll.applicantsCount,
-        trainingStudents: this.editEnroll.trainingStudents,
-        admittedStudents: this.editEnroll.admittedStudents,
-        dropoutCount: this.editEnroll.dropoutCount,
-        reservedStudents: this.editEnroll.reservedStudents,
-      };
       try {
-        const result = await instance.put(
-          `/api/edit-enrollment/${this.editEnroll.id}`,
-          data
-        );
+        let canUpload = false;
+        const trueFalseArr = this.docs.map((doc) => {
+          // nếu trong array docs có phần tử nào không phù hợp invalidMessage !== "" thì sẽ lưu trong trueFalseArr là false
+          if (doc.invalidMessage === "") {
+            return "true";
+          } else {
+            return "false";
+          }
+        });
+        console.log(trueFalseArr, "trueFalseArr onSubmitForm() method");
 
-        if (result.data.error === true) {
-          // alert(result.data.message)
-          this.toast.error(result.data.message);
-          // location.reload()
-          this.$refs.table.refresh();
+        if (trueFalseArr.includes("false")) {
+          // Nếu array trueFalseArr có 1 phần tử mang giá trị 'false' có nghĩa là có file up lên lỗi (có thể sai định dạng hoặc dung lượng lớn), khi đó ta trả về giá trị canUpload = false, ngược lại thì canUpload = true
+          canUpload = false;
+          // return canUpload;
         } else {
-          // alert('Project has been updated')
-          this.toast.success("Văn bản đã được sửa");
-          this.$refs.table.refresh();
-          console.log(result.data);
-          this.displayModalOne = false;
+          canUpload = true;
+          // return canUpload;
+        }
+        console.log(canUpload, "canUpload onSubmitForm() method");
+        if (!canUpload) {
+          this.toast.error("Hãy sửa đúng file upload");
+        } else {
+          const docsState = {
+            docs1Refs: this.editEnroll.docs,
+          };
+          let formData = new FormData();
+          formData.append("programId", this.id);
+          formData.append("year", this.editEnroll.year);
+          formData.append("enrollmentCount", this.editEnroll.enrollmentCount);
+          formData.append("admissionCount", this.editEnroll.admissionCount);
+          formData.append("transferStudents", this.editEnroll.transferStudents);
+          formData.append("graduatedCount", this.editEnroll.graduatedCount);
+          formData.append("applicantsCount", this.editEnroll.applicantsCount);
+          formData.append("trainingStudents", this.editEnroll.trainingStudents);
+          formData.append("admittedStudents", this.editEnroll.admittedStudents);
+          formData.append("dropoutCount", this.editEnroll.dropoutCount);
+          formData.append("reservedStudents", this.editEnroll.reservedStudents);
+          formData.append("docsState", JSON.stringify(docsState));
+          _.forEach(this.editEnroll.uploadDocs, (doc) => {
+            formData.append("enrollmentDocs1", doc);
+          });
+          const result = await instance.put(
+            `/api/edit-enrollment/${this.editEnroll.id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (result.data.error === true) {
+            // alert(result.data.message)
+            this.toast.error(result.data.message);
+            // location.reload()
+            this.$refs.table.refresh();
+          } else {
+            // alert('Project has been updated')
+            this.toast.success("Văn bản đã được sửa");
+            this.$refs.table.refresh();
+            console.log(result.data);
+            this.displayModalOne = false;
+          }
         }
       } catch (error) {
         console.log(error, "put api catch block error");
@@ -617,7 +954,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await instance.delete(`/api/delete-enrollment/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-enrollment/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

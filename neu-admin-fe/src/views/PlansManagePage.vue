@@ -108,7 +108,9 @@
                         ></textarea>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Quy mô và địa điểm đào tạo</label>
+                        <label class="form-label"
+                          >Quy mô và địa điểm đào tạo</label
+                        >
                         <textarea
                           v-model="ecoManage"
                           row="1"
@@ -119,7 +121,9 @@
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label class="form-label">Hình thức liên kết đào tạo</label>
+                        <label class="form-label"
+                          >Hình thức liên kết đào tạo</label
+                        >
                         <textarea
                           class="form-control"
                           row="1"
@@ -159,8 +163,31 @@
                           v-model="tuition"
                         />
                       </div>
-                      
-
+                      <div class="mb-3">
+                        <label class="form-label">Văn bằng chứng chỉ</label>
+                        <input
+                          type="file"
+                          ref="planDoc"
+                          class="form-control"
+                          @change="handlePdfChange()"
+                          style="display: none"
+                        />
+                        <div class="card">
+                          <button
+                            @click="handlePdfUpload()"
+                            class="btn btn-outline-primary w-100"
+                          >
+                            Choose File
+                          </button>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="attachedDocName"
+                            disabled
+                          />
+                        </div>
+                        <div v-if="message != ''">{{ message }}</div>
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -194,7 +221,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -224,7 +251,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -244,6 +271,33 @@
                           d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
                         />
                         <path d="M16 5l3 3" />
+                      </svg>
+                    </a>
+                    <a
+                      :href="item.row.attachedDocLink"
+                      class="btn btn-success btn-icon"
+                    >
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-files"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                        <path
+                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                        />
+                        <path
+                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                        />
                       </svg>
                     </a>
                     <div
@@ -340,9 +394,7 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Học phí</label
-                                >
+                                <label class="form-label">Học phí</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -350,7 +402,35 @@
                                   v-model="editPlan.tuition"
                                 />
                               </div>
-
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Văn bằng chứng chỉ</label
+                                >
+                                <input
+                                  type="file"
+                                  ref="planDoc1"
+                                  class="form-control"
+                                  @change="handlePdfChange1()"
+                                  style="display: none"
+                                />
+                                <div class="card">
+                                  <button
+                                    @click="handlePdfUpload1()"
+                                    class="btn btn-outline-primary w-100"
+                                  >
+                                    Choose File
+                                  </button>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="editPlan.attachedDocName"
+                                    disabled
+                                  />
+                                </div>
+                                <div v-if="editPlan.message != ''">
+                                  {{ editPlan.message }}
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -379,10 +459,9 @@
 import instance from "../instance";
 // import { ref } from 'vue'
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
-  name: "ProgramManagePage",
-
+  name: "PlanManagePage",
 
   data() {
     return {
@@ -395,6 +474,7 @@ export default {
         "tuition",
         "ecoManage",
         "infraCondition",
+        "attachedDocName",
         "tool",
       ],
       options: {
@@ -409,6 +489,7 @@ export default {
           tuition: "Học phí",
           ecoManage: "Quy mô và địa điểm đào tạo",
           infraCondition: "Điều kiện cơ sở vật chất",
+          attachedDocName: "Văn bằng chứng chỉ",
           tool: "Thao tác",
         },
       },
@@ -421,6 +502,9 @@ export default {
       infraCondition: "",
       language: "",
       ecoManage: "",
+      planDoc: null,
+      message: "",
+      attachedDocName: "",
       displayModal: false,
       displayModalOne: false,
 
@@ -433,11 +517,15 @@ export default {
         infraCondition: "",
         language: "",
         ecoManage: "",
+        planDoc: null,
+        message: "",
+        attachedDocName: "",
+        attachedDocLink: "",
       },
     };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -462,20 +550,67 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    handlePdfUpload() {
+      this.$refs.planDoc.click();
+    },
+    handlePdfUpload1() {
+      this.$refs.planDoc1.click();
+    },
+    handlePdfChange() {
+      const file = this.$refs.planDoc.files[0];
+      console.log(file, "handlePdfChange file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.planDoc = file;
+      this.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.message = "";
+      } else {
+        this.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
+    handlePdfChange1() {
+      const file = this.$refs.planDoc1.files[0];
+      console.log(file, "handlePdfChange file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.editPlan.planDoc = file;
+      this.editPlan.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.editPlan.message = "";
+      } else {
+        this.editPlan.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
     async submitForm() {
-      const data = {
-        programId: this.id,
-        qualifiedLecturer: this.qualifiedLecturer,
-        qualifiedStudent: this.qualifiedStudent,
-        planStructure: this.planStructure,
-        tuition: this.tuition,
-        infraCondition: this.infraCondition,
-        language: this.language,
-        ecoManage: this.ecoManage,
-      };
-
+      let formData = new FormData();
+      formData.append("programId", this.id);
+      formData.append("qualifiedLecturer", this.qualifiedLecturer);
+      formData.append("qualifiedStudent", this.qualifiedStudent);
+      formData.append("planStructure", this.planStructure);
+      formData.append("tuition", this.tuition);
+      formData.append("infraCondition", this.infraCondition);
+      formData.append("language", this.language);
+      formData.append("ecoManage", this.ecoManage);
+      formData.append("planDoc", this.planDoc);
       try {
-        const result = await instance.post("/api/create-plan", data);
+        const result = await instance.post("/api/create-plan", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -496,7 +631,8 @@ export default {
           this.infraCondition = "";
           this.language = "";
           this.ecoManage = "";
-
+          this.planDoc = null;
+          this.attachedDocName = "";
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -511,24 +647,35 @@ export default {
       this.editPlan.infraCondition = item.infraCondition;
       this.editPlan.language = item.language;
       this.editPlan.ecoManage = item.ecoManage;
+      this.editPlan.planDoc = null;
+      this.editPlan.attachedDocName = item.attachedDocName;
+      this.editPlan.attachedDocLink = item.attachedDocLink;
       this.editPlan.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
-      const data = {
-        qualifiedLecturer: this.editPlan.qualifiedLecturer,
-        qualifiedStudent: this.editPlan.qualifiedStudent,
-        planStructure: this.editPlan.planStructure,
-        tuition: this.editPlan.tuition,
-        infraCondition: this.editPlan.infraCondition,
-        language: this.editPlan.language,
-        ecoManage: this.editPlan.ecoManage,
-      };
+      let formData = new FormData();
+      formData.append("qualifiedLecturer", this.editPlan.qualifiedLecturer);
+      formData.append("qualifiedStudent", this.editPlan.qualifiedStudent);
+      formData.append("planStructure", this.editPlan.planStructure);
+      formData.append("tuition", this.editPlan.tuition);
+      formData.append("infraCondition", this.editPlan.infraCondition);
+      formData.append("language", this.editPlan.language);
+      formData.append("ecoManage", this.editPlan.ecoManage);
+      formData.append("planDoc1", this.editPlan.planDoc);
+      formData.append("attachedDocName", this.editPlan.attachedDocName);
+      formData.append("attachedDocLink", this.editPlan.attachedDocLink);
+
       try {
         const result = await instance.put(
           `/api/edit-plan/${this.editPlan.id}`,
-          data
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
 
         if (result.data.error === true) {

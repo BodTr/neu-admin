@@ -38,7 +38,7 @@
                     <path d="M12 5l0 14"></path>
                     <path d="M5 12l14 0"></path>
                   </svg>
-                  Thêm qui trình quản lý
+                  Thêm quy trình quản lý
                 </a>
                 <a
                   href="#"
@@ -78,7 +78,7 @@
               <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Thêm qui trình quản lý</h5>
+                    <h5 class="modal-title">Thêm quy trình quản lý</h5>
                     <button
                       @click="hideModal()"
                       type="button"
@@ -88,39 +88,136 @@
                     ></button>
                   </div>
                   <div class="modal-body row row-cards">
+                    <h3>Cơ chế đảm bảo chất lượng đào tạo</h3>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Cơ chế</label>
-                        <input
-                          type="text"
+                        <label class="form-label"
+                          >Hình thức kiểm tra đánh giá</label
+                        >
+                        <textarea
                           class="form-control"
-                          v-model="mechanism"
-                          placeholder="Nhập cơ chế"
-                        />
+                          rows="3"
+                          v-model="evaluationForm"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <div class="mb-3" style="margin-left: 2rem ;">
-                        <label class="form-check"></label>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            v-model="hasProcess"
-                            value="Có qui trình"
-                          />
-                          <span class="form-check-label">Có qui trình</span>
-                        </div>
+                      <div class="mb-3">
+                        <label class="form-label"
+                          >Khảo sát đánh giá chất lượng chương trình</label
+                        >
+                        <textarea
+                          class="form-control"
+                          rows="3"
+                          v-model="evaluateProgramQuality"
+                          placeholder="Nhập nội dung"
+                        ></textarea>
                       </div>
                     </div>
+
                     <div class="mb-3">
-                      <label class="form-label">Nội dung </label>
-                      <textarea
-                        class="form-control"
-                        rows="5"
-                        v-model="detail"
-                        placeholder="Nhập nội dung"
-                      ></textarea>
+                      <label class="form-label"
+                        >Các quy trình tự đảm bảo chất lượng đào tạo</label
+                      >
+                      <div class="table-responsive">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr class="g-2 align-items-center">
+                              <th>Quy trình</th>
+                              <th style="width: 60%">Nội dung quy trình</th>
+                              <th>Thao tác</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <textarea
+                                  class="form-control"
+                                  row="1"
+                                  placeholder="Nhập tên quy trình"
+                                  v-model="processName"
+                                ></textarea>
+                              </td>
+                              <td>
+                                <textarea
+                                  class="form-control"
+                                  row="1"
+                                  placeholder="Nhập nội dung quy trình"
+                                  v-model="processDetail"
+                                ></textarea>
+                              </td>
+                              <td>
+                                <a
+                                  href="#"
+                                  @click="plusResult()"
+                                  class="btn btn-azure btn-icon"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
+                                  >
+                                    <path
+                                      stroke="none"
+                                      d="M0 0h24v24H0z"
+                                      fill="none"
+                                    />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                  </svg>
+                                </a>
+                              </td>
+                            </tr>
+                            <tr v-for="(item, index) in processes" :key="index">
+                              <td>{{ item.processName }}</td>
+                              <td>{{ item.processDetail }}</td>
+                              <td>
+                                <a
+                                  href="#"
+                                  @click="deleteResult(index)"
+                                  class="btn btn-ghost-danger btn-icon"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                  >
+                                    <path
+                                      stroke="none"
+                                      d="M0 0h24v24H0z"
+                                      fill="none"
+                                    />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path
+                                      d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                                    />
+                                    <path
+                                      d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+                                    />
+                                  </svg>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -147,6 +244,13 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:processes="item">
+                    <div v-for="(ele, index) in item.row.processes" :key="index">
+                      <div style="font-weight: 500;">Quy trình {{ index + 1 }}:</div>
+                      <span style="font-weight: 500;"> - Tên quy trình:</span> {{ ele.processName }}
+                      <div><span style="font-weight: 500;"> - Nội dung quy trình:</span> {{ ele.processDetail }}</div>
+                    </div>
+                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -154,7 +258,7 @@
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
                       >
-                      <svg
+                        <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="icon icon-tabler icon-tabler-trash"
                           width="24"
@@ -184,7 +288,7 @@
                       data-bs-target="#modal-report-one"
                       @click="onEdit(item.row)"
                     >
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-edit"
                         width="24"
@@ -217,7 +321,7 @@
                       <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa qui trình</h5>
+                            <h5 class="modal-title">Chỉnh sửa quy trình</h5>
                             <button
                               @click="hideModal1()"
                               type="button"
@@ -227,40 +331,144 @@
                             ></button>
                           </div>
                           <div class="modal-body row row-cards">
+                            <h3>Cơ chế đảm bảo chất lượng đào tạo</h3>
+
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Cơ chế</label>
-                                <input
-                                  type="text"
+                                <label class="form-label"
+                                  >Hình thức kiểm tra đánh giá</label
+                                >
+                                <textarea
                                   class="form-control"
-                                  v-model="editEduQuality.mechanism"
-                                  placeholder="Nhập cơ chế"
-                                />
+                                  rows="3"
+                                  v-model="editEduQuality.evaluationForm"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <div class="mb-3" style="margin-left: 2rem ;">
-                                <label class="form-check"></label>
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    v-model="editEduQuality.hasProcess"
-                                    value="Có qui trình"
-                                  />
-                                  <span class="form-check-label">Có qui trình</span>
-                                </div>
-                                  
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Khảo sát đánh giá chất lượng chương
+                                  trình</label
+                                >
+                                <textarea
+                                  class="form-control"
+                                  rows="3"
+                                  v-model="editEduQuality.evaluateProgramQuality"
+                                  placeholder="Nhập nội dung"
+                                ></textarea>
                               </div>
                             </div>
+
                             <div class="mb-3">
-                              <label class="form-label">Nội dung</label>
-                              <textarea
-                                class="form-control"
-                                rows="5"
-                                v-model="editEduQuality.detail"
-                                placeholder="Nhập nội dung"
-                              ></textarea>
+                              <label class="form-label"
+                                >Các quy trình tự đảm bảo chất lượng đào
+                                tạo</label
+                              >
+                              <div class="table-responsive">
+                                <table class="table mb-0">
+                                  <thead>
+                                    <tr class="g-2 align-items-center">
+                                      <th>Quy trình</th>
+                                      <th style="width: 60%">
+                                        Nội dung quy trình
+                                      </th>
+                                      <th>Thao tác</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <textarea
+                                          class="form-control"
+                                          row="1"
+                                          placeholder="Nhập tên quy trình"
+                                          v-model="editEduQuality.processName"
+                                        ></textarea>
+                                      </td>
+                                      <td>
+                                        <textarea
+                                          class="form-control"
+                                          row="1"
+                                          placeholder="Nhập nội dung quy trình"
+                                          v-model="editEduQuality.processDetail"
+                                        ></textarea>
+                                      </td>
+                                      <td>
+                                        <a
+                                          href="#"
+                                          @click="plusResult1()"
+                                          class="btn btn-azure btn-icon"
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
+                                          >
+                                            <path
+                                              stroke="none"
+                                              d="M0 0h24v24H0z"
+                                              fill="none"
+                                            />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                          </svg>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      v-for="(item, index) in editEduQuality.processes"
+                                      :key="index"
+                                    >
+                                      <td>{{ item.processName }}</td>
+                                      <td>{{ item.processDetail }}</td>
+                                      <td>
+                                        <a
+                                          href="#"
+                                          @click="deleteResult1(index)"
+                                          class="btn btn-ghost-danger btn-icon"
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                          >
+                                            <path
+                                              stroke="none"
+                                              d="M0 0h24v24H0z"
+                                              fill="none"
+                                            />
+                                            <path d="M4 7l16 0" />
+                                            <path d="M10 11l0 6" />
+                                            <path d="M14 11l0 6" />
+                                            <path
+                                              d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                                            />
+                                            <path
+                                              d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+                                            />
+                                          </svg>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -289,36 +497,42 @@
 import instance from "../instance";
 // import { ref } from 'vue'
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
-  name: "ProgramManagePage",
+  name: "EducationQualityManagePage",
   data() {
     return {
-      columns: ["stt", "mechanism", "hasProcess", "detail", "tool"],
+      columns: ["stt", "evaluationForm", "evaluateProgramQuality", "processes", "tool"],
       options: {
         params: {
           id: localStorage.getItem("progId"),
         },
         headings: {
-          mechanism: "Cơ chế",
-          hasProcess: "Quy trình",
-          detail: "Nội dung",
+          evaluationForm: "Hình thức kiểm tra đánh giá",
+          evaluateProgramQuality: "Khảo sát đánh giá chất lượng chương trình",
+          processes: "Các quy trình",
           tool: "Thao tác",
         },
       },
       programName: "",
       id: "",
-      mechanism: "",
-      hasProcess: [],
-      detail: "",
+      processName: "",
+      processDetail: "",
+      evaluationForm: "",
+      evaluateProgramQuality: "",
+
+      processes: [],
+
       displayModal: false,
       displayModalOne: false,
 
       editEduQuality: {
         id: "",
-        mechanism: "",
-        hasProcess: [],
-        detail: "",
+        processName: "",
+        processDetail: "",
+        evaluationForm: "",
+        evaluateProgramQuality: "",
+        processes: [],
       },
     };
   },
@@ -329,7 +543,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -348,13 +562,49 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    plusResult() {
+      if (!this.processName || !this.processDetail) {
+        return this.toast.error("Hãy điền đủ form");
+      } else {
+        this.processes.push({
+          processName: this.processName,
+          processDetail: this.processDetail,
+        });
+        console.log(this.processes, "this.processes plusResult()");
+        this.processName = "";
+        this.processDetail = "";
+        return this.processes;
+      }
+    },
+    plusResult1() {
+      if (!this.editEduQuality.processName || !this.editEduQuality.processDetail) {
+        return this.toast.error("Hãy điền đủ form");
+      } else {
+        this.editEduQuality.processes.push({
+          processName: this.editEduQuality.processName,
+          processDetail: this.editEduQuality.processDetail,
+        });
+        console.log(this.editEduQuality.processes, "this.editEduQuality.processes plusResult1()");
+        this.editEduQuality.processName = "";
+        this.editEduQuality.processDetail = "";
+        return this.editEduQuality.processes;
+      }
+    },
+    deleteResult(index) {
+      this.processes.splice(index, 1);
+      console.log(this.processes, "this.processes deleteResult()");
+    },
+    deleteResult1(index) {
+      this.editEduQuality.processes.splice(index, 1);
+      console.log(this.editEduQuality.processes, "this.editEduQuality.processes deleteResult1()");
+    },
     async submitForm() {
       console.log(this.id, "post api program id");
       const data = {
         programId: this.id,
-        mechanism: this.mechanism,
-        detail: this.detail,
-        hasProcess: this.hasProcess,
+        evaluationForm: this.evaluationForm,
+        evaluateProgramQuality: this.evaluateProgramQuality,
+        processes: this.processes,
       };
 
       try {
@@ -372,9 +622,9 @@ export default {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.displayModal = false;
-          this.mechanism = "";
-          this.detail = "";
-          this.hasProcess = [];
+          this.evaluationForm = "";
+          this.evaluateProgramQuality = "";
+          this.processes = [];
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -382,14 +632,10 @@ export default {
     },
 
     onEdit(item) {
-      if (item.hasProcess === 'Có') {
-        this.editEduQuality.hasProcess = ['Có qui trình'];
-      } else {
-        this.editEduQuality.hasProcess = ['']
-      }
-      this.editEduQuality.mechanism = item.mechanism;
-      this.editEduQuality.detail = item.detail;
-      
+
+      this.editEduQuality.evaluationForm = item.evaluationForm;
+      this.editEduQuality.evaluateProgramQuality = item.evaluateProgramQuality;
+      this.editEduQuality.processes = item.processes
       this.editEduQuality.id = item._id;
       this.showModal1();
 
@@ -398,10 +644,10 @@ export default {
 
     async onSubmit() {
       const data = {
-        mechanism: this.editEduQuality.mechanism,
+        evaluationForm: this.editEduQuality.evaluationForm,
+        evaluateProgramQuality: this.editEduQuality.evaluateProgramQuality,
         detail: this.editEduQuality.detail,
-        detail: this.editEduQuality.detail,
-        hasProcess: this.editEduQuality.hasProcess,
+        processes: this.editEduQuality.processes,
       };
       try {
         const result = await instance.put(
@@ -416,7 +662,7 @@ export default {
           this.$refs.table.refresh();
         } else {
           // alert('Project has been updated')
-          this.toast.success("qui trình đã được sửa");
+          this.toast.success(result.data.message);
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
@@ -429,8 +675,10 @@ export default {
     async remove(item) {
       console.log(item);
       try {
-        if (confirm("Xóa qui trình này?")) {
-          const result = await instance.delete(`/api/delete-process/${item._id}`);
+        if (confirm("Xóa quy trình này?")) {
+          const result = await instance.delete(
+            `/api/delete-process/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);

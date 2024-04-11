@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const PlanSchema = new mongoose.Schema({
-    certName: {
-        type: String,
-        require: false
-    },
     qualifiedLecturer: {
         type: String,
         require: false
@@ -33,7 +29,11 @@ const PlanSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    report: {
+    attachedDocLink: {
+        type: String,
+        require: false
+    },
+    attachedDocName: {
         type: String,
         require: false
     },

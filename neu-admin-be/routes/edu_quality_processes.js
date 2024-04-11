@@ -12,8 +12,7 @@ router.get('/api/get-all-processes', async (req, res) => {
         console.log(id, "get req id")
         let skip = (parseInt(page) - 1) * parseInt(limit)
         const processes = await ProcessSchema.find({
-            program: { id: new ObjectId(id) },
-            mechanism: {$regex: query}
+            program: { id: new ObjectId(id) }
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
         let count = await ProcessSchema.countDocuments({
             program: { id: new ObjectId(id) }
@@ -37,18 +36,13 @@ router.get('/api/get-all-processes', async (req, res) => {
 
 router.post('/api/create-process', emptyProcessInputsValidation, typeProcessInputsValidation, async (req, res) => {
     try {
-        const { programId, mechanism, hasProcess, detail } = req.body
+        const { evaluationForm, evaluateProgramQuality, processes, programId } = req.body;
         console.log(req.body, "req.body post api")
-        let YNProcess = ''
-        if (hasProcess.length === 0 ) {
-            YNProcess = 'Không'
-        } else {
-            YNProcess = 'Có'
-        }
+
         const newProcess = await ProcessSchema.create({
-            mechanism: mechanism,
-            hasProcess: YNProcess,
-            detail: detail,
+            evaluationForm: evaluationForm,
+            evaluateProgramQuality: evaluateProgramQuality,
+            processes: processes,
             program: {
                 id: programId
             }
@@ -66,23 +60,18 @@ router.post('/api/create-process', emptyProcessInputsValidation, typeProcessInpu
 router.put('/api/edit-process/:id', emptyProcessInputsValidation, typeProcessInputsValidation, async(req, res) => {
     try {
         const { id } = req.params
-        const { programId, mechanism, hasProcess, detail } = req.body
+        const { evaluationForm, evaluateProgramQuality, processes, } = req.body
         console.log(id, "::put api id::")
-        let YNProcess = ''
-        if (hasProcess.length === 0 ) {
-            YNProcess = 'Không'
-        } else {
-            YNProcess = 'Có'
-        }
+        
         const updatingProcess = {
-            mechanism: mechanism,
-            hasProcess: YNProcess,
-            detail: detail,
+            evaluationForm: evaluationForm,
+            evaluateProgramQuality: evaluateProgramQuality,
+            processes: processes,
         }
         console.log(req.body, "put api req.body")
         const updatedProcess = await ProcessSchema.findOneAndUpdate({ _id: id }, updatingProcess, {new: true})
         console.log(updatedProcess, "updatedProcess")
-        res.json({ error: false, message: "Qui trình đã được sửa thành công" })
+        res.json({ error: false, message: "Quy trình đã được sửa thành công" })
     } catch (error) {
         console.log(error, "put catch block error")
         res.json({error: true, message: "something went wrong!"})
