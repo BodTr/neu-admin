@@ -50,7 +50,7 @@ router.get('/api/get-all-close-decisions', async (req, res) => {
     }
 })
 
-router.post('/api/create-close-decision', initCloseDecisionDocMiddleware, upload.single("closeDecisionDoc"), emptyFileCloseDecisionInputValidation, emptyCloseDecisionInputsValidation, typeCloseDecisionInputsValidation, async (req, res) => {
+router.post('/api/create-close-decision', initCloseDecisionDocMiddleware, upload.single("closeDecisionDoc"), emptyFileCloseDecisionInputValidation, async (req, res) => {
     try {
         const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
@@ -85,7 +85,7 @@ router.post('/api/create-close-decision', initCloseDecisionDocMiddleware, upload
     }
 })
 
-router.put('/api/edit-close-decision/:id',  upload.single("closeDecisionDoc1"), emptyCloseDecisionInputsValidation, typeCloseDecisionInputsValidation, async(req, res) => {
+router.put('/api/edit-close-decision/:id',  upload.single("closeDecisionDoc1"), async(req, res) => {
     try {
         const { id } = req.params
         const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName} = req.body
@@ -204,15 +204,15 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_DECISION_INPUTS_ERROR" || error.code === "EMPTY_CLOSE_DECISION_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_CLOSE_DECISION_FILE_INPUT_ERROR") {
             console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+            return res.json({ error: true, message: "Chưa chọn file nào" })
         }
     
-        if (error.code === "DECISION_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
+        // if (error.code === "DECISION_INPUTS_TYPE_ERROR") {
+        //     console.log("input type error")
+        //     return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+        // }
     }
     
 

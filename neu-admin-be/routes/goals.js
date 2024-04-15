@@ -36,7 +36,7 @@ router.get('/api/get-all-goals', async (req, res) => {
     }
 })
 
-router.post('/api/create-goal', emptyGoalInputsValidation, typeGoalInputsValidation, async (req, res) => {
+router.post('/api/create-goal', async (req, res) => {
     try {
         const { programId, programGoal, testDetail, goalFrom } = req.body
         console.log(req.body, "req.body post api")
@@ -58,7 +58,7 @@ router.post('/api/create-goal', emptyGoalInputsValidation, typeGoalInputsValidat
     }
 })
 
-router.put('/api/edit-goal/:id', emptyGoalInputsValidation, typeGoalInputsValidation, async(req, res) => {
+router.put('/api/edit-goal/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { programGoal, testDetail, goalFrom } = req.body
@@ -92,22 +92,22 @@ router.delete('/api/delete-goal/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_GOAL_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_GOAL_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "GOAL_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "GOAL_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

@@ -40,7 +40,7 @@ router.get('/api/get-all-lecturers', async (req, res) => {
     }
 })
 
-router.post('/api/create-lecturer', emptyLecturerInputsValidation, typeLecturerInputsValidation, async (req, res) => {
+router.post('/api/create-lecturer', async (req, res) => {
     try {
         const { programId, name, nationality, unit, birthyear, contractStatus, level, subject } = req.body;
         console.log(req.body, "req.body post api")
@@ -65,7 +65,7 @@ router.post('/api/create-lecturer', emptyLecturerInputsValidation, typeLecturerI
     }
 })
 
-router.put('/api/edit-lecturer/:id', emptyLecturerInputsValidation, typeLecturerInputsValidation, async(req, res) => {
+router.put('/api/edit-lecturer/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { name, nationality, unit, birthyear, contractStatus, level, subject } = req.body;
@@ -96,29 +96,29 @@ router.delete('/api/delete-lecturer/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const deletingLecturer = await LecturerSchema.findOneAndDelete({ _id: id })
         console.log(deletingLecturer, "deletingLecturer")
-        res.json({ error: false, message: "Xóa thành công giangr viên" })
+        res.json({ error: false, message: "Xóa thành công giảng viên" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_LECTURER_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_LECTURER_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "LECTURER_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "LECTURER_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

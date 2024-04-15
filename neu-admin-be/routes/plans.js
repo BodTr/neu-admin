@@ -50,7 +50,7 @@ router.get('/api/get-all-plans', async (req, res) => {
     }
 })
 
-router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"), emptyFilePlanInputValidation, emptyPlanlInputsValidation, typePlanInputsValidation, async (req, res) => {
+router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"), emptyFilePlanInputValidation, async (req, res) => {
     try {
         const { programId, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, } = req.body
         console.log(req.body, "req.body post api")
@@ -86,7 +86,7 @@ router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"),
     }
 })
 
-router.put('/api/edit-plan/:id', upload.single("planDoc1"), emptyPlanlInputsValidation, typePlanInputsValidation, async(req, res) => {
+router.put('/api/edit-plan/:id', upload.single("planDoc1"), async(req, res) => {
     try {
         const { id } = req.params
         const { qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, attachedDocName, attachedDocLink } = req.body
@@ -206,15 +206,15 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_PLAN_INPUTS_ERROR" || error.code === "EMPTY_PLAN_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_PLAN_FILE_INPUT_ERROR") {
             console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+            return res.json({ error: true, message: "Chưa chọn file nào" })
         }
     
-        if (error.code === "PLAN_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
+        // if (error.code === "PLAN_INPUTS_TYPE_ERROR") {
+        //     console.log("input type error")
+        //     return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+        // }
     }
     
 

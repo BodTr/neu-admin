@@ -34,7 +34,7 @@ router.get('/api/get-all-students', async (req, res) => {
     }
 })
 
-router.post('/api/create-student', emptyStudentInputsValidation, typeStudentInputsValidation, async (req, res, next) => {
+router.post('/api/create-student', async (req, res, next) => {
     try {
         const { name, studentCode, birthday, sex, nation, schoolYear, tempResidence, dien, major, courseDuration, monthCount, bgdReceiveNumber, bgdReceiveDate, neuReceiveNumber, neuReceiveDate, expenses, shp, kpck, nationalDayExpenses, tetVnExpenses, tetLaoCamExpenses, travelExpenses, initExpenses} = req.body;
         console.log(req.body, "req.body post api")
@@ -78,7 +78,7 @@ router.post('/api/create-student', emptyStudentInputsValidation, typeStudentInpu
     }
 })
 
-router.put('/api/edit-student/:id', emptyStudentInputsValidation, typeStudentInputsValidation, async(req, res) => {
+router.put('/api/edit-student/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { name, studentCode, birthday, sex, nation, schoolYear, tempResidence, dien, major, courseDuration, monthCount, bgdReceiveNumber, bgdReceiveDate, neuReceiveNumber, neuReceiveDate, expenses, shp, kpck, nationalDayExpenses, tetVnExpenses, tetLaoCamExpenses, travelExpenses, initExpenses} = req.body;
@@ -132,23 +132,23 @@ router.delete('/api/delete-student/:id', async(req, res) => {
 })
 
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_STUDENT_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "STUDENT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else {
-            return res.json({ error: true, message: "Something went wrong" })
-        }
+//         if (error.code === "EMPTY_STUDENT_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         } else if (error.code === "STUDENT_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         } else {
+//             return res.json({ error: true, message: "Something went wrong" })
+//         }
 
-    }
+//     }
     
 
-})
+// })
 
 module.exports = router

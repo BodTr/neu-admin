@@ -72,7 +72,7 @@ router.get('/api/get-all-extend-visas', async (req, res) => {
     }
 })
 
-router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileFields, emptyFileExtendVisaInputValidation, emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, async (req, res, next) => {
+router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileFields, emptyFileExtendVisaInputValidation, async (req, res, next) => {
     try {
         const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay } = req.body
         console.log(req.body, "req.body post api")
@@ -131,7 +131,7 @@ router.post('/api/create-extend-visa', initExtendVisaMiddleware, uploadFileField
     }
 })
 
-router.put('/api/edit-extend-visa/:id', uploadFileFields1, emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, async(req, res) => {
+router.put('/api/edit-extend-visa/:id', uploadFileFields1, async(req, res) => {
     try {
         const { id } = req.params
         const { name, birthday, sex, nationality, visaCode, phoneNumber, purpose, job, studentCode, workPermit, visaType, address, visaBeginDay, visaEndDay, suggestUnitName, decisionNumberName, fileName, suggestUnitLink, decisionNumberLink, fileLink } = req.body
@@ -351,17 +351,9 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_EV_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "EV_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else if (error.code === "EMPTY_EV_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_EV_FILE_INPUT_ERROR") {
             console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else {
-            return res.json({ error: true, message: "Something went wrong" })
+            return res.json({ error: true, message: "Chưa chọn file nào" })
         }
 
     }

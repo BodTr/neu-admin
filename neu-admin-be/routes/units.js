@@ -36,7 +36,7 @@ router.get('/api/get-all-units', async (req, res) => {
     }
 })
 
-router.post('/api/create-unit', emptyUnitInputsValidation, typeUnitInputsValidation, async (req, res) => {
+router.post('/api/create-unit', async (req, res) => {
     try {
         const { programId, unit } = req.body
         console.log(req.body, "req.body post api")
@@ -62,7 +62,7 @@ router.post('/api/create-unit', emptyUnitInputsValidation, typeUnitInputsValidat
     }
 })
 
-router.put('/api/edit-unit/:id', emptyUnitInputsValidation, typeUnitInputsValidation, async(req, res) => {
+router.put('/api/edit-unit/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { unit } = req.body
@@ -94,22 +94,22 @@ router.delete('/api/delete-unit/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_UNIT_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_UNIT_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "UNIT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "UNIT_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

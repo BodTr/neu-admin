@@ -37,7 +37,7 @@ router.get('/api/get-all-agencies', async (req, res) => {
     }
 })
 
-router.post('/api/create-agency', emptyAgencyInputsValidation, typeAgencyInputsValidation, async (req, res) => {
+router.post('/api/create-agency', async (req, res) => {
     try {
         const { programId, unit, progLeaderName, progLeaderPosition, progLeaderPhoneNumber, progLeaderEmail, progLeaderUnit, progManagementName, progManagementPosition, progManagementPhoneNumber, progManagementEmail, progManagementUnit, coordinatorName, coordinatorPosition, coordinatorPhoneNumber, coordinatorEmail, coordinatorUnit } = req.body;
 
@@ -84,7 +84,7 @@ router.post('/api/create-agency', emptyAgencyInputsValidation, typeAgencyInputsV
     }
 })
 
-router.put('/api/edit-agency/:id', emptyAgencyInputsValidation, typeAgencyInputsValidation, async(req, res) => {
+router.put('/api/edit-agency/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { unit, progLeaderName, progLeaderPosition, progLeaderPhoneNumber, progLeaderEmail, progLeaderUnit, progManagementName, progManagementPosition, progManagementPhoneNumber, progManagementEmail, progManagementUnit, coordinatorName, coordinatorPosition, coordinatorPhoneNumber, coordinatorEmail, coordinatorUnit } = req.body;
@@ -134,22 +134,22 @@ router.delete('/api/delete-agency/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_AGENCY_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_AGENCY_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "AGENCY_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "AGENCY_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

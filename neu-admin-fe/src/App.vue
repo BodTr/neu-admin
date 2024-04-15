@@ -755,8 +755,12 @@ export default {
         const result = await instance.post("/api/logout", data);
         if (result.data.error === false) {
           localStorage.clear();
-          console.log(result);
+          console.log(result, "error = false logout() result");
           this.toast.success(result.data.message);
+          router.push("/login");
+        } else {
+          localStorage.clear();
+          console.log(result, "error = true logout() result");
           router.push("/login");
         }
       } catch (error) {

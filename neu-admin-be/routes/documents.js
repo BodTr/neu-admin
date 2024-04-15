@@ -76,8 +76,7 @@ router.post(
     initDocumentMiddleware,
     upload.single("documentFile"),
     emptyFileDocumentInputValidation,
-    emptyDocumentInputsValidation,
-    typeDocumentInputsValidation,
+
     async (req, res) => {
         try {
             const {
@@ -126,8 +125,7 @@ router.post(
 router.put(
     "/api/edit-document/:id",
     upload.single("documentFile1"),
-    emptyDocumentInputsValidation,
-    typeDocumentInputsValidation,
+
     async (req, res) => {
         try {
             const { id } = req.params;
@@ -276,21 +274,21 @@ router.use((error, req, res, next) => {
     if (error) {
         console.log(error, "custom error handler");
 
-        if (error.code === "EMPTY_DOCUMENT_INPUTS_ERROR" || error.code === "EMPTY_DOCUMENT_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_DOCUMENT_FILE_INPUT_ERROR") {
             console.log(error.code, "empty input error");
             return res.json({
                 error: true,
-                message: "Hãy điền đẩy đủ form",
+                message: "Chưa chọn file nào",
             });
         }
 
-        if (error.code === "DOCUMENT_INPUTS_TYPE_ERROR") {
-            console.log("input type error");
-            return res.json({
-                error: true,
-                message: "Hãy điền đúng loại dữ liệu",
-            });
-        }
+        // if (error.code === "DOCUMENT_INPUTS_TYPE_ERROR") {
+        //     console.log("input type error");
+        //     return res.json({
+        //         error: true,
+        //         message: "Hãy điền đúng loại dữ liệu",
+        //     });
+        // }
     }
 });
 

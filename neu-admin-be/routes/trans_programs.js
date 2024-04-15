@@ -37,7 +37,7 @@ router.get('/api/get-all-trans-programs', async (req, res) => {
     }
 })
 
-router.post('/api/create-trans-program', emptyTransProgramInputsValidation, typeTransProgramInputsValidation, async (req, res) => {
+router.post('/api/create-trans-program', async (req, res) => {
     try {
         const { programId, name,name_en, degreeName, degreeType, issuedBy } = req.body
         console.log(req.body, "req.body post api")
@@ -66,7 +66,7 @@ router.post('/api/create-trans-program', emptyTransProgramInputsValidation, type
     }
 })
 
-router.put('/api/edit-trans-program/:id', emptyTransProgramInputsValidation, typeTransProgramInputsValidation, async(req, res) => {
+router.put('/api/edit-trans-program/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { name,name_en, degreeName, degreeType, issuedBy } = req.body
@@ -102,22 +102,22 @@ router.delete('/api/delete-trans-program/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_TRANS_PROGRAM_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_TRANS_PROGRAM_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "TRANS_PROGRAM_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "TRANS_PROGRAM_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

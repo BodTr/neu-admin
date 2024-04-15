@@ -34,7 +34,7 @@ router.get('/api/get-all-commitments', async (req, res) => {
     }
 })
 
-router.post('/api/create-commitment', emptyProgramCommitmentInputValidation, typeProgramCommitmentInputValidation, async (req, res) => {
+router.post('/api/create-commitment', async (req, res) => {
     try {
         const { neuCommitment, responsibilityToStudents, partnerCommitment, riskManagement, minStudents, securityRegulation, intellectualPropertyRegulation, programId } = req.body
         console.log(req.body, "req.body post api")
@@ -60,7 +60,7 @@ router.post('/api/create-commitment', emptyProgramCommitmentInputValidation, typ
     }
 })
 
-router.put('/api/edit-commitment/:id', emptyProgramCommitmentInputValidation, typeProgramCommitmentInputValidation, async(req, res) => {
+router.put('/api/edit-commitment/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { neuCommitment, responsibilityToStudents, partnerCommitment, riskManagement, minStudents, securityRegulation, intellectualPropertyRegulation } = req.body
@@ -98,22 +98,22 @@ router.delete('/api/delete-commitment/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_PROGRAM_COMMITMENT_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_PROGRAM_COMMITMENT_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "PROGRAM_COMMITMENT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "PROGRAM_COMMITMENT_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

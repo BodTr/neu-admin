@@ -69,7 +69,7 @@ router.get('/api/get-all-enrollments', async (req, res) => {
     }
 })
 
-router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array("enrollmentDocs"), emptyEnrollmentFileInputValidation, emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation, async (req, res) => {
+router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array("enrollmentDocs"), emptyEnrollmentFileInputValidation, async (req, res) => {
     try {
         const { programId, year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
         console.log(req.body, "req.body post api")
@@ -119,7 +119,7 @@ router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array(
     }
 })
 
-router.put('/api/edit-enrollment/:id', upload.array("enrollmentDocs1"), emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation, async(req, res) => {
+router.put('/api/edit-enrollment/:id', upload.array("enrollmentDocs1"), async(req, res) => {
     try {
         const { id } = req.params
         const { programId, year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents, docsState } = req.body;
@@ -333,15 +333,15 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_ENROLLMENT_INPUTS_ERROR" || error.code === "EMPTY_ENROLLMENT_FILES_INPUT_ERROR") {
+        if (error.code === "EMPTY_ENROLLMENT_FILES_INPUT_ERROR") {
             console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+            return res.json({ error: true, message: "Chưa chọn file nào" })
         }
     
-        if (error.code === "ENROLLMENT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
+        // if (error.code === "ENROLLMENT_INPUTS_TYPE_ERROR") {
+        //     console.log("input type error")
+        //     return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+        // }
     }
     
 

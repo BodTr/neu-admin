@@ -49,7 +49,7 @@ router.get('/api/get-all-htqts', async (req, res) => {
     }
 })
 
-router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), emptyFileHTQTInputValidation, emptyHTQTInputsValidation, typeHTQTInputsValidation, async (req, res, next) => {
+router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), emptyFileHTQTInputValidation, async (req, res, next) => {
     try {
         const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
@@ -84,7 +84,7 @@ router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHT
     }
 })
 
-router.put('/api/edit-htqt/:id', upload.single("attachedHTQTDoc1"), emptyHTQTInputsValidation, typeHTQTInputsValidation, async(req, res) => {
+router.put('/api/edit-htqt/:id', upload.single("attachedHTQTDoc1"), async(req, res) => {
     try {
         const { id } = req.params
         const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note, attachedDocLink, attachedDocName } = req.body
@@ -206,17 +206,9 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_HTQT_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "HTQT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else if (error.code === "EMPTY_HTQT_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_HTQT_FILE_INPUT_ERROR") {
             console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else {
-            return res.json({ error: true, message: "Something went wrong" })
+            return res.json({ error: true, message: "Chưa chọn file nào" })
         }
 
     }

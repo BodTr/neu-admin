@@ -40,7 +40,7 @@ router.get('/api/get-all-subjects', async (req, res) => {
     }
 })
 
-router.post('/api/create-subject', emptySubjectInputsValidation, typeSubjectInputsValidation, async (req, res) => {
+router.post('/api/create-subject', async (req, res) => {
     try {
         const { name, lecturer, teachingAssistant, timeFrom, timeTo, year, subjectCode, review, programId } = req.body;
         console.log(req.body, "req.body post api")
@@ -73,7 +73,7 @@ router.post('/api/create-subject', emptySubjectInputsValidation, typeSubjectInpu
     }
 })
 
-router.put('/api/edit-subject/:id', emptySubjectInputsValidation, typeSubjectInputsValidation, async(req, res) => {
+router.put('/api/edit-subject/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { name, lecturer, teachingAssistant, timeFrom, timeTo, year, subjectCode, review } = req.body;
@@ -112,22 +112,22 @@ router.delete('/api/delete-subject/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_SUBJECT_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_SUBJECT_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "SUBJECT_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "SUBJECT_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

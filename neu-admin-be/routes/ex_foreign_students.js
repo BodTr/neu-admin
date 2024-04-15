@@ -47,7 +47,7 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
     }
 })
 
-router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), emptyFileExForeignStudentInputValidation, emptyExForeignStudentInputsValidation, typeExForeignStudentInputsValidation, async (req, res, next) => {
+router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), emptyFileExForeignStudentInputValidation, async (req, res, next) => {
     try {
         const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
         console.log(req.body, "req.body post api")
@@ -88,7 +88,7 @@ router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, uploa
     }
 })
 
-router.put('/api/edit-ex-f-student/:id', upload.single("attachedExFStuDoc1"), emptyExForeignStudentInputsValidation, typeExForeignStudentInputsValidation, async(req, res) => {
+router.put('/api/edit-ex-f-student/:id', upload.single("attachedExFStuDoc1"), async(req, res) => {
     try {
         const { id } = req.params
         const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result, attachedDocLink, attachedDocName } = req.body
@@ -216,17 +216,9 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_EFS_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else if (error.code === "EFS_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        } else if (error.code === "EMPTY_EFS_FILE_INPUT_ERROR") {
+        if (error.code === "EMPTY_EFS_FILE_INPUT_ERROR") {
             console.log(error.code, "empty file input error")
             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        } else {
-            return res.json({ error: true, message: "Something went wrong" })
         }
 
     }

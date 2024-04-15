@@ -34,7 +34,7 @@ router.get('/api/get-all-processes', async (req, res) => {
     }
 })
 
-router.post('/api/create-process', emptyProcessInputsValidation, typeProcessInputsValidation, async (req, res) => {
+router.post('/api/create-process', async (req, res) => {
     try {
         const { evaluationForm, evaluateProgramQuality, processes, programId } = req.body;
         console.log(req.body, "req.body post api")
@@ -57,7 +57,7 @@ router.post('/api/create-process', emptyProcessInputsValidation, typeProcessInpu
     }
 })
 
-router.put('/api/edit-process/:id', emptyProcessInputsValidation, typeProcessInputsValidation, async(req, res) => {
+router.put('/api/edit-process/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { evaluationForm, evaluateProgramQuality, processes, } = req.body
@@ -92,22 +92,22 @@ router.delete('/api/delete-process/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_PROCESS_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_PROCESS_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "PROCESS_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "PROCESS_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

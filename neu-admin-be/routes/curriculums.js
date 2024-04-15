@@ -35,7 +35,7 @@ router.get('/api/get-all-curriculums', async (req, res) => {
     }
 })
 
-router.post('/api/create-curriculum', emptyCurriculumInputsValidation, typeCurriculumInputsValidation, async (req, res) => {
+router.post('/api/create-curriculum', async (req, res) => {
     try {
         const { programId, name, year, location, subjectType, creditsCount } = req.body
         console.log(req.body, "req.body post api")
@@ -65,7 +65,7 @@ router.post('/api/create-curriculum', emptyCurriculumInputsValidation, typeCurri
     }
 })
 
-router.put('/api/edit-curriculum/:id', emptyCurriculumInputsValidation, typeCurriculumInputsValidation, async(req, res) => {
+router.put('/api/edit-curriculum/:id', async(req, res) => {
     try {
         const { id } = req.params
         const { name, year, location, subjectType, creditsCount } = req.body
@@ -101,22 +101,22 @@ router.delete('/api/delete-curriculum/:id', async(req, res) => {
     }
 })
 
-router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
-    if (error) {
-        console.log(error, "custom error handler")
+// router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
+//     if (error) {
+//         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_CURRICULUM_INPUTS_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+//         if (error.code === "EMPTY_CURRICULUM_INPUTS_ERROR") {
+//             console.log(error.code, "empty input error")
+//             return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+//         }
     
-        if (error.code === "CURRICULUM_INPUTS_TYPE_ERROR") {
-            console.log("input type error")
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
-        }
-    }
+//         if (error.code === "CURRICULUM_INPUTS_TYPE_ERROR") {
+//             console.log("input type error")
+//             return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" })
+//         }
+//     }
     
 
-})
+// })
 
 module.exports = router

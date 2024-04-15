@@ -78,7 +78,6 @@ router.post(
     initPartnerMiddleware,
     upload.array("docs"),
     emptyPartnerFileInputValidation,
-    emptyPartnerInputsValidation,
     async (req, res) => {
         try {
             const {
@@ -186,7 +185,6 @@ router.post(
 router.put(
     "/api/edit-partner/:id",
     upload.array("docs1"),
-    emptyPartnerInputsValidation,
     async (req, res) => {
         try {
             const { id } = req.params;
@@ -446,17 +444,16 @@ router.use((error, req, res, next) => {
         console.log(error, "custom error handler");
 
         if (
-            error.code === "EMPTY_PARTNER_INPUTS_ERROR" ||
             error.code === "EMPTY_PARTNER_FILE_INPUT_ERROR"
         ) {
             console.log(error.code, "empty input error");
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" });
+            return res.json({ error: true, message: "Chưa chọn file nào" });
         }
 
-        if (error.code === "PARTNER_INPUTS_TYPE_ERROR") {
-            console.log("input type error");
-            return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" });
-        }
+        // if (error.code === "PARTNER_INPUTS_TYPE_ERROR") {
+        //     console.log("input type error");
+        //     return res.json({ error: true, message: "Hãy điền đúng loại dữ liệu" });
+        // }
     }
 });
 
