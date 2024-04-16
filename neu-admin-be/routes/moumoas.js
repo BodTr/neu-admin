@@ -49,7 +49,7 @@ router.get('/api/get-all-moumoas', async (req, res) => {
     }
 })
 
-router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attachedMoumoaDoc"), emptyFileMoumoaInputValidation, async (req, res, next) => {
+router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attachedMoumoaDoc"), async (req, res, next) => {
     try {
         const { nation, partnerUni, docType, docDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
@@ -58,8 +58,15 @@ router.post('/api/create-moumoa', initMoumoaDocMiddleware, upload.single("attach
         const moumoaId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
-        const attachedDocLink = attachedDoc.location
-        const attachedDocName = attachedDoc.originalname
+        let attachedDocLink = ""
+        let attachedDocName = ""
+        if (!attachedDoc) {
+            attachedDocLink = ""
+            attachedDocName = ""
+        } else {
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
         const newMoumoa = {
             nation: nation,
             partnerUni: partnerUni,
@@ -93,14 +100,18 @@ router.put('/api/edit-moumoa/:id', upload.single("attachedMoumoaDoc1"), async(re
         console.log(req.body, "req.body put api")
         let newAttachedDocLink = ''
         if (attachedDoc1) {
-            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldFileKey, "oldFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, newDeleteCommand put api:::")
+            if (attachedDocLink === "") {
+                console.log('ko có link ảnh cũ edit-moumoa api')
+            } else {
+                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldFileKey, "oldFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, newDeleteCommand put api:::")
+            }
             newAttachedDocLink = attachedDoc1.location
 
         } else {
@@ -135,14 +146,20 @@ router.delete('/api/delete-moumoa/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delMoumoa = await MoumoaSchema.findOne({ _id: id })
-        const delMoumoaKey = delMoumoa.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delMoumoaKey, "delMoumoaKey delete api")
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delMoumoaKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, ":::result, delete api:::")
+        const attachedDocLink = delMoumoa.attachedDocLink
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-moumoa api')
+        } else {
+            const delMoumoaKey = delMoumoa.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delMoumoaKey, "delMoumoaKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delMoumoaKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, ":::result, delete api:::")
+        }
+
         const deletingMoumoa = await MoumoaSchema.findOneAndDelete({ _id: id })
         console.log(deletingMoumoa, "deletingMoumoa")
         res.json({ error: false, message: "Xóa thành công văn bản" })
@@ -206,10 +223,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_MOUMOA_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_MOUMOA_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty file input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
 
     }
     

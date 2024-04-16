@@ -6,7 +6,7 @@ const ExForeignStudentSchema = new mongoose.Schema({
         require: false
     },
     studentCode: {
-        type: Number,
+        type: String,
         require: false
     },
     position: {

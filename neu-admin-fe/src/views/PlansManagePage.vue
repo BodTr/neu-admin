@@ -274,6 +274,7 @@
                       </svg>
                     </a>
                     <a
+                      v-if="item.row.attachedDocLink !== ''"
                       :href="item.row.attachedDocLink"
                       class="btn btn-success btn-icon"
                     >

@@ -15,6 +15,7 @@ const s3 = new S3Client(config)
 // function xóa các file trên s3 có cùng prefix
 async function deleteFolder(prefix) {
     try {
+        console.log(prefix, "prefix delete_s3files")
         // lấy các file
         const listCommand = new ListObjectsV2Command({
             Bucket: 'acvnapps',
@@ -22,6 +23,8 @@ async function deleteFolder(prefix) {
         })
 
         let list = await s3.send(listCommand)
+        console.log(list, "list delete_s3files")
+        console.log(list.KeyCount, "list.KeyCount delete_s3files")
 
         if (list.KeyCount) { // Nếu có item trong list để xóa
             // xóa files
@@ -40,10 +43,11 @@ async function deleteFolder(prefix) {
             let deletedFiles = await s3.send(deleteCommand)
 
             // nếu có lỗi thì log ra
-            if (deleted.Errors) {
-                deleted.Errors.map((error) => {
-                    console.log(`${error.Key} could not be deleted - ${error.Code}`)
-                })
+            if (deletedFiles.Errors) {
+                deletedFiles.Errors.forEach(error => {
+                    console.log(error, "delete_s3files error")
+                    console.log(`${error.Key} could not be deleted - ${error.Code}`);
+                });
             }
 
             return `${deletedFiles.Deleted.length} files deleted.`

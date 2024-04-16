@@ -782,7 +782,7 @@ export default {
 
         if (!canUpload) {
           // nếu giá trị canUpload = false ta sẽ không gọi api create-partner, gửi thông báo cho người dùng sửa những file đã up lên
-          this.toast.error("Hãy sửa đúng file upload");
+          this.toast.error("File upload cần đúng định dạng pdf/dưới 20Mb");
         } else {
           // giá trị canUpload = true, gọi api create-partner
           console.log(this.id, "post api program id");
@@ -862,20 +862,77 @@ export default {
           invalidMessage: invalidMessage,
         };
       });
-      this.editEnroll.year = item.year;
-      this.editEnroll.enrollmentCount = item.enrollmentCount;
-      this.editEnroll.admissionCount = item.admissionCount;
-      this.editEnroll.transferStudents = item.transferStudents;
-      this.editEnroll.graduatedCount = item.graduatedCount;
-      this.editEnroll.applicantsCount = item.applicantsCount;
-      this.editEnroll.trainingStudents = item.trainingStudents;
-      this.editEnroll.admittedStudents = item.admittedStudents;
-      this.editEnroll.dropoutCount = item.dropoutCount;
-      this.editEnroll.reservedStudents = item.reservedStudents;
+      if (item.year === null) {
+        this.editEnroll.year = ''
+      } else {
+        this.editEnroll.year = item.year;
+      }
+
+      if (item.enrollmentCount === null) {
+        this.editEnroll.enrollmentCount = ''
+      } else {
+        this.editEnroll.enrollmentCount = item.enrollmentCount;
+      }
+      
+      if (item.admissionCount === null) {
+        this.editEnroll.admissionCount = ''
+      } else {
+        this.editEnroll.admissionCount = item.admissionCount;
+      }
+
+      if (item.transferStudents === null) {
+        this.editEnroll.transferStudents = ''
+      } else {
+        this.editEnroll.transferStudents = item.transferStudents;
+      }
+      
+      if (item.graduatedCount === null) {
+        this.editEnroll.graduatedCount = ''
+      } else {
+        this.editEnroll.graduatedCount = item.graduatedCount;
+      }
+      
+      if (item.applicantsCount === null) {
+        this.editEnroll.applicantsCount = ''
+      } else {
+        this.editEnroll.applicantsCount = item.applicantsCount;
+      }
+      
+      if (item.trainingStudents === null) {
+        this.editEnroll.trainingStudents = ''
+      } else {
+        this.editEnroll.trainingStudents = item.trainingStudents;
+      }
+      
+      if (item.admittedStudents === null) {
+        this.editEnroll.admittedStudents = ''
+      } else {
+        this.editEnroll.admittedStudents = item.admittedStudents;
+      }
+
+      if (item.admittedStudents === null) {
+        this.editEnroll.admittedStudents = ''
+      } else {
+        this.editEnroll.admittedStudents = item.admittedStudents;
+      }
+      
+      if (item.dropoutCount === null) {
+        this.editEnroll.dropoutCount = ''
+      } else {
+        this.editEnroll.dropoutCount = item.dropoutCount;
+      }
+      
+      if (item.reservedStudents === null) {
+        this.editEnroll.reservedStudents = ''
+      } else {
+        this.editEnroll.reservedStudents = item.reservedStudents;
+      }
+      
       this.editEnroll.docs = docRefsArr;
       this.editEnroll.uploadDocs = [];
       this.editEnroll.id = item._id;
       this.showModal1();
+      console.log(this.editEnroll.docs, "this.editEnroll.docs")
     },
 
     async onSubmit() {
@@ -901,7 +958,7 @@ export default {
         }
         console.log(canUpload, "canUpload onSubmitForm() method");
         if (!canUpload) {
-          this.toast.error("Hãy sửa đúng file upload");
+          this.toast.error("File upload cần đúng định dạng pdf/dưới 20Mb");
         } else {
           const docsState = {
             docs1Refs: this.editEnroll.docs,

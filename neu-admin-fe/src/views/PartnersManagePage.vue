@@ -174,7 +174,7 @@
                               <div class="col">
                                 {{ doc.name }}
                                 <div
-                                  class="text-muted"
+                                  style="color: red;"
                                   v-if="doc.invalidMessage"
                                 >
                                   {{ doc.invalidMessage }}
@@ -636,7 +636,7 @@
                                       <div class="col">
                                         {{ doc.name }}
                                         <div
-                                          class="text-muted"
+                                          style="color: red;"
                                           v-if="doc.invalidMessage"
                                         >
                                           {{ doc.invalidMessage }}
@@ -1164,7 +1164,7 @@ export default {
 
         if (!canUpload) {
           // nếu giá trị canUpload = false ta sẽ không gọi api create-partner, gửi thông báo cho người dùng sửa những file đã up lên
-          this.toast.error("Hãy sửa đúng file upload");
+          this.toast.error("File upload cần đúng định dạng pdf/dưới 20Mb");
         } else {
           // giá trị canUpload = true, gọi api create-partner
           console.log(this.id, "post api program id");
@@ -1314,7 +1314,7 @@ export default {
         }
         console.log(canUpload, "canUpload onSubmitForm() method");
         if (!canUpload) {
-          this.toast.error("Hãy sửa đúng file upload");
+          this.toast.error("File upload cần đúng định dạng pdf/dưới 20Mb");
         } else {
           const docsState = {
             docs1Refs: this.editPartner.docs

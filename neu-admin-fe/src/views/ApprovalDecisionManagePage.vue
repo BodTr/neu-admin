@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Số quết định</label>
+                        <label class="form-label">Số quyết định</label>
                         <input
                           type="text"
                           class="form-control"
@@ -247,6 +247,7 @@
                       </svg>
                     </a>
                     <a
+                      v-if="item.row.attachedDocLink !== ''"
                       :href="item.row.attachedDocLink"
                       class="btn btn-success btn-icon"
                     >
@@ -316,7 +317,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label">Số quết định</label>
+                                <label class="form-label">Số quyết định</label>
                                 <input
                                   type="text"
                                   class="form-control"

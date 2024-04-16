@@ -436,6 +436,7 @@
                   <template v-slot:attachedExchangeDoc="item">
                     {{ item.row.attachedExDocName }}
                     <a
+                      v-if="item.row.attachedExDocLink !== ''"
                       :href="item.row.attachedExDocLink"
                       class="btn btn-success btn-icon"
                     >
@@ -466,6 +467,7 @@
                   <template v-slot:attachedScoreDoc="item">
                     {{ item.row.attachedScoreDocName }}
                     <a
+                      v-if="item.row.attachedScoreDocLink !== ''"
                       :href="item.row.attachedScoreDocLink"
                       class="btn btn-success btn-icon"
                     >
@@ -1122,36 +1124,28 @@ export default {
       }
     },
     plusResult() {
-      if (!this.resultSubject || !this.resultCreditsCount || !this.resultPoint) {
-        return this.toast.error('Hãy điền đủ form');
-      } else {
-        this.results.push({
-          subjectName: this.resultSubject,
-          creditsCount: this.resultCreditsCount,
-          point: this.resultPoint,
-        });
-        console.log(this.results, "plusResult")
-        this.resultSubject = "";
-        this.resultCreditsCount = "";
-        this.resultPoint = "";
-        return this.results;
-      }
+      this.results.push({
+        subjectName: this.resultSubject,
+        creditsCount: this.resultCreditsCount,
+        point: this.resultPoint,
+      });
+      console.log(this.results, "plusResult")
+      this.resultSubject = "";
+      this.resultCreditsCount = "";
+      this.resultPoint = "";
+      return this.results;
 
     },
     plusResult1(){
-      if (!this.editExStudent.resultSubject || !this.editExStudent.resultCreditsCount || !this.editExStudent.resultPoint) {
-        return this.toast.error('Hãy điền đủ form');
-      } else {
-        this.editExStudent.results.push({
-          subjectName: this.editExStudent.resultSubject,
-          creditsCount: this.editExStudent.resultCreditsCount,
-          point: this.editExStudent.resultPoint,
-        });
-        this.editExStudent.resultSubject = "";
-        this.editExStudent.resultCreditsCount = "";
-        this.editExStudent.resultPoint = "";
-        return this.results;
-        }
+      this.editExStudent.results.push({
+        subjectName: this.editExStudent.resultSubject,
+        creditsCount: this.editExStudent.resultCreditsCount,
+        point: this.editExStudent.resultPoint,
+      });
+      this.editExStudent.resultSubject = "";
+      this.editExStudent.resultCreditsCount = "";
+      this.editExStudent.resultPoint = "";
+      return this.editExStudent.results;
 
     },
     handleExchangePdfChange1() {

@@ -195,7 +195,7 @@
                   </template>
                   <template v-slot:status="item">
                     <span
-                      v-if="item.row.status"
+                      v-if="item.row.status === 'true'"
                       class="badge bg-green text-green-fg"
                       >Đang hoạt động</span
                     >

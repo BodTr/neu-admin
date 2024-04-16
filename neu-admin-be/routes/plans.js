@@ -50,7 +50,7 @@ router.get('/api/get-all-plans', async (req, res) => {
     }
 })
 
-router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"), emptyFilePlanInputValidation, async (req, res) => {
+router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"), async (req, res) => {
     try {
         const { programId, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, } = req.body
         console.log(req.body, "req.body post api")
@@ -58,8 +58,15 @@ router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"),
         console.log(req.file, "req.file post api")
         const planId = req.payload
         const attachedDoc = req.file
-        const attachedDocLink = attachedDoc.location
-        const attachedDocName = attachedDoc.originalname
+        let attachedDocLink = ""
+        let attachedDocName = ""
+        if (!attachedDoc) {
+            attachedDocLink = ""
+            attachedDocName = ""
+        } else {
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
         const newPLan = {
             qualifiedLecturer: qualifiedLecturer,
             qualifiedStudent: qualifiedStudent,
@@ -95,14 +102,19 @@ router.put('/api/edit-plan/:id', upload.single("planDoc1"), async(req, res) => {
         console.log(attachedDoc, "attachedDoc put api")
         let newAttachedDocLink = ''
         if (attachedDoc) {
-            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldFileKey, "oldFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, newDeleteCommand put api:::")
+
+            if (attachedDocLink === "") {
+                console.log('ko có link ảnh cũ edit-plan api')
+            } else {
+                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldFileKey, "oldFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, newDeleteCommand put api:::")
+            }
             newAttachedDocLink = attachedDoc.location
 
         } else {
@@ -135,15 +147,20 @@ router.delete('/api/delete-plan/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const deletingPlan = await PlanSchema.findOne({ _id: id })
-        console.log(deletingPlan, "deletingPlan")
-        const deletingPlanDocKey = deletingPlan.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(deletingPlanDocKey, "deletingPlanDocKey delete api")
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${deletingPlanDocKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, ":::result, delete api:::")
+        const attachedDocLink = deletingPlan.attachedDocLink
+
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-plan api')
+        } else {
+            const delPlanKey = deletingPlan.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delPlanKey, "delPlanKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delPlanKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, "newDeleteCommand result delete api")
+        }
         const delPlan = await PlanSchema.findOneAndDelete({ _id: id })
         console.log(delPlan, "delPlan delete api")
         res.json({ error: false, message: "Xóa thành công mục tiêu" })
@@ -206,10 +223,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_PLAN_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_PLAN_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
     
         // if (error.code === "PLAN_INPUTS_TYPE_ERROR") {
         //     console.log("input type error")

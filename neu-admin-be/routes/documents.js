@@ -75,7 +75,6 @@ router.post(
     "/api/create-document",
     initDocumentMiddleware,
     upload.single("documentFile"),
-    emptyFileDocumentInputValidation,
 
     async (req, res) => {
         try {
@@ -89,8 +88,15 @@ router.post(
             console.log(req.body, "req.body post api");
             const attachedDoc = req.file;
             console.log(attachedDoc, "req.file post api");
-            const attachedDocLink = attachedDoc.location
-            const attachedDocName = attachedDoc.originalname
+            let attachedDocLink = ""
+            let attachedDocName = ""
+            if (!attachedDoc) {
+                attachedDocLink = ""
+                attachedDocName = ""
+            } else {
+                attachedDocLink = attachedDoc.location
+                attachedDocName = attachedDoc.originalname
+            }
             const docId = req.payload
             console.log(docId, "docId post api")
             const newDocument = {
@@ -142,14 +148,18 @@ router.put(
             const attachedDoc = req.file;
             console.log(attachedDoc, "attachedDoc put api")
             if (attachedDoc) {
-                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-                console.log(oldFileKey, "oldFileKey put api")
-                const newDeleteCommand = new DeleteObjectCommand({
-                    Bucket: 'acvnapps',
-                    Key: `${oldFileKey}`
-                })
-                const result = await s3.send(newDeleteCommand)
-                console.log(result, ":::result, newDeleteCommand put api:::")
+                if (attachedDocLink === "") {
+                    console.log('ko có link ảnh cũ edit-document api')
+                } else {
+                    const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                    console.log(oldFileKey, "oldFileKey put api")
+                    const newDeleteCommand = new DeleteObjectCommand({
+                        Bucket: 'acvnapps',
+                        Key: `${oldFileKey}`
+                    })
+                    const result = await s3.send(newDeleteCommand)
+                    console.log(result, ":::result, newDeleteCommand put api:::")
+                }
                 newAttachedDocLink = attachedDoc.location
             } else {
                 newAttachedDocLink = attachedDocLink
@@ -196,15 +206,20 @@ router.delete("/api/delete-document/:id", async (req, res) => {
         const deletingDocument = await DocumentSchema.findOne({
             _id: id
         });
-        console.log(deletingDocument, "deletingDocument delete api")
-        const delDocKey = deletingDocument.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delDocKey, "delDocKey delete api");
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delDocKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, ":::result, delete api:::")
+        const attachedDocLink = deletingDocument.attachedDocLink
+
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-close-decision api')
+        } else {
+            const delDocKey = deletingDocument.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delDocKey, "delDocKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delDocKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, "newDeleteCommand result delete api")
+        }
         const delDoc = await DocumentSchema.findOneAndDelete({ _id: id })
         console.log(delDoc, "delDoc")
         res.json({

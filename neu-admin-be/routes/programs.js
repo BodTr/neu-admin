@@ -38,16 +38,10 @@ router.get('/api/get-all-programs', async (req, res) => {
         const aPrograms = programs.map(doc => {
             stt++
             // const id = doc._id.toString()
-            var expiry = new Date(doc.expiry)
-            var timeNow = new Date()
-            var status = true
-            if(expiry < timeNow){
-                var status = false
-            }
+
             return {
                 ...doc,
                 stt: stt,
-                status: status
             }
         })
         console.log(aPrograms, "aPrograms")
@@ -234,25 +228,35 @@ router.get('/api/get-attached-programs-by-year', async (req, res) => {
         const userItem = await UserSchema.findOne({
             _id: new ObjectId(userId)
         })
-
+        let filteredattachedPrograms = []
         if (userItem.permission == "Super Admin") {
-            var attachedPrograms = await ProgramSchema.find({
+            attachedPrograms = await ProgramSchema.find({
                 year: year
             }).lean()
-
+            console.log(attachedPrograms, "attachedPrograms Super Admin")
+            filteredattachedPrograms = attachedPrograms.filter(item => {
+                if (item.status === "true") {
+                    return item
+                }
+            })
+            console.log(filteredattachedPrograms, "filteredattachedPrograms Super Admin")
         } else {
-            var attachedPrograms = await ProgramSchema.find({
+            attachedPrograms = await ProgramSchema.find({
                 user: {
                     id: new ObjectId(userId)
                 },
                 year: year
             }).lean()
-
+            filteredattachedPrograms = attachedPrograms.filter(item => {
+                if (item.status === true) {
+                    return item
+                }
+            })
         }
 
         res.json({
             error: false,
-            attachedProgramsFilterByYear: attachedPrograms
+            attachedProgramsFilterByYear: filteredattachedPrograms
         })
     } catch (error) {
         console.log(error, "get-attached-programs-by-year api catch block error")
@@ -346,6 +350,14 @@ router.post('/api/create-program', async (req, res) => {
                 message: "Chương trình đã tồn tại"
             })
         } else {
+            const timeNow = new Date()
+            let status = true
+            const expiryDate = new Date(expiry)
+            if(expiryDate < timeNow){
+                status = false
+            } else {
+                status = true
+            }
             const newProgram = await ProgramSchema.create({
                 name: name,
                 year: year,
@@ -355,6 +367,7 @@ router.post('/api/create-program', async (req, res) => {
                 quota: quota,
                 level: level,
                 expiry: expiry,
+                status: status,
                 user: {
                     id: new ObjectId('111111111111111111111111')
                 }
@@ -423,6 +436,17 @@ router.put('/api/edit-program/:id', async (req, res) => {
             expiry
         } = req.body
         console.log(id, "::put api id::")
+        const timeNow = new Date()
+        let status = true
+        console.log(timeNow, "timeNow edit-program")
+        
+        const expiryDate = new Date(expiry)
+        console.log(expiryDate < timeNow, "expiry < timeNow edit-program")
+        if(expiryDate < timeNow){
+            status = false
+        } else {
+            status = true
+        }
         const updatingProgram = {
             name: name,
             year: year,
@@ -432,6 +456,7 @@ router.put('/api/edit-program/:id', async (req, res) => {
             quota: quota,
             level: level,
             expiry: expiry,
+            status: status,
         }
         console.log(req.body, "put api req.body")
         const updatedProgram = await ProgramSchema.findOneAndUpdate({

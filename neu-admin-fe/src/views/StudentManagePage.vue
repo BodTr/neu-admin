@@ -109,7 +109,6 @@
                           type="date"
                           class="form-control"
                           v-model="birthday"
-                          placeholder="Nhập ngày sinh"
                         />
                       </div>
                       <div class="mb-3">
@@ -208,7 +207,6 @@
                           type="date"
                           class="form-control"
                           v-model="bgdReceiveDate"
-                          placeholder="Nhập số quyết định"
                         />
                       </div>
                       <div class="mb-3">
@@ -224,13 +222,38 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label"
-                          >Ngày QĐ tiếp nhận của BGD&ĐT</label
+                          >Ngày QĐ tiếp nhận của Trường</label
                         >
                         <input
                           type="date"
                           class="form-control"
                           v-model="neuReceiveDate"
-                          placeholder="Nhập ngày"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số QĐ gia hạn</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          v-model="decisionNumber"
+                          placeholder="Nhập số quyết định gia hạn"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ngày gia hạn</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          v-model="decisionDate"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Thời gian gia hạn</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="decisionTime"
+                          placeholder="Nhập thời gian gia hạn"
                         />
                       </div>
                     </div>
@@ -306,6 +329,31 @@
                           v-model="initExpenses"
                           placeholder="Nhập tiền đi lại"
                         />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Quyết định gia hạn</label>
+                        <input
+                          type="file"
+                          ref="decisionDoc"
+                          class="form-control"
+                          @change="handlePdfChange()"
+                          style="display: none"
+                        />
+                        <div class="card">
+                          <button
+                            @click="handlePdfUpload()"
+                            class="btn btn-outline-primary w-100"
+                          >
+                            Choose File
+                          </button>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="attachedDocName"
+                            disabled
+                          />
+                        </div>
+                        <div v-if="message != ''">{{ message }}</div>
                       </div>
                     </div>
                   </div>
@@ -442,7 +490,6 @@
                                   type="date"
                                   class="form-control"
                                   v-model="editStudent.birthday"
-                                  placeholder="Nhập ngày sinh"
                                 />
                               </div>
                               <div class="mb-3">
@@ -545,7 +592,6 @@
                                   type="date"
                                   class="form-control"
                                   v-model="editStudent.bgdReceiveDate"
-                                  placeholder="Nhập số quyết định"
                                 />
                               </div>
                               <div class="mb-3">
@@ -561,13 +607,40 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Ngày QĐ tiếp nhận của BGD&ĐT</label
+                                  >Ngày QĐ tiếp nhận của trường</label
                                 >
                                 <input
                                   type="date"
                                   class="form-control"
                                   v-model="editStudent.neuReceiveDate"
-                                  placeholder="Nhập ngày"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Số QĐ gia hạn</label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  v-model="editStudent.decisionNumber"
+                                  placeholder="Nhập số quyết định gia hạn"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Ngày gia hạn</label>
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  v-model="editStudent.decisionDate"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Thời gian gia hạn</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editStudent.decisionTime"
+                                  placeholder="Nhập thời gian gia hạn"
                                 />
                               </div>
                             </div>
@@ -651,6 +724,33 @@
                                   v-model="editStudent.initExpenses"
                                   placeholder="Nhập tiền đi lại"
                                 />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label"
+                                  >Quyết định gia hạn</label
+                                >
+                                <input
+                                  type="file"
+                                  ref="decisionDoc1"
+                                  class="form-control"
+                                  @change="handlePdfChange1()"
+                                  style="display: none"
+                                />
+                                <div class="card">
+                                  <button
+                                    @click="handlePdfUpload1()"
+                                    class="btn btn-outline-primary w-100"
+                                  >
+                                    Choose File
+                                  </button>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="editStudent.attachedDocName"
+                                    disabled
+                                  />
+                                </div>
+                                <div v-if="editStudent.message != ''">{{ editStudent.message }}</div>
                               </div>
                             </div>
                           </div>
@@ -752,6 +852,12 @@ export default {
       tetLaoCamExpenses: "",
       travelExpenses: "",
       initExpenses: "",
+      decisionNumber: "",
+      decisionDate: "",
+      decisionTime: "",
+      decisionDoc: null,
+      attachedDocName: "",
+      message: "",
 
       displayModal: false,
       displayModalOne: false,
@@ -781,6 +887,13 @@ export default {
         tetLaoCamExpenses: "",
         travelExpenses: "",
         initExpenses: "",
+        decisionNumber: "",
+        decisionDate: "",
+        decisionTime: "",
+        decisionDoc: null,
+        attachedDocName: "",
+        attachedDocLink: "",
+        message: "",
       },
     };
   },
@@ -804,39 +917,83 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    handlePdfUpload() {
+      this.$refs.decisionDoc.click();
+    },
+    handlePdfUpload1() {
+      this.$refs.decisionDoc1.click();
+    },
+    handlePdfChange() {
+      const file = this.$refs.decisionDoc.files[0];
+      console.log(file, "handlePdfChange file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.decisionDoc = file;
+      this.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.message = "";
+      } else {
+        this.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
+    handlePdfChange1() {
+      const file = this.$refs.decisionDoc1.files[0];
+      console.log(file, "handlePdfChange1 file");
+      const allowedTypes = ["application/pdf"];
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.editStudent.decisionDoc = file;
+      this.editStudent.attachedDocName = file.name;
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.editStudent.message = "";
+      } else {
+        this.editStudent.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp!!";
+      }
+    },
+
     async submitForm() {
-
       try {
-        const data = {
-          name: this.name,
-          studentCode: this.studentCode,
-          birthday: this.birthday,
-          sex: this.sex,
-          nation: this.nation,
-          schoolYear: this.schoolYear,
-          tempResidence: this.tempResidence,
-          dien: this.dien,
-          major: this.major,
-          courseDuration: this.courseDuration,
-          monthCount: this.monthCount,
-          bgdReceiveNumber: this.bgdReceiveNumber,
-          bgdReceiveDate: this.bgdReceiveDate,
-          neuReceiveNumber: this.neuReceiveNumber,
-          neuReceiveDate: this.neuReceiveDate,
-          expenses: this.expenses,
-          shp: this.shp,
-          kpck: this.kpck,
-          nationalDayExpenses: this.nationalDayExpenses,
-          tetVnExpenses: this.tetVnExpenses,
-          tetLaoCamExpenses: this.tetLaoCamExpenses,
-          travelExpenses: this.travelExpenses,
-          initExpenses: this.initExpenses,
-        }
 
-        const result = await instance.post(
-          "/api/create-student",
-          data,
-        );
+        let formData = new FormData();
+        formData.append("name", this.name)
+        formData.append("studentCode", this.studentCode)
+        formData.append("birthday", this.t.birthday)
+        formData.append("sex", this.sex)
+        formData.append("nation", this.nation)
+        formData.append("schoolYear", this.schoolYear)
+        formData.append("tempResidence", this.tempResidence)
+        formData.append("dien", this.dien)
+        formData.append("major", this.major)
+        formData.append("courseDuration", this.courseDuration)
+        formData.append("monthCount", this.monthCount)
+        formData.append("bgdReceiveNumber", this.bgdReceiveNumber)
+        formData.append("bgdReceiveDate", this.bgdReceiveDate)
+        formData.append("neuReceiveNumber", this.neuReceiveNumber)
+        formData.append("neuReceiveDate", this.neuReceiveDate)
+        formData.append("expenses", this.expenses)
+        formData.append("shp", this.shp)
+        formData.append("kpck", this.kpck)
+        formData.append("nationalDayExpenses", this.nationalDayExpenses)
+        formData.append("tetVnExpenses", this.tetVnExpenses)
+        formData.append("tetLaoCamExpenses", this.tetLaoCamExpenses)
+        formData.append("travelExpenses", this.travelExpenses)
+        formData.append("initExpenses", this.initExpenses)
+        formData.append("decisionNumber", this.decisionNumber)
+        formData.append("decisionDate", this.decisionDate)
+        formData.append("decisionTime", this.decisionTime)
+        formData.append("decisionDoc1", this.decisionDoc)
+        const result = await instance.post("/api/create-student", data);
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -903,41 +1060,57 @@ export default {
       this.editStudent.tetLaoCamExpenses = item.tetLaoCamExpenses;
       this.editStudent.travelExpenses = item.travelExpenses;
       this.editStudent.initExpenses = item.initExpenses;
+      this.editStudent.decisionNumber = item.decisionNumber
+      this.editStudent.decisionDate = item.decisionDate
+      this.editStudent.decisionTime = item.decisionTime
+      this.editStudent.attachedDocName = item.attachedDocName
+      this.editStudent.attachedDocLink = item.attachedDocLink
+      this.editStudent.decisionDoc = null
       this.editStudent.id = item._id;
       this.showModal1();
     },
 
     async onSubmit() {
-
       try {
-        const data = {
-          name: this.editStudent.name,
-          studentCode: this.editStudent.studentCode,
-          birthday: this.editStudent.birthday,
-          sex: this.editStudent.sex,
-          nation: this.editStudent.nation,
-          schoolYear: this.editStudent.schoolYear,
-          tempResidence: this.editStudent.tempResidence,
-          dien: this.editStudent.dien,
-          major: this.editStudent.major,
-          courseDuration: this.editStudent.courseDuration,
-          monthCount: this.editStudent.monthCount,
-          bgdReceiveNumber: this.editStudent.bgdReceiveNumber,
-          bgdReceiveDate: this.editStudent.bgdReceiveDate,
-          neuReceiveNumber: this.editStudent.neuReceiveNumber,
-          neuReceiveDate: this.editStudent.neuReceiveDate,
-          expenses: this.editStudent.expenses,
-          shp: this.editStudent.shp,
-          kpck: this.editStudent.kpck,
-          nationalDayExpenses: this.editStudent.nationalDayExpenses,
-          tetVnExpenses: this.editStudent.tetVnExpenses,
-          tetLaoCamExpenses: this.editStudent.tetLaoCamExpenses,
-          travelExpenses: this.editStudent.travelExpenses,
-          initExpenses: this.editStudent.initExpenses,
-        }
+        let formData = new FormData();
+        formData.append("name", this.editStudent.name)
+        formData.append("studentCode", this.editStudent.studentCode)
+        formData.append("birthday", this.editStudent.birthday)
+        formData.append("sex", this.editStudent.sex)
+        formData.append("nation", this.editStudent.nation)
+        formData.append("schoolYear", this.editStudent.schoolYear)
+        formData.append("tempResidence", this.editStudent.tempResidence)
+        formData.append("dien", this.editStudent.dien)
+        formData.append("major", this.editStudent.major)
+        formData.append("courseDuration", this.editStudent.courseDuration)
+        formData.append("monthCount", this.editStudent.monthCount)
+        formData.append("bgdReceiveNumber", this.editStudent.bgdReceiveNumber)
+        formData.append("bgdReceiveDate", this.editStudent.bgdReceiveDate)
+        formData.append("neuReceiveNumber", this.editStudent.neuReceiveNumber)
+        formData.append("neuReceiveDate", this.editStudent.neuReceiveDate)
+        formData.append("expenses", this.editStudent.expenses)
+        formData.append("shp", this.editStudent.shp)
+        formData.append("kpck", this.editStudent.kpck)
+        formData.append("nationalDayExpenses", this.editStudent.nationalDayExpenses)
+        formData.append("tetVnExpenses", this.editStudent.tetVnExpenses)
+        formData.append("tetLaoCamExpenses", this.editStudent.tetLaoCamExpenses)
+        formData.append("travelExpenses", this.editStudent.travelExpenses)
+        formData.append("initExpenses", this.editStudent.initExpenses)
+        formData.append("decisionNumber", this.editStudent.decisionNumber)
+        formData.append("decisionDate", this.editStudent.decisionDate)
+        formData.append("decisionTime", this.editStudent.decisionTime)
+        formData.append("decisionDoc1", this.editStudent.decisionDoc)
+        formData.append("attachedDocLink", this.editStudent.attachedDocLink)
+        formData.append("attachedDocName", this.editStudent.attachedDocName)
+        
         const result = await instance.put(
           `/api/edit-student/${this.editStudent.id}`,
-          data
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
 
         if (result.data.error === true) {
@@ -951,7 +1124,6 @@ export default {
           this.$refs.table.refresh();
           console.log(result.data);
           this.displayModalOne = false;
-          this.editStudent.attachedDoc = null;
         }
       } catch (error) {
         console.log(error, "put api catch block error");

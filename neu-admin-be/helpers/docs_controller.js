@@ -15,11 +15,12 @@ function docsControl(docRefsArr, docsInDbArr) {
         return doc.name
     })
     console.log(docNamesArr, "docNamesArr docs_controller")
-    if (docRefsArr.length === 0) {
-        console.log('docs1 empty input docs_controller')
-        const emptyInputError = 'DOCS1_EMPTY_INPUT_ERROR'
-        return emptyInputError
-    } else if (hasNewDocsArrayDuplicate(docNamesArr)) {
+    // if (docRefsArr.length === 0) {
+    //     console.log('docs1 empty input docs_controller')
+    //     const emptyInputError = 'DOCS1_EMPTY_INPUT_ERROR'
+    //     return emptyInputError
+    // }
+    if (hasNewDocsArrayDuplicate(docNamesArr)) {
         console.log('có doc trùng nhau docs_controller')
         const duplicatedDocsError = 'DUPLICATED_DOCS_ERROR'
         return duplicatedDocsError

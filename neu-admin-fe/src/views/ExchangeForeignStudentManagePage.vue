@@ -163,7 +163,7 @@
                       <div class="mb-3">
                         <label class="form-label">Mã sinh viên/Giảng viên (NEU)</label>
                         <input
-                          type="number"
+                          type="text"
                           class="form-control"
                           v-model="studentCode"
                           placeholder="Nhập mã sinh viên/giảng viên"
@@ -340,6 +340,7 @@
                       </svg>
                     </a>
                     <a
+                      v-if="item.row.attachedDocLink !== ''"
                       :href="item.row.attachedDocLink"
                       class="btn btn-success btn-icon"
                     >
@@ -472,7 +473,7 @@
                                   >Mã sinh viên/Giảng viên (NEU)</label
                                 >
                                 <input
-                                  type="number"
+                                  type="text"
                                   class="form-control"
                                   v-model="editExForeignStudent.studentCode"
                                   placeholder="Nhập mã sinh viên/giảng viên"

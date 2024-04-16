@@ -69,7 +69,7 @@ router.get('/api/get-all-enrollments', async (req, res) => {
     }
 })
 
-router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array("enrollmentDocs"), emptyEnrollmentFileInputValidation, async (req, res) => {
+router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array("enrollmentDocs"), async (req, res) => {
     try {
         const { programId, year, enrollmentCount, admissionCount, transferStudents, graduatedCount, admittedStudents, applicantsCount, dropoutCount, reservedStudents, trainingStudents } = req.body;
         console.log(req.body, "req.body post api")
@@ -77,6 +77,27 @@ router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array(
         const enrollmentId = req.payload
         const docs = req.files
         console.log(docs, "req.files create-enrollment api");
+        if (!docs) {
+            console.log('ko có file được up lên create-partner api')
+        } else {
+            // trường hợp có file up lên, lưu các thông tin của các file up lên vào db
+            const enrollmentDocsArray = docs.map((doc) => {
+                return {
+                    docLink: doc.location,
+                    docName: doc.originalname,
+                    docSize: doc.size,
+                    docType: doc.mimetype,
+                    program: {
+                        id: programId
+                    },
+                    enrollment: {
+                        id: enrollmentId
+                    }
+                }
+            })
+            const savedEnrollmentDocsArray = await EnrollmentDocsSchema.insertMany(enrollmentDocsArray)
+            console.log(savedEnrollmentDocsArray, "savedEnrollmentDocsArray create-enrollment api")
+        }
         const newEnrollment = {
             year: year,
             enrollmentCount: enrollmentCount,
@@ -95,22 +116,7 @@ router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array(
 
         const storingEnrollment = await EnrollmentSchema.findOneAndUpdate({ _id: enrollmentId }, newEnrollment, { new: true })
         console.log(storingEnrollment, "storingEnrollment create-enrollment api")
-        const enrollmentDocsArray = docs.map((doc) => {
-            return {
-                docLink: doc.location,
-                docName: doc.originalname,
-                docSize: doc.size,
-                docType: doc.mimetype,
-                program: {
-                    id: programId
-                },
-                enrollment: {
-                    id: enrollmentId
-                }
-            }
-        })
-        const savedEnrollmentDocsArray = await EnrollmentDocsSchema.insertMany(enrollmentDocsArray)
-        console.log(savedEnrollmentDocsArray, "savedEnrollmentDocsArray create-enrollment api")
+
         res.json({ error: false, message: 'Lưu thành công' })
         
     } catch (error) {
@@ -149,11 +155,12 @@ router.put('/api/edit-enrollment/:id', upload.array("enrollmentDocs1"), async(re
         console.log(enrollmentdocsArrayInDb, "enrollmentdocsArrayInDb edit-enrollment api")
         const docsControlResult = docsControl(doc1Refs, enrollmentdocsArrayInDb)
         console.log(docsControlResult, "docsControlResult edit-enrollment api");
-        if (docsControlResult === "DOCS1_EMPTY_INPUT_ERROR") {
-            console.log("empty docs1 input");
-            docsControlResultError = "DOCS1_EMPTY_INPUT_ERROR";
-            // res.json({ error: true, message: "Hãy điền đầy đủ form" })
-        } else if (docsControlResult === "DUPLICATED_DOCS_ERROR") {
+        // if (docsControlResult === "DOCS1_EMPTY_INPUT_ERROR") {
+        //     console.log("empty docs1 input");
+        //     docsControlResultError = "DOCS1_EMPTY_INPUT_ERROR";
+        //     // res.json({ error: true, message: "Hãy điền đầy đủ form" })
+        // } 
+        if (docsControlResult === "DUPLICATED_DOCS_ERROR") {
             console.log("duplicated docs");
             docsControlResultError = "DUPLICATED_DOCS_ERROR";
             // res.json({ error: true, message: "có file trùng" })
@@ -230,8 +237,6 @@ router.put('/api/edit-enrollment/:id', upload.array("enrollmentDocs1"), async(re
                 console.log("không có ảnh mới để lưu");
             }
             res.json({ error: false, message: "Sửa thành công" })
-        } else if (docsControlResultError === "DOCS1_EMPTY_INPUT_ERROR") {
-            res.json({ error: true, message: "Hãy điền đầy đủ form" })
         } else if (docsControlResultError === "DUPLICATED_DOCS_ERROR") {
             res.json({ error: true, message: "có file trùng" })
         }
@@ -247,16 +252,24 @@ router.delete('/api/delete-enrollment/:id', async(req, res) => {
     try {
         const { id } = req.params
         console.log(id, "::id delete api::")
-        // Xóa các file cần xóa trên s3
-        const prefix = `enrollment-file-${id}`;
-        const delFolderRes = await deleteFolder(prefix);
-        console.log(delFolderRes, "delFolderRes delete-enrollment api");
+        const checkEnrollmentDocs = await EnrollmentDocsSchema.find({ enrollment: { id: new ObjectId(id) } })
+        if (checkEnrollmentDocs.length === 0) {
+            console.log(`ko có file nào trong db của enrollment id: ${id}`)
+        } else {
+            // trường hợp có thông tin file trong db của enrollment đó
+            // Xóa các file cần xóa trên s3
+            const programId = checkEnrollmentDocs[0].program.id.toString()
+            const prefix = `program-${programId}/enrollment-file-${id}/`;
+            const delFolderRes = await deleteFolder(prefix);
+            console.log(delFolderRes, "delFolderRes delete-enrollment api");
 
-        // Xóa thông tin các file cần xóa trong db
-        const delEnrollmentFiles = await EnrollmentDocsSchema.deleteMany({
-            enrollment: { id: new ObjectId(id) },
-        });
-        console.log(delEnrollmentFiles, "delEnrollmentFiles delete-enrollment api");
+            // Xóa thông tin các file cần xóa trong db
+            const delEnrollmentFiles = await EnrollmentDocsSchema.deleteMany({
+                enrollment: { id: new ObjectId(id) },
+            });
+            console.log(delEnrollmentFiles, "delEnrollmentFiles delete-enrollment api");
+        }
+        
 
         // Xóa thông tin enrollment cần xóa
         const deletingEnrollment = await EnrollmentSchema.findOneAndDelete({ _id: id })
@@ -333,10 +346,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_ENROLLMENT_FILES_INPUT_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_ENROLLMENT_FILES_INPUT_ERROR") {
+        //     console.log(error.code, "empty input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
     
         // if (error.code === "ENROLLMENT_INPUTS_TYPE_ERROR") {
         //     console.log("input type error")

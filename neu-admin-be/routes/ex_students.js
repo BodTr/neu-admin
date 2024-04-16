@@ -57,23 +57,45 @@ router.get('/api/get-all-ex-students', async (req, res) => {
     }
 })
 
-router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields, emptyFileExStudentInputValidation, async (req, res, next) => {
+router.post('/api/create-ex-student', initExStudentMiddleware, uploadFileFields, async (req, res, next) => {
     try {
         const { name, birthday, sex, department, academicYear, major, studentCode, exchangeTime, exchangeYear, receivingCountry, partnerUni, subject, result, exchangeDecision, convertedScore, results } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         const studentId = req.payload
         const resultsArr = JSON.parse(results)
-        const attachedExchangeDocArr = req.files['attachedExchangeDoc']
-        const attachedScoreDocArr = req.files['attachedScoreDoc']
-        const attachedExchangeDoc = attachedExchangeDocArr[0]
-        const attachedScoreDoc = attachedScoreDocArr[0]
-        console.log(attachedExchangeDoc, "attachedExchangeDoc, post api")
-        console.log(attachedScoreDoc, "attachedScoreDoc, post api")
-        const attachedExDocLink = attachedExchangeDoc.location
-        const attachedExDocName = attachedExchangeDoc.originalname
-        const attachedScoreDocLink = attachedScoreDoc.location
-        const attachedScoreDocName = attachedScoreDoc.originalname
+
+
+
+
+
+        let attachedScoreDocLink = ""
+        let attachedScoreDocName = ""
+        let attachedExDocName = ""
+        let attachedExDocLink = ""
+         
+
+        if (!req.files['attachedExchangeDoc']) {
+            attachedExDocLink = ""
+            attachedExDocName = ""
+        } else {
+            const attachedExchangeDocArr = req.files['attachedExchangeDoc']
+            const attachedExchangeDoc = attachedExchangeDocArr[0]
+            console.log(attachedExchangeDoc, "attachedExchangeDoc, post api")
+            attachedExDocLink = attachedExchangeDoc.location
+            attachedExDocName = attachedExchangeDoc.originalname
+        }
+        if (!req.files['attachedScoreDoc']) {
+            attachedScoreDocLink = ""
+            attachedScoreDocName = ""
+        } else {
+            const attachedScoreDocArr = req.files['attachedScoreDoc']
+            const attachedScoreDoc = attachedScoreDocArr[0]
+            console.log(attachedScoreDoc, "attachedScoreDoc, post api")
+            attachedScoreDocLink = attachedScoreDoc.location
+            attachedScoreDocName = attachedScoreDoc.originalname
+        }
+
         const newStudent = {
             name: name,
             studentCode: studentCode,
@@ -125,15 +147,20 @@ router.put('/api/edit-ex-student/:id', uploadFileFields1, async(req, res) => {
         let newAttachedExDocLink = ''
         let newAttachedScoreDocLink = ''
         if (attachedExchangeDocArr) {
+            if (attachedExDocLink === "") {
+                console.log('ko có link ảnh cũ edit-ex-student api')
+            } else {
+                const oldExFileKey = attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldExFileKey, "oldExFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldExFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, put api:::")
+            }
+
             const attachedExchangeDoc = attachedExchangeDocArr[0]
-            const oldExFileKey = attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldExFileKey, "oldExFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldExFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, put api:::")
             newAttachedExDocLink = attachedExchangeDoc.location
 
         } else {
@@ -141,15 +168,20 @@ router.put('/api/edit-ex-student/:id', uploadFileFields1, async(req, res) => {
         }
 
         if (attachedScoreDocArr) {
+            if (attachedScoreDocLink === "") {
+                console.log('ko có link ảnh cũ edit-ex-student api')
+            } else {
+                const oldExFileKey = attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldExFileKey, "oldExFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldExFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, put api:::")
+            }
+
             const attachedScoreDoc = attachedScoreDocArr[0]
-            const oldExFileKey = attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldExFileKey, "oldExFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldExFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, put api:::")
             newAttachedScoreDocLink = attachedScoreDoc.location
 
         } else {
@@ -195,21 +227,34 @@ router.delete('/api/delete-ex-student/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delStudent = await ExStudentSchema.findOne({ _id: id })
-        const delStudentKey1 = delStudent.attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delStudentKey1, "delStudentKey delete api")
-        const newDeleteCommand1 = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delStudentKey1}`
-        })
-        const result1 = await s3.send(newDeleteCommand1)
-        const delStudentKey2 = delStudent.attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delStudentKey2, "delStudentKey delete api")
-        const newDeleteCommand2 = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delStudentKey2}`
-        })
-        const result2 = await s3.send(newDeleteCommand2)
-        console.log(result1, result2,  ":::result, delete api:::")
+        const attachedScoreDocLink = delStudent.attachedScoreDocLink
+        const attachedExDocLink = delStudent.attachedExDocLink
+        if (attachedScoreDocLink === "") {
+            console.log('ko có link ảnh attachedScoreDocLink cũ delete-ex-student api')
+        } else {
+            const delStudentKey2 = delStudent.attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delStudentKey2, "delStudentKey delete api")
+            const newDeleteCommand2 = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delStudentKey2}`
+            })
+            const result2 = await s3.send(newDeleteCommand2)
+            console.log(result2,  ":::result2, delete api:::")
+        }
+
+        if (attachedExDocLink === "") {
+            console.log('ko có link ảnh attachedExDocLink cũ delete-ex-student api')
+        } else {
+            const delStudentKey1 = delStudent.attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delStudentKey1, "delStudentKey delete api")
+            const newDeleteCommand1 = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delStudentKey1}`
+            })
+            const result1 = await s3.send(newDeleteCommand1)
+            console.log(result1,  ":::result1, delete api:::")
+        }
+        
         const deletingStudent = await ExStudentSchema.findOneAndDelete({ _id: id })
         console.log(deletingStudent, "deletingStudent")
         res.json({ error: false, message: "Xóa thành công thông tin học sinh" })
@@ -296,10 +341,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_ES_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_ES_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty file input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
 
     }
     

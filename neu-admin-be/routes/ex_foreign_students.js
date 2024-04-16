@@ -47,7 +47,7 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
     }
 })
 
-router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), emptyFileExForeignStudentInputValidation, async (req, res, next) => {
+router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), async (req, res, next) => {
     try {
         const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
         console.log(req.body, "req.body post api")
@@ -56,8 +56,15 @@ router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, uploa
         const studentId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
-        const attachedDocLink = attachedDoc.location
-        const attachedDocName = attachedDoc.originalname
+        let attachedDocLink = ""
+        let attachedDocName = ""
+        if (!attachedDoc) {
+            attachedDocLink = ""
+            attachedDocName = ""
+        } else {
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
         const newStudent = {
             name: name,
             studentCode: studentCode,
@@ -97,14 +104,18 @@ router.put('/api/edit-ex-f-student/:id', upload.single("attachedExFStuDoc1"), as
         console.log(req.body, "req.body put api")
         let newAttachedDocLink = ''
         if (attachedDoc1) {
-            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldFileKey, "oldFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, put api:::")
+            if (attachedDocLink === "") {
+                console.log('ko có link ảnh cũ edit-ex-f-student api')
+            } else {
+                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldFileKey, "oldFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, newDeleteCommand put api:::")
+            }
             newAttachedDocLink = attachedDoc1.location
 
         } else {
@@ -145,14 +156,20 @@ router.delete('/api/delete-ex-f-student/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delStudent = await ExForeignStudentSchema.findOne({ _id: id })
-        const delStudentKey = delStudent.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delStudentKey, "delStudentKey delete api")
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delStudentKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, ":::result, delete api:::")
+        const attachedDocLink = delStudent.attachedDocLink
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-ex-f-student api')
+        } else {
+            const delStudentKey = delStudent.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delStudentKey, "delStudentKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delStudentKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, ":::result, delete api:::")
+        }
+
         const deletingStudent = await ExForeignStudentSchema.findOneAndDelete({ _id: id })
         console.log(deletingStudent, "deletingStudent")
         res.json({ error: false, message: "Xóa thành công thông tin học sinh" })
@@ -216,10 +233,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_EFS_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
-        }
+        // if (error.code === "EMPTY_EFS_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty file input error")
+        //     return res.json({ error: true, message: "Hãy điền đẩy đủ form" })
+        // }
 
     }
     

@@ -49,7 +49,7 @@ router.get('/api/get-all-htqts', async (req, res) => {
     }
 })
 
-router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), emptyFileHTQTInputValidation, async (req, res, next) => {
+router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHTQTDoc"), async (req, res, next) => {
     try {
         const { nation, partnerUni, funding, planDetail, signingTime, expireTime, note  } = req.body
         console.log(req.body, "req.body post api")
@@ -58,8 +58,15 @@ router.post('/api/create-htqt', initHTQTDocMiddleware, upload.single("attachedHT
         const htqtId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
-        const attachedDocLink = attachedDoc.location
-        const attachedDocName = attachedDoc.originalname
+        let attachedDocLink = ""
+        let attachedDocName = ""
+        if (!attachedDoc) {
+            attachedDocLink = ""
+            attachedDocName = ""
+        } else {
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
         const newHtqt = {
             nation: nation,
             partnerUni: partnerUni,
@@ -93,14 +100,18 @@ router.put('/api/edit-htqt/:id', upload.single("attachedHTQTDoc1"), async(req, r
         console.log(req.body, "req.body put api")
         let newAttachedDocLink = ''
         if (attachedDoc1) {
-            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldFileKey, "oldFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, put api:::")
+            if (attachedDocLink === "") {
+                console.log('ko có link ảnh cũ edit-htqt api')
+            } else {
+                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldFileKey, "oldFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, newDeleteCommand put api:::")
+            }
             newAttachedDocLink = attachedDoc1.location
 
         } else {
@@ -135,14 +146,20 @@ router.delete('/api/delete-htqt/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delHtqt = await HTQTSchema.findOne({ _id: id })
-        const delHtqtKey = delHtqt.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delHtqtKey, "delHtqtKey delete api")
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delHtqtKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, ":::result, delete api:::")
+        const attachedDocLink = delHtqt.attachedDocLink
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-htqt api')
+        } else {
+            const delHtqtKey = delHtqt.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delHtqtKey, "delHtqtKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delHtqtKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, ":::result, delete api:::")
+        }
+        
         const deletingHtqt = await HTQTSchema.findOneAndDelete({ _id: id })
         console.log(deletingHtqt, "deletingHtqt")
         res.json({ error: false, message: "Xóa thành công" })
@@ -206,10 +223,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_HTQT_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty file input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_HTQT_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty file input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
 
     }
     

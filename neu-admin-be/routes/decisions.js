@@ -51,7 +51,7 @@ router.get('/api/get-all-decisions', async (req, res) => {
     }
 })
 
-router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("approvalDecisionDoc"), emptyFileDecisionInputValidation, async (req, res) => {
+router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("approvalDecisionDoc"), async (req, res) => {
     try {
         const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
@@ -59,8 +59,16 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
         console.log(decisionId, "req.payload post api")
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
-        const attachedDocLink = attachedDoc.location
-        const attachedDocName = attachedDoc.originalname
+        let attachedDocLink = ""
+        let attachedDocName = ""
+        if (!attachedDoc) {
+            attachedDocLink = ""
+            attachedDocName = ""
+        } else {
+            attachedDocLink = attachedDoc.location
+            attachedDocName = attachedDoc.originalname
+        }
+
         // thêm quyết định vừa xong vào chương trình tương ứng
         const program = await ProgramSchema.findOne({ _id: programId})
         console.log(program, "oldProgram create decision api")
@@ -105,14 +113,19 @@ router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"), asy
         let newAttachedDocLink = ''
         if(attachedDoc1){
             console.log(attachedDoc1, "attachedDoc, post api")
-            const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(oldFileKey, "oldFileKey put api")
-            const newDeleteCommand = new DeleteObjectCommand({
-                Bucket: 'acvnapps',
-                Key: `${oldFileKey}`
-            })
-            const result = await s3.send(newDeleteCommand)
-            console.log(result, ":::result, newDeleteCommand put api:::")
+            if (attachedDocLink === "") {
+                console.log('ko có link ảnh cũ edit-decision api')
+            } else {
+                const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+                console.log(oldFileKey, "oldFileKey put api")
+                const newDeleteCommand = new DeleteObjectCommand({
+                    Bucket: 'acvnapps',
+                    Key: `${oldFileKey}`
+                })
+                const result = await s3.send(newDeleteCommand)
+                console.log(result, ":::result, newDeleteCommand put api:::")
+            }
+
             newAttachedDocLink = attachedDoc1.location
         } else {
             newAttachedDocLink = attachedDocLink
@@ -164,16 +177,24 @@ router.delete('/api/delete-decision/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delDecision = await DecisionSchema.findOne({ _id: id })
-        const delDecisionKey = delDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delDecisionKey, "delDecisionKey delete api")
-        const newDeleteCommand = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delDecisionKey}`
-        })
-        const result = await s3.send(newDeleteCommand)
-        console.log(result, "newDeleteCommand result delete api")
+        const attachedDocLink = delDecision.attachedDocLink
+        if (attachedDocLink === "") {
+            console.log('ko có link ảnh cũ delete-decision api')
+        } else {
+            const delDecisionKey = delDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delDecisionKey, "delDecisionKey delete api")
+            const newDeleteCommand = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delDecisionKey}`
+            })
+            const result = await s3.send(newDeleteCommand)
+            console.log(result, "newDeleteCommand result delete api")
+        }
+
         const programId = delDecision.program.id.toString()
         const program = await ProgramSchema.findOne({ _id: programId })
+
+        // Loại bỏ quyết định bị xóa khỏi bảng program
         let decisionArray = program.decisionsArray
         const newDecisionArray = decisionArray.filter((item) => {
             if (item.decisionId !== id) {
@@ -244,10 +265,10 @@ router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params e
     if (error) {
         console.log(error, "custom error handler")
 
-        if (error.code === "EMPTY_DECISION_FILE_INPUT_ERROR") {
-            console.log(error.code, "empty input error")
-            return res.json({ error: true, message: "Chưa chọn file nào" })
-        }
+        // if (error.code === "EMPTY_DECISION_FILE_INPUT_ERROR") {
+        //     console.log(error.code, "empty input error")
+        //     return res.json({ error: true, message: "Chưa chọn file nào" })
+        // }
     
         // if (error.code === "DECISION_INPUTS_TYPE_ERROR") {
         //     console.log("input type error")
