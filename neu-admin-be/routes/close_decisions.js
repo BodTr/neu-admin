@@ -55,7 +55,7 @@ router.post('/api/create-close-decision', initCloseDecisionDocMiddleware, upload
         const { programId, name, detail, number, signDate, expireIn } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
-        console.log(req.file, "req.file post api")
+        console.log(req.file, "req.file create-close-decision api")
         const closeDecisionId = req.payload
         const attachedDoc = req.file
         let attachedDocLink = ""
@@ -150,7 +150,7 @@ router.delete('/api/delete-close-decision/:id', async(req, res) => {
             console.log('ko có link ảnh cũ delete-close-decision api')
         } else {
             const delDecisionKey = deletingDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-            console.log(delDecisionKey, "delDecisionKey delete api")
+            console.log(delDecisionKey, "delDecisionKey delete-close-decision api")
             const newDeleteCommand = new DeleteObjectCommand({
                 Bucket: 'acvnapps',
                 Key: `${delDecisionKey}`

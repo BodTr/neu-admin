@@ -92,6 +92,26 @@ const StudentSchema = new mongoose.Schema({
     initExpenses: {
         type: String,
         require: false
+    },
+    decisionNumber: {
+        type: String,
+        require: false
+    },
+    decisionDate: {
+        type: String,
+        require: false
+    },
+    decisionTime: {
+        type: String,
+        require: false
+    },
+    attachedDocLink: {
+        type: String,
+        require: false
+    },
+    attachedDocName: {
+        type: String,
+        require: false
     }
 },
     {

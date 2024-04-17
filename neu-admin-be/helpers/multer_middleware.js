@@ -71,6 +71,8 @@ const upload = multer({
                 fileName = `program-${programId}/plan-file-${getId()}/${Date.now()}_${file.originalname}`
             } else if (fieldname === "enrollmentDocs" || fieldname === "enrollmentDocs1") {
                 fileName = `program-${programId}/enrollment-file-${getId()}/${Date.now()}_${file.originalname}`
+            } else if (fieldname === "decisionDoc" || fieldname === "decisionDoc1") {
+                fileName = `student-decision-file-${getId()}/${Date.now()}_${file.originalname}`
             }
 
             cb(null, fileName)

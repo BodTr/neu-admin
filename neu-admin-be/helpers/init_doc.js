@@ -9,6 +9,21 @@ const DocumentSchema = require('../models/document')
 const PartnerSchema = require('../models/partner')
 const PlanSchema = require('../models/plan')
 const EnrollmentSchema = require('../models/enrollment')
+const StudentSchema = require('../models/student')
+
+async function initStudentDocMiddleware(req, res, next) {
+    try {
+        const initDoc = await StudentSchema.create({
+            name: 'init name'
+        })
+        const docId = initDoc._id.toString()
+        req.payload = docId
+        next()
+    } catch (error) {
+        console.log(error, "::: middleware init_student_doc :::")
+        res.json({ error: true, message: "Something went wrong!!" })
+    }
+}
 
 async function initEnrollmentDocMiddleware(req, res, next) {
     try {
@@ -182,4 +197,5 @@ module.exports = {
     initPartnerMiddleware,
     initPlanDocMiddleware,
     initEnrollmentDocMiddleware,
+    initStudentDocMiddleware,
 }

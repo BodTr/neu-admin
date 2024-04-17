@@ -256,7 +256,7 @@
                   </div>
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
-                      Create
+                      Tạo mới
                     </a>
                   </div>
                 </div>
@@ -571,7 +571,7 @@
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
                             >
-                              Edit
+                              Chỉnh sửa
                             </a>
                           </div>
                         </div>

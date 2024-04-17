@@ -359,7 +359,7 @@
                   </div>
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
-                      Create
+                      Tạo mới
                     </a>
                   </div>
                 </div>
@@ -443,7 +443,34 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-
+                    <a
+                      v-if="item.row.attachedDocLink !== ''"
+                      :href="item.row.attachedDocLink"
+                      class="btn btn-success btn-icon"
+                    >
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-files"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                        <path
+                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
+                        />
+                        <path
+                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
+                        />
+                      </svg>
+                    </a>
                     <div
                       v-if="displayModalOne"
                       class="modal modal-blur fade show"
@@ -750,7 +777,9 @@
                                     disabled
                                   />
                                 </div>
-                                <div v-if="editStudent.message != ''">{{ editStudent.message }}</div>
+                                <div v-if="editStudent.message != ''">
+                                  {{ editStudent.message }}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -759,7 +788,7 @@
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
                             >
-                              Edit
+                              Chỉnh sửa
                             </a>
                           </div>
                         </div>
@@ -807,6 +836,7 @@ export default {
         "bgdReceiveDate",
         "neuReceiveNumber",
         "neuReceiveDate",
+        "attachedDocName",
         "tool",
       ],
       options: {
@@ -826,6 +856,7 @@ export default {
           bgdReceiveDate: "Ngày QĐTN của BGD&ĐT",
           neuReceiveNumber: "Số QĐTN của trường",
           neuReceiveDate: "Ngày QĐTN của BGD&ĐT",
+          attachedDocName: "Quyết định gia hạn",
           tool: "Thao tác",
         },
       },
@@ -963,37 +994,41 @@ export default {
     },
 
     async submitForm() {
+      console.log("click event submitForm() method");
       try {
-
         let formData = new FormData();
-        formData.append("name", this.name)
-        formData.append("studentCode", this.studentCode)
-        formData.append("birthday", this.t.birthday)
-        formData.append("sex", this.sex)
-        formData.append("nation", this.nation)
-        formData.append("schoolYear", this.schoolYear)
-        formData.append("tempResidence", this.tempResidence)
-        formData.append("dien", this.dien)
-        formData.append("major", this.major)
-        formData.append("courseDuration", this.courseDuration)
-        formData.append("monthCount", this.monthCount)
-        formData.append("bgdReceiveNumber", this.bgdReceiveNumber)
-        formData.append("bgdReceiveDate", this.bgdReceiveDate)
-        formData.append("neuReceiveNumber", this.neuReceiveNumber)
-        formData.append("neuReceiveDate", this.neuReceiveDate)
-        formData.append("expenses", this.expenses)
-        formData.append("shp", this.shp)
-        formData.append("kpck", this.kpck)
-        formData.append("nationalDayExpenses", this.nationalDayExpenses)
-        formData.append("tetVnExpenses", this.tetVnExpenses)
-        formData.append("tetLaoCamExpenses", this.tetLaoCamExpenses)
-        formData.append("travelExpenses", this.travelExpenses)
-        formData.append("initExpenses", this.initExpenses)
-        formData.append("decisionNumber", this.decisionNumber)
-        formData.append("decisionDate", this.decisionDate)
-        formData.append("decisionTime", this.decisionTime)
-        formData.append("decisionDoc1", this.decisionDoc)
-        const result = await instance.post("/api/create-student", data);
+        formData.append("name", this.name);
+        formData.append("studentCode", this.studentCode);
+        formData.append("birthday", this.birthday);
+        formData.append("sex", this.sex);
+        formData.append("nation", this.nation);
+        formData.append("schoolYear", this.schoolYear);
+        formData.append("tempResidence", this.tempResidence);
+        formData.append("dien", this.dien);
+        formData.append("major", this.major);
+        formData.append("courseDuration", this.courseDuration);
+        formData.append("monthCount", this.monthCount);
+        formData.append("bgdReceiveNumber", this.bgdReceiveNumber);
+        formData.append("bgdReceiveDate", this.bgdReceiveDate);
+        formData.append("neuReceiveNumber", this.neuReceiveNumber);
+        formData.append("neuReceiveDate", this.neuReceiveDate);
+        formData.append("expenses", this.expenses);
+        formData.append("shp", this.shp);
+        formData.append("kpck", this.kpck);
+        formData.append("nationalDayExpenses", this.nationalDayExpenses);
+        formData.append("tetVnExpenses", this.tetVnExpenses);
+        formData.append("tetLaoCamExpenses", this.tetLaoCamExpenses);
+        formData.append("travelExpenses", this.travelExpenses);
+        formData.append("initExpenses", this.initExpenses);
+        formData.append("decisionNumber", this.decisionNumber);
+        formData.append("decisionDate", this.decisionDate);
+        formData.append("decisionTime", this.decisionTime);
+        formData.append("decisionDoc", this.decisionDoc);
+        const result = await instance.post("/api/create-student", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -1030,6 +1065,11 @@ export default {
           this.tetLaoCamExpenses = "";
           this.travelExpenses = "";
           this.initExpenses = "";
+          this.decisionNumber = "";
+          this.decisionDate = "";
+          this.decisionTime = "";
+          this.attachedDocName = "";
+          this.decisionDoc = null;
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -1060,12 +1100,12 @@ export default {
       this.editStudent.tetLaoCamExpenses = item.tetLaoCamExpenses;
       this.editStudent.travelExpenses = item.travelExpenses;
       this.editStudent.initExpenses = item.initExpenses;
-      this.editStudent.decisionNumber = item.decisionNumber
-      this.editStudent.decisionDate = item.decisionDate
-      this.editStudent.decisionTime = item.decisionTime
-      this.editStudent.attachedDocName = item.attachedDocName
-      this.editStudent.attachedDocLink = item.attachedDocLink
-      this.editStudent.decisionDoc = null
+      this.editStudent.decisionNumber = item.decisionNumber;
+      this.editStudent.decisionDate = item.decisionDate;
+      this.editStudent.decisionTime = item.decisionTime;
+      this.editStudent.attachedDocName = item.attachedDocName;
+      this.editStudent.attachedDocLink = item.attachedDocLink;
+      this.editStudent.decisionDoc = null;
       this.editStudent.id = item._id;
       this.showModal1();
     },
@@ -1073,36 +1113,42 @@ export default {
     async onSubmit() {
       try {
         let formData = new FormData();
-        formData.append("name", this.editStudent.name)
-        formData.append("studentCode", this.editStudent.studentCode)
-        formData.append("birthday", this.editStudent.birthday)
-        formData.append("sex", this.editStudent.sex)
-        formData.append("nation", this.editStudent.nation)
-        formData.append("schoolYear", this.editStudent.schoolYear)
-        formData.append("tempResidence", this.editStudent.tempResidence)
-        formData.append("dien", this.editStudent.dien)
-        formData.append("major", this.editStudent.major)
-        formData.append("courseDuration", this.editStudent.courseDuration)
-        formData.append("monthCount", this.editStudent.monthCount)
-        formData.append("bgdReceiveNumber", this.editStudent.bgdReceiveNumber)
-        formData.append("bgdReceiveDate", this.editStudent.bgdReceiveDate)
-        formData.append("neuReceiveNumber", this.editStudent.neuReceiveNumber)
-        formData.append("neuReceiveDate", this.editStudent.neuReceiveDate)
-        formData.append("expenses", this.editStudent.expenses)
-        formData.append("shp", this.editStudent.shp)
-        formData.append("kpck", this.editStudent.kpck)
-        formData.append("nationalDayExpenses", this.editStudent.nationalDayExpenses)
-        formData.append("tetVnExpenses", this.editStudent.tetVnExpenses)
-        formData.append("tetLaoCamExpenses", this.editStudent.tetLaoCamExpenses)
-        formData.append("travelExpenses", this.editStudent.travelExpenses)
-        formData.append("initExpenses", this.editStudent.initExpenses)
-        formData.append("decisionNumber", this.editStudent.decisionNumber)
-        formData.append("decisionDate", this.editStudent.decisionDate)
-        formData.append("decisionTime", this.editStudent.decisionTime)
-        formData.append("decisionDoc1", this.editStudent.decisionDoc)
-        formData.append("attachedDocLink", this.editStudent.attachedDocLink)
-        formData.append("attachedDocName", this.editStudent.attachedDocName)
-        
+        formData.append("name", this.editStudent.name);
+        formData.append("studentCode", this.editStudent.studentCode);
+        formData.append("birthday", this.editStudent.birthday);
+        formData.append("sex", this.editStudent.sex);
+        formData.append("nation", this.editStudent.nation);
+        formData.append("schoolYear", this.editStudent.schoolYear);
+        formData.append("tempResidence", this.editStudent.tempResidence);
+        formData.append("dien", this.editStudent.dien);
+        formData.append("major", this.editStudent.major);
+        formData.append("courseDuration", this.editStudent.courseDuration);
+        formData.append("monthCount", this.editStudent.monthCount);
+        formData.append("bgdReceiveNumber", this.editStudent.bgdReceiveNumber);
+        formData.append("bgdReceiveDate", this.editStudent.bgdReceiveDate);
+        formData.append("neuReceiveNumber", this.editStudent.neuReceiveNumber);
+        formData.append("neuReceiveDate", this.editStudent.neuReceiveDate);
+        formData.append("expenses", this.editStudent.expenses);
+        formData.append("shp", this.editStudent.shp);
+        formData.append("kpck", this.editStudent.kpck);
+        formData.append(
+          "nationalDayExpenses",
+          this.editStudent.nationalDayExpenses
+        );
+        formData.append("tetVnExpenses", this.editStudent.tetVnExpenses);
+        formData.append(
+          "tetLaoCamExpenses",
+          this.editStudent.tetLaoCamExpenses
+        );
+        formData.append("travelExpenses", this.editStudent.travelExpenses);
+        formData.append("initExpenses", this.editStudent.initExpenses);
+        formData.append("decisionNumber", this.editStudent.decisionNumber);
+        formData.append("decisionDate", this.editStudent.decisionDate);
+        formData.append("decisionTime", this.editStudent.decisionTime);
+        formData.append("decisionDoc1", this.editStudent.decisionDoc);
+        formData.append("attachedDocLink", this.editStudent.attachedDocLink);
+        formData.append("attachedDocName", this.editStudent.attachedDocName);
+
         const result = await instance.put(
           `/api/edit-student/${this.editStudent.id}`,
           formData,

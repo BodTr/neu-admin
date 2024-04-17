@@ -430,7 +430,7 @@
                               @click="onSubmit()"
                               class="btn btn-primary ms-auto"
                             >
-                              Edit
+                              Chỉnh sửa
                             </a>
                           </div>
                         </div>

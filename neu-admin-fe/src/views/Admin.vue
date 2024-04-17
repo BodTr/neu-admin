@@ -149,7 +149,7 @@
                       class="btn btn-primary ms-auto"
                       data-bs-dismiss="modal"
                     >
-                      Create
+                      Thêm mới
                     </a>
                   </div>
                 </div>
@@ -398,7 +398,7 @@
                               class="btn btn-primary ms-auto"
                               data-bs-dismiss="modal"
                             >
-                              Edit
+                              Chỉnh sửa
                             </a>
                           </div>
                         </div>
