@@ -35,8 +35,12 @@ router.get('/api/get-all-decisions', async (req, res) => {
             program: { id: new ObjectId(id) }
         })
         let stt = 0
+        
         const aDecisions = decisions.map( doc => {
             stt++
+            let signDate = doc.signDate
+            let a_signDate = signDate.split("-")
+            doc.signDate = a_signDate[2] + "/" + a_signDate[1] + "/" + a_signDate[0]
             // const id = doc._id.toString()
             return {
                 ...doc,
@@ -53,7 +57,7 @@ router.get('/api/get-all-decisions', async (req, res) => {
 
 router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("approvalDecisionDoc"), async (req, res) => {
     try {
-        const { programId, name, detail, number, signDate, expireIn } = req.body
+        const { programId, name, detail, number, signDate, expireIn, expireInLL } = req.body
         console.log(req.body, "req.body post api")
         const decisionId = req.payload
         console.log(decisionId, "req.payload post api")
@@ -90,6 +94,7 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
             attachedDocName: attachedDocName,
             signDate: signDate,
             expireIn: expireIn,
+            expireInLL: expireInLL,
             program: {
                 id: programId
             }
@@ -107,7 +112,7 @@ router.post('/api/create-decision', initDecisionDocMiddleware, upload.single("ap
 router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"), async(req, res) => {
     try {
         const { id } = req.params
-        const { name, detail, number, signDate, expireIn, attachedDocLink, attachedDocName, programId} = req.body
+        const { name, detail, number, signDate, expireIn, expireInLL, attachedDocLink, attachedDocName, programId} = req.body
         console.log(id, "::put api id::")
         const attachedDoc1 = req.file
         let newAttachedDocLink = ''
@@ -159,7 +164,8 @@ router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"), asy
             attachedDocLink: newAttachedDocLink,
             attachedDocName: attachedDocName,
             signDate: signDate,
-            expireIn: expireIn
+            expireIn: expireIn,
+            expireInLL: expireInLL,
         }
         console.log(req.body, "put api req.body")
         const updatedDecision = await DecisionSchema.findOneAndUpdate({ _id: id }, updatingDecision, {new: true})

@@ -1,6 +1,11 @@
-
 <template>
-  <aside v-if="!['/login'].includes($route.path) && !['/init-program'].includes($route.path)" class="navbar navbar-vertical navbar-expand-lg navbar-dark">
+  <aside
+    v-if="
+      !['/login'].includes($route.path) &&
+      !['/init-program'].includes($route.path)
+    "
+    class="navbar navbar-vertical navbar-expand-lg navbar-dark"
+  >
     <div class="container-fluid">
       <button
         class="navbar-toggler"
@@ -33,11 +38,227 @@
               @click="storeRoutePath()"
             >
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-settings"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"
+                />
+                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+              </svg>
               Đổi chương trình quản lý
-          </router-link>
+            </router-link>
           </li>
-          <li v-if="programsIsShow" class="nav-item">
+          <li v-if="programManage" class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle show"
+              href="#navbar-base"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="false"
+              role="button"
+              aria-expanded="true"
+            >
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                </svg>
+              </span>
+              <span
+                class="nav-link-title"
+                style="font-size: 15px; font-weight: 600; color: #fff"
+              >
+                Quản lý CTLK
+              </span>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-column">
+                <router-link v-if="programsIsShow" to="/" class="dropdown-item"
+                  >Danh sách CTLK</router-link
+                >
+                <div v-if="lvOneProgramManageIsShow" class="dropend" style="margin-left: 27px;">
+                  <a
+                    class="nav-link dropdown-toggle show"
+                    href="#navbar-base"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="false"
+                    role="button"
+                    aria-expanded="true"
+                  >
+                    CTLKĐT với nước ngoài
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-column">
+                      <div v-if="genaralInforItem.length > 0" class="dropend" style="margin-left: -45px;">
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Thông tin chung
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in genaralInforItem"
+                            :key="index"
+                            class="dropdown-item"
+                            :to="{ name: item.name }"
+                            v-html="item.title"
+                            style="margin-left: -10px;"
+                          ></router-link>
+                        </div>
+                      </div>
+                      <div v-if="planItem.length > 0" class="dropend" style="margin-left: -45px;">
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Đề án
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in planItem"
+                            :key="index"
+                            class="dropdown-item"
+                            :to="{ name: item.name }"
+                            style="margin-left: -10px;"
+                            >{{ item.title }}</router-link
+                          >
+                        </div>
+                      </div>
+                      <div
+                        v-if="programCommitmentItem.length > 0"
+                        class="dropend"
+                        style="margin-left: -45px;"
+                      >
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Cam kết của chương trình
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in programCommitmentItem"
+                            class="dropdown-item"
+                            :key="index"
+                            :to="{ name: item.name }"
+                            v-html="item.title"
+                            style="margin-left: -10px;"
+                          ></router-link>
+                        </div>
+                      </div>
+                      <div
+                        v-if="educationQualityItem.length > 0"
+                        class="dropend"
+                        style="margin-left: -45px;"
+                      >
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Chất lượng đào tạo
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in educationQualityItem"
+                            class="dropdown-item"
+                            :key="index"
+                            :to="{ name: item.name }"
+                            v-html="item.title"
+                            style="margin-left: -10px;"
+                          ></router-link>
+                        </div>
+                      </div>
+                      <div v-if="curriculumItem.length > 0" class="dropend" style="margin-left: -45px;">
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Khung chương trình
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in curriculumItem"
+                            class="dropdown-item"
+                            :key="index"
+                            :to="{ name: item.name }"
+                            v-html="item.title"
+                            style="margin-left: -10px;"
+                          ></router-link>
+                        </div>
+                      </div>
+                      <div v-show="enrollmentItem.length > 0" class="dropend" style="margin-left: -45px;">
+                        <a
+                          class="dropdown-item dropdown-toggle show"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="false"
+                          role="button"
+                          aria-expanded="true"
+                        >
+                          Tuyển sinh
+                        </a>
+                        <div class="dropdown-menu">
+                          <router-link
+                            v-for="(item, index) in enrollmentItem"
+                            class="dropdown-item"
+                            :key="index"
+                            :to="{ name: item.name }"
+                            style="margin-left: -10px;"
+                            >{{ item.title }}</router-link
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- <li v-if="programsIsShow" class="nav-item">
             <router-link class="nav-link" to="/">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg
@@ -65,8 +286,8 @@
                 Quản lý CTLK
               </span>
             </router-link>
-          </li>
-          <li v-if="lvOneProgramManageIsShow" class="nav-item dropdown">
+          </li> -->
+          <!-- <li v-if="lvOneProgramManageIsShow" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle show"
               href="#navbar-base"
@@ -76,7 +297,7 @@
               aria-expanded="true"
             >
               <span class="nav-link-icon d-md-none d-lg-inline-block"
-                ><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon"
@@ -122,7 +343,9 @@
                       v-for="(item, index) in genaralInforItem"
                       :key="index"
                       class="dropdown-item"
-                      :to="{ name: item.name }" v-html="item.title"></router-link>
+                      :to="{ name: item.name }"
+                      v-html="item.title"
+                    ></router-link>
                   </div>
                 </div>
                 <div v-if="planItem.length > 0" class="dropend">
@@ -162,7 +385,9 @@
                       v-for="(item, index) in programCommitmentItem"
                       class="dropdown-item"
                       :key="index"
-                      :to="{ name: item.name }" v-html="item.title"></router-link>
+                      :to="{ name: item.name }"
+                      v-html="item.title"
+                    ></router-link>
                   </div>
                 </div>
                 <div v-if="educationQualityItem.length > 0" class="dropend">
@@ -181,7 +406,9 @@
                       v-for="(item, index) in educationQualityItem"
                       class="dropdown-item"
                       :key="index"
-                      :to="{ name: item.name }" v-html="item.title"></router-link>
+                      :to="{ name: item.name }"
+                      v-html="item.title"
+                    ></router-link>
                   </div>
                 </div>
                 <div v-if="curriculumItem.length > 0" class="dropend">
@@ -201,8 +428,8 @@
                       class="dropdown-item"
                       :key="index"
                       :to="{ name: item.name }"
-                      v-html="item.title"></router-link
-                    >
+                      v-html="item.title"
+                    ></router-link>
                   </div>
                 </div>
                 <div v-show="enrollmentItem.length > 0" class="dropend">
@@ -228,7 +455,7 @@
                 </div>
               </div>
             </div>
-          </li>
+          </li> -->
           <li v-if="moumoaIsShow" class="nav-item">
             <router-link class="nav-link" to="/enrollment/moumoa-infor">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -334,8 +561,8 @@
                 class="dropdown-item"
                 :key="index"
                 :to="{ name: item.name }"
-                v-html="item.title"></router-link
-              >
+                v-html="item.title"
+              ></router-link>
             </div>
           </li>
           <li v-if="studentItem.length > 0" class="nav-item dropdown">
@@ -465,9 +692,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="btn btn-ghost-danger" @click="logout()">
-              Đăng xuất
-            </a>
+            <a class="btn btn-ghost-danger" @click="logout()"> Đăng xuất </a>
           </li>
         </ul>
       </div>
@@ -480,7 +705,6 @@ import { useToast } from "vue-toastification";
 import router from "@/router";
 import instance from "./instance";
 
-
 // import { RouterLink, RouterView } from "vue-router";
 export default {
   name: "AppVue",
@@ -488,7 +712,7 @@ export default {
     this.userPermission = localStorage.getItem("permission");
     const userMenuArr = localStorage.getItem("menuManageArray");
     console.log(userMenuArr, "userMenuArr created hook");
-    if(userMenuArr){
+    if (userMenuArr) {
       // const orderedUserMenuArr = JSON.parse(unOrderedUserMenuArr);
       // orderedUserMenuArr.sort((a, b) => {
       //   return a.stt - b.stt;
@@ -496,7 +720,6 @@ export default {
       this.userMenuArr = JSON.parse(userMenuArr);
       console.log(this.userMenuArr, "userMenuArr created hook");
     }
-
   },
   // beforeUpdate() {
   //   const unOrderedUserMenuArr = localStorage.getItem("menuManageArray");
@@ -504,7 +727,6 @@ export default {
   // },
   data() {
     return {
-
       userMenuArr: [],
       userPermission: "",
     };
@@ -513,7 +735,7 @@ export default {
   computed: {
     programsIsShow() {
       // Quản lý chương trình liên kết
-      const arrayZero = ['programs-manage-page'];
+      const arrayZero = ["programs-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayZero);
       if (filteredArr.length === 0) {
@@ -524,13 +746,40 @@ export default {
     },
     lvOneProgramManageIsShow() {
       // CTLKĐT với nước ngoài: TT chương trình liên kết, Các quyết định phê duyệt, Các quyết định đóng chương trình, Quản lý văn bản liên kết, Quản lý đối tác, Quản lý đơn vị thực hiện, Mục tiêu chương trình, Quản lý nội dung đề án, Các cam kết của chương trình, đảm bảo chất lượng đào tạo, Thông tin khung chương trình, quản lý tuyển sinh, quản lý giảng viên, quản lý đơn vị công tác, quản lý môn học
-      const arrayOne = ['trans-programs-manage-page', 'approval-decision-manage-page', 'close-decision-manage-page', 'documents-manage-page', 'partners-manage-page', 'agencies-manage-page', 'goals-manage-page', 'plans-manage-page', 'program-commitments-manage-page', 'edu-quality-manage-page', 'curriculums-manage-page', 'enrollment-manage-page', 'lecturers-manage-page', 'units-manage-page', 'subjects-manage-page' ];
+      const arrayOne = [
+        "trans-programs-manage-page",
+        "approval-decision-manage-page",
+        "close-decision-manage-page",
+        "documents-manage-page",
+        "partners-manage-page",
+        "agencies-manage-page",
+        "goals-manage-page",
+        "plans-manage-page",
+        "program-commitments-manage-page",
+        "edu-quality-manage-page",
+        "curriculums-manage-page",
+        "enrollment-manage-page",
+        "lecturers-manage-page",
+        "units-manage-page",
+        "subjects-manage-page",
+      ];
       const filteredUserMenuArr = this.userMenuArr.filter((item) => {
         if (arrayOne.includes(item.name)) {
           return item;
         }
       });
       if (filteredUserMenuArr.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    programManage() {
+      if (
+        this.programsIsShow === false &&
+        this.lvOneProgramManageIsShow === false
+      ) {
         return false;
       } else {
         return true;
@@ -551,10 +800,18 @@ export default {
 
     genaralInforItem() {
       // Thông tin chung các item: TT chương trình liên kết, Các quyết định phê duyệt, Các quyết định đóng chương trình, Quản lý văn bản liên kết, Quản lý đối tác, Quản lý đơn vị thực hiện, Mục tiêu chương trình
-      const arrayTwo = ['trans-programs-manage-page', 'approval-decision-manage-page', 'close-decision-manage-page', 'documents-manage-page', 'partners-manage-page', 'agencies-manage-page', 'goals-manage-page'];
+      const arrayTwo = [
+        "trans-programs-manage-page",
+        "approval-decision-manage-page",
+        "close-decision-manage-page",
+        "documents-manage-page",
+        "partners-manage-page",
+        "agencies-manage-page",
+        "goals-manage-page",
+      ];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwo);
-      console.log(filteredArr,"filteredArr genaralInforItem()")
+      console.log(filteredArr, "filteredArr genaralInforItem()");
       return filteredArr;
     },
 
@@ -571,16 +828,16 @@ export default {
     // },
     planItem() {
       // Nội dung đề án
-      const arrayThree = ['plans-manage-page'];
+      const arrayThree = ["plans-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayThree);
       return filteredArr;
     },
     programCommitmentItem() {
       // Các cam kết của chương trình
-      const arrayThreePointOne = ['program-commitments-manage-page'];
+      const arrayThreePointOne = ["program-commitments-manage-page"];
       const arr1 = this.userMenuArr;
-      const filteredArr = this.arrayFilterer(arr1, arrayThreePointOne)
+      const filteredArr = this.arrayFilterer(arr1, arrayThreePointOne);
       return filteredArr;
     },
     // educationQualityIsShow() {
@@ -596,10 +853,10 @@ export default {
     // },
     educationQualityItem() {
       // Đảm bảo chất lượng đào tạo
-      const arrayFour = ['edu-quality-manage-page'];
+      const arrayFour = ["edu-quality-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayFour);
-      console.log(filteredArr, "educationQualityItem")
+      console.log(filteredArr, "educationQualityItem");
       return filteredArr;
     },
     // curriculumIsShow() {
@@ -615,7 +872,7 @@ export default {
     // },
     curriculumItem() {
       // Thông tin khung chương trình
-      const arrayFive = ['curriculums-manage-page'];
+      const arrayFive = ["curriculums-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayFive);
       return filteredArr;
@@ -633,14 +890,19 @@ export default {
     // },
     enrollmentItem() {
       // quản lý tuyển sinh, giảng viên, đơn vị công tác, môn học
-      const arraySix = ['enrollment-manage-page', 'lecturers-manage-page', 'units-manage-page', 'subjects-manage-page'];
+      const arraySix = [
+        "enrollment-manage-page",
+        "lecturers-manage-page",
+        "units-manage-page",
+        "subjects-manage-page",
+      ];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySix);
       return filteredArr;
     },
     moumoaIsShow() {
       // quản lý MOU.MOA
-      const arraySix = ['moumoa-manage-page'];
+      const arraySix = ["moumoa-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySix);
       if (filteredArr.length === 0) {
@@ -650,7 +912,7 @@ export default {
       }
     },
     htqtIsShow() {
-      const arraySeven = ['htqt-manage-page'];
+      const arraySeven = ["htqt-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arraySeven);
       if (filteredArr.length === 0) {
@@ -661,7 +923,7 @@ export default {
     },
     shortTermExStuIsShow() {
       // Quản lý sinh viên trao đổi ngắn hạn
-      const arrayEight = ['ex-f-student-manage-page', 'ex-student-manage-page'];
+      const arrayEight = ["ex-f-student-manage-page", "ex-student-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
       // for(var i = 0; i < filteredArr.length;i++){
@@ -675,7 +937,7 @@ export default {
     },
     shortTermExStuItem() {
       // Sinh viên nước ngoài đến trao đổi, sinh viên đi nước ngoài
-      const arrayEight = ['ex-f-student-manage-page', 'ex-student-manage-page'];
+      const arrayEight = ["ex-f-student-manage-page", "ex-student-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayEight);
       return filteredArr;
@@ -693,14 +955,14 @@ export default {
     // },
     studentItem() {
       // Quản lý lưu sinh viên
-      const arrayNine = ['student-manage-page'];
+      const arrayNine = ["student-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayNine);
       return filteredArr;
     },
     visaIsShow() {
       // Cấp/Gia hạn VISA
-      const arrayTen = ['extend-visa-manage-page'];
+      const arrayTen = ["extend-visa-manage-page"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTen);
       if (filteredArr.length === 0) {
@@ -722,7 +984,7 @@ export default {
     // },
     userItem() {
       // Quản lý tài khoản
-      const arrayTwelve = ['admin'];
+      const arrayTwelve = ["admin"];
       const arr1 = this.userMenuArr;
       const filteredArr = this.arrayFilterer(arr1, arrayTwelve);
       return filteredArr;
@@ -736,7 +998,7 @@ export default {
 
   methods: {
     storeRoutePath() {
-      localStorage.setItem("routePath", router.currentRoute.value.path)
+      localStorage.setItem("routePath", router.currentRoute.value.path);
       // router.push('/init-program')
     },
     arrayFilterer(arr1, arr2) {
@@ -808,8 +1070,7 @@ export default {
 .modal-content {
   border: 2px solid #242424b5;
 }
-.router-link-active{
+.router-link-active {
   background-color: #484242 !important;
-  
 }
 </style>

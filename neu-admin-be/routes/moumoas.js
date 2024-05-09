@@ -35,6 +35,12 @@ router.get('/api/get-all-moumoas', async (req, res) => {
         let stt = 0
         const aMoumoas = moumoas.map( doc => {
             stt++
+            let signingTime = doc.signingTime
+            let expireTime = doc.expireTime
+            let a_expireTime = expireTime.split("-")
+            let a_signingTime = signingTime.split("-")
+            doc.signingTime = a_signingTime[2] + "/" + a_signingTime[1] + "/" + a_signingTime[0]
+            doc.expireTime = a_expireTime[2] + "/" + a_expireTime[1] + "/" + a_expireTime[0]
             // const id = doc._id.toString()
             return {
                 ...doc,

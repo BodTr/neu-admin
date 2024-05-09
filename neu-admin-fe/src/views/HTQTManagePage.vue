@@ -149,12 +149,12 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Thời gian kí kết</label>
+                        <label class="form-label">Thời gian ký kết</label>
                         <input
                           type="date"
                           class="form-control"
                           v-model="signingTime"
-                          placeholder="Nhập thời gian kí kết"
+                          placeholder="Nhập Thời gian ký kết"
                         />
                       </div>
                       <div class="mb-3">
@@ -386,24 +386,24 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Thời gian kí kết</label
+                                  >Thời gian ký kết</label
                                 >
                                 <input
                                   type="date"
                                   class="form-control"
                                   v-model="editHTQT.signingTime"
-                                  placeholder="Nhập thời gian kí kết"
+                                  placeholder="Nhập Thời gian ký kết"
                                 />
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Số lượng học viên</label
+                                  >Thời gian hết hạn</label
                                 >
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
                                   v-model="editHTQT.expireTime"
-                                  placeholder="Nhập số lượng học viên"
+                                  placeholder="Nhập thời gian hết hạn"
                                 />
                               </div>
                               <div class="mb-3">
@@ -470,7 +470,7 @@ export default {
           nation: "Quốc gia",
           partnerUni: "Trường đối tác",
           funding: "Nguồn kinh phí",
-          signingTime: "Thời gian kí kết",
+          signingTime: "Thời gian ký kết",
           planDetail: "Nội dung dự án",
           attachedDoc: "Văn bản đính kèm",
           expireTime: "Thời gian hết hạn",
@@ -620,14 +620,20 @@ export default {
     },
 
     onEdit(item) {
+      let signingTime = item.signingTime
+      let expireTime = item.expireTime
+      let a_signingTime = signingTime.split("/")
+      let a_expireTime = expireTime.split("/")
+      signingTime = a_signingTime[2] + "-" + a_signingTime[1] + "-" + a_signingTime[0]
+      expireTime = a_expireTime[2] + "-" + a_expireTime[1] + "-" + a_expireTime[0]
       this.editHTQT.nation = item.nation;
       this.editHTQT.funding = item.funding;
       this.editHTQT.planDetail = item.planDetail;
       this.editHTQT.attachedDocLink = item.attachedDocLink;
       this.editHTQT.attachedDocName = item.attachedDocName;
       this.editHTQT.partnerUni = item.partnerUni;
-      this.editHTQT.signingTime = item.signingTime;
-      this.editHTQT.expireTime = item.expireTime;
+      this.editHTQT.signingTime = signingTime;
+      this.editHTQT.expireTime = expireTime;
       this.editHTQT.note = item.note;
       this.editHTQT.id = item._id;
       this.showModal1();

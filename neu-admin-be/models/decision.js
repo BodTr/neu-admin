@@ -29,7 +29,10 @@ const DecisionSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-
+    expireInLL: {
+        type: String,
+        require: false
+    },
     program: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

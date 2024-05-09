@@ -90,6 +90,15 @@
                   <div class="modal-body row row-cards">
                     <div class="col-md-4">
                       <div class="mb-3">
+                        <label class="form-label">Năm</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          v-model="year"
+                          placeholder="Nhập năm"
+                        />
+                      </div>
+                      <div class="mb-3">
                         <label class="form-label">Điều kiện giảng viên</label>
                         <textarea
                           v-model="qualifiedLecturer"
@@ -142,6 +151,15 @@
                           v-model="infraCondition"
                           placeholder="Nhập nội dung phụ trách"
                         ></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Mẫu văn bằng</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="diploma"
+                          placeholder="Nhập mẫu văn bằng"
+                        />
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -324,6 +342,15 @@
                           <div class="modal-body row row-cards">
                             <div class="col-md-4">
                               <div class="mb-3">
+                                <label class="form-label">Năm</label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  v-model="editPlan.year"
+                                  placeholder="Nhập năm"
+                                />
+                              </div>
+                              <div class="mb-3">
                                 <label class="form-label"
                                   >Điều kiện giảng viên</label
                                 >
@@ -380,6 +407,15 @@
                                   v-model="editPlan.infraCondition"
                                   placeholder="Nhập nội dung phụ trách"
                                 ></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Mẫu văn bằng</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editPlan.diploma"
+                                  placeholder="Nhập mẫu văn bằng"
+                                />
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -468,6 +504,7 @@ export default {
     return {
       columns: [
         "stt",
+        "year",
         "planStructure",
         "language",
         "qualifiedLecturer",
@@ -483,6 +520,7 @@ export default {
           id: localStorage.getItem("progId"),
         },
         headings: {
+          year: "Năm",
           planStructure: "Hình thức liên kết đào tạo",
           language: "Ngôn ngữ giảng dạy",
           qualifiedLecturer: "Điều kiện về giảng viên",
@@ -496,6 +534,8 @@ export default {
       },
       programName: "",
       id: "",
+      year: "",
+      diploma: "",
       qualifiedLecturer: "",
       qualifiedStudent: "",
       planStructure: "",
@@ -511,6 +551,8 @@ export default {
 
       editPlan: {
         id: "",
+        year: "",
+        diploma: "",
         qualifiedLecturer: "",
         qualifiedStudent: "",
         planStructure: "",
@@ -599,6 +641,8 @@ export default {
       let formData = new FormData();
       formData.append("programId", this.id);
       formData.append("qualifiedLecturer", this.qualifiedLecturer);
+      formData.append("diploma", this.diploma);
+      formData.append("year", this.year);
       formData.append("qualifiedStudent", this.qualifiedStudent);
       formData.append("planStructure", this.planStructure);
       formData.append("tuition", this.tuition);
@@ -626,6 +670,8 @@ export default {
           this.$refs.table.refresh();
           this.displayModal = false;
           this.qualifiedLecturer = "";
+          this.year = "";
+          this.diploma = "";
           this.qualifiedStudent = "";
           this.planStructure = "";
           this.tuition = "";
@@ -641,6 +687,8 @@ export default {
     },
 
     onEdit(item) {
+      this.editPlan.year = item.year;
+      this.editPlan.diploma = item.diploma;
       this.editPlan.qualifiedLecturer = item.qualifiedLecturer;
       this.editPlan.qualifiedStudent = item.qualifiedStudent;
       this.editPlan.planStructure = item.planStructure;
@@ -657,6 +705,8 @@ export default {
 
     async onSubmit() {
       let formData = new FormData();
+      formData.append("diploma", this.editPlan.diploma);
+      formData.append("year", this.editPlan.year);
       formData.append("qualifiedLecturer", this.editPlan.qualifiedLecturer);
       formData.append("qualifiedStudent", this.editPlan.qualifiedStudent);
       formData.append("planStructure", this.editPlan.planStructure);

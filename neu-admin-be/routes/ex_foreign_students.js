@@ -33,6 +33,12 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
         let stt = 0
         const aStudents = students.map( doc => {
             stt++
+            // let birthday = doc.birthday
+            // let receptionTime = doc.receptionTime
+            // let a_birthday = birthday.split("-")
+            // let a_receptionTime = receptionTime.split("-")
+            // doc.birthday = a_birthday[2] + "/" + a_birthday[1] + "/" + a_birthday[0]
+            // doc.receptionTime = a_receptionTime[2] + "/" + a_receptionTime[1] + "/" + a_receptionTime[0]
             // const id = doc._id.toString()
             return {
                 ...doc,

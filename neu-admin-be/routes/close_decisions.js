@@ -36,6 +36,9 @@ router.get('/api/get-all-close-decisions', async (req, res) => {
         let stt = 0
         const aDecisions = decisions.map( doc => {
             stt++
+            let signDate = doc.signDate
+            let a_signDate = signDate.split("-")
+            doc.signDate = a_signDate[2] + "/" + a_signDate[1] + "/" + a_signDate[0]
             // const id = doc._id.toString()
             return {
                 ...doc,

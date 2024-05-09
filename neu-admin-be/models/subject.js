@@ -22,7 +22,7 @@ const SubjectSchema = new mongoose.Schema({
         require: false
     },
     year: {
-        type: Number,
+        type: String,
         require: false
     },
     subjectCode: {

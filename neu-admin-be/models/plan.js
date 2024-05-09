@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const PlanSchema = new mongoose.Schema({
+    year: {
+        type: Number,
+        require: false
+    },
     qualifiedLecturer: {
         type: String,
         require: false
@@ -34,6 +38,10 @@ const PlanSchema = new mongoose.Schema({
         require: false
     },
     attachedDocName: {
+        type: String,
+        require: false
+    },
+    diploma: {
         type: String,
         require: false
     },

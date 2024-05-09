@@ -1077,9 +1077,45 @@ export default {
     },
 
     onEdit(item) {
+      let birthday = ""
+      let bgdReceiveDate = ""
+      let neuReceiveDate = ""
+      let decisionDate = ""
+      if (item.birthday === "") {
+        birthday = ""
+      } else {
+        birthday = item.birthday
+        let a_birthday = birthday.split("/")
+        birthday = a_birthday[2] + "-" + a_birthday[1] + "-" + a_birthday[0]
+      }
+      
+      if (item.bgdReceiveDate === "") {
+        bgdReceiveDate = ""
+      } else {
+        bgdReceiveDate = item.bgdReceiveDate
+        let a_bgdReceiveDate = bgdReceiveDate.split("/")
+        bgdReceiveDate = a_bgdReceiveDate[2] + "-" + a_bgdReceiveDate[1] + "-" + a_bgdReceiveDate[0]
+      }
+
+      if (item.neuReceiveDate === "") {
+        neuReceiveDate = ""
+      } else {
+        neuReceiveDate = item.neuReceiveDate
+        let a_neuReceiveDate = neuReceiveDate.split("/")
+        neuReceiveDate = a_neuReceiveDate[2] + "-" + a_neuReceiveDate[1] + "-" + a_neuReceiveDate[0]
+      }
+
+      if (item.decisionDate === "") {
+        decisionDate = ""
+      } else {
+        decisionDate = item.decisionDate
+        let a_decisionDate = decisionDate.split("/")
+        decisionDate = a_decisionDate[2] + "-" + a_decisionDate[1] + "-" + a_decisionDate[0]
+      }
+      
       this.editStudent.name = item.name;
       this.editStudent.studentCode = item.studentCode;
-      this.editStudent.birthday = item.birthday;
+      this.editStudent.birthday = birthday;
       this.editStudent.sex = item.sex;
       this.editStudent.nation = item.nation;
       this.editStudent.schoolYear = item.schoolYear;
@@ -1089,9 +1125,9 @@ export default {
       this.editStudent.courseDuration = item.courseDuration;
       this.editStudent.monthCount = item.monthCount;
       this.editStudent.bgdReceiveNumber = item.bgdReceiveNumber;
-      this.editStudent.bgdReceiveDate = item.bgdReceiveDate;
+      this.editStudent.bgdReceiveDate = bgdReceiveDate;
       this.editStudent.neuReceiveNumber = item.neuReceiveNumber;
-      this.editStudent.neuReceiveDate = item.neuReceiveDate;
+      this.editStudent.neuReceiveDate = neuReceiveDate;
       this.editStudent.expenses = item.expenses;
       this.editStudent.shp = item.shp;
       this.editStudent.kpck = item.kpck;
@@ -1101,7 +1137,7 @@ export default {
       this.editStudent.travelExpenses = item.travelExpenses;
       this.editStudent.initExpenses = item.initExpenses;
       this.editStudent.decisionNumber = item.decisionNumber;
-      this.editStudent.decisionDate = item.decisionDate;
+      this.editStudent.decisionDate = decisionDate;
       this.editStudent.decisionTime = item.decisionTime;
       this.editStudent.attachedDocName = item.attachedDocName;
       this.editStudent.attachedDocLink = item.attachedDocLink;

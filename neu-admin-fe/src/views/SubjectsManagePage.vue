@@ -130,7 +130,7 @@
                       <div class="mb-3">
                         <label class="form-label">Năm học</label>
                         <input
-                          type="number"
+                          type="text"
                           class="form-control"
                           v-model="year"
                           placeholder="Nhập năm học"
@@ -310,7 +310,7 @@
                                   >Thời gian học - từ</label
                                 >
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
                                   v-model="editSubject.timeFrom"
                                   placeholder="Nhập Thời gian học - từ"
@@ -323,7 +323,7 @@
                                   >Năm học</label
                                 >
                                 <input
-                                  type="number"
+                                  type="text"
                                   class="form-control"
                                   v-model="editSubject.year"
                                   placeholder="Nhập năm học"
@@ -479,19 +479,19 @@ export default {
       this.displayModalOne = false;
     },
     async submitForm() {
-      const data = {
-        programId: this.id,
-        name: this.name,
-        lecturer: this.lecturer,
-        teachingAssistant: this.teachingAssistant,
-        timeFrom: this.timeFrom,
-        timeTo: this.timeTo,
-        year: this.year,
-        subjectCode: this.subjectCode,
-        review: this.review,
-      };
-
       try {
+        const data = {
+          programId: this.id,
+          name: this.name,
+          lecturer: this.lecturer,
+          teachingAssistant: this.teachingAssistant,
+          timeFrom: this.timeFrom,
+          timeTo: this.timeTo,
+          year: this.year,
+          subjectCode: this.subjectCode,
+          review: this.review,
+        };
+        console.log(data, "data submitForm() SubjectManagePage")
         const result = await instance.post("/api/create-subject", data);
 
         if (result.data.error === true) {
@@ -521,11 +521,17 @@ export default {
     },
 
     onEdit(item) {
+      let timeFrom = item.timeFrom
+      let timeTo = item.timeTo
+      let a_timeFrom = timeFrom.split("/")
+      let a_timeTo = timeTo.split("/")
+      timeFrom = a_timeFrom[2] + "-" + a_timeFrom[1] + "-" + a_timeFrom[0]
+      timeTo = a_timeTo[2] + "-" + a_timeTo[1] + "-" + a_timeTo[0]
       this.editSubject.name = item.name;
       this.editSubject.lecturer = item.lecturer;
       this.editSubject.teachingAssistant = item.teachingAssistant;
-      this.editSubject.timeFrom = item.timeFrom;
-      this.editSubject.timeTo = item.timeTo;
+      this.editSubject.timeFrom = timeFrom;
+      this.editSubject.timeTo = timeTo;
       this.editSubject.year = item.year;
       this.editSubject.subjectCode = item.subjectCode;
       this.editSubject.review = item.review

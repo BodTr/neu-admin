@@ -32,6 +32,43 @@ router.get('/api/get-all-students', async (req, res) => {
         let stt = 0
         const aStudents = students.map( doc => {
             stt++
+            if (!doc.birthday) {
+                doc.birthday = ""
+            } else {
+                let birthday = ""
+                birthday = doc.birthday
+                let a_birthday = birthday.split("-")
+                doc.birthday = a_birthday[2] + "/" + a_birthday[1] + "/" + a_birthday[0]
+            }
+
+            if (!doc.bgdReceiveDate) {
+                doc.bgdReceiveDate = ""
+            } else {
+                let bgdReceiveDate = ""
+                bgdReceiveDate = doc.bgdReceiveDate
+                let a_bgdReceiveDate = bgdReceiveDate.split("-")
+                doc.bgdReceiveDate = a_bgdReceiveDate[2] + "/" + a_bgdReceiveDate[1] + "/" + a_bgdReceiveDate[0]
+            }
+            
+
+            if (!doc.neuReceiveDate) {
+                doc.neuReceiveDate = ""
+            } else {
+                let neuReceiveDate = ""
+                neuReceiveDate = doc.neuReceiveDate
+                let a_neuReceiveDate = neuReceiveDate.split("-")
+                doc.neuReceiveDate = a_neuReceiveDate[2] + "/" + a_neuReceiveDate[1] + "/" + a_neuReceiveDate[0]
+            }
+
+            if (!doc.decisionDate) {
+                doc.decisionDate = ""
+            } else {
+                let decisionDate = ""
+                decisionDate = doc.decisionDate
+                let a_decisionDate = decisionDate.split("-")
+                doc.decisionDate = a_decisionDate[2] + "/" + a_decisionDate[1] + "/" + a_decisionDate[0]
+            }
+            
             // const id = doc._id.toString()
             return {
                 ...doc,

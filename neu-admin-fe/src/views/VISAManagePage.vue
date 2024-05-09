@@ -1091,6 +1091,9 @@ export default {
     },
 
     onEdit(item) {
+      let visaEndDay = item.visaEndDay
+      let a_visaEndDay = visaEndDay.split("/")
+      visaEndDay = a_visaEndDay[2] + "-" + a_visaEndDay[1] + "-" + a_visaEndDay[0]
       this.editExtendVisa.name = item.name;
       this.editExtendVisa.birthday = item.birthday;
       this.editExtendVisa.sex = item.sex;
@@ -1104,7 +1107,7 @@ export default {
       this.editExtendVisa.visaType = item.visaType;
       this.editExtendVisa.address = item.address;
       this.editExtendVisa.visaBeginDay = item.visaBeginDay;
-      this.editExtendVisa.visaEndDay = item.visaEndDay;
+      this.editExtendVisa.visaEndDay = visaEndDay;
       this.editExtendVisa.suggestUnit = null; // tránh trường hợp upfile lên r lại thoát ra khỏi modal (lúc đó file vẫn lưu vào vue)
       this.editExtendVisa.decisionNumber = null;
       this.editExtendVisa.attachedFile = null;

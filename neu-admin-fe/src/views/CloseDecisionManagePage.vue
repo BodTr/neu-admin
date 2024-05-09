@@ -579,10 +579,13 @@ export default {
     },
 
     onEdit(item) {
+      let signDate = item.signDate
+      let a_signDate = signDate.split("/")
+      signDate = a_signDate[2] + "-" + a_signDate[1] + "-" + a_signDate[0]
       this.editDecision.name = item.name;
       this.editDecision.detail = item.detail;
       this.editDecision.number = item.number;
-      this.editDecision.signDate = item.signDate;
+      this.editDecision.signDate = signDate;
       this.editDecision.expireIn = item.expireIn;
       this.editDecision.attachedDocLink = item.attachedDocLink;
       this.editDecision.attachedDocName = item.attachedDocName;

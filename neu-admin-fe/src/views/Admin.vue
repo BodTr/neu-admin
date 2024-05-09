@@ -176,6 +176,7 @@
                         href="#"
                         @click="remove(item.row)"
                         class="btn btn-danger btn-icon"
+                        data-toggle="tooltip" data-placement="bottom" title="Xóa tài khoản"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -206,6 +207,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#modal-report-one"
                         @click="onEdit(item.row)"
+                        data-toggle="tooltip" data-placement="bottom" title="Sửa tài khoản"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -236,6 +238,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#modal-report-two"
                         @click="onEditPassWord(item.row)"
+                        data-toggle="tooltip" data-placement="bottom" title="Đổi mật khẩu"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -268,6 +271,7 @@
                         class="btn btn-lime btn-icon"
                         data-bs-target="#modal-report-three"
                         @click="showUserMenu(item.row)"
+                        data-toggle="tooltip" data-placement="bottom" title="Phân quyền menu"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -296,6 +300,7 @@
                         class="btn btn-cyan btn-icon"
                         data-bs-target="#modal-report-four"
                         @click="onEditAttachedUserProgram(item.row)"
+                        data-toggle="tooltip" data-placement="bottom" title="Phân bổ chương trình"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -564,28 +569,28 @@
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td>Quản lý đối tác</td>
+                                    <td>Thông tin đối tác</td>
                                     <td>
                                       <input
                                         type="checkbox"
                                         id="partner"
                                         :value="{
                                           name: 'partners-manage-page',
-                                          title: 'Quản lý đối tác',
+                                          title: 'Thông tin đối tác',
                                         }"
                                         v-model="menuArray"
                                       />
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td>Quản lý đơn vị thực hiện</td>
+                                    <td>Thông tin đơn vị thực hiện</td>
                                     <td>
                                       <input
                                         type="checkbox"
                                         id="agency"
                                         :value="{
                                           name: 'agencies-manage-page',
-                                          title: 'Quản lý đơn vị thực hiện',
+                                          title: 'Thông tn đơn vị thực hiện',
                                         }"
                                         v-model="menuArray"
                                       />

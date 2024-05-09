@@ -127,6 +127,15 @@
                           placeholder="Nhập thời hạn hiệu lực"
                         />
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Thời hạn hết hiệu lực</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="expireInLL"
+                          placeholder="Nhập thời hạn hết hiệu lực"
+                        />
+                      </div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label">Văn bản đính kèm</label>
@@ -336,6 +345,15 @@
                                   placeholder="Nhập thời hạn hiệu lực"
                                 />
                               </div>
+                              <div class="mb-3">
+                                <label class="form-label">Thời hạn hết hiệu lực</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editDecision.expireInLL"
+                                  placeholder="Nhập thời hạn hết hiệu lực"
+                                />
+                              </div>
                             </div>
                             <div class="mb-3">
                               <label class="form-label">Văn bản đính kèm</label>
@@ -419,6 +437,7 @@ export default {
         "attachedDocName",
         "signDate",
         "expireIn",
+        "expireInLL",
         "tool",
       ],
       options: {
@@ -432,6 +451,7 @@ export default {
           attachedDocName: "Văn bản đính kèm",
           signDate: "Ngày kí",
           expireIn: "Thời hạn hiệu lực",
+          expireInLL: "Thời hạn hết hiệu lực",
           tool: "Thao tác",
         },
       },
@@ -442,6 +462,7 @@ export default {
       number: "",
       signDate: "",
       expireIn: "",
+      expireInLL: "",
       displayModal: false,
       displayModalOne: false,
       attachedDoc: null,
@@ -455,6 +476,7 @@ export default {
         number: "",
         signDate: "",
         expireIn: "",
+        expireInLL: "",
         attachedDocName: "",
         attachedDocLink: "",
         attachedDoc: null,
@@ -542,6 +564,7 @@ export default {
       formData.append("number", this.number);
       formData.append("signDate", this.signDate);
       formData.append("expireIn", this.expireIn);
+      formData.append("expireInLL", this.expireInLL);
       formData.append("approvalDecisionDoc", this.attachedDoc);
 
       try {
@@ -570,6 +593,7 @@ export default {
           this.number = "";
           this.signDate = "";
           this.expireIn = "";
+          this.expireInLL = "";
           this.attachedDocName = "";
           this.attachedDoc = null;
         }
@@ -579,11 +603,15 @@ export default {
     },
 
     onEdit(item) {
+      let signDate = item.signDate
+      let a_signDate = signDate.split("/")
+      signDate = a_signDate[2] + "-" + a_signDate[1] + "-" + a_signDate[0]
       this.editDecision.name = item.name;
       this.editDecision.detail = item.detail;
       this.editDecision.number = item.number;
-      this.editDecision.signDate = item.signDate;
+      this.editDecision.signDate = signDate;
       this.editDecision.expireIn = item.expireIn;
+      this.editDecision.expireInLL = item.expireInLL;
       this.editDecision.attachedDocLink = item.attachedDocLink;
       this.editDecision.attachedDocName = item.attachedDocName;
       this.editDecision.id = item._id;
@@ -600,6 +628,7 @@ export default {
       formData.append("number", this.editDecision.number);
       formData.append("signDate", this.editDecision.signDate);
       formData.append("expireIn", this.editDecision.expireIn);
+      formData.append("expireInLL", this.editDecision.expireInLL);
       formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
       formData.append("attachedDocLink", this.editDecision.attachedDocLink);
       formData.append("attachedDocName", this.editDecision.attachedDocName);

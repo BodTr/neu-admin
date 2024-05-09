@@ -52,7 +52,7 @@ router.get('/api/get-all-plans', async (req, res) => {
 
 router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"), async (req, res) => {
     try {
-        const { programId, qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, } = req.body
+        const { programId, qualifiedLecturer, qualifiedStudent, year, diploma, planStructure, tuition, infraCondition, language, ecoManage, } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
@@ -70,6 +70,8 @@ router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"),
         const newPLan = {
             qualifiedLecturer: qualifiedLecturer,
             qualifiedStudent: qualifiedStudent,
+            year: year,
+            diploma: diploma,
             planStructure: planStructure,
             tuition: tuition,
             infraCondition: infraCondition,
@@ -96,7 +98,7 @@ router.post('/api/create-plan', initPlanDocMiddleware, upload.single("planDoc"),
 router.put('/api/edit-plan/:id', upload.single("planDoc1"), async(req, res) => {
     try {
         const { id } = req.params
-        const { qualifiedLecturer, qualifiedStudent, planStructure, tuition, infraCondition, language, ecoManage, attachedDocName, attachedDocLink } = req.body
+        const { qualifiedLecturer, qualifiedStudent, year, diploma, planStructure, tuition, infraCondition, language, ecoManage, attachedDocName, attachedDocLink } = req.body
         console.log(id, "::put api id::")
         const attachedDoc = req.file 
         console.log(attachedDoc, "attachedDoc put api")
@@ -123,6 +125,8 @@ router.put('/api/edit-plan/:id', upload.single("planDoc1"), async(req, res) => {
         const updatingPlan = {
             qualifiedLecturer: qualifiedLecturer,
             qualifiedStudent: qualifiedStudent,
+            year: year,
+            diploma: diploma,
             planStructure: planStructure,
             tuition: tuition,
             infraCondition: infraCondition,

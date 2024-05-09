@@ -547,8 +547,11 @@ export default {
     },
 
     onEdit(item) {
+      let effDate = item.effDate
+      let a_effDate = effDate.split("/")
+      effDate = a_effDate[2] + "-" + a_effDate[1] + "-" + a_effDate[0]
       this.editDoc.name = item.name;
-      this.editDoc.effDate = item.effDate;
+      this.editDoc.effDate = effDate;
       this.editDoc.content = item.content;
       this.editDoc.expireIn = item.expireIn;
       this.editDoc.attachedDocLink = item.attachedDocLink;

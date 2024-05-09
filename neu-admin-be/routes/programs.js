@@ -38,7 +38,9 @@ router.get('/api/get-all-programs', async (req, res) => {
         const aPrograms = programs.map(doc => {
             stt++
             // const id = doc._id.toString()
-
+            let expiry = doc.expiry
+            let a_expiry = expiry.split("-")
+            doc.expiry = a_expiry[2] + "/" +  a_expiry[1] + "/" + a_expiry[0]
             return {
                 ...doc,
                 stt: stt,
@@ -351,13 +353,17 @@ router.post('/api/create-program', async (req, res) => {
             })
         } else {
             const timeNow = new Date()
-            let status = true
+            let status = 1
             const expiryDate = new Date(expiry)
+            // 3: hết hạn, 2: sắp hết hạn, 1 còn hạn
             if(expiryDate < timeNow){
-                status = false
+                status = 3
+            } else if (expiryDate - timeNow <= 2592000000*6) { // thời hạn ít hơn 6 tháng (6 tháng = 2592000000*6 mili s)
+                status = 2
             } else {
-                status = true
+                status = 1
             }
+            
             const newProgram = await ProgramSchema.create({
                 name: name,
                 year: year,
@@ -437,15 +443,20 @@ router.put('/api/edit-program/:id', async (req, res) => {
         } = req.body
         console.log(id, "::put api id::")
         const timeNow = new Date()
-        let status = true
-        console.log(timeNow, "timeNow edit-program")
+        // let status = true
+        // console.log(timeNow, "timeNow edit-program")
         
+        // const expiryDate = new Date(expiry)
+        // console.log(expiryDate < timeNow, "expiry < timeNow edit-program")
+        let status = 1
         const expiryDate = new Date(expiry)
-        console.log(expiryDate < timeNow, "expiry < timeNow edit-program")
+        // 3: hết hạn, 2: sắp hết hạn, 1 còn hạn
         if(expiryDate < timeNow){
-            status = false
+            status = 3
+        } else if (expiryDate - timeNow <= 2592000000*6) { // thời hạn ít hơn 6 tháng (6 tháng = 2592000000*6 mili s)
+            status = 2
         } else {
-            status = true
+            status = 1
         }
         const updatingProgram = {
             name: name,

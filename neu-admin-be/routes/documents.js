@@ -50,6 +50,9 @@ router.get("/api/get-all-documents", async (req, res) => {
         let stt = 0;
         const aDocuments = documents.map((doc) => {
             stt++;
+            let effDate = doc.effDate
+            let a_effDate = effDate.split("-")
+            doc.effDate = a_effDate[2] + "/" + a_effDate[1] + "/" + a_effDate[0] 
             // const id = doc._id.toString()
             return {
                 ...doc,

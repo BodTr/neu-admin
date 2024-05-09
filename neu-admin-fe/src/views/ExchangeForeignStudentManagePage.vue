@@ -801,6 +801,12 @@ export default {
     },
 
     onEdit(item) {
+      // let receptionTime = item.receptionTime
+      // let birthday = item.birthday
+      // let a_receptionTime = receptionTime.split("/")
+      // let a_birthday = birthday.split("/")
+      // receptionTime = a_receptionTime[2] + "-" + a_receptionTime[1] + "-" + a_receptionTime[0]
+      // birthday = a_birthday[2] + "-" + a_birthday[1] + "-" + a_birthday[0]
       this.editExForeignStudent.name = item.name;
       this.editExForeignStudent.position = item.position;
       this.editExForeignStudent.studentCode = item.studentCode;

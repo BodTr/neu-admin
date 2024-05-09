@@ -195,12 +195,15 @@
                   </template>
                   <template v-slot:status="item">
                     <span
-                      v-if="item.row.status === 'true'"
+                      v-if="item.row.status === '1'"
                       class="badge bg-green text-green-fg"
                       >Đang hoạt động</span
                     >
-                    <span v-else class="badge bg-red text-red-fg"
+                    <span v-else-if="item.row.status === '3'" class="badge bg-red text-red-fg"
                       >Đã hết hạn</span
+                    >
+                    <span v-else-if="item.row.status === '2'" class="badge bg-yellow text-red-fg"
+                      >Sắp hết hạn</span
                     >
                   </template>
                   <template v-slot:decisionsArray="item">
@@ -245,6 +248,9 @@
                         </span>
                       </div>
                     </div>
+                  </template>`
+                  <template v-slot:name="item">
+                    <div v-on:click="setProgram(item.row)" class="btn btn-ghost-purple" data-toggle="tooltip" data-placement="bottom" title="Quản lý chương trình">{{ item.row.name }}</div>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -449,6 +455,7 @@
 
 <script>
 import instance from "../instance";
+import router from "@/router";
 // import { ref } from 'vue'
 import { useToast } from "vue-toastification";
 
@@ -582,7 +589,17 @@ export default {
       }
     },
 
+    setProgram(item){
+      localStorage.setItem("progId", item._id)
+      localStorage.setItem("programName", item.name)
+      router.push('/general-infor/trans-program/')
+    },
+
     onEdit(item) {
+      let expiry = item.expiry
+      let a_expiry = expiry.split("/")
+      console.log(a_expiry, "a_expiry onEdit")
+      expiry = a_expiry[2] + "-" + a_expiry[1] + "-" + a_expiry[0]
       this.editprogram.name = item.name;
       this.editprogram.year = item.year;
       this.editprogram.nation = item.nation;
@@ -591,7 +608,7 @@ export default {
       this.editprogram.quota = item.quota;
       this.editprogram.level = item.level;
       this.editprogram.agency = item.agency;
-      this.editprogram.expiry = item.expiry;
+      this.editprogram.expiry = expiry;
       this.editprogram.id = item._id;
       this.showModal1();
 

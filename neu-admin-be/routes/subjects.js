@@ -26,6 +26,12 @@ router.get('/api/get-all-subjects', async (req, res) => {
         let stt = 0
         const aSubjects = subjects.map( doc => {
             stt++
+            let timeFrom = doc.timeFrom
+            let timeTo = doc.timeTo
+            let a_timeTo = timeTo.split("-")
+            let a_timeFrom = timeFrom.split("-")
+            doc.timeFrom = a_timeFrom[2] + "/" + a_timeFrom[1] + "/" + a_timeFrom[0]
+            doc.timeTo = a_timeTo[2] + "/" + a_timeTo[1] + "/" + a_timeTo[0]
             // const id = doc._id.toString()
             return {
                 ...doc,
@@ -105,7 +111,7 @@ router.delete('/api/delete-subject/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const deletingSubject = await SubjectSchema.findOneAndDelete({ _id: id })
         console.log(deletingSubject, "deletingSubject")
-        res.json({ error: false, message: "Xóa thành công văn bản" })
+        res.json({ error: false, message: "Xóa thành công môn học" })
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})

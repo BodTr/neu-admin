@@ -47,6 +47,9 @@ router.get('/api/get-all-extend-visas', async (req, res) => {
         
         const aExtendVisas = extendVisas.map( doc => {
             stt++
+            let avisaEndDay = doc.visaEndDay
+            let a_visaEndDay = avisaEndDay.split("-")
+            
             // const id = doc._id.toString()
             const visaEndDay = new Date(doc.visaEndDay)
             const timeNow = new Date()
@@ -58,6 +61,7 @@ router.get('/api/get-all-extend-visas', async (req, res) => {
             } else {
                 status = 1 // Trường hợp còn hạn
             }
+            doc.visaEndDay = a_visaEndDay[2] + "/" + a_visaEndDay[1] + "/" + a_visaEndDay[0]
             return {
                 ...doc,
                 stt: stt,

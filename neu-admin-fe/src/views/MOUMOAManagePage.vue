@@ -413,13 +413,13 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Số lượng học viên</label
+                                  >Thời gian hết hạn</label
                                 >
                                 <input
-                                  type="text"
+                                  type="date"
                                   class="form-control"
                                   v-model="editMoumoa.expireTime"
-                                  placeholder="Nhập số lượng học viên"
+                                  placeholder="Nhập Thời gian hết hạn"
                                 />
                               </div>
                               <div class="mb-3">
@@ -636,14 +636,20 @@ export default {
     },
 
     onEdit(item) {
+      let signingTime = item.signingTime
+      let expireTime = item.expireTime
+      let a_signingTime = signingTime.split("/")
+      let a_expireTime = expireTime.split("/")
+      signingTime = a_signingTime[2] + "-" + a_signingTime[1] + "-" + a_signingTime[0]
+      expireTime = a_expireTime[2] + "-" + a_expireTime[1] + "-" + a_expireTime[0]
       this.editMoumoa.nation = item.nation;
       this.editMoumoa.docType = item.docType;
       this.editMoumoa.docDetail = item.docDetail;
       this.editMoumoa.attachedDocLink = item.attachedDocLink;
       this.editMoumoa.attachedDocName = item.attachedDocName;
       this.editMoumoa.partnerUni = item.partnerUni;
-      this.editMoumoa.signingTime = item.signingTime;
-      this.editMoumoa.expireTime = item.expireTime;
+      this.editMoumoa.signingTime = signingTime;
+      this.editMoumoa.expireTime = expireTime;
       this.editMoumoa.note = item.note;
       this.editMoumoa.id = item._id;
       this.showModal1();
