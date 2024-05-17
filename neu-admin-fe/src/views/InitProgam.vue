@@ -10,7 +10,7 @@
           Chọn chương trình
         </div>
         <div v-if="hasProgram" style="padding: 20px;" class="card-body">
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <label class="form-label">Năm học</label>
             <select
               v-model="year"
@@ -23,7 +23,7 @@
                 {{ year }}
               </option>
             </select>
-          </div>
+          </div> -->
           <div style="margin-top: 15px;" class="mb-3">
             <label class="form-label">Chương trình</label>
             <select
@@ -32,7 +32,7 @@
               tabindex="-1"
             >
               <option value="" disabled selected>Chọn chương trình</option>
-              <option v-for="(program, index) in programsOrderedByYearArr" :value="program.name">
+              <option v-for="(program, index) in programsArr" :value="program.name">
                 {{ program.name }}
               </option>
             </select>
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       yearsArray: [],
-      programsOrderedByYearArr: [],
+      programsArr: [],
       hasProgram: false,
       programName: "",
       year: "",
@@ -83,8 +83,9 @@ export default {
   },
   async mounted() {
     try {
-      const yearsArr = await this.getYearsArr();
-      console.log(yearsArr, "yearsArr mounted hook");
+      this.programsArr = await this.getProgram() 
+      // const yearsArr = await this.getYearsArr();
+      // console.log(yearsArr, "yearsArr mounted hook");
       //this.yearsArray = yearsArr;
 
       const hasProgram = await this.hasAttachedProgram()
@@ -95,21 +96,31 @@ export default {
     }
   },
   methods: {
-    async getYearsArr() {
+    async getProgram() {
       try {
-        const result = await instance.get("/api/get-years-array");
-        console.log(result, "result, getYearsArr()");
-        const yearsArr = result.data.data;
-        this.yearsArray = yearsArr;
-        this.year = 2024
-        const queryParams = { year: this.year }
-        const resultYear = await instance.get('/api/get-attached-programs-by-year', {params: queryParams})
-        this.programsOrderedByYearArr = resultYear.data.attachedProgramsFilterByYear
-        return yearsArr;
+        // const result = await instance.get('/api/get-attached-programs-by-year', {params: queryParams})
+        const result = await instance.get('/api/get-attached-programs-by-year')
+        console.log(result, "result /api/get-attached-programs-by-year api")
+        return result.data.attachedProgramsFilterByYear
       } catch (error) {
-        console.log(error, "getYearsArr() catch block error");
+        console.log(error, "getProgram() catch block error")
       }
     },
+    // async getYearsArr() {
+    //   try {
+    //     const result = await instance.get("/api/get-years-array");
+    //     console.log(result, "result, getYearsArr()");
+    //     const yearsArr = result.data.data;
+    //     this.yearsArray = yearsArr;
+    //     this.year = 2024
+    //     const queryParams = { year: this.year }
+    //     const resultYear = await instance.get('/api/get-attached-programs-by-year', {params: queryParams})
+    //     this.programsArr = resultYear.data.attachedProgramsFilterByYear
+    //     return yearsArr;
+    //   } catch (error) {
+    //     console.log(error, "getYearsArr() catch block error");
+    //   }
+    // },
 
     async hasAttachedProgram() {
       try {
@@ -120,17 +131,7 @@ export default {
         console.log(error, "hasAttachedProgram() catch block error")
       }
     },
-    async onYearChange() {
-      console.log(this.year, "onYearChange")
-      try {
-        const queryParams = { year: this.year }
-        const result = await instance.get('/api/get-attached-programs-by-year', {params: queryParams})
-        console.log(result, "result /api/get-attached-programs-by-year api")
-        this.programsOrderedByYearArr = result.data.attachedProgramsFilterByYear
-      } catch (error) {
-        
-      }
-    },
+
     pushRouter() {
       // router.push('/init-page');
 
@@ -139,7 +140,7 @@ export default {
         this.toast.warning('Hãy chọn một chương trình')
         router.push('/init-program')
       } else {
-        const selectedProgram = this.programsOrderedByYearArr.filter((prog) => {
+        const selectedProgram = this.programsArr.filter((prog) => {
           if (prog.name === this.programName) {
             return prog
           }

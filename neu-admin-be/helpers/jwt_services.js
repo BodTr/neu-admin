@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 const RefreshTokenSchema = require("../models/refreshToken");
 
-const signAccessToken = async (id) => {
+const signAccessToken = async (id, permission) => {
   try {
     const payload = {
       id,
+      permission
     };
     const secret = process.env.ACCESS_TOKEN_KEY;
     const options = {

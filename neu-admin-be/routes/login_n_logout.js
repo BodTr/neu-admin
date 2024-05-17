@@ -53,7 +53,7 @@ router.post('/api/login', async (req, res, next) => {
         if (!isMatch) {
             return res.json({ error: true, message: 'Mật khẩu không chính xác'})
         }
-        const accessToken = await signAccessToken(user._id)   
+        const accessToken = await signAccessToken(user._id, user.permission)   
         const refreshToken = await signRefreshToken(user._id) 
         const userPermission = user.permission
         
@@ -90,8 +90,8 @@ router.post('/api/login', async (req, res, next) => {
 router.post('/api/refresh-token', authenticateRefreshToken,  async (req, res) =>{
     try {
 
-        const { id } = req.payload 
-        const newAccessToken = await signAccessToken(id) 
+        const { id, permission } = req.payload 
+        const newAccessToken = await signAccessToken(id, permission) 
         const newRefreshToken = await signRefreshToken(id)
         const savedRefreshToken = new RefreshTokenSchema ({
             token: newRefreshToken,

@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId
 const initYearId = '65e968d440e62c9bf7a39996'
 
 const UserSchema = require('../models/user')
-const { Query } = require('mongoose')
+
 
 router.use(authenticateAccessToken)
 
@@ -25,16 +25,40 @@ router.get('/api/get-all-programs', async (req, res) => {
             limit,
             query
         } = req.query
+        const { id, permission } = req.payload
+        console.log(req.payload, "req.payload /api/get-all-programs")
         let skip = (parseInt(page) - 1) * parseInt(limit)
-        const programs = await ProgramSchema.find({
-            name: {
-                $regex: query
-            }
-        }).lean().sort({
-            _id: -1
-        }).skip(skip).limit(limit)
-        let count = await ProgramSchema.estimatedDocumentCount()
+        let programs = []
+        let count = 0
         let stt = 0
+        if (permission === "Super Admin") {
+            programs = await ProgramSchema.find({
+                name: {
+                    $regex: query
+                }
+            }).lean().sort({
+                _id: -1
+            }).skip(skip).limit(limit)
+            count = await ProgramSchema.countDocuments()
+            
+        } else {
+            programs = await ProgramSchema.find({
+                name: {
+                    $regex: query
+                },
+                user: {
+                    id: new ObjectId(id),
+                }
+            }).lean().sort({
+                _id: -1
+            }).skip(skip).limit(limit)
+            count = await ProgramSchema.countDocuments({
+                user: {
+                    id: { id: new ObjectId(id) },
+                }
+            })
+        }
+
         const aPrograms = programs.map(doc => {
             stt++
             // const id = doc._id.toString()
@@ -223,8 +247,8 @@ router.get('/api/check-user-has-program-or-not', async (req, res) => {
 router.get('/api/get-attached-programs-by-year', async (req, res) => {
     try {
         const userId = req.payload
-        var year = req.query.year
-        year = parseInt(year)
+        // var year = req.query.year
+        // year = parseInt(year)
 
         //LẤyt hông tin user
         const userItem = await UserSchema.findOne({
@@ -232,28 +256,17 @@ router.get('/api/get-attached-programs-by-year', async (req, res) => {
         })
         let filteredattachedPrograms = []
         if (userItem.permission == "Super Admin") {
-            attachedPrograms = await ProgramSchema.find({
-                year: year
-            }).lean()
+            attachedPrograms = await ProgramSchema.find().lean()
             console.log(attachedPrograms, "attachedPrograms Super Admin")
-            filteredattachedPrograms = attachedPrograms.filter(item => {
-                if (item.status === "true") {
-                    return item
-                }
-            })
+            filteredattachedPrograms = attachedPrograms
             console.log(filteredattachedPrograms, "filteredattachedPrograms Super Admin")
         } else {
             attachedPrograms = await ProgramSchema.find({
                 user: {
                     id: new ObjectId(userId)
-                },
-                year: year
-            }).lean()
-            filteredattachedPrograms = attachedPrograms.filter(item => {
-                if (item.status === true) {
-                    return item
                 }
-            })
+            }).lean()
+            filteredattachedPrograms = attachedPrograms
         }
 
         res.json({
