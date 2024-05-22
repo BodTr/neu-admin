@@ -31,20 +31,35 @@ router.get('/api/get-all-moumoas', async (req, res) => {
             partnerUni: {$regex: query}
             
         }).lean().sort({ _id: -1 }).skip(skip).limit(limit)
+        // console.log(moumoas, "moumoas /api/get-all-moumoas")
         let count = await MoumoaSchema.estimatedDocumentCount()
         let stt = 0
         const aMoumoas = moumoas.map( doc => {
             stt++
+            let status = 1
             let signingTime = doc.signingTime
             let expireTime = doc.expireTime
             let a_expireTime = expireTime.split("-")
             let a_signingTime = signingTime.split("-")
             doc.signingTime = a_signingTime[2] + "/" + a_signingTime[1] + "/" + a_signingTime[0]
             doc.expireTime = a_expireTime[2] + "/" + a_expireTime[1] + "/" + a_expireTime[0]
+            const timeNow = new Date()
+            const expiryDate = new Date(expireTime)
+            if(expiryDate < timeNow){
+                status = 3
+            } else if (expiryDate - timeNow <= 2592000000*6) { // thời hạn ít hơn 6 tháng (6 tháng = 2592000000*6 mili s)
+                status = 2
+            } else {
+                status = 1
+            }
+            const docDetail =  doc.docDetail
+            const fixedDocDetail = docDetail.replaceAll("\r\n", "<br>")
+            doc.docDetail = fixedDocDetail
             // const id = doc._id.toString()
             return {
                 ...doc,
-                stt: stt
+                stt: stt,
+                status: status                                                                                  
             }
         })
         console.log(aMoumoas, "aMoumoas")

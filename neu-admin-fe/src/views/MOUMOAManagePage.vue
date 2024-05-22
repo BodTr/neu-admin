@@ -209,8 +209,24 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:docDetail="item">
+                    <div v-html="item.row.docDetail"></div>
+                  </template>
                   <template v-slot:attachedDoc="item">
                     {{ item.row.attachedDocName }}
+                  </template>
+                  <template v-slot:status="item">
+                    <span
+                      v-if="item.row.status === 1"
+                      class="badge bg-green text-green-fg"
+                      >Đang hoạt động</span
+                    >
+                    <span v-else-if="item.row.status === 3" class="badge bg-red text-red-fg"
+                      >Đã hết hạn</span
+                    >
+                    <span v-else-if="item.row.status === 2" class="badge bg-yellow text-red-fg"
+                      >Sắp hết hạn</span
+                    >
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -479,6 +495,7 @@ export default {
         "signingTime",
         "expireTime",
         "note",
+        "status",
         "tool",
       ],
       options: {
@@ -491,6 +508,7 @@ export default {
           attachedDoc: "Văn bản đính kèm",
           expireTime: "Thời gian hết hạn",
           note: "Ghi chú",
+          status: "Trạng thái",
           tool: "Thao tác",
         },
       },
@@ -533,6 +551,7 @@ export default {
 
 
   methods: {
+
     handlePdfUpload() {
       this.$refs.attachedDoc.click();
     },

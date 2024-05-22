@@ -195,14 +195,14 @@
                   </template>
                   <template v-slot:status="item">
                     <span
-                      v-if="item.row.status === '1'"
+                      v-if="item.row.status === 1"
                       class="badge bg-green text-green-fg"
                       >Đang hoạt động</span
                     >
-                    <span v-else-if="item.row.status === '3'" class="badge bg-red text-red-fg"
+                    <span v-else-if="item.row.status === 3" class="badge bg-red text-red-fg"
                       >Đã hết hạn</span
                     >
-                    <span v-else-if="item.row.status === '2'" class="badge bg-yellow text-red-fg"
+                    <span v-else-if="item.row.status === 2" class="badge bg-yellow text-red-fg"
                       >Sắp hết hạn</span
                     >
                   </template>

@@ -239,7 +239,7 @@
                           role="button"
                           aria-expanded="true"
                         >
-                          Tuyển sinh
+                          Quản lý đào tạo
                         </a>
                         <div class="dropdown-menu">
                           <router-link

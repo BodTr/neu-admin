@@ -55,10 +55,11 @@ router.get('/api/get-all-ex-f-students', async (req, res) => {
 
 router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, upload.single("attachedExFStuDoc"), async (req, res, next) => {
     try {
-        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result } = req.body
+        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, results } = req.body
         console.log(req.body, "req.body post api")
         console.log(req.payload, "req.payload post api")
         console.log(req.file, "req.file post api")
+        const resultsArr = JSON.parse(results)
         const studentId = req.payload
         const attachedDoc = req.file
         console.log(attachedDoc, "attachedDoc, post api")
@@ -83,8 +84,7 @@ router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, uploa
             major: major,
             unit: unit,
             receptionDecision: receptionDecision,
-            subject: subject,
-            result: result,
+            results: resultsArr,
             attachedDocLink: attachedDocLink,
             attachedDocName: attachedDocName,
         }
@@ -104,8 +104,9 @@ router.post('/api/create-ex-f-student', initexForeignStudentDocMiddleware, uploa
 router.put('/api/edit-ex-f-student/:id', upload.single("attachedExFStuDoc1"), async(req, res) => {
     try {
         const { id } = req.params
-        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, subject, result, attachedDocLink, attachedDocName } = req.body
+        const { name, studentCode, position, educationLevel, receptionTime, receptionYear, birthday, sex, major, unit, receptionDecision, results, attachedDocLink, attachedDocName } = req.body
         const attachedDoc1 = req.file
+        const resultArr = JSON.parse(results)
         console.log(req.file, "req.file put api")
         console.log(req.body, "req.body put api")
         let newAttachedDocLink = ''
@@ -141,15 +142,14 @@ router.put('/api/edit-ex-f-student/:id', upload.single("attachedExFStuDoc1"), as
             major: major,
             unit: unit,
             receptionDecision: receptionDecision,
-            subject: subject,
-            result: result,
+            results: resultArr,
             attachedDocLink: newAttachedDocLink,
             attachedDocName: attachedDocName
         }
         console.log(req.body, "put api req.body")
         const updatedStudent = await ExForeignStudentSchema.findOneAndUpdate({ _id: id }, updatingStudent, {new: true})
         console.log(updatedStudent, "updatedStudent")
-        res.json({ error: false, message: "Thông tin học sinh sửa thành công" })
+        res.json({ error: false, message: "Thông tin sinh viên sửa thành công" })
     } catch (error) {
         console.log(error, "put catch block error")
         res.json({error: true, message: "something went wrong!"})

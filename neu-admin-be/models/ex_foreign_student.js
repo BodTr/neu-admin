@@ -45,14 +45,10 @@ const ExForeignStudentSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    subject: {
-        type: String,
+    results: [{
+        type: Object,
         require: false
-    },
-    result: {
-        type: String,
-        require: false
-    },
+    }],
     attachedDocLink: {
         type: String,
         require: false
