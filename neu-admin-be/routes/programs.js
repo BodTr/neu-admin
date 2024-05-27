@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ProgramSchema = require('../models/program')
 const YearSchema = require('../models/years')
+const ExcelJs = require("exceljs")
 const {
     emptyProgramInputsValidation,
     typeProgramInputsValidation
@@ -40,7 +41,7 @@ router.get('/api/get-all-programs', async (req, res) => {
                 _id: -1
             }).skip(skip).limit(limit)
             count = await ProgramSchema.countDocuments()
-            
+            console.log(programs, "programs Super Admin /api/get-all-programs")
         } else {
             programs = await ProgramSchema.find({
                 name: {
@@ -57,6 +58,7 @@ router.get('/api/get-all-programs', async (req, res) => {
                     id: { id: new ObjectId(id) },
                 }
             })
+            console.log(programs, "programs not Super Admin /api/get-all-programs")
         }
 
         const aPrograms = programs.map(doc => {
@@ -535,6 +537,117 @@ router.delete('/api/delete-program/:id', async (req, res) => {
             error: true,
             message: "something went wrong!"
         })
+    }
+})
+
+router.get('/api/export-excel', async (req, res) => {
+    try {
+        let workbook = new ExcelJs.Workbook()
+        const { id, permission } = req.payload
+        let programs = []
+        let stt = 0
+        if (permission === "Super Admin") {
+            programs = await ProgramSchema.find({
+                // name: {
+                //     $regex: query
+                // }
+            }).lean()
+            console.log(programs, "programs Super Admin /api/get-all-programs")
+        } else {
+            programs = await ProgramSchema.find({
+                // name: {
+                //     $regex: query
+                // },
+                user: {
+                    id: new ObjectId(id),
+                }
+            }).lean()
+            console.log(programs, "programs not Super Admin /api/get-all-programs")
+        }
+
+        const aPrograms = programs.map(doc => {
+            let expiry = doc.expiry
+            const timeNow = new Date()
+            let status = 1
+            const expiryDate = new Date(expiry)
+            // 3: hết hạn, 2: sắp hết hạn, 1 còn hạn
+            if(expiryDate < timeNow){
+                status = 'Hết hạn'
+            } else if (expiryDate - timeNow <= 2592000000*6) { // thời hạn ít hơn 6 tháng (6 tháng = 2592000000*6 mili s)
+                status = 'Sắp hết hạn'
+            } else {
+                status = 'Còn hạn'
+            }
+            stt++
+            // const id = doc._id.toString()
+            
+
+            let a_expiry = expiry.split("-")
+            doc.expiry = a_expiry[2] + "/" +  a_expiry[1] + "/" + a_expiry[0]
+            return {
+                ...doc,
+                stt: stt,
+                status: status,
+            }
+        })
+        console.log(aPrograms, "aPrograms")
+        const sheet = workbook.addWorksheet("programs")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "NĂM", key:"year", width: 10},
+            {header: "TÊN CHƯƠNG TRÌNH", key:"name", width: 30},
+            {header: "QUỐC GIA", key:"nation", width: 15},
+            {header: "TRƯỜNG ĐỐI TÁC", key:"partnerUni", width: 20},
+            {header: "CHUYÊN NGÀNH", key:"major", width: 20},
+            {header: "CHỈ TIÊU", key:"quota", width: 10},
+            {header: "TRÌNH ĐỘ ĐÀO TẠO", key:"level", width: 15},
+            {header: "ĐƠN VỊ QUẢN LÝ", key:"agency", width: 20},
+            {header: "SĐT Đ.VỊ QUẢN LÝ", key:"agencyPhoneNumber", width: 15},
+            {header: "NGÀY HẾT HẠN", key:"expiry", width: 15},
+            {header: "TRẠNG THÁI", key:"status", width: 15},
+            {header: "QUYẾT ĐỊNH PHÊ DUYỆT", key:"decisionArray", width: 20},
+        ]
+
+        aPrograms.map((program) => {
+            // const decisionArrayCol = sheet.getColumn(13)
+            // decisionArrayCol.eachCell((cell) => {
+            //     cell.value = {
+            //         text: program,
+            //         hyperlink: 'http://www.mylink.com',
+            //         tooltip: 'www.mylink.com'
+            //     }
+            // })
+            sheet.addRow({
+                stt: program.stt,
+                year: program.year,
+                name: program.name,
+                nation: program.nation,
+                partnerUni: program.parterUni,
+                major: program.major,
+                quota: program.quota,
+                level: program.level,
+                agency: program.agency,
+                agencyPhoneNumber: program.agencyPhoneNumber,
+                expiry: program.expiry,
+                status: program.status,
+                decisionArray: program.decisionsArray
+            })
+
+        })
+
+        
+        console.log(workbook, "workbook /api/export-excel")
+        await workbook.xlsx.writeFile(`public/programs-${id}.xlsx`)
+        // res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
+        // res.setHeader("Content-Disposition", "attachment; filename=" + `public/programs-${id}.xlsx`);
+        const excelFilePath = process.env.CND_EXCELFILE + `programs-${id}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+
+    } catch (error) {
+        console.log(error, "/api/export-excel catch block error")
     }
 })
 

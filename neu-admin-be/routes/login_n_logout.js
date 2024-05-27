@@ -54,7 +54,7 @@ router.post('/api/login', async (req, res, next) => {
             return res.json({ error: true, message: 'Mật khẩu không chính xác'})
         }
         const accessToken = await signAccessToken(user._id, user.permission)   
-        const refreshToken = await signRefreshToken(user._id) 
+        const refreshToken = await signRefreshToken(user._id, user.permission) 
         const userPermission = user.permission
         
         // khi tạo được refresh token rồi thì ta sẽ lưu refresh token đó vào db
@@ -91,8 +91,9 @@ router.post('/api/refresh-token', authenticateRefreshToken,  async (req, res) =>
     try {
 
         const { id, permission } = req.payload 
+        console.log(req.payload, "req.payload /api/refresh-token")
         const newAccessToken = await signAccessToken(id, permission) 
-        const newRefreshToken = await signRefreshToken(id)
+        const newRefreshToken = await signRefreshToken(id, permission)
         const savedRefreshToken = new RefreshTokenSchema ({
             token: newRefreshToken,
             user: {

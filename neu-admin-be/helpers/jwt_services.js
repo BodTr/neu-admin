@@ -18,10 +18,11 @@ const signAccessToken = async (id, permission) => {
   }
 };
 
-const signRefreshToken = async (id) => {
+const signRefreshToken = async (id, permission) => {
   try {
     const payload = {
       id,
+      permission
     };
     const secret = process.env.REFRESH_TOKEN_KEY;
     const options = {
