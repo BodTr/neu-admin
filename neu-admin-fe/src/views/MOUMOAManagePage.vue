@@ -14,6 +14,15 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-lime d-none d-sm-inline-block"
+                  @click="getExcelFile()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  Export excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
                   @click="showModal()"
                 >
@@ -157,12 +166,12 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Thời gian kí kết</label>
+                        <label class="form-label">Thời gian ký kết</label>
                         <input
                           type="date"
                           class="form-control"
                           v-model="signingTime"
-                          placeholder="Nhập thời gian kí kết"
+                          placeholder="Nhập thời gian ký kết"
                         />
                       </div>
                       <div class="mb-3">
@@ -418,13 +427,13 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Thời gian kí kết</label
+                                  >Thời gian ký kết</label
                                 >
                                 <input
                                   type="date"
                                   class="form-control"
                                   v-model="editMoumoa.signingTime"
-                                  placeholder="Nhập thời gian kí kết"
+                                  placeholder="Nhập thời gian ký kết"
                                 />
                               </div>
                               <div class="mb-3">
@@ -503,7 +512,7 @@ export default {
           nation: "Quốc gia",
           partnerUni: "Trường đối tác",
           docType: "Loại văn bản",
-          signingTime: "Thời gian kí kết",
+          signingTime: "Thời gian ký kết",
           docDetail: "Nội dung văn bản",
           attachedDoc: "Văn bản đính kèm",
           expireTime: "Thời gian hết hạn",
@@ -728,6 +737,16 @@ export default {
         }
       } catch (error) {
         console.log(error, "delete api catch block error");
+      }
+    },
+    async getExcelFile() {
+      try {
+        const result = await instance.get('/api/export-excel-moumoas')
+        const excelFilePath = result.data.path
+        console.log(excelFilePath, "excelFilePath getExcelFile()")
+        location.href = excelFilePath
+      } catch (error) {
+        console.log(error, "/api/export-excel-moumoas catch block error")
       }
     },
   },

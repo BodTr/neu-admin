@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 const instance = axios.create({
-    // timeout: 15 * 1000, // 5s sau khi req gửi đi mà không nhận được phản hồi là bị báo lỗi timeout (thời gian tối đa chờ res của server)
+    timeout: 10 * 1000, // 10s sau khi req gửi đi mà không nhận được phản hồi là bị báo lỗi timeout (thời gian tối đa chờ res của server)
 })
 
 

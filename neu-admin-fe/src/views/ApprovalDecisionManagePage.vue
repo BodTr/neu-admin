@@ -7,7 +7,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <!-- Page pre-title -->
-              <h2 class="page-title"> 
+              <h2 class="page-title">
                 <b style="color: #ffe1e1; font-size: 22px"
                   >"{{ programName }}"</b
                 >
@@ -16,6 +16,64 @@
 
             <div class="col-auto ms-auto d-print-none">
               <div class="btn-list">
+                <a
+                  href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
+                  class="btn btn-lime d-none d-sm-inline-block"
+                  @click="getExcelFile()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
+                  Export excel
+                </a>
                 <a
                   @click="showModal()"
                   href="#"
@@ -175,6 +233,89 @@
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Tạo mới
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importDecisionsDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importDecisionsDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">{{ importDocMessage }}</div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
                     </a>
                   </div>
                 </div>
@@ -346,7 +487,9 @@
                                 />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Thời hạn hết hiệu lực</label>
+                                <label class="form-label"
+                                  >Thời hạn hết hiệu lực</label
+                                >
                                 <input
                                   type="text"
                                   class="form-control"
@@ -421,7 +564,7 @@
 import instance from "../instance";
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
   name: "ProgramManagePage",
   components: {
@@ -463,8 +606,14 @@ export default {
       signDate: "",
       expireIn: "",
       expireInLL: "",
+      importDecisionsDoc: null,
+      importDecisionsDocName: "",
+      importDocMessage: "",
+
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
+
       attachedDoc: null,
       attachedDocName: "",
       message: "",
@@ -491,7 +640,7 @@ export default {
     return { toast };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -503,6 +652,9 @@ export default {
     },
     handlePdfUpload1() {
       this.$refs.attachedDoc1.click();
+    },
+    handleExcelUpload() {
+      this.$refs.importDecisionsDoc.click();
     },
     handlePdfChange() {
       const file = this.$refs.attachedDoc.files[0];
@@ -542,6 +694,20 @@ export default {
             : "Định dạng file không phù hợp!!";
       }
     },
+    handleExcelChange() {
+      const file = this.$refs.importDecisionsDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importDecisionsDoc = file;
+      this.importDecisionsDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
+    },
     showModal() {
       this.displayModal = true;
     },
@@ -554,27 +720,31 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
     async submitForm() {
-      console.log(this.id, "post api program id");
-
-      let formData = new FormData();
-      formData.append("programId", this.id);
-      formData.append("name", this.name);
-      formData.append("detail", this.detail);
-      formData.append("number", this.number);
-      formData.append("signDate", this.signDate);
-      formData.append("expireIn", this.expireIn);
-      formData.append("expireInLL", this.expireInLL);
-      formData.append("approvalDecisionDoc", this.attachedDoc);
-
       try {
+        console.log(this.id, "post api program id");
+
+        let formData = new FormData();
+        formData.append("programId", this.id);
+        formData.append("name", this.name);
+        formData.append("detail", this.detail);
+        formData.append("number", this.number);
+        formData.append("signDate", this.signDate);
+        formData.append("expireIn", this.expireIn);
+        formData.append("expireInLL", this.expireInLL);
+        formData.append("approvalDecisionDoc", this.attachedDoc);
+
         const result = await instance.post("/api/create-decision", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-
-
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -603,9 +773,9 @@ export default {
     },
 
     onEdit(item) {
-      let signDate = item.signDate
-      let a_signDate = signDate.split("/")
-      signDate = a_signDate[2] + "-" + a_signDate[1] + "-" + a_signDate[0]
+      let signDate = item.signDate;
+      let a_signDate = signDate.split("/");
+      signDate = a_signDate[2] + "-" + a_signDate[1] + "-" + a_signDate[0];
       this.editDecision.name = item.name;
       this.editDecision.detail = item.detail;
       this.editDecision.number = item.number;
@@ -622,19 +792,18 @@ export default {
     },
 
     async onSubmit() {
-      let formData = new FormData();
-      formData.append("name", this.editDecision.name);
-      formData.append("detail", this.editDecision.detail);
-      formData.append("number", this.editDecision.number);
-      formData.append("signDate", this.editDecision.signDate);
-      formData.append("expireIn", this.editDecision.expireIn);
-      formData.append("expireInLL", this.editDecision.expireInLL);
-      formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
-      formData.append("attachedDocLink", this.editDecision.attachedDocLink);
-      formData.append("attachedDocName", this.editDecision.attachedDocName);
-      formData.append("programId", this.id);
-
       try {
+        let formData = new FormData();
+        formData.append("name", this.editDecision.name);
+        formData.append("detail", this.editDecision.detail);
+        formData.append("number", this.editDecision.number);
+        formData.append("signDate", this.editDecision.signDate);
+        formData.append("expireIn", this.editDecision.expireIn);
+        formData.append("expireInLL", this.editDecision.expireInLL);
+        formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
+        formData.append("attachedDocLink", this.editDecision.attachedDocLink);
+        formData.append("attachedDocName", this.editDecision.attachedDocName);
+        formData.append("programId", this.id);
         const result = await instance.put(
           `/api/edit-decision/${this.editDecision.id}`,
           formData,
@@ -675,8 +844,8 @@ export default {
     },
 
     async remove(item) {
-      console.log(item);
       try {
+        console.log(item);
         if (confirm("Xóa quyết định này?")) {
           const result = await instance.delete(
             `/api/delete-decision/${item._id}`
@@ -688,6 +857,57 @@ export default {
         }
       } catch (error) {
         console.log(error, "delete api catch block error");
+      }
+    },
+    async getExcelFile() {
+      try {
+        const queryParams = { id: this.id };
+        const result = await instance.get("/api/export-excel-decisions", {
+          params: queryParams,
+        });
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
+      } catch (error) {
+        console.log(error, "/api/export-excel-decisions catch block error");
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-decisions-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-decisions-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("decisions-import-file", this.importDecisionsDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-decisions-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importDecisionsDoc = null;
+          this.importDecisionsDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-trans-programs-data catch block error");
       }
     },
   },

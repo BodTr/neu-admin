@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 const DecisionSchema = require('../models/decision')
 const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyDecisionInputsValidation, typeDecisionInputsValidation, emptyFileDecisionInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initDecisionDocMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const ObjectId = require("mongodb").ObjectId
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 
@@ -218,6 +219,131 @@ router.delete('/api/delete-decision/:id', async(req, res) => {
     }
 })
 
+router.get('/api/export-excel-decisions', async (req, res) => {
+    try {
+        const { id } = req.query // id: program id
+        const decisions = await DecisionSchema.find({
+            program: { id: new ObjectId(id) }
+        }).lean()
+        let stt = 0
+        const aDecisions= decisions.map( doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-decisions")
+        const programName = program.name 
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("decisions")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "TÊN QUYẾT ĐỊNH", key:"name", width: 20},
+            {header: "NỘI DUNG QUYẾT ĐỊNH", key:"detail", width: 70},
+            {header: "QUYẾT ĐỊNH SỐ", key:"number", width: 10},
+            {header: "NGÀY KÝ", key:"signDate", width: 10},
+            {header: "THỜI HẠN HIỆU LỰC", key:"expireIn", width: 10},
+            {header: "THỜI HẠN HẾT HIỆU LỰC", key:"expireInLL", width: 10},
+            {header: "TÊN VĂN BẢN ĐÍNH KÈM", key:"attachedDocName", width: 10},
+            {header: "LINK VĂN BẢN ĐÍNH KÈM", key:"attachedDocLink", width: 30},
+        ]
+        aDecisions.map((decision) => {
+            sheet.addRow({
+                stt: decision.stt,
+                name: decision.name,
+                detail: decision.detail,
+                number: decision.number,
+                signDate: decision.signDate,
+                expireIn: decision.expireIn,
+                expireInLL: decision.expireInLL,
+                attachedDocName: decision.attachedDocName,
+                attachedDocLink: decision.attachedDocLink,
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Các quyết định phê duyệt-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Các quyết định phê duyệt-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-decisions catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-decisions-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-cac-quyet-dinh-phe-duyet.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-decisions-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-decisions-data', uploadToServer.single("decisions-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-decisions-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+        // console.log(workbook, "workbook /api/import-trans-programs-data")
+        let importDecisionArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importDecisionArr.push({
+                    name: row.values[2],
+                    detail: row.values[3],
+                    number: row.values[4],
+                    signDate: row.values[5],
+                    expireIn: row.values[6],
+                    expireInLL: row.values[7],
+                    attachedDocName: row.values[8],
+                    attachedDocLink: row.values[9],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        // console.log(sheet, "sheet /api/import-trans-programs-data")
+        console.log(importDecisionArr, "importDecisionArr /api/import-trans-programs-data")
+        const savedImportDecsisions = await DecisionSchema.insertMany(importDecisionArr)
+        console.log(savedImportDecsisions, "savedImportTransProg /api/import-trans-programs-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
 router.use('/api/create-decision', async (error, req, res, next) => {
     try {
         console.log(error, "error handle post api midddleware")
@@ -266,6 +392,7 @@ router.use('/api/edit-decision/:id', async(error, req, res, next) => {
         res.json({ error: true, message: 'something went wrong' })
     }
 })
+
 
 router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
     if (error) {

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const DocumentSchema = require("../models/document");
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const {
     emptyDocumentInputsValidation,
     typeDocumentInputsValidation,
@@ -237,6 +239,60 @@ router.delete("/api/delete-document/:id", async (req, res) => {
         });
     }
 });
+
+router.get('/api/export-excel-documents', async (req, res) => {
+    try {
+        const { id } = req.query
+        const documents = await DocumentSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aDocuments = documents.map( doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-documents")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("documents")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "TÊN VĂN BẢN LIÊN KẾT ĐÀO TẠO", key:"name", width: 40},
+            {header: "NỘI DUNG", key:"content", width: 70},
+            {header: "NGÀY CÓ HIỆU LỰC", key:"effDate", width: 20},
+            {header: "THỜI HẠN HIỆU LỰC", key:"expireIn", width: 20},
+            {header: "TÊN VĂN BẢN ĐÍNH KÈM", key:"attachedDocName", width: 20},
+            {header: "LINK VĂN BẢN ĐÍNH KÈM", key:"attachedDocLink", width: 20},
+        ]
+        aDocuments.map((document) => {
+            sheet.addRow({
+                stt: document.stt,
+                name: document.name,
+                content: document.content,
+                effDate: document.effDate,
+                expireIn: document.expireIn,
+                attachedDocName: document.attachedDocName,
+                attachedDocLink: document.attachedDocLink
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Quản lý văn bản liên kết-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý văn bản liên kết-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-documents catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
 
 router.use('/api/create-document', async (error, req, res, next) => {
     try {

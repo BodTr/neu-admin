@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const GoalSchema = require('../models/goal')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyGoalInputsValidation, typeGoalInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -89,6 +91,57 @@ router.delete('/api/delete-goal/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-goals', async (req, res) => {
+    try {
+        const { id } = req.query
+        const goals = await GoalSchema.find({
+            program: { id: new ObjectId(id) }
+        }).lean()
+        let stt = 0
+        const aGoals = goals.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        console.log(aGoals, "aGoals /api/export-excel-goals")
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-goals")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("goals")
+        sheet.columns = [
+            {header: "STT", key: "stt", width: 10},
+            {header: "NỘI DUNG MỤC TIÊU", key: "programGoal", width: 50},
+            {header: "TỰ ĐÁNH GIÁ", key: "testDetail", width: 50},
+            {header: "PHÂN LOẠI", key: "goalFrom", width: 20},
+        ]
+        aGoals.map((goal) => {
+            sheet.addRow ({
+                stt: goal.stt,
+                programGoal: goal.programGoal,
+                testDetail: goal.testDetail,
+                goalFrom: goal.goalFrom,
+            })
+        })
+
+        await workbook.xlsx.writeFile(`public/Mục tiêu chương trình-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Mục tiêu chương trình-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+
+    } catch (error) {
+        console.log(error, "error /api/export-excel-goals")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

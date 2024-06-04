@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const PlanSchema = require('../models/plan')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyPlanlInputsValidation, typePlanInputsValidation, emptyFilePlanInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initPlanDocMiddleware } = require('../helpers/init_doc')
@@ -171,6 +173,72 @@ router.delete('/api/delete-plan/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-plans', async (req, res) => {
+    try {
+        const { id } = req.query
+        const plans = await PlanSchema.find({
+            program: { id: new ObjectId(id) }
+        }).lean()
+        let stt = 0
+        const aPlans = plans.map( doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        console.log(aPlans, "aPlans /api/export-excel-plans")
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-trans-programs")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("plans")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "NĂM", key:"year", width: 10},
+            {header: "HÌNH THỨC LIÊN KẾT ĐÀO TẠO", key:"planStructure", width: 40},
+            {header: "NGÔN NGỮ GIẢNG DẠY", key:"language", width: 15},
+            {header: "ĐIỀU KIỆN GIẢNG VIÊN", key:"qualifiedLecturer", width: 40},
+            {header: "HỌC PHÍ", key:"tuition", width: 20},
+            {header: "QUY MÔ VÀ ĐỊA ĐIỂM ĐÀO TẠO", key:"ecoManage", width: 40},
+            {header: "ĐIỀU KIỆN CƠ SỞ VẬT CHẤT", key:"infraCondition", width: 40},
+            {header: "MẪU VĂN BẰNG", key:"diploma", width: 20},
+            {header: "TÊN VĂN BẰNG CHỨNG CHỈ", key:"attachedDocName", width: 20},
+            {header: "LINK VĂN BẰNG CHỨNG CHỈ", key:"attachedDocLink", width: 40},
+            
+        ]
+        aPlans.map(plan => {
+            sheet.addRow ({
+                stt: plan.stt,
+                year: plan.year,
+                planStructure: plan.planStructure,
+                language: plan.language,
+                qualifiedLecturer: plan.qualifiedLecturer,
+                tuition: plan.tuition,
+                ecoManage: plan.ecoManage,
+                infraCondition: plan.infraCondition,
+                diploma: plan.diploma,
+                attachedDocName: plan.attachedDocName,
+                attachedDocLink: plan.attachedDocLink,
+
+            })
+            
+        })
+        await workbook.xlsx.writeFile(`public/Quản lý nội dung đề án-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý nội dung đề án-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "error /api/export-excel-plans")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

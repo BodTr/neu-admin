@@ -1,83 +1,83 @@
 const mongoose = require('mongoose')
 
 const ExtendVisaSchema = new mongoose.Schema({
-    name: {
+    name: {//
         type: String,
         require: false
     },
-    birthday: {
+    birthday: {//
         type: String,
         require: false
     },
-    sex: {
+    sex: {//
         type: String,
         require: false
     },
-    nationality: {
+    nationality: {//
         type: String,
         require: false
     },
-    visaCode: {
+    visaCode: {//
         type: String,
         require: false
     },
-    phoneNumber: {
+    phoneNumber: {//
         type: String,
         require: false
     },
-    purpose: {
+    purpose: {//
         type: String,
         require: false
     },
-    job: {
+    job: {//
         type: String,
         require: false
     },
-    studentCode: {
+    studentCode: {//
         type: String,
         require: false
     },
-    workPermit: {
+    workPermit: {//
         type: String,
         require: false
     },
-    visaType: {
+    visaType: {//
         type: String,
         require: false
     },
-    address: {
+    address: {//
         type: String,
         require: false
     },
-    visaBeginDay: {
+    visaBeginDay: {//
         type: String,
         require: false
     },
-    visaEndDay: {
+    visaEndDay: {//
         type: String,
         require: false
     },
-    suggestUnitLink: {
+    suggestUnitLink: {//
         type: String,
         require: false
     },
-    decisionNumberLink: {
+    decisionNumberLink: {//
         type: String,
         require: false
     },
-    attachedFileLink: {
+    attachedFileLink: {//
         type: String,
         require: false
     },
-    suggestUnitName: {
+    suggestUnitName: {//
         type: String,
         require: false
     },
-    decisionNumberName: {
+    decisionNumberName: {//
         type: String,
         require: false
     },
-    attachedFileName: {
+    attachedFileName: {//
         type: String,
         require: false
     },

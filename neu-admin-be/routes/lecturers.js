@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const LecturerSchema = require('../models/lecturer')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyLecturerInputsValidation, typeLecturerInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
+const lecturer = require('../models/lecturer')
 const ObjectId = require("mongodb").ObjectId
 
 router.use(authenticateAccessToken)
@@ -100,6 +103,62 @@ router.delete('/api/delete-lecturer/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-lecturers', async (req, res) => {
+    try {
+        const { id } = req.query
+        const lecturers = await LecturerSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aLecturers = lecturers.map( doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-lecturers")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("documents")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "HỌ TÊN GIẢNG VIÊN", key:"name", width: 20},
+            {header: "NĂM SINH", key:"birthyear", width: 10},
+            {header: "QUỐC TỊCH", key:"nationality", width: 20},
+            {header: "ĐƠN VỊ CÔNG TÁC", key:"unit", width: 30},
+            {header: "TÌNH TRẠNG HỢP ĐỒNG", key:"contractStatus", width: 20},
+            {header: "TRÌNH ĐỘ", key:"level", width: 25},
+            {header: "TÊN MÔN HỌC GIẢNG DẠY", key:"subject", width: 10},
+        ]
+        aLecturers.map( lecturer => {
+            sheet.addRow({
+                stt: lecturer.stt,
+                name: lecturer.name,
+                birthyear: lecturer.birthyear,
+                nationality: lecturer.nationality,
+                unit: lecturer.unit,
+                contractStatus: lecturer.contractStatus,
+                level: lecturer.level,
+                subject: lecturer.subject
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Quản lý giảng viên-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý giảng viên-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-lecturers catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

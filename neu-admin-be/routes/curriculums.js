@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const CurriculumSchema = require('../models/curriculum')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyCurriculumInputsValidation, typeCurriculumInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -98,6 +100,58 @@ router.delete('/api/delete-curriculum/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-curriculums', async (req, res) => {
+    try {
+        const { id } = req.query
+        const curriculums = await CurriculumSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aCurriculums = curriculums.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-curriculums")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("curriculums")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "KHUNG CHƯƠNG TRÌNH THEO ĐỀ ÁN", key:"name", width: 40},
+            {header: "GIÁO TRÌNH", key:"subjectType", width: 30},
+            {header: "NĂM HỌC/HỌC KỲ", key:"year", width: 15},
+            {header: "ĐỊA ĐIỂM ĐÀO TẠO", key:"location", width: 30},
+            {header: "SỐ TÍN CHỈ", key:"creditsCount", width: 15},
+        ]
+        aCurriculums.map( curriculum => {
+            sheet.addRow({
+                stt: curriculum.stt,
+                name: curriculum.name,
+                subjectType: curriculum.subjectType,
+                year: curriculum.year,
+                location: curriculum.location,
+                creditsCount: curriculum.creditsCount,
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Thông tin khung chương trình-${ programName }.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Thông tin khung chương trình-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-curriculums catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

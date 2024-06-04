@@ -37,6 +37,7 @@ const signRefreshToken = async (id, permission) => {
 
 async function authenticateAccessToken(req, res, next) {
   try {
+    // console.log(req.headers, "req.headers authenticateAccessToken")
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
       return res.json({ code: 400, message: "Authorization header required" });
@@ -66,7 +67,7 @@ async function authenticateAccessToken(req, res, next) {
         }
       }
       req.payload = payload;
-      console.log(payload, "authenticateAccessToken payload jwt_services");
+      // console.log(payload, "authenticateAccessToken payload jwt_services");
       next();
     });
   } catch (error) {

@@ -2,6 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const HTQTSchema = require('../models/htqt')
+const ExcelJs = require("exceljs")
 const { emptyHTQTInputsValidation, typeHTQTInputsValidation, emptyFileHTQTInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initHTQTDocMiddleware } = require('../helpers/init_doc')
@@ -172,6 +173,62 @@ router.delete('/api/delete-htqt/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-htqts', async (req, res) => {
+    try {
+        const htqts = await HTQTSchema.find().lean()
+        let stt = 0
+        const aHtqts = htqts.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("htqts")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "QUỐC GIA", key:"nation", width: 30},
+            {header: "TRƯỜNG ĐỐI TÁC", key:"partnerUni", width: 30},
+            {header: "NGUỒN KINH PHÍ", key:"funding", width: 30},
+            {header: "NỘI DUNG DỰ ÁN", key:"planDetail", width: 50},
+            {header: "THỜI GIAN KÝ KẾT", key:"signingTime", width: 20},
+            {header: "THỜI GIAN HẾT HẠN", key:"expireTime", width: 20},
+            {header: "GHI CHÚ", key:"note", width: 30},
+            {header: "TÊN VĂN BẢN ĐÍNH KÈM", key:"attachedDocName", width: 30},
+            {header: "LINK VĂN BẢN ĐÍNH KÈM", key:"attachedDocLink", width: 30},
+        ]
+        aHtqts.map(htqt => {
+            sheet.addRow({
+                stt: htqt.stt,
+                nation: htqt.nation,
+                partnerUni: htqt.partnerUni,
+                funding: htqt.funding,
+                planDetail: htqt.planDetail,
+                signingTime: htqt.signingTime,
+                expireTime: htqt.expireTime,
+                note: htqt.note,
+                attachedDocName: htqt.attachedDocName,
+                attachedDocLink: htqt.attachedDocLink
+            })
+        })
+ 
+
+        await workbook.xlsx.writeFile(`public/Quản lý các dự án htqt.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý các dự án htqt.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-htqts catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const PartnerSchema = require("../models/partner");
 const PartnerDocsSchema = require("../models/partner_file");
+const ExcelJs = require("exceljs")
+const ProgramSchema = require('../models/program')
 const {
     emptyPartnerInputsValidation,
     emptyPartnerFileInputValidation,
@@ -390,6 +392,15 @@ router.delete("/api/delete-partner/:id", async (req, res) => {
         res.json({ error: true, message: "something went wrong!" });
     }
 });
+
+// router.get('/api/export-excel-partners', async (req, res) => {
+//     try {
+//         const { id } = req.query // id: program id
+//         const partners = await PartnerSchema
+//     } catch (error) {
+        
+//     }
+// })
 
 router.use("/api/create-partner", async (error, req, res, next) => {
     try {

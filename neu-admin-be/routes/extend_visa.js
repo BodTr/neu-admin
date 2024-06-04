@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const ExtendVisaSchema = require('../models/extend_visa')
+const ExcelJs = require("exceljs")
 const { emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, emptyFileExtendVisaInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initExtendVisaMiddleware } = require('../helpers/init_doc')
@@ -265,6 +266,108 @@ router.delete('/api/delete-extend-visa/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-extend-visas', async (req, res) => {
+    try {
+        const visas = await ExtendVisaSchema.find().lean()
+        let stt = 0
+        const aVisas = visas.map(doc => {
+            stt++
+            let avisaEndDay = doc.visaEndDay
+            let abirthday = doc.birthday
+            let avisaBeginDay = doc.visaBeginDay
+            let a_visaEndDay = avisaEndDay.split("-")
+            let a_birthday = abirthday.split("-")
+            let a_visaBeginDay = avisaBeginDay.split("-")
+            
+            // const id = doc._id.toString()
+            const visaEndDay = new Date(doc.visaEndDay)
+            const timeNow = new Date()
+            let status = '' // 1 là còn hạn, 2 là sắp hết hạn, 3 là hết hạn
+            if (timeNow > visaEndDay) {
+                status = 'Hết hạn' // Trường hợp hết hạn
+            } else if (visaEndDay - timeNow <= 2592000000) { // visaEndDay - timeNow sẽ ra thời gian chênh lệch theo mili giây, 2592000000ms = 30 ngày
+                status = 'Sắp hết hạn' // Trường hợp sắp hết hạn
+            } else {
+                status = 'Còn hạn' // Trường hợp còn hạn
+            }
+            doc.visaEndDay = a_visaEndDay[2] + "/" + a_visaEndDay[1] + "/" + a_visaEndDay[0]
+            doc.birthday = a_birthday[2] + "/" + a_birthday[1] + "/" + a_birthday[0]
+            doc.visaBeginDay = a_visaBeginDay[2] + "/" + a_visaBeginDay[1] + "/" + a_visaBeginDay[0]
+            return {
+                ...doc,
+                stt: stt,
+                status: status
+            }
+        })
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("visas")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "HỌ VÀ TÊN", key:"name", width: 30},//
+            {header: "NGÀY SINH", key:"birthday", width: 30},//
+            {header: "GIỚI TÍNH", key:"sex", width: 30},//
+            {header: "MỤC ĐÍCH", key:"purpose", width: 20},//
+            {header: "QUỐC TỊCH", key:"nationality", width: 20},//
+            {header: "SỐ HỘ CHIẾU", key:"visaCode", width: 10},//
+            {header: "LOẠI HỘ CHIẾU", key:"visaType", width: 10},//
+            {header: "SỐ ĐIỆN THOẠI", key:"phoneNumber", width: 10},//
+            {header: "NGHỀ NGHIỆP", key:"job", width: 15},//
+            {header: "SỐ GIẤY PHÉP LAO ĐỘNG", key:"workPermit", width: 10},//
+            {header: "MÃ SỐ SINH VIÊN", key:"studentCode", width: 10},//
+            {header: "NGÀY BẮT ĐẦU", key:"visaBeginDay", width: 30},//
+            {header: "NGÀY HẾT HẠN", key:"visaEndDay", width: 30},//
+            {header: "ĐỊA CHỈ TẠM TRÚ", key:"address", width: 30},//
+            {header: "TRẠNG THÁI", key:"status", width: 20},//
+            {header: "TÊN VĂN BẢN ĐƠN VỊ ĐỀ NGHỊ", key:"suggestUnitName", width: 40},//
+            {header: "LINK VĂN BẢN ĐƠN VỊ ĐỀ NGHỊ", key:"suggestUnitLink", width: 40},//
+            {header: "TÊN VĂN BẢN SỐ QUYẾT ĐỊNH", key:"decisionNumberName", width: 40},//
+            {header: "LINK VĂN BẢN SỐ QUYẾT ĐỊNH", key:"decisionNumberLink", width: 40},//
+            {header: "TÊN ẢNH HOẶC FILE PFD", key:"attachedFileName", width: 40},//
+            {header: "LINK ẢNH HOẶC FILE PFD", key:"attachedFileLink", width: 40},//
+        ]
+
+        aVisas.map(visa => {
+            sheet.addRow({
+                stt: visa.stt,
+                name: visa.name,
+                birthday: visa.birthday,
+                sex: visa.sex,
+                purpose: visa.purpose,
+                nationality: visa.nationality,
+                visaCode: visa.visaCode,
+                visaType: visa.visaType,
+                phoneNumber: visa.phoneNumber,
+                job: visa.job,
+                workPermit: visa.workPermit,
+                studentCode: visa.studentCode,
+                visaBeginDay: visa.visaBeginDay,
+                visaEndDay: visa.visaEndDay,
+                address: visa.address,
+                status: visa.status,
+                suggestUnitName: visa.suggestUnitName,
+                suggestUnitLink: visa.suggestUnitLink,
+                decisionNumberName: visa.decisionNumberName,
+                decisionNumberLink: visa.decisionNumberLink,
+                attachedFileName: visa.attachedFileName,
+                attachedFileLink: visa.attachedFileLink,
+
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Cấp-gia hạn visa.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Cấp-gia hạn visa.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-extend-visas catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

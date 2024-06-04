@@ -16,6 +16,15 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-lime d-none d-sm-inline-block"
+                  @click="getExcelFile()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  Export excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
                   @click="showModal()"
                 >
@@ -195,12 +204,12 @@
                         </select>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Địa chỉ tạm chú</label>
+                        <label class="form-label">Địa chỉ tạm trú</label>
                         <input
                           type="text"
                           class="form-control"
                           v-model="address"
-                          placeholder="Nhập địa chỉ tạm chú"
+                          placeholder="Nhập địa chỉ tạm trú"
                         />
                       </div>
                     </div>
@@ -620,13 +629,13 @@
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
-                                  >Địa chỉ tạm chú</label
+                                  >Địa chỉ tạm trú</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
                                   v-model="editExtendVisa.address"
-                                  placeholder="Nhập địa chỉ tạm chú"
+                                  placeholder="Nhập địa chỉ tạm trú"
                                 />
                               </div>
                             </div>
@@ -1200,6 +1209,16 @@ export default {
         }
       } catch (error) {
         console.log(error, "delete api catch block error");
+      }
+    },
+    async getExcelFile() {
+      try {
+        const result = await instance.get('/api/export-excel-extend-visas')
+        const excelFilePath = result.data.path
+        console.log(excelFilePath, "excelFilePath getExcelFile()")
+        location.href = excelFilePath
+      } catch (error) {
+        console.log(error, "/api/export-excel-trans-programs catch block error")
       }
     },
   },

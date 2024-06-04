@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const AgencySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: false
-    },
     unit: {
         type: String,
         require: false

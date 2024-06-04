@@ -4,6 +4,7 @@ const { S3Client } = require('@aws-sdk/client-s3')
 
 const allowedTypes = ["application/pdf"]
 const allowedTypes1 = ["application/pdf", "image/jpeg", "image/png", "image/gif", "image/jpg"]
+const allowedType2 = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
 const MAX_SIZE = 20 * 1024 * 1024
 
 const config = {
@@ -108,10 +109,71 @@ const upload = multer({
     }
 })
 
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb (null, './public/')
+    },
+    filename: (req, file, cb) => {
+        console.log(file.fieldname, "file.fieldname")
+        if (file.fieldname === "trans-programs-import-file") {
+            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        } else if (file.fieldname === "decisions-import-file") {
+            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        } else if (file.fieldname === "close-decisions-import-file") {
+            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        }
+    }
+})
 
+const uploadToServer = multer({
+    storage: fileStorageEngine,
+    limits: {
+        fileSize: MAX_SIZE
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.fieldname === "trans-programs-import-file") {
+            if (!allowedType2.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'excelTypeError'
+                return cb(error, false)
+            } else {
+                return cb(null, true)
+            }
+        } else if (file.fieldname === "decisions-import-file") {
+            if (!allowedType2.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'excelTypeError'
+                return cb(error, false)
+            } else {
+                return cb(null, true)
+            }
+        } else if (file.fieldname === "decisions-import-file") {
+            if (!allowedType2.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'excelTypeError'
+                return cb(error, false)
+            } else {
+                return cb(null, true)
+            }
+        } else if (file.fieldname === "close-decisions-import-file") {
+            if (!allowedType2.includes(file.mimetype)) {
+                const error = new multer.MulterError("LIMIT_FILE_TYPES")
+                error.name = 'excelTypeError'
+                return cb(error, false)
+            } else {
+                return cb(null, true)
+            }
+        }
+    },
+    // onError: (error, next) => {
+    //     console.log('multer error', error);
+    //     next(err);
+    // }
+})
 
 module.exports = {
-    upload
+    upload,
+    uploadToServer
 }
 
 // khi file từ put api vào thì api vẫn có req.payload, req.payload này của middleware authenticateAccessToken, nên ta check đk !req.params để phân biệt file là từ put api hay post api

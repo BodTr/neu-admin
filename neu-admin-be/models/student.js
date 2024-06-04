@@ -1,115 +1,115 @@
 const mongoose = require('mongoose')
 
 const StudentSchema = new mongoose.Schema({
-    name: {
+    name: {//
         type: String,
         require: false
     },
-    studentCode: {
+    studentCode: {//
         type: String,
         require: false
     },
-    nation: {
+    nation: {//
         type: String,
         require: false
     },
-    schoolYear: {
+    schoolYear: {//
         type: String,
         require: false
     },
-    tempResidence: {
+    tempResidence: {//
         type: String,
         require: false
     },
-    dien: {
+    dien: {//
         type: String,
         require: false
     },
-    birthday: {
+    birthday: {//
         type: String,
         require: false
     },
-    sex: {
+    sex: {//
         type: String,
         require: false
     },
-    major: {
+    major: {//
         type: String,
         require: false
     },
-    courseDuration: {
+    courseDuration: {//
         type: String,
         require: false
     },
-    monthCount: {
+    monthCount: {//
         type: String,
         require: false
     },
-    bgdReceiveNumber: {
+    bgdReceiveNumber: {//
         type: String,
         require: false
     },
-    bgdReceiveDate: {
+    bgdReceiveDate: {//
         type: String,
         require: false
     },
-    neuReceiveNumber: {
+    neuReceiveNumber: {//
         type: String,
         require: false
     },
-    neuReceiveDate: {
+    neuReceiveDate: {//
         type: String,
         require: false
     },
-    expenses: {
+    expenses: {//
         type: String,
         require: false
     },
-    shp: {
+    shp: {//
         type: String,
         require: false
     },
-    kpck: {
+    kpck: {//
         type: String,
         require: false
     },
-    nationalDayExpenses: {
+    nationalDayExpenses: {//
         type: String,
         require: false
     },
-    tetVnExpenses: {
+    tetVnExpenses: {//
         type: String,
         require: false
     },
-    tetLaoCamExpenses: {
+    tetLaoCamExpenses: {//
         type: String,
         require: false
     },
-    travelExpenses: {
+    travelExpenses: {//
         type: String,
         require: false
     },
-    initExpenses: {
+    initExpenses: {//
         type: String,
         require: false
     },
-    decisionNumber: {
+    decisionNumber: {//
         type: String,
         require: false
     },
-    decisionDate: {
+    decisionDate: {//
         type: String,
         require: false
     },
-    decisionTime: {
+    decisionTime: {//
         type: String,
         require: false
     },
-    attachedDocLink: {
+    attachedDocLink: {//
         type: String,
         require: false
     },
-    attachedDocName: {
+    attachedDocName: {//
         type: String,
         require: false
     }

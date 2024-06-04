@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const MoumoaSchema = require('../models/moumoa')
+const ExcelJs = require("exceljs")
 const { emptyMoumoaInputsValidation, typeMoumoaInputsValidation, emptyFileMoumoaInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initMoumoaDocMiddleware } = require('../helpers/init_doc')
@@ -187,6 +188,60 @@ router.delete('/api/delete-moumoa/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-moumoas', async (req, res) => {
+    try {
+        const moumoas = await MoumoaSchema.find().lean()
+        let stt = 0
+        const aMoumoas = moumoas.map( doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("documents")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "QUỐC GIA", key:"nation", width: 20},//
+            {header: "TRƯỜNG ĐỐI TÁC", key:"partnerUni", width: 30},//
+            {header: "LOẠI VĂN BẢN", key:"docType", width: 20},//
+            {header: "NỘI DUNG VĂN BẢN", key:"docDetail", width: 50},//
+            {header: "THỜI GIAN KÝ KẾT", key:"signingTime", width: 20},//
+            {header: "THỜI GIAN HẾT HẠN", key:"expireTime", width: 20},
+            {header: "GHI CHÚ", key:"note", width: 40},
+            {header: "TÊN VĂN BẢN ĐÍNH KÈM", key:"attachedDocName", width: 30},
+            {header: "LINK VĂN BẢN ĐÍNH KÈM", key:"attachedDocLink", width: 40},
+        ]
+        aMoumoas.map(moumoa => {
+            sheet.addRow({
+                stt: moumoa.stt,
+                nation: moumoa.nation,
+                partnerUni: moumoa.partnerUni,
+                docType: moumoa.docType,
+                docDetail: moumoa.docDetail,
+                signingTime: moumoa.signingTime,
+                expireTime: moumoa.expireTime,
+                note: moumoa.note,
+                attachedDocName: moumoa.attachedDocName,
+                attachedDocLink: moumoa.attachedDocLink
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Quản lý moumoa.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý moumoa.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-moumoas catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

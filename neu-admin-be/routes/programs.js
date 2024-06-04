@@ -555,9 +555,6 @@ router.get('/api/export-excel', async (req, res) => {
             console.log(programs, "programs Super Admin /api/get-all-programs")
         } else {
             programs = await ProgramSchema.find({
-                // name: {
-                //     $regex: query
-                // },
                 user: {
                     id: new ObjectId(id),
                 }
@@ -648,6 +645,10 @@ router.get('/api/export-excel', async (req, res) => {
 
     } catch (error) {
         console.log(error, "/api/export-excel catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

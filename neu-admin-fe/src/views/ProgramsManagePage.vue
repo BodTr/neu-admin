@@ -688,7 +688,7 @@ export default {
       } catch (error) {
         console.log(error, "/api/export-excel catch block error")
       }
-    }
+    },
     // async unAttachedProgram() {
     //   this.editprogram.agency = ''
     //   const result = await instance.patch(`/api/delete-attached-program/${this.editprogram.id}`)

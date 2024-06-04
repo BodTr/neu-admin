@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const ProgramCommitmentSchema = require('../models/program_commitment')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyProgramCommitmentInputValidation, typeProgramCommitmentInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -95,6 +97,65 @@ router.delete('/api/delete-commitment/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-commitments', async (req, res) => {
+    try {
+        const { id } = req.query // id: program id
+        const commitments = await ProgramCommitmentSchema.find({
+            program: { id: new ObjectId(id) }
+        }).lean()
+        let stt = 0
+        const aCommitments = commitments.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        console.log(aCommitments, "aCommitments /api/export-excel-commitments")
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-commitments")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("commitments")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "TRÁCH NHIỆM CỦA NEU", key:"neuCommitment", width: 40}, //
+            {header: "TRÁCH NHIỆM CỦA TRƯỜNG ĐỐI TÁC0", key:"partnerCommitment", width: 40},
+            {header: "SỐ LƯỢNG HỌC VIÊN TỐI THIỂU", key:"minStudents", width: 10},
+            {header: "QUY ĐỊNH VỀ BẢO MẬT", key:"securityRegulation", width: 10},
+            {header: "Quy định về sở hữu trí tuệ", key:"intellectualPropertyRegulation", width: 10},
+            {header: "TRÁCH NHIỆM VỚI HỌC VIÊN", key:"responsibilityToStudents", width: 10},
+            {header: "QUẢN LÝ RỦI RO", key:"riskManagement", width: 40},//
+
+        ]
+        aCommitments.map( commitment => {
+            sheet.addRow({
+                stt: commitment.stt,
+                neuCommitment: commitment.neuCommitment,
+                partnerCommitment: commitment.partnerCommitment,
+                minStudents: commitment.minStudents,
+                securityRegulation: commitment.securityRegulation,
+                intellectualPropertyRegulation: commitment.intellectualPropertyRegulation,
+                responsibilityToStudents: commitment.responsibilityToStudents,
+                riskManagement: commitment.riskManagement
+            })
+        })
+
+        await workbook.xlsx.writeFile(`public/Các cam kết của chương trình-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Các cam kết của chương trình-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-commitments catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

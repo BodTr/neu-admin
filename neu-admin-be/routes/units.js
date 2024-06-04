@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const UnitSchema = require('../models/unit')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const { emptyUnitInputsValidation, typeUnitInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -91,6 +93,73 @@ router.delete('/api/delete-unit/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-units', async (req, res) => {
+    try {
+        const { id } = req.query
+        const units = await UnitSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aUnits = units.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-documents")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("documents")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "TÊN ĐƠN VỊ", key:"unit", width: 30},
+        ]
+        aUnits.map (unit => {
+            sheet.addRow({
+                stt: unit.stt,
+                unit: unit.unit
+            })
+        })
+    await workbook.xlsx.writeFile(`public/Quản lý đơn vị công tác-${programName}.xlsx`)
+    const excelFilePath = process.env.CND_EXCELFILE + `Quản lý đơn vị công tác-${programName}.xlsx`
+    res.json({
+        error: false,
+        path: excelFilePath
+    })
+    } catch (error) {
+        console.log(error, "/api/export-excel-units catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+const path = require('path');
+router.get('/api/import-excel-units', async(req, res) => {
+    try {
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(path.resolve('public/sample.xlsx'));
+
+        const sheet = workbook.getWorksheet('documents');
+        sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            console.log("Row " + rowNumber + " = " + JSON.stringify(row.values));
+        })
+
+        // console.log(sheet);
+
+        // console.log(workbook, "/api/import-excel-units workbook")
+        // console.log(sheet, "/api/import-excel-units sheet")
+        res.json({
+            error: false,
+        })
+
+    } catch (error) {
+        console.log(error, "/api/import-excel-units catch block error")
     }
 })
 

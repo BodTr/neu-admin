@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const StudentSchema = require('../models/student')
+const ExcelJs = require("exceljs")
 const { emptyStudentInputsValidation, typeStudentInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initStudentDocMiddleware } = require('../helpers/init_doc')
@@ -234,6 +235,98 @@ router.delete('/api/delete-student/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-students', async (req, res) => {
+    try {
+        const students = await StudentSchema.find().lean()
+        let stt = 0
+        const aStudents = students.map(doc => {
+            stt++
+            return {
+                ...doc,
+                stt: stt
+            }
+        })
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("students")
+        sheet.columns = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "HỌ VÀ TÊN", key:"name", width: 30},//
+            {header: "MSSV", key:"studentCode", width: 15},//
+            {header: "NGÀY SINH", key:"birthday", width: 20},//
+            {header: "GIỚI TÍNH", key:"sex", width: 15},//
+            {header: "QUỐC TỊCH", key:"nation", width: 20},//
+            {header: "KHÓA", key:"schoolYear", width: 20},//
+            {header: "NƠI Ở", key:"tempResidence", width: 30},//
+            {header: "DIỆN", key:"dien", width: 20},//
+            {header: "SỐ QĐTN CỦA BGD&ĐT", key:"bgdReceiveNumber", width: 20},//
+            {header: "NGÀY QĐTN CỦA BGD&ĐT", key:"bgdReceiveDate", width: 20},//
+            {header: "SỐ QĐTN CỦA TRƯỜNG", key:"neuReceiveNumber", width: 20},//
+            {header: "NGÀY QĐTN CỦA TRƯỜNG", key:"neuReceiveDate", width: 20},//
+            {header: "KHÓA HỌC", key:"courseDuration", width: 10},//
+            {header: "CHUYÊN NGÀNH", key:"major", width: 10},//
+            {header: "SỐ THÁNG", key:"monthCount", width: 10},//
+            {header: "CHI THƯỜNG XUYÊN", key:"expenses", width: 20},//
+            {header: "SHP", key:"shp", width: 20},//
+            {header: "KPCK", key:"kpck", width: 20},//
+            {header: "TIỀN QUỐC KHÁNH", key:"nationalDayExpenses", width: 20},//
+            {header: "TIỀN TẾT VN", key:"tetVnExpenses", width: 20},//
+            {header: "TIỀN TẾT LÀO, CAM", key:"tetLaoCamExpenses", width: 20},//
+            {header: "TIỀN ĐI LẠI", key:"travelExpenses", width: 20},//
+            {header: "TRANG CẤP BAN ĐẦU", key:"initExpenses", width: 20},//
+            {header: "SỐ QĐ GIA HẠN", key:"decisionNumber", width: 20},//
+            {header: "NGÀY GIA HẠN", key:"decisionDate", width: 20},//
+            {header: "THỜI GIAN GIA HẠN", key:"decisionTime", width: 20},//
+            {header: "TÊN QUYẾT ĐỊNH GIA HẠN", key:"attachedDocName", width: 20},//
+            {header: "LINK QUYẾT ĐỊNH GIA HẠN", key:"attachedDocLink", width: 20},//
+        ]
+        aStudents.map(student => {
+            sheet.addRow({
+                stt: student.stt,
+                name: student.name,
+                studentCode: student.studentCode,
+                birthday: student.birthday,
+                sex: student.sex,
+                nation: student.nation,
+                schoolYear: student.schoolYear,
+                tempResidence: student.tempResidence,
+                dien: student.dien,
+                bgdReceiveNumber: student.bgdReceiveNumber,
+                bgdReceiveDate: student.bgdReceiveDate,
+                neuReceiveNumber: student.neuReceiveNumber,
+                neuReceiveDate: student.neuReceiveDate,
+                courseDuration: student.courseDuration,
+                major: student.major,
+                monthCount: student.monthCount,
+                expenses: student.expenses,
+                shp: student.shp,
+                kpck: student.kpck,
+                nationalDayExpenses: student.nationalDayExpenses,
+                tetVnExpenses: student.tetVnExpenses,
+                tetLaoCamExpenses: student.tetLaoCamExpenses,
+                travelExpenses: student.travelExpenses,
+                initExpenses: student.initExpenses,
+                decisionNumber: student.decisionNumber,
+                decisionDate: student.decisionDate,
+                decisionTime: student.decisionTime,
+                attachedDocName: student.attachedDocName,
+                attachedDocLink: student.attachedDocLink
+            })
+        })
+        await workbook.xlsx.writeFile(`public/Quản lý lưu học sinh.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý lưu học sinh.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-students catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 
