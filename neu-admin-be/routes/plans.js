@@ -6,7 +6,7 @@ const ExcelJs = require("exceljs")
 const { emptyPlanlInputsValidation, typePlanInputsValidation, emptyFilePlanInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initPlanDocMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const ObjectId = require("mongodb").ObjectId
 
@@ -202,6 +202,7 @@ router.get('/api/export-excel-plans', async (req, res) => {
             {header: "HÌNH THỨC LIÊN KẾT ĐÀO TẠO", key:"planStructure", width: 40},
             {header: "NGÔN NGỮ GIẢNG DẠY", key:"language", width: 15},
             {header: "ĐIỀU KIỆN GIẢNG VIÊN", key:"qualifiedLecturer", width: 40},
+            {header: "ĐIỀU KIỆN TUYỂN SINH", key:"qualifiedStudent", width: 40},
             {header: "HỌC PHÍ", key:"tuition", width: 20},
             {header: "QUY MÔ VÀ ĐỊA ĐIỂM ĐÀO TẠO", key:"ecoManage", width: 40},
             {header: "ĐIỀU KIỆN CƠ SỞ VẬT CHẤT", key:"infraCondition", width: 40},
@@ -217,6 +218,7 @@ router.get('/api/export-excel-plans', async (req, res) => {
                 planStructure: plan.planStructure,
                 language: plan.language,
                 qualifiedLecturer: plan.qualifiedLecturer,
+                qualifiedStudent: plan.qualifiedStudent,
                 tuition: plan.tuition,
                 ecoManage: plan.ecoManage,
                 infraCondition: plan.infraCondition,
@@ -235,6 +237,75 @@ router.get('/api/export-excel-plans', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "error /api/export-excel-plans")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-plans-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-noi-dung-de-an.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-plans-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-plans-data', uploadToServer.single("plans-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-plans-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importPlansArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importPlansArr.push({
+                    year: row.values[2],
+                    planStructure: row.values[3],
+                    language: row.values[4],
+                    qualifiedLecturer: row.values[5],
+                    qualifiedStudent: row.values[6],
+                    tuition: row.values[7],
+                    ecoManage: row.values[8],
+                    infraCondition: row.values[9],
+                    diploma: row.values[10],
+                    attachedDocName: row.values[11],
+                    attachedDocLink: row.values[12],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importPlansArr, "importPlansArr /api/import-plans-data")
+        const savedImportPlans = await PlanSchema.insertMany(importPlansArr)
+        console.log(savedImportPlans, "savedImportPlans /api/import-plans-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

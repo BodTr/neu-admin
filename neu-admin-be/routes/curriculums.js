@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const CurriculumSchema = require('../models/curriculum')
 const ProgramSchema = require('../models/program')
+const { uploadToServer } = require('../helpers/multer_middleware')
 const ExcelJs = require("exceljs")
 const { emptyCurriculumInputsValidation, typeCurriculumInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
@@ -154,6 +155,70 @@ router.get('/api/export-excel-curriculums', async (req, res) => {
         })
     }
 })
+
+router.get('/api/get-curriculums-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-thong-tin-khung-chuong-trinh-dao-tao.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-curriculums-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-curriculums-data', uploadToServer.single("curriculums-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-curriculums-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importCurriculumsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importCurriculumsArr.push({
+                    name: row.values[2],
+                    subjectType: row.values[3],
+                    year: row.values[4],
+                    location: row.values[5],
+                    creditsCount: row.values[6],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importCurriculumsArr, "importCurriculumsArr /api/import-decisions-data")
+        const savedImportCurriculums = await CurriculumSchema.insertMany(importCurriculumsArr)
+        console.log(savedImportCurriculums, "savedImportCurriculums /api/import-decisions-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
 
 // router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
 //     if (error) {

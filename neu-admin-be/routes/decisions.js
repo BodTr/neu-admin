@@ -304,7 +304,7 @@ router.post('/api/import-decisions-data', uploadToServer.single("decisions-impor
         const filePath = file.path // .replace("public\\", "public/")
         let workbook = new ExcelJs.Workbook()
         await workbook.xlsx.readFile(`${filePath}`)
-        // console.log(workbook, "workbook /api/import-trans-programs-data")
+
         let importDecisionArr = []
         const sheet = workbook.getWorksheet(workbook._name);
         sheet.eachRow((row, rowNumber) => {
@@ -327,10 +327,9 @@ router.post('/api/import-decisions-data', uploadToServer.single("decisions-impor
             }
             
         })
-        // console.log(sheet, "sheet /api/import-trans-programs-data")
-        console.log(importDecisionArr, "importDecisionArr /api/import-trans-programs-data")
-        const savedImportDecsisions = await DecisionSchema.insertMany(importDecisionArr)
-        console.log(savedImportDecsisions, "savedImportTransProg /api/import-trans-programs-data")
+        console.log(importDecisionArr, "importDecisionArr /api/import-decisions-data")
+        const savedImportDecisions = await DecisionSchema.insertMany(importDecisionArr)
+        console.log(savedImportDecisions, "savedImportDecisions /api/import-decisions-data")
         res.json({
             error: false,
             message: "import data thành công"

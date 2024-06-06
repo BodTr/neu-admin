@@ -5,7 +5,7 @@ const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
 const { emptyAgencyInputsValidation, typeAgencyInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
-
+const { uploadToServer } = require('../helpers/multer_middleware')
 const ObjectId = require("mongodb").ObjectId
 
 router.use(authenticateAccessToken)
@@ -152,7 +152,7 @@ router.get('/api/export-excel-agencies', async (req, res) => {
         })
         console.log(aAgencies, "aAgencies /api/export-excel-agencies")
         const program = await ProgramSchema.findOne({ _id: id })
-        console.log(program, "program /api/export-excel-trans-programs")
+        console.log(program, "program /api/export-excel-agencies")
         const programName = program.name
         let workbook = new ExcelJs.Workbook()
         const sheet = workbook.addWorksheet("agencies")
@@ -206,6 +206,79 @@ router.get('/api/export-excel-agencies', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "error /api/export-excel-agencies")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-agencies-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-thong-tin-don-vi-thuc-hien.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/export-excel-agencies catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-angencies-data', uploadToServer.single("agencies-import-file"), async (req, res) => {
+
+    try {
+
+        console.log(req.file, "req.file /api/import-agencies-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importAgenciesArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importAgenciesArr.push({
+                    unit: row.values[2],
+                    progLeaderName: row.values[3],
+                    progLeaderPosition: row.values[4],
+                    progLeaderPhoneNumber: row.values[5],
+                    progLeaderEmail: row.values[6],
+                    progLeaderUnit: row.values[7],
+                    progManagementName: row.values[8],
+                    progManagementPosition: row.values[9],
+                    progManagementPhoneNumber: row.values[10],
+                    progManagementEmail: row.values[11],
+                    progManagementUnit: row.values[12],
+                    coordinatorName: row.values[13],
+                    coordinatorPosition: row.values[14],
+                    coordinatorPhoneNumber: row.values[15],
+                    coordinatorEmail: row.values[16],
+                    coordinatorUnit: row.values[17],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importAgenciesArr, "importAgenciesArr /api/import-agencies-data")
+        const savedImportAgencies = await AgencySchema.insertMany(importAgenciesArr)
+        console.log(savedImportAgencies, "savedImportAgencies /api/import-agencies-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-agencies-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

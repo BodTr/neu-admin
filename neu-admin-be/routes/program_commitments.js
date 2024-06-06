@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ProgramCommitmentSchema = require('../models/program_commitment')
 const ProgramSchema = require('../models/program')
+const { uploadToServer } = require('../helpers/multer_middleware')
 const ExcelJs = require("exceljs")
 const { emptyProgramCommitmentInputValidation, typeProgramCommitmentInputValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
@@ -158,6 +159,72 @@ router.get('/api/export-excel-commitments', async (req, res) => {
         })
     }
 })
+
+router.get('/api/get-program-commitments-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-cac-cam-ket-cua-chuong-trinh.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-program-commitments-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-program-commitments-data', uploadToServer.single("program-commitments-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-program-commitments-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importProgramCommitmentsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importProgramCommitmentsArr.push({
+                    neuCommitment: row.values[2],
+                    partnerCommitment: row.values[3],
+                    minStudents: row.values[4],
+                    securityRegulation: row.values[5],
+                    intellectualPropertyRegulation: row.values[6],
+                    responsibilityToStudents: row.values[7],
+                    riskManagement: row.values[8],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importProgramCommitmentsArr, "importProgramCommitmentsArr /api/import-decisions-data")
+        const savedImportProgramCommitments = await ProgramCommitmentSchema.insertMany(importProgramCommitmentsArr)
+        console.log(savedImportProgramCommitments, "savedImportProgramCommitments /api/import-decisions-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
 
 // router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
 //     if (error) {

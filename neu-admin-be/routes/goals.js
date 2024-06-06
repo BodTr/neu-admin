@@ -3,6 +3,7 @@ const router = express.Router()
 const GoalSchema = require('../models/goal')
 const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
+const { uploadToServer } = require('../helpers/multer_middleware')
 const { emptyGoalInputsValidation, typeGoalInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -144,6 +145,68 @@ router.get('/api/export-excel-goals', async (req, res) => {
         })
     }
 })
+
+router.get('/api/get-goals-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-muc-tieu-chuong-trinh.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/get-goals-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-goals-data', uploadToServer.single("goals-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-goals-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importGoalsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importGoalsArr.push({
+                    programGoal: row.values[2],
+                    testDetail: row.values[3],
+                    goalFrom: row.values[4],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importGoalsArr, "importGoalsArr /api/import-goals-data")
+        const savedImportGoals = await GoalSchema.insertMany(importGoalsArr)
+        console.log(savedImportGoals, "savedImportGoals /api/import-goals-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-goals-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
 
 // router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
 //     if (error) {

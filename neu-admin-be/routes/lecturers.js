@@ -3,6 +3,7 @@ const router = express.Router()
 const LecturerSchema = require('../models/lecturer')
 const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
+const { uploadToServer } = require('../helpers/multer_middleware')
 const { emptyLecturerInputsValidation, typeLecturerInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const lecturer = require('../models/lecturer')
@@ -155,6 +156,71 @@ router.get('/api/export-excel-lecturers', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "/api/export-excel-lecturers catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-lecturers-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-giang-vien.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-lecturers-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-lecturers-data', uploadToServer.single("lecturers-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-lecturers-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importLecturersArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importLecturersArr.push({
+                    name: row.values[2],
+                    birthyear: row.values[3],
+                    nationality: row.values[4],
+                    unit: row.values[5],
+                    contractStatus: row.values[6],
+                    level: row.values[7],
+                    subject: row.values[8],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importLecturersArr, "importLecturersArr /api/import-lecturers-data")
+        const savedImportLecturers = await LecturerSchema.insertMany(importLecturersArr)
+        console.log(savedImportLecturers, "savedImportLecturers /api/import-lecturers-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

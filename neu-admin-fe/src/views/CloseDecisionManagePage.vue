@@ -695,9 +695,9 @@ export default {
       this.importCloseDecisionsDoc = file;
       this.importCloseDecisionsDocName = file.name
       if (allowedTypes.includes(file.type) && !tooLarge) {
-        this.importDocMessageMessage = "";
+        this.importDocMessage = "";
       } else {
-        this.importDocMessageMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
       }
     },
     async submitForm() {
@@ -872,7 +872,7 @@ export default {
         }
 
       } catch (error) {
-        console.log(error, "/api/import-trans-programs-data catch block error");
+        console.log(error, "/api/import-close-decisions-data catch block error");
       }
     },
   },

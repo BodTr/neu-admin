@@ -114,14 +114,17 @@ const fileStorageEngine = multer.diskStorage({
         cb (null, './public/')
     },
     filename: (req, file, cb) => {
-        console.log(file.fieldname, "file.fieldname")
-        if (file.fieldname === "trans-programs-import-file") {
-            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
-        } else if (file.fieldname === "decisions-import-file") {
-            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
-        } else if (file.fieldname === "close-decisions-import-file") {
-            cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
-        }
+        // console.log(file.fieldname, "file.fieldname")
+        // if (file.fieldname === "trans-programs-import-file") {
+        //     cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        // } else if (file.fieldname === "decisions-import-file") {
+        //     cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        // } else if (file.fieldname === "close-decisions-import-file") {
+        //     cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        // } else if (file.fieldname === "document-import-file") {
+        //     cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+        // }
+        cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
     }
 })
 
@@ -131,38 +134,53 @@ const uploadToServer = multer({
         fileSize: MAX_SIZE
     },
     fileFilter: (req, file, cb) => {
-        if (file.fieldname === "trans-programs-import-file") {
-            if (!allowedType2.includes(file.mimetype)) {
-                const error = new multer.MulterError("LIMIT_FILE_TYPES")
-                error.name = 'excelTypeError'
-                return cb(error, false)
-            } else {
-                return cb(null, true)
-            }
-        } else if (file.fieldname === "decisions-import-file") {
-            if (!allowedType2.includes(file.mimetype)) {
-                const error = new multer.MulterError("LIMIT_FILE_TYPES")
-                error.name = 'excelTypeError'
-                return cb(error, false)
-            } else {
-                return cb(null, true)
-            }
-        } else if (file.fieldname === "decisions-import-file") {
-            if (!allowedType2.includes(file.mimetype)) {
-                const error = new multer.MulterError("LIMIT_FILE_TYPES")
-                error.name = 'excelTypeError'
-                return cb(error, false)
-            } else {
-                return cb(null, true)
-            }
-        } else if (file.fieldname === "close-decisions-import-file") {
-            if (!allowedType2.includes(file.mimetype)) {
-                const error = new multer.MulterError("LIMIT_FILE_TYPES")
-                error.name = 'excelTypeError'
-                return cb(error, false)
-            } else {
-                return cb(null, true)
-            }
+        // if (file.fieldname === "trans-programs-import-file") {
+        //     if (!allowedType2.includes(file.mimetype)) {
+        //         const error = new multer.MulterError("LIMIT_FILE_TYPES")
+        //         error.name = 'excelTypeError'
+        //         return cb(error, false)
+        //     } else {
+        //         return cb(null, true)
+        //     }
+        // } else if (file.fieldname === "decisions-import-file") {
+        //     if (!allowedType2.includes(file.mimetype)) {
+        //         const error = new multer.MulterError("LIMIT_FILE_TYPES")
+        //         error.name = 'excelTypeError'
+        //         return cb(error, false)
+        //     } else {
+        //         return cb(null, true)
+        //     }
+        // } else if (file.fieldname === "decisions-import-file") {
+        //     if (!allowedType2.includes(file.mimetype)) {
+        //         const error = new multer.MulterError("LIMIT_FILE_TYPES")
+        //         error.name = 'excelTypeError'
+        //         return cb(error, false)
+        //     } else {
+        //         return cb(null, true)
+        //     }
+        // } else if (file.fieldname === "close-decisions-import-file") {
+        //     if (!allowedType2.includes(file.mimetype)) {
+        //         const error = new multer.MulterError("LIMIT_FILE_TYPES")
+        //         error.name = 'excelTypeError'
+        //         return cb(error, false)
+        //     } else {
+        //         return cb(null, true)
+        //     }
+        // } else if (file.fieldname === "document-import-file") {
+        //     if (!allowedType2.includes(file.mimetype)) {
+        //         const error = new multer.MulterError("LIMIT_FILE_TYPES")
+        //         error.name = 'excelTypeError'
+        //         return cb(error, false)
+        //     } else {
+        //         return cb(null, true)
+        //     }
+        // }
+        if (!allowedType2.includes(file.mimetype)) {
+            const error = new multer.MulterError("LIMIT_FILE_TYPES")
+            error.name = 'excelTypeError'
+            return cb(error, false)
+        } else {
+            return cb(null, true)
         }
     },
     // onError: (error, next) => {
