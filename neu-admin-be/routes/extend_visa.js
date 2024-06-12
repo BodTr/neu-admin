@@ -5,7 +5,7 @@ const ExcelJs = require("exceljs")
 const { emptyExtendVisaInputsValidation, typeExtendVisaInputsValidation, emptyFileExtendVisaInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initExtendVisaMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
@@ -237,29 +237,50 @@ router.delete('/api/delete-extend-visa/:id', async(req, res) => {
         const { id } = req.params
         console.log(id, "::id delete api::")
         const delExtendVisa = await ExtendVisaSchema.findOne({ _id: id })
-        const delExtendVisaKey1 = delExtendVisa.suggestUnitLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delExtendVisaKey1, "delExtendVisaKey1 delete api")
-        const newDeleteCommand1 = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delExtendVisaKey1}`
-        })
-        
-        const delExtendVisaKey2 = delExtendVisa.decisionNumberLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delExtendVisaKey2, "delExtendVisaKey delete api")
-        const newDeleteCommand2 = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delExtendVisaKey2}`
-        })
-        const delExtendVisaKey3 = delExtendVisa.attachedFileLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
-        console.log(delExtendVisaKey3, "delExtendVisaKey3 delete api")
-        const newDeleteCommand3 = new DeleteObjectCommand({
-            Bucket: 'acvnapps',
-            Key: `${delExtendVisaKey3}`
-        })
-        const result1 = await s3.send(newDeleteCommand1)
-        const result2 = await s3.send(newDeleteCommand2)
-        const result3 = await s3.send(newDeleteCommand3)
-        console.log(result1, result2, result3, ":::result, delete api:::")
+        const suggestUnitLink = delExtendVisa.suggestUnitLink
+        const decisionNumberLink = delExtendVisa.decisionNumberLink
+        const attachedFileLink = delExtendVisa.attachedFileLink
+        if (suggestUnitLink === '' || suggestUnitLink === undefined) {
+            console.log('ko có suggestUnitLink delete-decision api')
+        } else {
+            const delExtendVisaKey1 = suggestUnitLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delExtendVisaKey1, "delExtendVisaKey1 delete api")
+            const newDeleteCommand1 = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delExtendVisaKey1}`
+            })
+            const result1 = await s3.send(newDeleteCommand1)
+            console.log(result1, "result1 /api/delete-extend-visa/")
+        }
+
+        if (decisionNumberLink === '' || decisionNumberLink === undefined) {
+            console.log('ko có decisionNumberLink delete-decision api')
+        } else {
+            const delExtendVisaKey2 = decisionNumberLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delExtendVisaKey2, "delExtendVisaKey delete api")
+            const newDeleteCommand2 = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delExtendVisaKey2}`
+            })
+            const result2 = await s3.send(newDeleteCommand2)
+            console.log(result2, "result2 /api/delete-extend-visa/")
+        }
+
+        if (attachedFileLink === '' || attachedFileLink === undefined) {
+            console.log('ko có attachedFileLink delete-decision api')
+        } else {
+            const delExtendVisaKey3 = attachedFileLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
+            console.log(delExtendVisaKey3, "delExtendVisaKey3 delete api")
+            const newDeleteCommand3 = new DeleteObjectCommand({
+                Bucket: 'acvnapps',
+                Key: `${delExtendVisaKey3}`
+            })
+            const result3 = await s3.send(newDeleteCommand3)
+            console.log(result3, "result3 /api/delete-extend-visa/")
+        }
+
+
+        // console.log(result1, result2, result3, ":::result, delete api:::")
         const deletingExtendVisa = await ExtendVisaSchema.findOneAndDelete({ _id: id })
         console.log(deletingExtendVisa, "deletingExtendVisa")
         res.json({ error: false, message: "Xóa thành công" })
@@ -320,7 +341,7 @@ router.get('/api/export-excel-extend-visas', async (req, res) => {
             {header: "NGÀY BẮT ĐẦU", key:"visaBeginDay", width: 30},//
             {header: "NGÀY HẾT HẠN", key:"visaEndDay", width: 30},//
             {header: "ĐỊA CHỈ TẠM TRÚ", key:"address", width: 30},//
-            {header: "TRẠNG THÁI", key:"status", width: 20},//
+            // {header: "TRẠNG THÁI", key:"status", width: 20},//
             {header: "TÊN VĂN BẢN ĐƠN VỊ ĐỀ NGHỊ", key:"suggestUnitName", width: 40},//
             {header: "LINK VĂN BẢN ĐƠN VỊ ĐỀ NGHỊ", key:"suggestUnitLink", width: 40},//
             {header: "TÊN VĂN BẢN SỐ QUYẾT ĐỊNH", key:"decisionNumberName", width: 40},//
@@ -346,7 +367,7 @@ router.get('/api/export-excel-extend-visas', async (req, res) => {
                 visaBeginDay: visa.visaBeginDay,
                 visaEndDay: visa.visaEndDay,
                 address: visa.address,
-                status: visa.status,
+                // status: visa.status,
                 suggestUnitName: visa.suggestUnitName,
                 suggestUnitLink: visa.suggestUnitLink,
                 decisionNumberName: visa.decisionNumberName,
@@ -364,6 +385,79 @@ router.get('/api/export-excel-extend-visas', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "/api/export-excel-extend-visas catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-visas-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-cap-gia-han-visa.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-visas-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-visas-data', uploadToServer.single("visas-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-visas-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importVisasArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importVisasArr.push({
+                    name: row.values[2],
+                    birthday: row.values[3],
+                    sex: row.values[4],
+                    purpose: row.values[5],
+                    nationality: row.values[6],
+                    visaCode: row.values[7],
+                    visaType: row.values[8],
+                    phoneNumber: row.values[9],
+                    job: row.values[10],
+                    workPermit: row.values[11],
+                    studentCode: row.values[12],
+                    visaBeginDay: row.values[13],
+                    visaEndDay: row.values[14],
+                    address: row.values[15],
+                    
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importVisasArr, "importVisasArr /api/import-visas-data")
+        const savedImportVisas = await ExtendVisaSchema.insertMany(importVisasArr)
+        console.log(savedImportVisas, "savedImportVisas /api/import-visas-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

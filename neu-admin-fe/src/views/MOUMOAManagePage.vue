@@ -14,6 +14,35 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-lime d-none d-sm-inline-block"
                   @click="getExcelFile()"
                 >
@@ -197,6 +226,91 @@
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Tạo mới
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importMOUMOAsDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importMOUMOAsDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
                     </a>
                   </div>
                 </div>
@@ -531,9 +645,13 @@ export default {
       expireTime: "",
       note: "",
       message: "",
+      importMOUMOAsDoc: null,
+      importMOUMOAsDocName: "",
+      importDocMessage: "",
 
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editMoumoa: {
         id: "",
@@ -616,6 +734,29 @@ export default {
     },
     hideModal1() {
       this.displayModalOne = false;
+    },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
+    handleExcelUpload() {
+      this.$refs.importMOUMOAsDoc.click();
+    },
+    handleExcelChange() {
+      const file = this.$refs.importMOUMOAsDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importMOUMOAsDoc = file;
+      this.importMOUMOAsDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
     },
     async submitForm() {
       let formData = new FormData();
@@ -747,6 +888,44 @@ export default {
         location.href = excelFilePath
       } catch (error) {
         console.log(error, "/api/export-excel-moumoas catch block error")
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-moumoas-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-moumoas-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("moumoas-import-file", this.importMOUMOAsDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-moumoas-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importMOUMOAsDoc = null;
+          this.importMOUMOAsDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-moumoas-data catch block error");
       }
     },
   },

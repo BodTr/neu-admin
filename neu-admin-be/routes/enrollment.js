@@ -8,7 +8,7 @@ const { initEnrollmentDocMiddleware } = require('../helpers/init_doc')
 const { S3Client, DeleteObjectsCommand } = require("@aws-sdk/client-s3");
 const { docsControl } = require("../helpers/docs_controller");
 const { deleteFolder } = require("../helpers/delete_s3files");
-const { upload } = require("../helpers/multer_middleware");
+const { upload, uploadToServer } = require("../helpers/multer_middleware");
 const ObjectId = require("mongodb").ObjectId
 
 const config = {
@@ -78,7 +78,7 @@ router.post('/api/create-enrollment', initEnrollmentDocMiddleware, upload.array(
         const docs = req.files
         console.log(docs, "req.files create-enrollment api");
         if (!docs) {
-            console.log('ko có file được up lên create-partner api')
+            console.log('ko có file được up lên create-enrollment api')
         } else {
             // trường hợp có file up lên, lưu các thông tin của các file up lên vào db
             const enrollmentDocsArray = docs.map((doc) => {
@@ -304,6 +304,240 @@ router.use("/api/create-enrollment", async (error, req, res, next) => {
         res.json({ error: true, message: "something went wrong" });
     }
 });
+
+router.get('/api/export-excel-enrollments', async (req, res) => {
+    try {
+        const { id } = req.query // id: program id
+        const enrollmentDocs = await EnrollmentDocsSchema.find({
+            program: { id: new ObjectId(id) },
+        }).lean()
+        console.log(enrollmentDocs, "enrollmentDocs /api/export-excel-enrollments");
+        const enrollments = await EnrollmentSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aEnrollments = enrollments.map(doc => {
+            const enrollmentId = doc._id.toString()
+            const enrollmentDocsArr = enrollmentDocs.filter(doc => {
+                return doc.enrollment.id.toString() === enrollmentId;
+            })
+            stt++
+            return {
+                ...doc,
+                stt: stt,
+                enrollmentDocs: enrollmentDocsArr
+            }
+        })
+
+        let enrollmentDocsArrayLengthArray = []
+        aEnrollments.forEach(enrollment => {
+            let enrollmentArrayLength = enrollment.enrollmentDocs.length
+            enrollmentDocsArrayLengthArray.push(enrollmentArrayLength)
+        })
+
+        console.log(enrollmentDocsArrayLengthArray, "enrollmentDocsArrayLengthArray /api/export-excel-enrollments")
+
+        const maxValue = Math.max(...enrollmentDocsArrayLengthArray)
+        console.log(maxValue, "maxValue /api/export-excel-enrollments")
+        let pushCol = []
+        for (let i = 0; i < maxValue; i++) {
+            pushCol.push(
+                {
+                    header: `TÊN VĂN BẢN KIỂM ĐỊNH ${i + 1}`,
+                    key: `docName${i + 1}`,
+                    width: 30
+                },
+                {
+                    header: `LINK VĂN BẢN KIỂM ĐỊNH ${i + 1}`,
+                    key: `docLink${i + 1}`,
+                    width: 50
+                }
+            )
+        }
+        console.log(pushCol, "pushCol /api/export-excel-enrollments")
+        const constCol = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "NĂM HỌC", key:"year", width: 20},
+            {header: "QUY MÔ TUYỂN SINH THEO ĐỀ ÁN", key:"applicantsCount", width: 40},
+            {header: "SỐ SINH VIÊN NHẬP HỌC", key:"admissionCount", width: 40},
+            {header: "SỐ SINH VIÊN THÔI HỌC", key:"dropoutCount", width: 40},
+            {header: "SỐ SINH VIÊN TỐT NGHIỆP", key:"graduatedCount", width: 40},
+            {header: "TỔNG SỐ SINH VIÊN ĐANG ĐÀO TẠO", key:"trainingStudents", width: 50},
+            {header: "EMAIL NGƯỜI LIÊN HỆ", key:"contacterEmail", width: 30},
+            {header: "CHỨC VỤ NGƯỜI LIÊN HỆ", key:"contacterPosition", width: 40},
+            {header: "ĐƠN VỊ NGƯỜI LIÊN HỆ", key:"contacterUnit", width: 40},
+            {header: "HỌ TÊN LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderName", width: 50},
+            {header: "EMAIL LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderEmail", width: 40},
+            {header: "CHỨC VỤ LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderPosition", width: 30},
+            {header: "ĐƠN VỊ LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderUnit", width: 40},
+            {header: "HỌ TÊN LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderName", width: 50},
+            {header: "EMAIL LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderEmail", width: 50},
+            {header: "CHỨC VỤ LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderPosition", width: 50},
+            {header: "ĐƠN VỊ LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderUnit", width: 50},
+            {header: "HỌ TÊN ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farName", width: 50},
+            {header: "EMAIL ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farEmail", width: 40},
+            {header: "CHỨC VỤ ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farPosition", width: 40},
+            {header: "ĐƠN VỊ ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farUnit", width: 40},
+            {header: "HỌ TÊN NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerName", width: 40},
+            {header: "EMAIL NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerEmail", width: 40},
+            {header: "CHỨC VỤ NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerPosition", width: 40}, // progManagerUnit
+            {header: "ĐƠN VỊ NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerUnit", width: 40},
+        ]
+
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-enrollments")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("enrollments")
+        sheet.columns = constCol.concat(pushCol)
+        console.log(aEnrollments, "aEnrollments /api/export-excel-enrollments 3")
+        aEnrollments.map(enrollment => {
+            const enrollmentDocs = enrollment.enrollmentDocs
+            console.log(enrollmentDocs, "enrollmentDocs 2 /api/export-excel-enrollments")
+            let addObj = {}
+            if (enrollmentDocs.length === 0) {
+                console.log("enrollmentDocs.length === 0")
+                addObj = {}
+            } else {
+                console.log(enrollmentDocs, "enrollmentDocs 3 /api/export-excel-enrollments")
+                addObj = enrollmentDocs.reduce((acc, enrollment, i) => {
+                    acc[`docName${i + 1}`] = enrollment.docName;
+                    acc[`docLink${i + 1}`] = enrollment.docLink;
+                    return acc;
+                }, {})
+                console.log(addObj, "addObj /api/export-excel-enrollments 1")
+            }
+
+            console.log(addObj, "addObj /api/export-excel-enrollments")
+            const constObj = {
+                stt: enrollment.stt,
+                vn_name: enrollment.vn_name,
+                en_name: enrollment.en_name,
+                address: enrollment.address,
+                internationalRanking: enrollment.internationalRanking,
+                website: enrollment.website,
+                contacterName: enrollment.contacterName,
+                contacterEmail: enrollment.contacterEmail,
+                contacterPosition: enrollment.contacterPosition,
+                contacterUnit: enrollment.contacterUnit,
+                uniLeaderName: enrollment.uniLeaderName,
+                uniLeaderEmail: enrollment.uniLeaderEmail,
+                uniLeaderPosition: enrollment.uniLeaderPosition,
+                uniLeaderUnit: enrollment.uniLeaderUnit,
+                unitLeaderName: enrollment.unitLeaderName,
+                unitLeaderEmail: enrollment.unitLeaderEmail,
+                unitLeaderPosition: enrollment.unitLeaderPosition,
+                unitLeaderUnit: enrollment.unitLeaderUnit,
+                farName: enrollment.farName,
+                farEmail: enrollment.farEmail,
+                farPosition: enrollment.farPosition,
+                farUnit: enrollment.farUnit,
+                progManagerName: enrollment.progManagerName,
+                progManagerEmail: enrollment.progManagerEmail,
+                progManagerPosition: enrollment.progManagerPosition,
+                progManagerUnit: enrollment.progManagerUnit,
+            }
+            const finalObj = { ...constObj, ...addObj }
+            sheet.addRow(finalObj)
+        })
+        await workbook.xlsx.writeFile(`public/Thông tin đối tác-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Thông tin đối tác-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-enrollments catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-enrollments-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-tuyen-sinh.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-enrollments-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-enrollments-data', uploadToServer.single("enrollments-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-enrollments-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importEnrollmentArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importEnrollmentArr.push({
+                    vn_name: row.values[2],
+                    en_name: row.values[3],
+                    address: row.values[4],
+                    internationalRanking: row.values[5],
+                    website: row.values[6],
+                    contacterName: row.values[7],
+                    contacterEmail: row.values[8],
+                    contacterPosition: row.values[9],
+                    contacterUnit: row.values[10],
+                    uniLeaderName: row.values[11],
+                    uniLeaderEmail: row.values[12],
+                    uniLeaderPosition: row.values[13],
+                    uniLeaderUnit: row.values[14],
+                    unitLeaderName: row.values[15],
+                    unitLeaderEmail: row.values[16],
+                    unitLeaderPosition: row.values[17],
+                    unitLeaderUnit: row.values[18],
+                    farName: row.values[19],
+                    farEmail: row.values[20],
+                    farPosition: row.values[21],
+                    farUnit: row.values[22],
+                    progManagerName: row.values[23],
+                    progManagerEmail: row.values[24],
+                    progManagerPosition: row.values[25],
+                    progManagerUnit: row.values[26],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importEnrollmentArr, "importEnrollmentArr /api/import-enrollments-data")
+        const savedImportEnrollments = await EnrollmentSchema.insertMany(importEnrollmentArr)
+
+        console.log(savedImportEnrollments, "savedImportEnrollments /api/import-enrollments-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-enrollments-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
 
 router.use("/api/edit-enrollment/:id", async (error, req, res, next) => {
     try {

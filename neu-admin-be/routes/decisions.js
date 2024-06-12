@@ -148,7 +148,7 @@ router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"), asy
         }
 
         const newDecisionArray = decisionArray.map((item) => {
-            console.log(item.decisionId, "vs", editDecision.id, "map function")
+            console.log(item.decisionId, "vs", editDecision.decisionId, "map function")
             if (item.decisionId === editDecision.decisionId) {
                 return item = editDecision
             } else {
@@ -185,8 +185,9 @@ router.delete('/api/delete-decision/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const delDecision = await DecisionSchema.findOne({ _id: id })
         const attachedDocLink = delDecision.attachedDocLink
-        if (attachedDocLink === "") {
-            console.log('ko có link ảnh cũ delete-decision api')
+        console.log(attachedDocLink, "attachedDocLink /api/delete-decision/")
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
+            console.log('ko có link file cũ delete-decision api')
         } else {
             const delDecisionKey = delDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
             console.log(delDecisionKey, "delDecisionKey delete api")
@@ -208,6 +209,7 @@ router.delete('/api/delete-decision/:id', async(req, res) => {
                 return item
             }
         })
+        console.log(newDecisionArray, "newDecisionArray /api/delete-decision/")
         const updatingProgram = await ProgramSchema.findOneAndUpdate({ _id: programId }, {decisionsArray: newDecisionArray}, {new: true})
         console.log(updatingProgram, "updatingProgram delete-decision api")
         const deletingDecision = await DecisionSchema.findOneAndDelete({ _id: id })
@@ -309,7 +311,7 @@ router.post('/api/import-decisions-data', uploadToServer.single("decisions-impor
         const sheet = workbook.getWorksheet(workbook._name);
         sheet.eachRow((row, rowNumber) => {
             // console.log(row.values, "row.values")
-            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
             if (rowNumber > 1) {
                 importDecisionArr.push({
                     name: row.values[2],
@@ -318,8 +320,6 @@ router.post('/api/import-decisions-data', uploadToServer.single("decisions-impor
                     signDate: row.values[5],
                     expireIn: row.values[6],
                     expireInLL: row.values[7],
-                    attachedDocName: row.values[8],
-                    attachedDocLink: row.values[9],
                     program: {
                         id: programId
                     }
@@ -329,6 +329,18 @@ router.post('/api/import-decisions-data', uploadToServer.single("decisions-impor
         })
         console.log(importDecisionArr, "importDecisionArr /api/import-decisions-data")
         const savedImportDecisions = await DecisionSchema.insertMany(importDecisionArr)
+        const program = await ProgramSchema.findOne({ _id: programId })
+        const decisionArray = program.decisionsArray
+        const importedDecisionArray = savedImportDecisions.map(decision => {
+            return {
+                decisionId: decision._id.toString(),
+                decisionName: decision.attachedDocName,
+                decisionLink: decision.attachedDocLink
+            }
+        })
+        const newDecisionArray = decisionArray.concat(importedDecisionArray)
+        const updatinngProgram = await ProgramSchema.findOneAndUpdate({ _id: programId }, {decisionsArray: newDecisionArray}, {new: true})
+        console.log(updatinngProgram, "updatinngProgram /api/import-decisions-data")
         console.log(savedImportDecisions, "savedImportDecisions /api/import-decisions-data")
         res.json({
             error: false,

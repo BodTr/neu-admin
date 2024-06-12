@@ -3,6 +3,7 @@ const router = express.Router()
 const SubjectSchema = require('../models/subject')
 const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
+const { uploadToServer } = require('../helpers/multer_middleware')
 const { emptySubjectInputsValidation, typeSubjectInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -171,6 +172,72 @@ router.get('/api/export-excel-subjects', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "/api/export-excel-subjects catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-subjects-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-mon-hoc.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-subjects-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-subjects-data', uploadToServer.single("subjects-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-subjects-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importSubjectsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importSubjectsArr.push({
+                    name: row.values[2],
+                    year: row.values[3],
+                    subjectCode: row.values[4],
+                    lecturer: row.values[5],
+                    teachingAssistant: row.values[6],
+                    review: row.values[7],
+                    timeFrom: row.values[8],
+                    timeTo: row.values[9],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importSubjectsArr, "importSubjectsArr /api/import-subjects-data")
+        const savedImportSubjects = await SubjectSchema.insertMany(importSubjectsArr)
+        console.log(savedImportSubjects, "savedImportSubjects /api/import-subjects-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

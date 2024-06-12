@@ -5,7 +5,7 @@ const ExcelJs = require("exceljs")
 const { emptyStudentInputsValidation, typeStudentInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initStudentDocMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const ObjectId = require("mongodb").ObjectId
 
@@ -323,6 +323,92 @@ router.get('/api/export-excel-students', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "/api/export-excel-students catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-students-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-luu-sinh-vien.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-students-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-students-data', uploadToServer.single("students-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-students-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importStudentsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importStudentsArr.push({
+                    name: row.values[2],
+                    studentCode: row.values[3],
+                    birthday: row.values[4],
+                    sex: row.values[5],
+                    nation: row.values[6],
+                    schoolYear: row.values[7],
+                    tempResidence: row.values[8],
+                    dien: row.values[9],
+                    bgdReceiveNumber: row.values[10],
+                    bgdReceiveDate: row.values[11],
+                    neuReceiveNumber: row.values[12],
+                    neuReceiveDate: row.values[13],
+                    courseDuration: row.values[14],
+                    major: row.values[15],
+                    monthCount: row.values[16],
+                    expenses: row.values[17],
+                    shp: row.values[18],
+                    kpck: row.values[19],
+                    nationalDayExpenses: row.values[20],
+                    tetVnExpenses: row.values[21],
+                    tetLaoCamExpenses: row.values[22],
+                    travelExpenses: row.values[23],
+                    initExpenses: row.values[24],
+                    decisionNumber: row.values[25],
+                    decisionDate: row.values[26],
+                    decisionTime: row.values[27],
+                    attachedDocName: row.values[28],
+                    attachedDocLink: row.values[29],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importStudentsArr, "importStudentsArr /api/import-students-data")
+        const savedImportStudents = await StudentSchema.insertMany(importStudentsArr)
+        console.log(savedImportStudents, "savedImportStudents /api/import-students-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

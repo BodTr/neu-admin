@@ -3,6 +3,7 @@ const router = express.Router()
 const ProgramSchema = require('../models/program')
 const YearSchema = require('../models/years')
 const ExcelJs = require("exceljs")
+
 const {
     emptyProgramInputsValidation,
     typeProgramInputsValidation
@@ -397,34 +398,34 @@ router.post('/api/create-program', async (req, res) => {
                 }
             })
 
-            const yearsArrDoc = await YearSchema.findOne({
-                _id: initYearId
-            })
-            const yearsArray = yearsArrDoc.yearsArray
-            const firstArrItem = yearsArray[0]
-            console.log(firstArrItem, "firstArrItem, create-program api")
-            if (firstArrItem === 1) {
+            // const yearsArrDoc = await YearSchema.findOne({
+            //     _id: initYearId
+            // })
+            // const yearsArray = yearsArrDoc.yearsArray
+            // const firstArrItem = yearsArray[0]
+            // console.log(firstArrItem, "firstArrItem, create-program api")
+            // if (firstArrItem === 1) {
 
-                const updatingArr = await YearSchema.findOneAndUpdate({
-                    _id: initYearId
-                }, {
-                    yearsArray: [year]
-                }, {
-                    new: true
-                })
-                console.log(updatingArr, "updatingArr, lần đầu")
-            } else {
-                yearsArray.push(year)
-                const newYearsArray = yearsArray
-                const updatingArr = await YearSchema.findOneAndUpdate({
-                    _id: initYearId
-                }, {
-                    yearsArray: newYearsArray
-                }, {
-                    new: true
-                })
-                console.log(updatingArr, "updatingArr, các lần sau")
-            }
+            //     const updatingArr = await YearSchema.findOneAndUpdate({
+            //         _id: initYearId
+            //     }, {
+            //         yearsArray: [year]
+            //     }, {
+            //         new: true
+            //     })
+            //     console.log(updatingArr, "updatingArr, lần đầu")
+            // } else {
+            //     yearsArray.push(year)
+            //     const newYearsArray = yearsArray
+            //     const updatingArr = await YearSchema.findOneAndUpdate({
+            //         _id: initYearId
+            //     }, {
+            //         yearsArray: newYearsArray
+            //     }, {
+            //         new: true
+            //     })
+            //     console.log(updatingArr, "updatingArr, các lần sau")
+            // }
 
             console.log(newProgram, "newProgram")
             res.json({
@@ -552,44 +553,54 @@ router.get('/api/export-excel', async (req, res) => {
                 //     $regex: query
                 // }
             }).lean()
-            console.log(programs, "programs Super Admin /api/get-all-programs")
+            console.log(programs, "programs Super Admin /api/export-excel")
         } else {
             programs = await ProgramSchema.find({
                 user: {
                     id: new ObjectId(id),
                 }
             }).lean()
-            console.log(programs, "programs not Super Admin /api/get-all-programs")
+            console.log(programs, "programs not Super Admin /api/export-excel")
         }
 
         const aPrograms = programs.map(doc => {
-            let expiry = doc.expiry
-            const timeNow = new Date()
-            let status = 1
-            const expiryDate = new Date(expiry)
-            // 3: hết hạn, 2: sắp hết hạn, 1 còn hạn
-            if(expiryDate < timeNow){
-                status = 'Hết hạn'
-            } else if (expiryDate - timeNow <= 2592000000*6) { // thời hạn ít hơn 6 tháng (6 tháng = 2592000000*6 mili s)
-                status = 'Sắp hết hạn'
-            } else {
-                status = 'Còn hạn'
-            }
             stt++
             // const id = doc._id.toString()
             
-
-            let a_expiry = expiry.split("-")
-            doc.expiry = a_expiry[2] + "/" +  a_expiry[1] + "/" + a_expiry[0]
             return {
                 ...doc,
                 stt: stt,
-                status: status,
             }
         })
         console.log(aPrograms, "aPrograms")
+
+        let decisionArrayLenghtArray = []
+        aPrograms.forEach(program => {
+            let decisionArrayLength = program.decisionsArray.length
+            decisionArrayLenghtArray.push(decisionArrayLength)
+        })
+
+        console.log(decisionArrayLenghtArray, "decisionArrayLenghtArray /api/export-excel")
+        const maxValue = Math.max(...decisionArrayLenghtArray)
+        console.log(maxValue, "maxValue /api/export-excel")
+        let pushCol = []
+        for (let i = 0; i < maxValue; i++) {
+            pushCol.push(
+                {
+                    header: `TÊN QUYẾT ĐỊNH ${i + 1}`,
+                    key: `decisionName${i + 1}`,
+                    width: 30
+                },
+                {
+                    header: `LINK QUYẾT ĐỊNH ${i + 1}`,
+                    key: `decisionLink${i + 1}`,
+                    width: 50
+                }
+            )
+        }
+        console.log(pushCol, "pushCol /api/export-excel")
         const sheet = workbook.addWorksheet("programs")
-        sheet.columns = [
+        const constCol = [
             {header: "STT", key:"stt", width: 10},
             {header: "NĂM", key:"year", width: 10},
             {header: "TÊN CHƯƠNG TRÌNH", key:"name", width: 30},
@@ -602,8 +613,10 @@ router.get('/api/export-excel', async (req, res) => {
             {header: "SĐT Đ.VỊ QUẢN LÝ", key:"agencyPhoneNumber", width: 15},
             {header: "NGÀY HẾT HẠN", key:"expiry", width: 15},
             {header: "TRẠNG THÁI", key:"status", width: 15},
-            {header: "QUYẾT ĐỊNH PHÊ DUYỆT", key:"decisionArray", width: 20},
+            // {header: "QUYẾT ĐỊNH PHÊ DUYỆT", key:"decisionArray", width: 20},
         ]
+
+        sheet.columns = constCol.concat(pushCol)
 
         aPrograms.map((program) => {
             // const decisionArrayCol = sheet.getColumn(13)
@@ -614,7 +627,20 @@ router.get('/api/export-excel', async (req, res) => {
             //         tooltip: 'www.mylink.com'
             //     }
             // })
-            sheet.addRow({
+
+            const decisionsArray = program.decisionsArray
+            console.log(decisionsArray, "decisionsArray /api/export-excel")
+
+            const addObj = decisionsArray.reduce((acc, decision, i) => {
+                acc[`decisionName${i + 1}`] = decision.decisionName;
+                acc[`decisionLink${i + 1}`] = decision.decisionLink;
+                return acc;
+            }, {});
+              
+            
+            console.log(addObj, "addObj /api/export-excel")
+
+            const constObj = {
                 stt: program.stt,
                 year: program.year,
                 name: program.name,
@@ -627,13 +653,15 @@ router.get('/api/export-excel', async (req, res) => {
                 agencyPhoneNumber: program.agencyPhoneNumber,
                 expiry: program.expiry,
                 status: program.status,
-                decisionArray: program.decisionsArray
-            })
+                // decisionArray: program.decisionsArray
+            }
+            const finalObj = { ...constObj, ...addObj }
+            sheet.addRow(finalObj)
 
         })
 
         
-        console.log(workbook, "workbook /api/export-excel")
+        // console.log(workbook, "workbook /api/export-excel")
         await workbook.xlsx.writeFile(`public/programs-${id}.xlsx`)
         // res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
         // res.setHeader("Content-Disposition", "attachment; filename=" + `public/programs-${id}.xlsx`);

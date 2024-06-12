@@ -18,11 +18,60 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-lime d-none d-sm-inline-block"
                   @click="getExcelFile()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
                   Export excel
                 </a>
                 <a
@@ -155,17 +204,13 @@
                         />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label"
-                          >Điều tra đánh giá</label
-                        >
+                        <label class="form-label">Điều tra đánh giá</label>
                         <select
                           v-model="review"
                           class="form-select"
                           tabindex="-1"
                         >
-                          <option value="" disabled selected>
-                            Đánh giá
-                          </option>
+                          <option value="" disabled selected>Đánh giá</option>
                           <option value="Có">Có</option>
                           <option value="Không">Không</option>
                         </select>
@@ -180,11 +225,95 @@
                         />
                       </div>
                     </div>
-
                   </div>
                   <div class="modal-footer">
                     <a @click="submitForm()" class="btn btn-primary ms-auto">
                       Tạo mới
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importSubjectsDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importSubjectsDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
                     </a>
                   </div>
                 </div>
@@ -328,9 +457,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="mb-3">
-                                <label class="form-label"
-                                  >Năm học</label
-                                >
+                                <label class="form-label">Năm học</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -364,7 +491,9 @@
                                 </select>
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Thời gian học - đến</label>
+                                <label class="form-label"
+                                  >Thời gian học - đến</label
+                                >
                                 <input
                                   type="date"
                                   v-model="editSubject.timeTo"
@@ -401,7 +530,7 @@ import instance from "../instance";
 // import { ref } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
-import router from '@/router';
+import router from "@/router";
 export default {
   name: "ProgramManagePage",
   components: {
@@ -444,9 +573,13 @@ export default {
       year: "",
       subjectCode: "",
       review: "",
+      importSubjectsDoc: null,
+      importSubjectsDocName: "",
+      importDocMessage: "",
 
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editSubject: {
         id: "",
@@ -462,7 +595,7 @@ export default {
     };
   },
   mounted() {
-    this.id = localStorage.getItem("progId")
+    this.id = localStorage.getItem("progId");
     if (this.id == "" || this.id == null) {
       router.push("/init-program");
     }
@@ -487,6 +620,29 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
+    handleExcelUpload() {
+      this.$refs.importSubjectsDoc.click();
+    },
+    handleExcelChange() {
+      const file = this.$refs.importSubjectsDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importSubjectsDoc = file;
+      this.importSubjectsDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
+    },
     async submitForm() {
       try {
         const data = {
@@ -500,7 +656,7 @@ export default {
           subjectCode: this.subjectCode,
           review: this.review,
         };
-        console.log(data, "data submitForm() SubjectManagePage")
+        console.log(data, "data submitForm() SubjectManagePage");
         const result = await instance.post("/api/create-subject", data);
 
         if (result.data.error === true) {
@@ -530,12 +686,12 @@ export default {
     },
 
     onEdit(item) {
-      let timeFrom = item.timeFrom
-      let timeTo = item.timeTo
-      let a_timeFrom = timeFrom.split("/")
-      let a_timeTo = timeTo.split("/")
-      timeFrom = a_timeFrom[2] + "-" + a_timeFrom[1] + "-" + a_timeFrom[0]
-      timeTo = a_timeTo[2] + "-" + a_timeTo[1] + "-" + a_timeTo[0]
+      let timeFrom = item.timeFrom;
+      let timeTo = item.timeTo;
+      let a_timeFrom = timeFrom.split("/");
+      let a_timeTo = timeTo.split("/");
+      timeFrom = a_timeFrom[2] + "-" + a_timeFrom[1] + "-" + a_timeFrom[0];
+      timeTo = a_timeTo[2] + "-" + a_timeTo[1] + "-" + a_timeTo[0];
       this.editSubject.name = item.name;
       this.editSubject.lecturer = item.lecturer;
       this.editSubject.teachingAssistant = item.teachingAssistant;
@@ -543,7 +699,7 @@ export default {
       this.editSubject.timeTo = timeTo;
       this.editSubject.year = item.year;
       this.editSubject.subjectCode = item.subjectCode;
-      this.editSubject.review = item.review
+      this.editSubject.review = item.review;
       this.editSubject.id = item._id;
       this.showModal1();
     },
@@ -586,7 +742,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await instance.delete(`/api/delete-subject/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-subject/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -598,13 +756,53 @@ export default {
     },
     async getExcelFile() {
       try {
-        const queryParams = { id: this.id }
-        const result = await instance.get('/api/export-excel-subjects', { params: queryParams })
-        const excelFilePath = result.data.path
-        console.log(excelFilePath, "excelFilePath getExcelFile()")
-        location.href = excelFilePath
+        const queryParams = { id: this.id };
+        const result = await instance.get("/api/export-excel-subjects", {
+          params: queryParams,
+        });
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
       } catch (error) {
-        console.log(error, "/api/export-excel-subjects catch block error")
+        console.log(error, "/api/export-excel-subjects catch block error");
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-subjects-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-subjects-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("subjects-import-file", this.importSubjectsDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-subjects-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importSubjectsDoc = null;
+          this.importSubjectsDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-subjects-data catch block error");
       }
     },
   },

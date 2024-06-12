@@ -3,6 +3,7 @@ const router = express.Router()
 const UnitSchema = require('../models/unit')
 const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
+const { uploadToServer } = require('../helpers/multer_middleware')
 const { emptyUnitInputsValidation, typeUnitInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -139,27 +140,63 @@ router.get('/api/export-excel-units', async (req, res) => {
         })
     }
 })
-const path = require('path');
-router.get('/api/import-excel-units', async(req, res) => {
+router.get('/api/get-units-template', async (req, res) => {
     try {
-        let workbook = new ExcelJs.Workbook()
-        await workbook.xlsx.readFile(path.resolve('public/sample.xlsx'));
-
-        const sheet = workbook.getWorksheet('documents');
-        sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-            console.log("Row " + rowNumber + " = " + JSON.stringify(row.values));
-        })
-
-        // console.log(sheet);
-
-        // console.log(workbook, "/api/import-excel-units workbook")
-        // console.log(sheet, "/api/import-excel-units sheet")
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-don-vi-cong-tac.xlsx'
         res.json({
             error: false,
-        })
-
+            path: templateFilePath
+        }) 
     } catch (error) {
-        console.log(error, "/api/import-excel-units catch block error")
+        console.log(error, "/api/get-units-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-units-data', uploadToServer.single("units-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-units-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importUnitsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importUnitsArr.push({
+                    unit: row.values[2],
+
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importUnitsArr, "importUnitsArr /api/import-units-data")
+        const savedImportUnits = await UnitSchema.insertMany(importUnitsArr)
+        console.log(savedImportUnits, "savedImportUnits /api/import-units-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

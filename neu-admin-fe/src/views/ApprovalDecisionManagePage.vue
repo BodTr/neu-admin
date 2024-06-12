@@ -337,6 +337,11 @@
                   :options="options"
                   ref="table"
                 >
+                  <template v-slot:attachedDocName="item">
+                    <a :href="item.row.attachedDocLink">
+                      {{ item.row.attachedDocName }}
+                    </a>
+                  </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
                       <a
@@ -394,34 +399,6 @@
                           d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
                         />
                         <path d="M16 5l3 3" />
-                      </svg>
-                    </a>
-                    <a
-                      v-if="item.row.attachedDocLink !== ''"
-                      :href="item.row.attachedDocLink"
-                      class="btn btn-success btn-icon"
-                    >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
                       </svg>
                     </a>
                     <div
@@ -793,6 +770,7 @@ export default {
 
     async onSubmit() {
       try {
+        console.log(this.id, "this.id onSubmit()")
         let formData = new FormData();
         formData.append("name", this.editDecision.name);
         formData.append("detail", this.editDecision.detail);
@@ -800,10 +778,10 @@ export default {
         formData.append("signDate", this.editDecision.signDate);
         formData.append("expireIn", this.editDecision.expireIn);
         formData.append("expireInLL", this.editDecision.expireInLL);
-        formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc);
         formData.append("attachedDocLink", this.editDecision.attachedDocLink);
         formData.append("attachedDocName", this.editDecision.attachedDocName);
         formData.append("programId", this.id);
+        formData.append("approvalDecisionDoc1", this.editDecision.attachedDoc); // cần đặt file cuối cùng để multer phía be load hết data của req
         const result = await instance.put(
           `/api/edit-decision/${this.editDecision.id}`,
           formData,
@@ -907,7 +885,7 @@ export default {
         }
 
       } catch (error) {
-        console.log(error, "/api/import-trans-programs-data catch block error");
+        console.log(error, "/api/import-decisions-data catch block error");
       }
     },
   },

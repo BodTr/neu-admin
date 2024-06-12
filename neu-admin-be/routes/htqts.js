@@ -6,7 +6,7 @@ const ExcelJs = require("exceljs")
 const { emptyHTQTInputsValidation, typeHTQTInputsValidation, emptyFileHTQTInputValidation } = require('../helpers/input_validate_middleware')
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initHTQTDocMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
@@ -225,6 +225,73 @@ router.get('/api/export-excel-htqts', async (req, res) => {
         })
     } catch (error) {
         console.log(error, "/api/export-excel-htqts catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-htqts-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-quan-ly-cac-du-an-htqt.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-htqts-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-htqts-data', uploadToServer.single("htqts-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-htqts-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importHtqtsArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            // console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importHtqtsArr.push({
+                    nation: row.values[2],
+                    partnerUni: row.values[3],
+                    funding: row.values[4],
+                    planDetail: row.values[5],
+                    signingTime: row.values[6],
+                    expireTime: row.values[7],
+                    note: row.values[8],
+                    attachedDocName: row.values[9],
+                    attachedDocLink: row.values[10],
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importHtqtsArr, "importHtqtsArr /api/import-htqts-data")
+        const savedImportHtqts = await HTQTSchema.insertMany(importHtqtsArr)
+        console.log(savedImportHtqts, "savedImportHtqts /api/import-htqts-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
         res.json({
             error: true,
             message: "something went wrong!"

@@ -16,11 +16,60 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-lime d-none d-sm-inline-block"
                   @click="getExcelFile()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
                   Export excel
                 </a>
                 <a
@@ -199,8 +248,8 @@
                           <option value="" disabled selected>
                             Chọn loại visa
                           </option>
-                          <option value="Nam">Một lần</option>
-                          <option value="Nữ">Nhiều lần</option>
+                          <option value="Một lần">Một lần</option>
+                          <option value="Nhiều lần">Nhiều lần</option>
                         </select>
                       </div>
                       <div class="mb-3">
@@ -317,6 +366,91 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importVisasDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importVisasDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -334,101 +468,42 @@
                   ref="table"
                 >
                   <template v-slot:status="item">
-                    <span v-if="item.row.status === 1" class="badge bg-green text-green-fg">Còn hạn</span>
-                    <span v-else-if="item.row.status === 2" class="badge bg-orange">Sắp hết hạn</span>
-                    <span v-else class="badge bg-red text-red-fg">Đã hết hạn</span>
+                    <span
+                      v-if="item.row.status === 1"
+                      class="badge bg-green text-green-fg"
+                      >Còn hạn</span
+                    >
+                    <span
+                      v-else-if="item.row.status === 2"
+                      class="badge bg-orange"
+                      >Sắp hết hạn</span
+                    >
+                    <span v-else class="badge bg-red text-red-fg"
+                      >Đã hết hạn</span
+                    >
                   </template>
                   <template v-slot:suggestUnit="item">
-                    {{ item.row.suggestUnitName }}
-                    <a
+                    <a v-if="item.row.suggestUnitLink !== 'undefined'"
                       :href="item.row.suggestUnitLink"
-                      class="btn btn-success btn-icon"
                     >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
-                      </svg>
+                      {{ item.row.suggestUnitName }}
                     </a>
                   </template>
                   <template v-slot:decisionNumber="item">
-                    {{ item.row.decisionNumberName }}
-                    <a
+                    <a v-if="item.row.decisionNumberLink !== 'undefined'"
                       :href="item.row.decisionNumberLink"
-                      class="btn btn-success btn-icon"
                     >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
-                      </svg>
+                      {{ item.row.decisionNumberName }}
                     </a>
                   </template>
                   <template v-slot:attachedFile="item">
-                    <div>
+
+                    <a v-if="item.row.attachedFileLink !== 'undefined'"
+                      :href="item.row.attachedFileLink"
+                    >
                       {{ item.row.attachedFileName }}
-                      <a
-                        :href="item.row.attachedFileLink"
-                        class="btn btn-success btn-icon"
-                      >
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon icon-tabler icon-tabler-files"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                          <path
-                            d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                          />
-                          <path
-                            d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                          />
-                        </svg>
-                      </a>
-                    </div>
+                    </a>
+
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -623,8 +698,8 @@
                                   <option value="" disabled selected>
                                     Chọn loại visa
                                   </option>
-                                  <option value="Nam">Một lần</option>
-                                  <option value="Nữ">Nhiều lần</option>
+                                  <option value="Một lần">Một lần</option>
+                                  <option value="Nhiều lần">Nhiều lần</option>
                                 </select>
                               </div>
                               <div class="mb-3">
@@ -835,9 +910,13 @@ export default {
       sMessage: "",
       eMessage: "",
       uMessage: "",
+      importVisasDoc: null,
+      importVisasDocName: "",
+      importDocMessage: "",
 
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editExtendVisa: {
         id: "",
@@ -895,6 +974,9 @@ export default {
     },
     handleFileUpload1() {
       this.$refs.attachedFile1.click();
+    },
+    handleExcelUpload() {
+      this.$refs.importVisasDoc.click();
     },
     handleSuggestUnitChange() {
       const file = this.$refs.suggestUnit.files[0];
@@ -1022,6 +1104,20 @@ export default {
             : "Định dạng file không phù hợp!!";
       }
     },
+    handleExcelChange() {
+      const file = this.$refs.importVisasDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importVisasDoc = file;
+      this.importVisasDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
+    },
     showModal() {
       this.displayModal = true;
     },
@@ -1033,6 +1129,12 @@ export default {
     },
     hideModal1() {
       this.displayModalOne = false;
+    },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
     },
     async submitForm() {
       let formData = new FormData();
@@ -1055,11 +1157,15 @@ export default {
       formData.append("attachedFile", this.attachedFile);
 
       try {
-        const result = await instance.post("/api/create-extend-visa", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const result = await instance.post(
+          "/api/create-extend-visa",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         if (result.data.error === true) {
           // alert(result.data.message)
@@ -1100,9 +1206,10 @@ export default {
     },
 
     onEdit(item) {
-      let visaEndDay = item.visaEndDay
-      let a_visaEndDay = visaEndDay.split("/")
-      visaEndDay = a_visaEndDay[2] + "-" + a_visaEndDay[1] + "-" + a_visaEndDay[0]
+      let visaEndDay = item.visaEndDay;
+      let a_visaEndDay = visaEndDay.split("/");
+      visaEndDay =
+        a_visaEndDay[2] + "-" + a_visaEndDay[1] + "-" + a_visaEndDay[0];
       this.editExtendVisa.name = item.name;
       this.editExtendVisa.birthday = item.birthday;
       this.editExtendVisa.sex = item.sex;
@@ -1213,12 +1320,53 @@ export default {
     },
     async getExcelFile() {
       try {
-        const result = await instance.get('/api/export-excel-extend-visas')
-        const excelFilePath = result.data.path
-        console.log(excelFilePath, "excelFilePath getExcelFile()")
-        location.href = excelFilePath
+        const result = await instance.get("/api/export-excel-extend-visas");
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
       } catch (error) {
-        console.log(error, "/api/export-excel-trans-programs catch block error")
+        console.log(
+          error,
+          "/api/export-excel-trans-programs catch block error"
+        );
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-visas-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-visas-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("visas-import-file", this.importVisasDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-visas-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importVisasDoc = null;
+          this.importVisasDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-visas-data catch block error");
       }
     },
   },

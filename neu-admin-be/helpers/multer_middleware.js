@@ -30,6 +30,7 @@ const upload = multer({
             console.log(fieldname, "file fieldname")
             let fileName = ""
             const { programId } = req.body
+            console.log(req.body, "req.body multer middleware")
             console.log(req.params, "req.params multer middleware")
             console.log(req.payload, "req.payload multer middleware")
             const getId = () => { // nếu tồn tại req.payload thì đây là từ post req, còn ko tồn tại req.payload thì đây là put req, vì đã lọc xem đây là api nào r (mỗi 1 api có 1 ref image riêng, moumoa-attachedDoc) nên hàm này dùng đc nhiều lần

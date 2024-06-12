@@ -17,6 +17,64 @@
             <div class="col-auto ms-auto d-print-none">
               <div class="btn-list">
                 <a
+                  href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
+                  class="btn btn-lime d-none d-sm-inline-block"
+                  @click="getExcelFile()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
+                  Export excel
+                </a>
+                <a
                   @click="showModal()"
                   href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
@@ -174,7 +232,7 @@
                               <div class="col">
                                 {{ doc.name }}
                                 <div
-                                  style="color: red;"
+                                  style="color: red"
                                   v-if="doc.invalidMessage"
                                 >
                                   {{ doc.invalidMessage }}
@@ -419,6 +477,91 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importPartnersDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importPartnersDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -441,30 +584,9 @@
                       :key="index"
                       class="mb-1"
                     >
-                      {{ doc.docName }}
-                      <a :href="doc.docLink" class="btn btn-success btn-icon">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon icon-tabler icon-tabler-files"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                          <path
-                            d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                          />
-                          <path
-                            d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                          />
-                        </svg>
+                      
+                      <a :href="doc.docLink">
+                        {{ doc.docName }}
                       </a>
                     </div>
                   </template>
@@ -553,23 +675,23 @@
                                 <label class="form-label"
                                   >Tên trường đối tác tiếng Việt</label
                                 >
-                                <textarea
+                                <input
+                                  type="text"
                                   class="form-control"
-                                  rows="5"
                                   v-model="editPartner.vn_name"
                                   placeholder="Nhập tên đối tác tiếng Việt"
-                                ></textarea>
+                                />
                               </div>
                               <div class="mb-3">
                                 <label class="form-label"
                                   >Tên trường đối tác tiếng Anh</label
                                 >
-                                <textarea
+                                <input
+                                  type="text"
                                   class="form-control"
-                                  rows="5"
                                   v-model="editPartner.en_name"
-                                  placeholder="Nhập tên đối tác tiếng Anh"
-                                ></textarea>
+                                  placeholder="Nhập tên đối tác tiếng Việt"
+                                />
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Website</label>
@@ -636,7 +758,7 @@
                                       <div class="col">
                                         {{ doc.name }}
                                         <div
-                                          style="color: red;"
+                                          style="color: red"
                                           v-if="doc.invalidMessage"
                                         >
                                           {{ doc.invalidMessage }}
@@ -966,8 +1088,13 @@ export default {
       progManagerEmail: "",
       progManagerUnit: "",
 
+      importPartnersDoc: null,
+      importPartnersDocName: "",
+      importDocMessage: "",
+
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editPartner: {
         id: "",
@@ -1070,6 +1197,15 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
+    handleExcelUpload() {
+      this.$refs.importPartnersDoc.click();
+    },
     handleFilesUpload() {
       const docs = this.$refs.docs.files;
       console.log(docs);
@@ -1119,6 +1255,20 @@ export default {
         return "Không phải file pdf";
       } else {
         return "";
+      }
+    },
+    handleExcelChange() {
+      const file = this.$refs.importPartnersDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importPartnersDoc = file;
+      this.importPartnersDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
       }
     },
     handleDocsUpload() {
@@ -1232,25 +1382,25 @@ export default {
     },
 
     onEdit(item) {
-      const docRefsArr = item.partnerDocs.map(doc => {
+      const docRefsArr = item.partnerDocs.map((doc) => {
         const MAX_SIZE = 20 * 1024 * 1024;
         const allowedTypes = ["application/pdf"];
-        let invalidMessage = ""
+        let invalidMessage = "";
         if (doc.docSize > MAX_SIZE) {
           invalidMessage = `Vượt quá dung lượng: ${MAX_SIZE / (1024 * 1024)}Mb`;
-      } else if (!allowedTypes.includes(doc.docType)) {
-        invalidMessage = "Không phải file pdf";
-      } else {
-        invalidMessage = "";
-      } 
+        } else if (!allowedTypes.includes(doc.docType)) {
+          invalidMessage = "Không phải file pdf";
+        } else {
+          invalidMessage = "";
+        }
         return {
           name: doc.docName,
           size: doc.docSize,
           type: doc.docType,
           link: doc.docLink,
-          invalidMessage: invalidMessage
-        }
-      })
+          invalidMessage: invalidMessage,
+        };
+      });
       this.editPartner.vn_name = item.vn_name;
       this.editPartner.en_name = item.en_name;
       this.editPartner.website = item.website;
@@ -1317,8 +1467,8 @@ export default {
           this.toast.error("File upload cần đúng định dạng pdf/dưới 20Mb");
         } else {
           const docsState = {
-            docs1Refs: this.editPartner.docs
-          }
+            docs1Refs: this.editPartner.docs,
+          };
           let formData = new FormData();
           formData.append("programId", this.id);
           formData.append("en_name", this.editPartner.en_name);
@@ -1371,8 +1521,8 @@ export default {
           formData.append("progManagerUnit", this.editPartner.progManagerUnit);
           formData.append("docsState", JSON.stringify(docsState));
           _.forEach(this.editPartner.uploadDocs, (doc) => {
-            formData.append("docs1", doc)
-          })
+            formData.append("docs1", doc);
+          });
 
           const result = await instance.put(
             `/api/edit-partner/${this.editPartner.id}`,
@@ -1416,6 +1566,57 @@ export default {
         }
       } catch (error) {
         console.log(error, "delete api catch block error");
+      }
+    },
+    async getExcelFile() {
+      try {
+        const queryParams = { id: this.id };
+        const result = await instance.get("/api/export-excel-partners", {
+          params: queryParams,
+        });
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
+      } catch (error) {
+        console.log(error, "/api/export-excel-partners catch block error");
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-partners-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-partners-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("partners-import-file", this.importPartnersDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-partners-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importPartnersDoc = null;
+          this.importPartnersDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-partners-data catch block error");
       }
     },
   },
