@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const EnrollmentSchema = require('../models/enrollment')
 const EnrollmentDocsSchema = require('../models/enrollment_file')
+const ProgramSchema = require('../models/program')
+const ExcelJs = require("exceljs")
 const {  emptyEnrollmentFileInputValidation, emptyEnrollmentInputsValidation, typeEnrollmentInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const { initEnrollmentDocMiddleware } = require('../helpers/init_doc')
@@ -281,30 +283,6 @@ router.delete('/api/delete-enrollment/:id', async(req, res) => {
     }
 })
 
-router.use("/api/create-enrollment", async (error, req, res, next) => {
-    try {
-        console.log(error, "error handler post api middleware");
-        const enrollmentId = req.payload;
-        const docs = req.files;
-        const delInitDoc = await EnrollmentSchema.deleteOne({ _id: enrollmentId });
-        console.log(delInitDoc, "delInitDoc error handler post api");
-        if (!docs) {
-            next(error);
-        } else {
-            const prefix = `enrollment-file-${id}`;
-            const delFolderRes = await deleteFolder(prefix);
-            console.log(
-                "POST api error!! So, delete images just uploaded",
-                delFolderRes
-            );
-            next(error);
-        }
-    } catch (error) {
-        console.log(error, "error handler post api catch block error");
-        res.json({ error: true, message: "something went wrong" });
-    }
-});
-
 router.get('/api/export-excel-enrollments', async (req, res) => {
     try {
         const { id } = req.query // id: program id
@@ -343,12 +321,12 @@ router.get('/api/export-excel-enrollments', async (req, res) => {
         for (let i = 0; i < maxValue; i++) {
             pushCol.push(
                 {
-                    header: `TÊN VĂN BẢN KIỂM ĐỊNH ${i + 1}`,
+                    header: `TÊN QUYẾT ĐỊNH TUYỂN SINH ${i + 1}`,
                     key: `docName${i + 1}`,
                     width: 30
                 },
                 {
-                    header: `LINK VĂN BẢN KIỂM ĐỊNH ${i + 1}`,
+                    header: `LINK QUYẾT ĐỊNH TUYỂN SINH ${i + 1}`,
                     key: `docLink${i + 1}`,
                     width: 50
                 }
@@ -362,26 +340,12 @@ router.get('/api/export-excel-enrollments', async (req, res) => {
             {header: "SỐ SINH VIÊN NHẬP HỌC", key:"admissionCount", width: 40},
             {header: "SỐ SINH VIÊN THÔI HỌC", key:"dropoutCount", width: 40},
             {header: "SỐ SINH VIÊN TỐT NGHIỆP", key:"graduatedCount", width: 40},
-            {header: "TỔNG SỐ SINH VIÊN ĐANG ĐÀO TẠO", key:"trainingStudents", width: 50},
-            {header: "EMAIL NGƯỜI LIÊN HỆ", key:"contacterEmail", width: 30},
-            {header: "CHỨC VỤ NGƯỜI LIÊN HỆ", key:"contacterPosition", width: 40},
-            {header: "ĐƠN VỊ NGƯỜI LIÊN HỆ", key:"contacterUnit", width: 40},
-            {header: "HỌ TÊN LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderName", width: 50},
-            {header: "EMAIL LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderEmail", width: 40},
-            {header: "CHỨC VỤ LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderPosition", width: 30},
-            {header: "ĐƠN VỊ LÃNH ĐẠO CẤP TRƯỜNG", key:"uniLeaderUnit", width: 40},
-            {header: "HỌ TÊN LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderName", width: 50},
-            {header: "EMAIL LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderEmail", width: 50},
-            {header: "CHỨC VỤ LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderPosition", width: 50},
-            {header: "ĐƠN VỊ LÃNH ĐẠO ĐƠN VỊ LIÊN KẾT", key:"unitLeaderUnit", width: 50},
-            {header: "HỌ TÊN ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farName", width: 50},
-            {header: "EMAIL ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farEmail", width: 40},
-            {header: "CHỨC VỤ ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farPosition", width: 40},
-            {header: "ĐƠN VỊ ĐẠI DIỆN BỘ PHẬN ĐỐI NGOẠI", key:"farUnit", width: 40},
-            {header: "HỌ TÊN NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerName", width: 40},
-            {header: "EMAIL NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerEmail", width: 40},
-            {header: "CHỨC VỤ NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerPosition", width: 40}, // progManagerUnit
-            {header: "ĐƠN VỊ NGƯỜI PHỤ TRÁCH CHƯƠNG TRÌNH", key:"progManagerUnit", width: 40},
+            {header: "TỔNG SỐ SINH VIÊN ĐANG ĐÀO TẠO", key:"trainingStudents", width: 40},
+            {header: "CHỈ TIÊU TUYỂN SINH", key:"enrollmentCount", width: 40},
+            {header: "SỐ SINH VIÊN TRÚNG TUYỂN", key:"admittedStudents", width: 40},
+            {header: "SỐ SINH VIÊN CHUYỂN TIẾP", key:"transferStudents", width: 40},
+            {header: "SỐ SINH VIÊN BẢO LƯU", key:"reservedStudents", width: 40},
+            
         ]
 
         const program = await ProgramSchema.findOne({ _id: id })
@@ -411,37 +375,23 @@ router.get('/api/export-excel-enrollments', async (req, res) => {
             console.log(addObj, "addObj /api/export-excel-enrollments")
             const constObj = {
                 stt: enrollment.stt,
-                vn_name: enrollment.vn_name,
-                en_name: enrollment.en_name,
-                address: enrollment.address,
-                internationalRanking: enrollment.internationalRanking,
-                website: enrollment.website,
-                contacterName: enrollment.contacterName,
-                contacterEmail: enrollment.contacterEmail,
-                contacterPosition: enrollment.contacterPosition,
-                contacterUnit: enrollment.contacterUnit,
-                uniLeaderName: enrollment.uniLeaderName,
-                uniLeaderEmail: enrollment.uniLeaderEmail,
-                uniLeaderPosition: enrollment.uniLeaderPosition,
-                uniLeaderUnit: enrollment.uniLeaderUnit,
-                unitLeaderName: enrollment.unitLeaderName,
-                unitLeaderEmail: enrollment.unitLeaderEmail,
-                unitLeaderPosition: enrollment.unitLeaderPosition,
-                unitLeaderUnit: enrollment.unitLeaderUnit,
-                farName: enrollment.farName,
-                farEmail: enrollment.farEmail,
-                farPosition: enrollment.farPosition,
-                farUnit: enrollment.farUnit,
-                progManagerName: enrollment.progManagerName,
-                progManagerEmail: enrollment.progManagerEmail,
-                progManagerPosition: enrollment.progManagerPosition,
-                progManagerUnit: enrollment.progManagerUnit,
+                year: enrollment.year,
+                applicantsCount: enrollment.applicantsCount,
+                admissionCount: enrollment.admissionCount,
+                dropoutCount: enrollment.dropoutCount,
+                graduatedCount: enrollment.graduatedCount,
+                trainingStudents: enrollment.trainingStudents,
+                enrollmentCount: enrollment.enrollmentCount,
+                admittedStudents: enrollment.admittedStudents,
+                transferStudents: enrollment.transferStudents,
+                reservedStudents: enrollment.reservedStudents,
+
             }
             const finalObj = { ...constObj, ...addObj }
             sheet.addRow(finalObj)
         })
-        await workbook.xlsx.writeFile(`public/Thông tin đối tác-${programName}.xlsx`)
-        const excelFilePath = process.env.CND_EXCELFILE + `Thông tin đối tác-${programName}.xlsx`
+        await workbook.xlsx.writeFile(`public/Quản lý tuyển sinh-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Quản lý tuyển sinh-${programName}.xlsx`
         res.json({
             error: false,
             path: excelFilePath
@@ -490,31 +440,16 @@ router.post('/api/import-enrollments-data', uploadToServer.single("enrollments-i
             console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
             if (rowNumber > 1) {
                 importEnrollmentArr.push({
-                    vn_name: row.values[2],
-                    en_name: row.values[3],
-                    address: row.values[4],
-                    internationalRanking: row.values[5],
-                    website: row.values[6],
-                    contacterName: row.values[7],
-                    contacterEmail: row.values[8],
-                    contacterPosition: row.values[9],
-                    contacterUnit: row.values[10],
-                    uniLeaderName: row.values[11],
-                    uniLeaderEmail: row.values[12],
-                    uniLeaderPosition: row.values[13],
-                    uniLeaderUnit: row.values[14],
-                    unitLeaderName: row.values[15],
-                    unitLeaderEmail: row.values[16],
-                    unitLeaderPosition: row.values[17],
-                    unitLeaderUnit: row.values[18],
-                    farName: row.values[19],
-                    farEmail: row.values[20],
-                    farPosition: row.values[21],
-                    farUnit: row.values[22],
-                    progManagerName: row.values[23],
-                    progManagerEmail: row.values[24],
-                    progManagerPosition: row.values[25],
-                    progManagerUnit: row.values[26],
+                    year: row.values[2],
+                    applicantsCount: row.values[3],
+                    admissionCount: row.values[4],
+                    dropoutCount: row.values[5],
+                    graduatedCount: row.values[6],
+                    trainingStudents: row.values[7],
+                    enrollmentCount: row.values[8],
+                    admittedStudents: row.values[9],
+                    transferStudents: row.values[10],
+                    reservedStudents: row.values[11],
                     program: {
                         id: programId
                     }
@@ -538,6 +473,32 @@ router.post('/api/import-enrollments-data', uploadToServer.single("enrollments-i
         })
     }
 })
+
+
+router.use("/api/create-enrollment", async (error, req, res, next) => {
+    try {
+        console.log(error, "error handler post api middleware");
+        const enrollmentId = req.payload;
+        const docs = req.files;
+        const delInitDoc = await EnrollmentSchema.deleteOne({ _id: enrollmentId });
+        console.log(delInitDoc, "delInitDoc error handler post api");
+        if (!docs) {
+            next(error);
+        } else {
+            const prefix = `enrollment-file-${id}`;
+            const delFolderRes = await deleteFolder(prefix);
+            console.log(
+                "POST api error!! So, delete images just uploaded",
+                delFolderRes
+            );
+            next(error);
+        }
+    } catch (error) {
+        console.log(error, "error handler post api catch block error");
+        res.json({ error: true, message: "something went wrong" });
+    }
+});
+
 
 router.use("/api/edit-enrollment/:id", async (error, req, res, next) => {
     try {

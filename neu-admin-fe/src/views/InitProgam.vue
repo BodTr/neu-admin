@@ -10,20 +10,6 @@
           Chọn chương trình
         </div>
         <div v-if="hasProgram" style="padding: 20px;" class="card-body">
-          <!-- <div class="col-md-4">
-            <label class="form-label">Năm học</label>
-            <select
-              v-model="year"
-              class="form-select"
-              tabindex="-1"
-              @change="onYearChange()"
-            >
-              <option value="" disabled selected>Chọn năm học</option>
-              <option v-for="(year, index) in yearsArray" :value="year">
-                {{ year }}
-              </option>
-            </select>
-          </div> -->
           <div style="margin-top: 15px;" class="mb-3">
             <label class="form-label">Chương trình</label>
             <select
@@ -43,7 +29,7 @@
             <p class="text-muted">Bạn chưa được liên kết với chương trình nào, liên hệ với admin để gán chương trình cho tài khoản</p>
           </div>
           <div>
-            <a class="btn btn-ghost-danger" @click="logout()">
+            <a class="btn btn-ghost-danger" @click="logout1()">
               Đăng xuất
             </a>
           </div>
@@ -51,7 +37,7 @@
         <div v-if="hasProgram" class="row align-items-center mt-3">
         <div class="col">
           <div class="btn-list justify-content-end">
-            
+            <a style="margin: 0 auto;margin-bottom: 20px;" class="btn btn-ghost-danger" @click="logout2()"> Đăng xuất </a>
             <a style="margin: 0 auto;margin-bottom: 20px;" class="btn btn-primary" @click="pushRouter()"> Tiếp tục </a>
           </div>
         </div>
@@ -161,6 +147,20 @@ export default {
       }
 
       
+    },
+    async logout1 () {
+      try {
+        await this.logout()
+      } catch (error) {
+        console.log(error, "error logout1")
+      }
+    },
+    async logout2 () {
+      try {
+        await this.logout()
+      } catch (error) {
+        console.log(error, "error logout2")
+      }
     },
     async logout() {
       try {

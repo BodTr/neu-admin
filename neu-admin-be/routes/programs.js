@@ -3,7 +3,7 @@ const router = express.Router()
 const ProgramSchema = require('../models/program')
 const YearSchema = require('../models/years')
 const ExcelJs = require("exceljs")
-
+const { uploadToServer } = require('../helpers/multer_middleware')
 const {
     emptyProgramInputsValidation,
     typeProgramInputsValidation
@@ -605,14 +605,14 @@ router.get('/api/export-excel', async (req, res) => {
             {header: "NĂM", key:"year", width: 10},
             {header: "TÊN CHƯƠNG TRÌNH", key:"name", width: 30},
             {header: "QUỐC GIA", key:"nation", width: 15},
-            {header: "TRƯỜNG ĐỐI TÁC", key:"partnerUni", width: 20},
+            {header: "TRƯỜNG ĐỐI TÁC", key:"parterUni", width: 20},
             {header: "CHUYÊN NGÀNH", key:"major", width: 20},
             {header: "CHỈ TIÊU", key:"quota", width: 10},
             {header: "TRÌNH ĐỘ ĐÀO TẠO", key:"level", width: 15},
             {header: "ĐƠN VỊ QUẢN LÝ", key:"agency", width: 20},
             {header: "SĐT Đ.VỊ QUẢN LÝ", key:"agencyPhoneNumber", width: 15},
             {header: "NGÀY HẾT HẠN", key:"expiry", width: 15},
-            {header: "TRẠNG THÁI", key:"status", width: 15},
+            // {header: "TRẠNG THÁI", key:"status", width: 15},
             // {header: "QUYẾT ĐỊNH PHÊ DUYỆT", key:"decisionArray", width: 20},
         ]
 
@@ -645,14 +645,14 @@ router.get('/api/export-excel', async (req, res) => {
                 year: program.year,
                 name: program.name,
                 nation: program.nation,
-                partnerUni: program.parterUni,
+                parterUni: program.parterUni,
                 major: program.major,
                 quota: program.quota,
                 level: program.level,
                 agency: program.agency,
                 agencyPhoneNumber: program.agencyPhoneNumber,
                 expiry: program.expiry,
-                status: program.status,
+                // status: program.status,
                 // decisionArray: program.decisionsArray
             }
             const finalObj = { ...constObj, ...addObj }
@@ -679,6 +679,73 @@ router.get('/api/export-excel', async (req, res) => {
         })
     }
 })
+
+router.get('/api/get-programs-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-danh-sach-ctlk.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-programs-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-programs-data', uploadToServer.single("programs-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-programs-data")
+        const file = req.file
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importProgramArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importProgramArr.push({
+                    year: row.values[2],
+                    name: row.values[3],
+                    nation: row.values[4],
+                    parterUni: row.values[5],
+                    major: row.values[6],
+                    quota: row.values[7],
+                    level: row.values[8],
+                    expiry: row.values[9],
+                    user: {
+                        id: new ObjectId('111111111111111111111111')
+                    }
+                })
+            }
+            
+        })
+        console.log(importProgramArr, "importProgramArr /api/import-programs-data")
+        const savedImportPrograms = await ProgramSchema.insertMany(importProgramArr)
+
+        console.log(savedImportPrograms, "savedImportPrograms /api/import-programs-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-programs-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
 
 // router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
 //     if (error) {

@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ExStudentSchema = require('../models/ex_student')
 const { emptyExStudentInputsValidation, typeExStudentInputsValidation, emptyFileExStudentInputValidation } = require('../helpers/input_validate_middleware')
+const ExcelJs = require("exceljs")
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { initExStudentMiddleware } = require('../helpers/init_doc')
-const { upload } = require('../helpers/multer_middleware')
+const { upload, uploadToServer } = require('../helpers/multer_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 
 const ObjectId = require("mongodb").ObjectId
@@ -261,6 +262,210 @@ router.delete('/api/delete-ex-student/:id', async(req, res) => {
     } catch (error) {
         console.log(error, "delete catch block error")
         res.json({error: true, message: "something went wrong!"})
+    }
+})
+
+router.get('/api/export-excel-exstudents', async (req, res) => {
+    try {
+        const { id } = req.query // id: program id
+        const exstudents = await ExStudentSchema.find({}).lean()
+        let stt = 0
+        const aExstudents = exstudents.map(doc => {
+
+            stt++
+            return {
+                ...doc,
+                stt: stt,
+            }
+        })
+
+        let resultsArrayLengthArray = []
+        aExstudents.forEach(exstudent => {
+            let resultsArrayLength = exstudent.results.length
+            resultsArrayLengthArray.push(resultsArrayLength)
+        })
+
+        console.log(resultsArrayLengthArray, "resultsArrayLengthArray /api/export-excel-exstudents")
+
+        const maxValue = Math.max(...resultsArrayLengthArray)
+        console.log(maxValue, "maxValue /api/export-excel-exstudents")
+        let pushCol = []
+        for (let i = 0; i < maxValue; i++) {
+            pushCol.push(
+                {
+                    header: `TÊN MÔN HỌC ${i + 1}`,
+                    key: `subjectName${i + 1}`,
+                    width: 50
+                },
+                {
+                    header: `SỐ TÍN CHỈ ${i + 1}`,
+                    key: `creditsCount${i + 1}`,
+                    width: 30
+                },
+                {
+                    header: `ĐIỂM QUY ĐỔI ${i + 1}`,
+                    key: `point${i + 1}`,
+                    width: 30
+                }
+            )
+        }
+        console.log(pushCol, "pushCol /api/export-excel-exstudents")
+        const constCol = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "HỌ VÀ TÊN", key:"name", width: 40},
+            {header: "NGÀY SINH", key:"birthday", width: 40},
+            {header: "GIỚI TÍNH", key:"sex", width: 30},
+            {header: "MSSV", key:"studentCode", width: 30},
+            {header: "KHOA/VIỆN ĐÀO TẠO", key:"department", width: 40},
+            {header: "KHÓA", key:"academicYear", width: 30},
+            {header: "LỚP CHUYÊN NGÀNH", key:"major", width: 30},
+            {header: "NĂM HỌC TRAO ĐỔI", key:"exchangeYear", width: 40},
+            {header: "THỜI GIAN TRAO ĐỔI", key:"exchangeTime", width: 40},
+            {header: "QUỐC GIA TIẾP NHẬN", key:"receivingCountry", width: 40},
+            {header: "TRƯỜNG ĐỐI TÁC", key:"partnerUni", width: 40}, //subject
+            {header: "MÔN HỌC TẠI TRƯỜNG ĐỐI TÁC", key:"subject", width: 40},
+            {header: "KẾT QUẢ HỌC TẬP", key:"result", width: 40}, //exchangeDecision
+            {header: "QUYẾT ĐỊNH CỬ ĐI", key:"exchangeDecision", width: 40},
+            {header: "ĐIỂM SỐ ĐƯỢC QUY ĐỔI", key:"convertedScore", width: 40},
+            {header: "TÊN QUYẾT ĐỊNH CỬ ĐI ĐÍNH KÈM", key:"attachedExDocName", width: 40},
+            {header: "LINK QUYẾT ĐỊNH CỬ ĐI ĐÍNH KÈM", key:"attachedExDocLink", width: 40}, //attachedScoreDocLink
+            {header: "TÊN QUYẾT ĐỊNH QUY ĐỔI ĐIỂM SỐ", key:"attachedScoreDocName", width: 40},
+            {header: "LINK QUYẾT ĐỊNH QUY ĐỔI ĐIỂM SỐ", key:"attachedScoreDocLink", width: 40},
+
+        ]
+
+
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("exstudents")
+        sheet.columns = constCol.concat(pushCol)
+        console.log(aExstudents, "aExstudents /api/export-excel-exstudents 3")
+        aExstudents.map(student => {
+            const resultsArr= student.results
+            console.log(resultsArr, "resultsArr 2 /api/export-excel-exstudents")
+            let addObj = {}
+            if (resultsArr.length === 0) {
+                console.log("resultsArr.length === 0")
+                addObj = {}
+            } else {
+                console.log(resultsArr, "resultsArr 3 /api/export-excel-exstudents")
+                addObj = resultsArr.reduce((acc, result, i) => {
+                    acc[`subjectName${i + 1}`] = result.subjectName;
+                    acc[`creditsCount${i + 1}`] = result.creditsCount;
+                    acc[`point${i + 1}`] = result.point;
+                    return acc;
+                }, {})
+                console.log(addObj, "addObj /api/export-excel-exstudents 1")
+            }
+
+            console.log(addObj, "addObj /api/export-excel-exstudents")
+            const constObj = {
+                stt: student.stt,
+                name: student.name,
+                birthday: student.birthday,
+                sex: student.sex,
+                studentCode: student.studentCode,
+                department: student.department,
+                academicYear: student.academicYear,
+                major: student.major,
+                exchangeYear: student.exchangeYear,
+                exchangeTime: student.exchangeTime,
+                receivingCountry: student.receivingCountry,
+                partnerUni: student.partnerUni,
+                subject: student.subject,
+                result: student.result,
+                exchangeDecision: student.exchangeDecision,
+                convertedScore: student.convertedScore,
+                attachedExDocName: student.attachedExDocName,
+                attachedExDocLink: student.attachedExDocLink,
+                attachedScoreDocName: student.attachedScoreDocName,
+                attachedScoreDocLink: student.attachedScoreDocLink,
+            }
+            const finalObj = { ...constObj, ...addObj }
+            sheet.addRow(finalObj)
+        })
+        await workbook.xlsx.writeFile(`public/Sinh viên đi nước ngoài trao đổi.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Sinh viên đi nước ngoài trao đổi.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-exstudents catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-exstudents-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-sinh-vien-di-nuoc-ngoai-trao-doi.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-exstudents-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-exstudents-data', uploadToServer.single("exstudents-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-exstudents-data")
+        const file = req.file
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importDecisionArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importDecisionArr.push({
+                    name: row.values[2],
+                    birthday: row.values[3],
+                    sex: row.values[4],
+                    studentCode: row.values[5],
+                    department: row.values[6],
+                    academicYear: row.values[7],
+                    major: row.values[8],
+                    exchangeYear: row.values[9],
+                    exchangeTime: row.values[10],
+                    receivingCountry: row.values[11],
+                    partnerUni: row.values[12],
+                    subject: row.values[13],
+                    result: row.values[14],
+                    exchangeDecision: row.values[15],
+                    convertedScore: row.values[16],
+
+                })
+            }
+            
+        })
+        console.log(importDecisionArr, "importDecisionArr /api/import-exstudents-data")
+        const savedImportExstudents = await ExStudentSchema.insertMany(importDecisionArr)
+        console.log(savedImportExstudents, "savedImportExstudents /api/import-exstudents-data")
+
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-decisions-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
     }
 })
 

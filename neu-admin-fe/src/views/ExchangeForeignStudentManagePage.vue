@@ -16,6 +16,64 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
+                  class="btn btn-lime d-none d-sm-inline-block"
+                  @click="getExcelFile()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
+                  Export excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-primary d-none d-sm-inline-block"
                   @click="showModal()"
                 >
@@ -201,7 +259,6 @@
                             placeholder="Nhập quyết định tiếp nhận"
                           />
                         </div>
-
                       </div>
                       <div class="col-md-4">
                         <div class="mb-3">
@@ -371,6 +428,91 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importExFStudentsDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importExFStudentsDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -388,7 +530,12 @@
                   ref="table"
                 >
                   <template v-slot:attachedDoc="item">
-                    {{ item.row.attachedDocName }}
+                    <a
+                      v-if="item.row.attachedDocLink !== 'undefined'"
+                      :href="item.row.attachedDocLink"
+                    >
+                      {{ item.row.attachedDocName }}
+                    </a>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -447,34 +594,6 @@
                           d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
                         />
                         <path d="M16 5l3 3" />
-                      </svg>
-                    </a>
-                    <a
-                      v-if="item.row.attachedDocLink !== ''"
-                      :href="item.row.attachedDocLink"
-                      class="btn btn-success btn-icon"
-                    >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
                       </svg>
                     </a>
                     <div
@@ -621,7 +740,6 @@
                                     placeholder="Nhập quyết định tiếp nhận"
                                   />
                                 </div>
-
                               </div>
                               <div class="col-md-4">
                                 <div class="mb-3">
@@ -698,7 +816,9 @@
                                           class="form-control"
                                           row="1"
                                           placeholder="Nhập tên môn học"
-                                          v-model="editExForeignStudent.resultSubject"
+                                          v-model="
+                                            editExForeignStudent.resultSubject
+                                          "
                                         ></textarea>
                                       </td>
                                       <td>
@@ -706,7 +826,9 @@
                                           type="text"
                                           class="form-control"
                                           placeholder="Nhập đơn vị đào tạo"
-                                          v-model="editExForeignStudent.resultTrainingUnit"
+                                          v-model="
+                                            editExForeignStudent.resultTrainingUnit
+                                          "
                                         />
                                       </td>
                                       <td>
@@ -714,7 +836,9 @@
                                           type="number"
                                           class="form-control"
                                           placeholder="Nhập kết quả"
-                                          v-model="editExForeignStudent.resultPoint"
+                                          v-model="
+                                            editExForeignStudent.resultPoint
+                                          "
                                         />
                                       </td>
                                       <td>
@@ -746,7 +870,11 @@
                                         </a>
                                       </td>
                                     </tr>
-                                    <tr v-for="(item, index) in editExForeignStudent.results">
+                                    <tr
+                                      v-for="(
+                                        item, index
+                                      ) in editExForeignStudent.results"
+                                    >
                                       <td>{{ item.subjectName }}</td>
                                       <td>{{ item.trainingUnit }}</td>
                                       <td>{{ item.point }}</td>
@@ -840,7 +968,7 @@ export default {
       ],
       options: {
         headings: {
-          name: "Tên văn bằng và chứng chỉ",
+          name: "Họ và tên",
           studentCode: "MSSV (NEU)",
           position: "Chức vụ",
           educationLevel: "Bậc học (Trường đối tác)",
@@ -870,8 +998,13 @@ export default {
       resultTrainingUnit: "",
       resultPoint: "",
 
+      importExFStudentsDoc: null,
+      importExFStudentsDocName: "",
+      importDocMessage: "",
+
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editExForeignStudent: {
         id: "",
@@ -961,6 +1094,29 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
+    handleExcelUpload() {
+      this.$refs.importExFStudentsDoc.click();
+    },
+    handleExcelChange() {
+      const file = this.$refs.importExFStudentsDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importExFStudentsDoc = file;
+      this.importExFStudentsDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
+    },
     async submitForm() {
       let formData = new FormData();
       formData.append("name", this.name);
@@ -1014,7 +1170,7 @@ export default {
           this.receptionDecision = "";
           this.attachedDoc = null;
           this.attachedDocName = "";
-          this.results = []
+          this.results = [];
         }
       } catch (error) {
         console.log(error, "post api catch block error");
@@ -1028,8 +1184,8 @@ export default {
       // let a_birthday = birthday.split("/")
       // receptionTime = a_receptionTime[2] + "-" + a_receptionTime[1] + "-" + a_receptionTime[0]
       // birthday = a_birthday[2] + "-" + a_birthday[1] + "-" + a_birthday[0]
-      
-      console.log(item.results, "item.results onEdit")
+
+      console.log(item.results, "item.results onEdit");
       this.editExForeignStudent.name = item.name;
       this.editExForeignStudent.position = item.position;
       this.editExForeignStudent.studentCode = item.studentCode;
@@ -1045,7 +1201,10 @@ export default {
       this.editExForeignStudent.attachedDocLink = item.attachedDocLink;
       this.editExForeignStudent.results = item.results;
       this.editExForeignStudent.id = item._id;
-      console.log(this.editExForeignStudent.results, "this.editExForeignStudent.results onEdit")
+      console.log(
+        this.editExForeignStudent.results,
+        "this.editExForeignStudent.results onEdit"
+      );
       this.showModal1();
     },
 
@@ -1080,7 +1239,10 @@ export default {
         "attachedDocLink",
         this.editExForeignStudent.attachedDocLink
       );
-      formData.append("results", JSON.stringify(this.editExForeignStudent.results));
+      formData.append(
+        "results",
+        JSON.stringify(this.editExForeignStudent.results)
+      );
       try {
         const result = await instance.put(
           `/api/edit-ex-f-student/${this.editExForeignStudent.id}`,
@@ -1126,6 +1288,19 @@ export default {
         console.log(error, "delete api catch block error");
       }
     },
+    async getExcelFile() {
+      try {
+        const queryParams = { id: this.id };
+        const result = await instance.get("/api/export-excel-exfstudents", {
+          params: queryParams,
+        });
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
+      } catch (error) {
+        console.log(error, "/api/export-excel-exfstudents catch block error");
+      }
+    },
     plusResult() {
       this.results.push({
         subjectName: this.resultSubject,
@@ -1142,8 +1317,8 @@ export default {
       this.editExForeignStudent.results.push({
         subjectName: this.editExForeignStudent.resultSubject,
         trainingUnit: this.editExForeignStudent.resultTrainingUnit,
-        point: this.editExForeignStudent.resultPoint
-      })
+        point: this.editExForeignStudent.resultPoint,
+      });
       console.log(this.editExForeignStudent.results, "plusResult1");
       this.editExForeignStudent.resultSubject = "";
       this.editExForeignStudent.resultPoint = "";
@@ -1157,6 +1332,44 @@ export default {
     deleteResult1(index) {
       this.editExForeignStudent.results.splice(index, 1);
       console.log(this.editExForeignStudent.results, "deleteResult1");
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-exfstudents-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-exfstudents-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("exfstudents-import-file", this.importExFStudentsDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-exfstudents-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importExFStudentsDoc = null;
+          this.importExFStudentsDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-exfstudents-data catch block error");
+      }
     },
   },
 };

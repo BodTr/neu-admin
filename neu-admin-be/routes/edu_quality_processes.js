@@ -3,6 +3,7 @@ const router = express.Router()
 const ProcessSchema = require('../models/edu_quality_process')
 const ProgramSchema = require('../models/program')
 const ExcelJs = require("exceljs")
+const { uploadToServer } = require("../helpers/multer_middleware")
 const { emptyProcessInputsValidation, typeProcessInputsValidation } = require('../helpers/input_validate_middleware')
 const { authenticateAccessToken } = require('../helpers/jwt_services')
 const ObjectId = require("mongodb").ObjectId
@@ -94,7 +95,161 @@ router.delete('/api/delete-process/:id', async(req, res) => {
     }
 })
 
+router.get('/api/export-excel-processes', async (req, res) => {
+    try {
+        const { id } = req.query // id: program id
+        const processes = await ProcessSchema.find({
+            program: { id: new ObjectId(id)}
+        }).lean()
+        let stt = 0
+        const aProcesses = processes.map(doc => {
 
+            stt++
+            return {
+                ...doc,
+                stt: stt,
+            }
+        })
+
+        let processDocsArrayLengthArray = []
+        aProcesses.forEach(process => {
+            let processArrayLength = process.processes.length
+            processDocsArrayLengthArray.push(processArrayLength)
+        })
+
+        console.log(processDocsArrayLengthArray, "processDocsArrayLengthArray /api/export-excel-processes")
+
+        const maxValue = Math.max(...processDocsArrayLengthArray)
+        console.log(maxValue, "maxValue /api/export-excel-processes")
+        let pushCol = []
+        for (let i = 0; i < maxValue; i++) {
+            pushCol.push(
+                {
+                    header: `QUY TRÌNH ${i + 1}`,
+                    key: `processName${i + 1}`,
+                    width: 40
+                },
+                {
+                    header: `NỘI DUNG QUY TRÌNH ${i + 1}`,
+                    key: `processDetail${i + 1}`,
+                    width: 50
+                }
+            )
+        }
+        console.log(pushCol, "pushCol /api/export-excel-processes")
+        const constCol = [
+            {header: "STT", key:"stt", width: 10},
+            {header: "HÌNH THỨC KIỂM TRA ĐÁNH GIÁ", key:"evaluationForm", width: 50},
+            {header: "KHẢO SÁT ĐÁNH GIÁ CHẤT LƯỢNG CHƯƠNG TRÌNH", key:"evaluateProgramQuality", width: 50},
+        ]
+
+        const program = await ProgramSchema.findOne({ _id: id })
+        console.log(program, "program /api/export-excel-processes")
+        const programName = program.name
+        let workbook = new ExcelJs.Workbook()
+        const sheet = workbook.addWorksheet("processes")
+        sheet.columns = constCol.concat(pushCol)
+        console.log(aProcesses, "aProcesses /api/export-excel-processes 3")
+        aProcesses.map(process => {
+            const processesArr= process.processes
+            console.log(processesArr, "processesArr 2 /api/export-excel-processes")
+            let addObj = {}
+            if (processesArr.length === 0) {
+                console.log("processesArr.length === 0")
+                addObj = {}
+            } else {
+                console.log(processesArr, "processesArr 3 /api/export-excel-processes")
+                addObj = processesArr.reduce((acc, process, i) => {
+                    acc[`processName${i + 1}`] = process.processName;
+                    acc[`processDetail${i + 1}`] = process.processDetail;
+                    return acc;
+                }, {})
+                console.log(addObj, "addObj /api/export-excel-processes 1")
+            }
+
+            console.log(addObj, "addObj /api/export-excel-processes")
+            const constObj = {
+                stt: process.stt,
+                evaluationForm: process.evaluationForm,
+                evaluateProgramQuality: process.evaluateProgramQuality
+            }
+            const finalObj = { ...constObj, ...addObj }
+            sheet.addRow(finalObj)
+        })
+        await workbook.xlsx.writeFile(`public/Đảm bảo chất lượng đào tạo-${programName}.xlsx`)
+        const excelFilePath = process.env.CND_EXCELFILE + `Đảm bảo chất lượng đào tạo-${programName}.xlsx`
+        res.json({
+            error: false,
+            path: excelFilePath
+        })
+    } catch (error) {
+        console.log(error, "/api/export-excel-processes catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.get('/api/get-processes-template', async (req, res) => {
+    try {
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-thong-tin-doi-tac.xlsx'
+        res.json({
+            error: false,
+            path: templateFilePath
+        }) 
+    } catch (error) {
+        console.log(error, "/api/get-processes-template catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
+
+router.post('/api/import-processes-data', uploadToServer.single("processes-import-file"), async (req, res) => {
+    
+
+    try {
+
+        console.log(req.file, "req.file /api/import-processes-data")
+        const file = req.file
+        const { programId } = req.body
+        const filePath = file.path // .replace("public\\", "public/")
+        let workbook = new ExcelJs.Workbook()
+        await workbook.xlsx.readFile(`${filePath}`)
+
+        let importPartnerArr = []
+        const sheet = workbook.getWorksheet(workbook._name);
+        sheet.eachRow((row, rowNumber) => {
+            // console.log(row.values, "row.values")
+            console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
+            if (rowNumber > 1) {
+                importPartnerArr.push({
+
+                    program: {
+                        id: programId
+                    }
+                })
+            }
+            
+        })
+        console.log(importPartnerArr, "importPartnerArr /api/import-processes-data")
+        const savedImportProcesses = await ProcessSchema.insertMany(importPartnerArr)
+
+        console.log(savedImportProcesses, "savedImportProcesses /api/import-processes-data")
+        res.json({
+            error: false,
+            message: "import data thành công"
+        })
+    } catch (error) {
+        console.log(error, "/api/import-processes-data catch block error")
+        res.json({
+            error: true,
+            message: "something went wrong!"
+        })
+    }
+})
 
 // router.use((error, req, res, next) => { // hàm này cần đủ cả 4 params error, req, res, next
 //     if (error) {
