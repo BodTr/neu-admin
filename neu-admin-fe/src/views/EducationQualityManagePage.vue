@@ -18,6 +18,35 @@
               <div class="btn-list">
                 <a
                   href="#"
+                  class="btn btn-bitbucket d-none d-sm-inline-block"
+                  @click="showModal2()"
+                >
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-import"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12 21h-7a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M19 22v-6" />
+                    <path d="M22 19l-3 -3l-3 3" />
+                  </svg>
+                  Import excel
+                </a>
+                <a
+                  href="#"
                   class="btn btn-lime d-none d-sm-inline-block"
                   @click="getExcelFile()"
                 >
@@ -257,6 +286,91 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="displayModalTwo"
+              class="modal modal-blur fade show"
+              tabindex="-1"
+              style="display: block"
+              aria-modal="true"
+            >
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Import dữ liệu</h5>
+                    <button
+                      @click="hideModal2()"
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body row row-cards">
+                    <div class="mb-3">
+                      <a
+                        href="#"
+                        class="btn btn-green d-none d-sm-inline-block"
+                        @click="downloadTemplate()"
+                      >
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+                          />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                        Tải file excel mẫu
+                      </a>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload import file</label>
+                      <input
+                        type="file"
+                        ref="importProcessesDoc"
+                        class="form-control"
+                        @change="handleExcelChange()"
+                        style="display: none"
+                      />
+                      <div class="card">
+                        <button
+                          @click="handleExcelUpload()"
+                          class="btn btn-outline-primary w-100"
+                        >
+                          Choose File
+                        </button>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="importProcessesDocName"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a @click="importFile()" class="btn btn-primary ms-auto">
+                      Import file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -274,10 +388,21 @@
                   ref="table"
                 >
                   <template v-slot:processes="item">
-                    <div v-for="(ele, index) in item.row.processes" :key="index">
-                      <div style="font-weight: 500;">Quy trình {{ index + 1 }}:</div>
-                      <span style="font-weight: 500;"> - Tên quy trình:</span> {{ ele.processName }}
-                      <div><span style="font-weight: 500;"> - Nội dung quy trình:</span> {{ ele.processDetail }}</div>
+                    <div
+                      v-for="(ele, index) in item.row.processes"
+                      :key="index"
+                    >
+                      <div style="font-weight: 500">
+                        Quy trình {{ index + 1 }}:
+                      </div>
+                      <span style="font-weight: 500"> - Tên quy trình:</span>
+                      {{ ele.processName }}
+                      <div>
+                        <span style="font-weight: 500">
+                          - Nội dung quy trình:</span
+                        >
+                        {{ ele.processDetail }}
+                      </div>
                     </div>
                   </template>
                   <template v-slot:tool="item">
@@ -384,7 +509,9 @@
                                 <textarea
                                   class="form-control"
                                   rows="3"
-                                  v-model="editEduQuality.evaluateProgramQuality"
+                                  v-model="
+                                    editEduQuality.evaluateProgramQuality
+                                  "
                                   placeholder="Nhập nội dung"
                                 ></textarea>
                               </div>
@@ -454,7 +581,9 @@
                                       </td>
                                     </tr>
                                     <tr
-                                      v-for="(item, index) in editEduQuality.processes"
+                                      v-for="(
+                                        item, index
+                                      ) in editEduQuality.processes"
                                       :key="index"
                                     >
                                       <td>{{ item.processName }}</td>
@@ -531,7 +660,13 @@ export default {
   name: "EducationQualityManagePage",
   data() {
     return {
-      columns: ["stt", "evaluationForm", "evaluateProgramQuality", "processes", "tool"],
+      columns: [
+        "stt",
+        "evaluationForm",
+        "evaluateProgramQuality",
+        "processes",
+        "tool",
+      ],
       options: {
         params: {
           id: localStorage.getItem("progId"),
@@ -551,9 +686,13 @@ export default {
       evaluateProgramQuality: "",
 
       processes: [],
+      importProcessesDoc: null,
+      importProcessesDocName: "",
+      importDocMessage: "",
 
       displayModal: false,
       displayModalOne: false,
+      displayModalTwo: false,
 
       editEduQuality: {
         id: "",
@@ -591,6 +730,29 @@ export default {
     hideModal1() {
       this.displayModalOne = false;
     },
+    showModal2() {
+      this.displayModalTwo = true;
+    },
+    hideModal2() {
+      this.displayModalTwo = false;
+    },
+    handleExcelUpload() {
+      this.$refs.importProcessesDoc.click();
+    },
+    handleExcelChange() {
+      const file = this.$refs.importProcessesDoc.files[0]
+      console.log(file, "file handleExcelChange()")
+      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const MAX_SIZE = 20 * 1024 * 1024;
+      const tooLarge = file.size > MAX_SIZE;
+      this.importProcessesDoc = file;
+      this.importProcessesDocName = file.name
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.importDocMessage = "";
+      } else {
+        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+      }
+    },
     plusResult() {
       if (!this.processName || !this.processDetail) {
         return this.toast.error("Hãy điền đủ form");
@@ -606,14 +768,20 @@ export default {
       }
     },
     plusResult1() {
-      if (!this.editEduQuality.processName || !this.editEduQuality.processDetail) {
+      if (
+        !this.editEduQuality.processName ||
+        !this.editEduQuality.processDetail
+      ) {
         return this.toast.error("Hãy điền đủ form");
       } else {
         this.editEduQuality.processes.push({
           processName: this.editEduQuality.processName,
           processDetail: this.editEduQuality.processDetail,
         });
-        console.log(this.editEduQuality.processes, "this.editEduQuality.processes plusResult1()");
+        console.log(
+          this.editEduQuality.processes,
+          "this.editEduQuality.processes plusResult1()"
+        );
         this.editEduQuality.processName = "";
         this.editEduQuality.processDetail = "";
         return this.editEduQuality.processes;
@@ -625,7 +793,10 @@ export default {
     },
     deleteResult1(index) {
       this.editEduQuality.processes.splice(index, 1);
-      console.log(this.editEduQuality.processes, "this.editEduQuality.processes deleteResult1()");
+      console.log(
+        this.editEduQuality.processes,
+        "this.editEduQuality.processes deleteResult1()"
+      );
     },
     async submitForm() {
       console.log(this.id, "post api program id");
@@ -661,10 +832,9 @@ export default {
     },
 
     onEdit(item) {
-
       this.editEduQuality.evaluationForm = item.evaluationForm;
       this.editEduQuality.evaluateProgramQuality = item.evaluateProgramQuality;
-      this.editEduQuality.processes = item.processes
+      this.editEduQuality.processes = item.processes;
       this.editEduQuality.id = item._id;
       this.showModal1();
 
@@ -728,6 +898,44 @@ export default {
         location.href = excelFilePath;
       } catch (error) {
         console.log(error, "/api/export-excel-processes catch block error");
+      }
+    },
+    async downloadTemplate() {
+      try {
+        const result = await instance.get("/api/get-processes-template")
+        const templateLink = result.data.path
+        console.log(templateLink, "templateLink downloadTemplate()");
+        location.href = templateLink;
+      } catch (error) {
+        console.log(
+          error,
+          "/api/get-processes-template catch block error"
+        );
+      }
+    },
+    async importFile() {
+      try {
+        let formData = new FormData();
+        formData.append("processes-import-file", this.importProcessesDoc)
+        formData.append("programId", this.id)
+        const result = await instance.post("/api/import-processes-data", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log(result, "result importFile()")
+        if (result.data.error === true) {
+          this.toast.error(result.data.message);
+        } else {
+          this.toast.success(result.data.message);
+          this.$refs.table.refresh();
+          this.importProcessesDoc = null;
+          this.importProcessesDocName = ""
+          this.displayModalTwo = false
+        }
+
+      } catch (error) {
+        console.log(error, "/api/import-processes-data catch block error");
       }
     },
   },

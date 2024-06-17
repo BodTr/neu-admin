@@ -193,7 +193,7 @@ router.get('/api/export-excel-processes', async (req, res) => {
 
 router.get('/api/get-processes-template', async (req, res) => {
     try {
-        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-thong-tin-doi-tac.xlsx'
+        const templateFilePath = process.env.CND_EXCELFILE + 'import-template/template-dam-bao-chat-luong-dao-tao.xlsx'
         res.json({
             error: false,
             path: templateFilePath
@@ -219,14 +219,15 @@ router.post('/api/import-processes-data', uploadToServer.single("processes-impor
         let workbook = new ExcelJs.Workbook()
         await workbook.xlsx.readFile(`${filePath}`)
 
-        let importPartnerArr = []
+        let importProcessArr = []
         const sheet = workbook.getWorksheet(workbook._name);
         sheet.eachRow((row, rowNumber) => {
             // console.log(row.values, "row.values")
             console.log("Row " + rowNumber + " = " +  JSON.stringify(row.values)); // JSON.stringify()
             if (rowNumber > 1) {
-                importPartnerArr.push({
-
+                importProcessArr.push({
+                    evaluationForm: row.values[2],
+                    evaluateProgramQuality: row.values[3],
                     program: {
                         id: programId
                     }
@@ -234,8 +235,8 @@ router.post('/api/import-processes-data', uploadToServer.single("processes-impor
             }
             
         })
-        console.log(importPartnerArr, "importPartnerArr /api/import-processes-data")
-        const savedImportProcesses = await ProcessSchema.insertMany(importPartnerArr)
+        console.log(importProcessArr, "importProcessArr /api/import-processes-data")
+        const savedImportProcesses = await ProcessSchema.insertMany(importProcessArr)
 
         console.log(savedImportProcesses, "savedImportProcesses /api/import-processes-data")
         res.json({
