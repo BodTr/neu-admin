@@ -345,7 +345,13 @@
                   ref="table"
                 >
                   <template v-slot:attachedDoc="item">
-                    {{ item.row.attachedDocName }}
+                    <a 
+                      v-if="item.row.attachedDocLink !== 'undefined'"
+                      :href="item.row.attachedDocLink"
+                    >
+                      {{ item.row.attachedDocName }}
+                    </a>
+                    
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -406,171 +412,133 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <a
-                      v-if="item.row.attachedDocLink !== ''"
-                      :href="item.row.attachedDocLink"
-                      class="btn btn-success btn-icon"
-                    >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
-                      </svg>
-                    </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Quốc gia</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editHTQT.nation"
+                              placeholder="Nhập quốc gia"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Quốc gia</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editHTQT.nation"
-                                  placeholder="Nhập quốc gia"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Nguồn kinh phí</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editHTQT.funding"
-                                  placeholder="Nhập quốc gia"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Nội dung dự án</label>
-                                <textarea
-                                  v-model="editHTQT.planDetail"
-                                  class="form-control"
-                                  row="5"
-                                  placeholder="Nhập nội dung dự án"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Văn bản đính kèm</label
-                                >
-                                <input
-                                  type="file"
-                                  class="form-control"
-                                  ref="attachedDoc1"
-                                  @change="handlePdfChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handlePdfUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editHTQT.attachedDocName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editHTQT.message != ''">
-                                  {{ editHTQT.message }}
-                                </div>
-                              </div>
+                          <div class="mb-3">
+                            <label class="form-label">Nguồn kinh phí</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editHTQT.funding"
+                              placeholder="Nhập quốc gia"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Nội dung dự án</label>
+                            <textarea
+                              v-model="editHTQT.planDetail"
+                              class="form-control"
+                              row="5"
+                              placeholder="Nhập nội dung dự án"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Văn bản đính kèm</label>
+                            <input
+                              type="file"
+                              class="form-control"
+                              ref="attachedDoc1"
+                              @change="handlePdfChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handlePdfUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editHTQT.attachedDocName"
+                                disabled
+                              />
                             </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Phân loại/học phần</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editHTQT.partnerUni"
-                                  placeholder="Nhập phân loại/học phần"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian ký kết</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editHTQT.signingTime"
-                                  placeholder="Nhập Thời gian ký kết"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian hết hạn</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editHTQT.expireTime"
-                                  placeholder="Nhập thời gian hết hạn"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea
-                                  class="form-control"
-                                  rows="5"
-                                  v-model="editHTQT.note"
-                                  placeholder="Nhập ghi chú"
-                                ></textarea>
-                              </div>
+                            <div v-if="editHTQT.message != ''">
+                              {{ editHTQT.message }}
                             </div>
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Phân loại/học phần</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editHTQT.partnerUni"
+                              placeholder="Nhập phân loại/học phần"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian ký kết</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editHTQT.signingTime"
+                              placeholder="Nhập Thời gian ký kết"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian hết hạn</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editHTQT.expireTime"
+                              placeholder="Nhập thời gian hết hạn"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Ghi chú</label>
+                            <textarea
+                              class="form-control"
+                              rows="5"
+                              v-model="editHTQT.note"
+                              placeholder="Nhập ghi chú"
+                            ></textarea>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -727,17 +695,24 @@ export default {
       this.$refs.importHtqtsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importHtqtsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importHtqtsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importHtqtsDoc = file;
-      this.importHtqtsDocName = file.name
+      this.importHtqtsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -879,38 +854,34 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-htqts-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-htqts-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-htqts-template catch block error"
-        );
+        console.log(error, "/api/get-htqts-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("htqts-import-file", this.importHtqtsDoc)
-        formData.append("programId", this.id)
+        formData.append("htqts-import-file", this.importHtqtsDoc);
+        formData.append("programId", this.id);
         const result = await instance.post("/api/import-htqts-data", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log(result, "result importFile()")
+          },
+        });
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importHtqtsDoc = null;
-          this.importHtqtsDocName = ""
-          this.displayModalTwo = false
+          this.importHtqtsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-htqts-data catch block error");
       }

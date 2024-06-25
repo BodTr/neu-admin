@@ -310,7 +310,9 @@
                           disabled
                         />
                       </div>
-                      <div v-if="importDocMessage != ''">{{ importDocMessage }}</div>
+                      <div v-if="importDocMessage != ''">
+                        {{ importDocMessage }}
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -401,132 +403,125 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa quyết định</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Tên quyết định</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDecision.name"
-                                  placeholder="Nhập tên quyết định"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ngày kí</label>
-                                <input
-                                  type="date"
-                                  v-model="editDecision.signDate"
-                                  class="form-control"
-                                  placeholder="Nhập ngày kí date"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Số quyết định</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDecision.number"
-                                  placeholder="Nhập số quyết định"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời hạn hiệu lực</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDecision.expireIn"
-                                  placeholder="Nhập thời hạn hiệu lực"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời hạn hết hiệu lực</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDecision.expireInLL"
-                                  placeholder="Nhập thời hạn hết hiệu lực"
-                                />
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label">Văn bản đính kèm</label>
-                              <input
-                                type="file"
-                                class="form-control"
-                                ref="attachedDoc1"
-                                @change="handlePdfChange1()"
-                                style="display: none"
-                              />
-                              <div class="card">
-                                <button
-                                  @click="handlePdfUpload1()"
-                                  class="btn btn-outline-primary w-100"
-                                >
-                                  Choose File
-                                </button>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editDecision.attachedDocName"
-                                  disabled
-                                />
-                              </div>
-                              <div v-if="editDecision.message != ''">
-                                {{ editDecision.message }}
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Nội dung quyết định</label
-                              >
-                              <textarea
-                                class="form-control"
-                                rows="5"
-                                v-model="editDecision.detail"
-                                placeholder="Nhập nội dung quyết định"
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </template>
                 </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa quyết định</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Tên quyết định</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editDecision.name"
+                              placeholder="Nhập tên quyết định"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Ngày kí</label>
+                            <input
+                              type="date"
+                              v-model="editDecision.signDate"
+                              class="form-control"
+                              placeholder="Nhập ngày kí date"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Số quyết định</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editDecision.number"
+                              placeholder="Nhập số quyết định"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời hạn hiệu lực</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editDecision.expireIn"
+                              placeholder="Nhập thời hạn hiệu lực"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Thời hạn hết hiệu lực</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editDecision.expireInLL"
+                              placeholder="Nhập thời hạn hết hiệu lực"
+                            />
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Văn bản đính kèm</label>
+                          <input
+                            type="file"
+                            class="form-control"
+                            ref="attachedDoc1"
+                            @change="handlePdfChange1()"
+                            style="display: none"
+                          />
+                          <div class="card">
+                            <button
+                              @click="handlePdfUpload1()"
+                              class="btn btn-outline-primary w-100"
+                            >
+                              Choose File
+                            </button>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editDecision.attachedDocName"
+                              disabled
+                            />
+                          </div>
+                          <div v-if="editDecision.message != ''">
+                            {{ editDecision.message }}
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Nội dung quyết định</label>
+                          <textarea
+                            class="form-control"
+                            rows="5"
+                            v-model="editDecision.detail"
+                            placeholder="Nhập nội dung quyết định"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -672,17 +667,24 @@ export default {
       }
     },
     handleExcelChange() {
-      const file = this.$refs.importDecisionsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importDecisionsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importDecisionsDoc = file;
-      this.importDecisionsDocName = file.name
+      this.importDecisionsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     showModal() {
@@ -770,7 +772,7 @@ export default {
 
     async onSubmit() {
       try {
-        console.log(this.id, "this.id onSubmit()")
+        console.log(this.id, "this.id onSubmit()");
         let formData = new FormData();
         formData.append("name", this.editDecision.name);
         formData.append("detail", this.editDecision.detail);
@@ -852,38 +854,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-decisions-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-decisions-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-decisions-template catch block error"
-        );
+        console.log(error, "/api/get-decisions-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("decisions-import-file", this.importDecisionsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-decisions-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("decisions-import-file", this.importDecisionsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-decisions-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importDecisionsDoc = null;
-          this.importDecisionsDocName = ""
-          this.displayModalTwo = false
+          this.importDecisionsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-decisions-data catch block error");
       }

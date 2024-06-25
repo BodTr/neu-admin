@@ -584,7 +584,6 @@
                       :key="index"
                       class="mb-1"
                     >
-                      
                       <a :href="doc.docLink">
                         {{ doc.docName }}
                       </a>
@@ -649,365 +648,359 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa đối tác</h5>
-                            <button
-                              @click="closeModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa đối tác</h5>
+                        <button
+                          @click="closeModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Tên trường đối tác tiếng Việt</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPartner.vn_name"
+                              placeholder="Nhập tên đối tác tiếng Việt"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên trường đối tác tiếng Việt</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPartner.vn_name"
-                                  placeholder="Nhập tên đối tác tiếng Việt"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên trường đối tác tiếng Anh</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPartner.en_name"
-                                  placeholder="Nhập tên đối tác tiếng Việt"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Website</label>
-                                <input
-                                  type="text"
-                                  v-model="editPartner.website"
-                                  class="form-control"
-                                  placeholder="Nhập địa chỉ website"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Địa chỉ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPartner.address"
-                                  placeholder="Nhập địa chỉ"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Xếp hạng quốc tế</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPartner.internationalRanking"
-                                  placeholder="Nhập xếp hạng quốc tế"
-                                />
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div class="form-label required">
-                                Các văn bản kiểm định/công nhận chất lượng đào
-                                tạo
-                              </div>
-                              <input
-                                type="file"
-                                name="docs"
-                                class="form-control"
-                                ref="docs1"
-                                @change="handleFilesUpload1()"
-                                style="display: none"
-                                id="docs_file1"
-                                multiple
-                              />
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Tên trường đối tác tiếng Anh</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPartner.en_name"
+                              placeholder="Nhập tên đối tác tiếng Việt"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input
+                              type="text"
+                              v-model="editPartner.website"
+                              class="form-control"
+                              placeholder="Nhập địa chỉ website"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Địa chỉ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPartner.address"
+                              placeholder="Nhập địa chỉ"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Xếp hạng quốc tế</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPartner.internationalRanking"
+                              placeholder="Nhập xếp hạng quốc tế"
+                            />
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <div class="form-label required">
+                            Các văn bản kiểm định/công nhận chất lượng đào tạo
+                          </div>
+                          <input
+                            type="file"
+                            name="docs"
+                            class="form-control"
+                            ref="docs1"
+                            @change="handleFilesUpload1()"
+                            style="display: none"
+                            id="docs_file1"
+                            multiple
+                          />
 
-                              <div id="filesUploadControl1" class="card">
-                                <a
-                                  id="btnF1"
-                                  @click="handleDocsUpload1()"
-                                  class="btn btn-outline-primary w-100"
-                                  >Choose Files</a
-                                >
-                                <div
-                                  v-for="(doc, index) in editPartner.docs"
-                                  :key="index"
-                                  class="list-group card-list-group"
-                                >
-                                  <div class="list-group-item">
-                                    <div class="row g-2 align-items-center">
-                                      <div class="col">
-                                        {{ doc.name }}
-                                        <div
-                                          style="color: red"
-                                          v-if="doc.invalidMessage"
-                                        >
-                                          {{ doc.invalidMessage }}
-                                        </div>
-                                      </div>
-                                      <div class="col-auto">
-                                        <button
-                                          class="btn btn-pinterest w-100 btn-icon"
-                                          @click="deleteDoc1(index)"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            fill="currentColor"
-                                            class="bi bi-x-lg"
-                                            viewBox="0 0 16 16"
-                                          >
-                                            <path
-                                              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
-                                            />
-                                          </svg>
-                                        </button>
-                                      </div>
+                          <div id="filesUploadControl1" class="card">
+                            <a
+                              id="btnF1"
+                              @click="handleDocsUpload1()"
+                              class="btn btn-outline-primary w-100"
+                              >Choose Files</a
+                            >
+                            <div
+                              v-for="(doc, index) in editPartner.docs"
+                              :key="index"
+                              class="list-group card-list-group"
+                            >
+                              <div class="list-group-item">
+                                <div class="row g-2 align-items-center">
+                                  <div class="col">
+                                    {{ doc.name }}
+                                    <div
+                                      style="color: red"
+                                      v-if="doc.invalidMessage"
+                                    >
+                                      {{ doc.invalidMessage }}
                                     </div>
+                                  </div>
+                                  <div class="col-auto">
+                                    <button
+                                      class="btn btn-pinterest w-100 btn-icon"
+                                      @click="deleteDoc1(index)"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-x-lg"
+                                        viewBox="0 0 16 16"
+                                      >
+                                        <path
+                                          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                        />
+                                      </svg>
+                                    </button>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <h3>Thông tin người liên hệ</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editPartner.contacterName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editPartner.contacterPosition"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editPartner.contacterEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editPartner.contacterUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Lãnh đạo cấp trường</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editPartner.uniLeaderName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editPartner.uniLeaderPosition"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editPartner.uniLeaderEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editPartner.uniLeaderUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Lãnh đạo đơn vị liên kết</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editPartner.unitLeaderName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editPartner.unitLeaderPosition"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editPartner.unitLeaderEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editPartner.unitLeaderUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Đại diện bộ phận đối ngoại</h3>
-                            <!-- Foreign Affair Representative (FAR)-->
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editPartner.farName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editPartner.farPosition"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editPartner.farEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editPartner.farUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Người phụ trách chương trình</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editPartner.progManagerName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editPartner.progManagerPosition"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editPartner.progManagerEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editPartner.progManagerUnit"
-                                />
-                              </div>
-                            </div>
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                        </div>
+                        <h3>Thông tin người liên hệ</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editPartner.contacterName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editPartner.contacterPosition"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editPartner.contacterEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editPartner.contacterUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Lãnh đạo cấp trường</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editPartner.uniLeaderName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editPartner.uniLeaderPosition"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editPartner.uniLeaderEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editPartner.uniLeaderUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Lãnh đạo đơn vị liên kết</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editPartner.unitLeaderName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editPartner.unitLeaderPosition"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editPartner.unitLeaderEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editPartner.unitLeaderUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Đại diện bộ phận đối ngoại</h3>
+                        <!-- Foreign Affair Representative (FAR)-->
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editPartner.farName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editPartner.farPosition"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editPartner.farEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editPartner.farUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Người phụ trách chương trình</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editPartner.progManagerName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editPartner.progManagerPosition"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editPartner.progManagerEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editPartner.progManagerUnit"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1258,17 +1251,24 @@ export default {
       }
     },
     handleExcelChange() {
-      const file = this.$refs.importPartnersDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importPartnersDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importPartnersDoc = file;
-      this.importPartnersDocName = file.name
+      this.importPartnersDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     handleDocsUpload() {
@@ -1583,38 +1583,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-partners-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-partners-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-partners-template catch block error"
-        );
+        console.log(error, "/api/get-partners-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("partners-import-file", this.importPartnersDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-partners-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("partners-import-file", this.importPartnersDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-partners-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importPartnersDoc = null;
-          this.importPartnersDocName = ""
-          this.displayModalTwo = false
+          this.importPartnersDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-partners-data catch block error");
       }

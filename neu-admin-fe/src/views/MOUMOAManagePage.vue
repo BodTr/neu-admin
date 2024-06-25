@@ -47,7 +47,27 @@
                   @click="getExcelFile()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
                   Export excel
                 </a>
                 <a
@@ -336,7 +356,13 @@
                     <div v-html="item.row.docDetail"></div>
                   </template>
                   <template v-slot:attachedDoc="item">
-                    {{ item.row.attachedDocName }}
+                    <a
+                      v-if="item.row.attachedDocLink !== 'undefined'"
+                      :href="item.row.attachedDocLink"
+                    >
+                      {{ item.row.attachedDocName }}
+                    </a>
+
                   </template>
                   <template v-slot:status="item">
                     <span
@@ -344,10 +370,14 @@
                       class="badge bg-green text-green-fg"
                       >Đang hoạt động</span
                     >
-                    <span v-else-if="item.row.status === 3" class="badge bg-red text-red-fg"
+                    <span
+                      v-else-if="item.row.status === 3"
+                      class="badge bg-red text-red-fg"
                       >Đã hết hạn</span
                     >
-                    <span v-else-if="item.row.status === 2" class="badge bg-yellow text-red-fg"
+                    <span
+                      v-else-if="item.row.status === 2"
+                      class="badge bg-yellow text-red-fg"
                       >Sắp hết hạn</span
                     >
                   </template>
@@ -410,181 +440,141 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <a
-                      v-if="item.row.attachedDocLink !== ''"
-                      :href="item.row.attachedDocLink"
-                      class="btn btn-success btn-icon"
-                    >
-                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-files"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-                        <path
-                          d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"
-                        />
-                        <path
-                          d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"
-                        />
-                      </svg>
-                    </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Quốc gia</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editMoumoa.nation"
+                              placeholder="Nhập quốc gia"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Quốc gia</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editMoumoa.nation"
-                                  placeholder="Nhập quốc gia"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Loại văn bản</label>
-                                <select
-                                  v-model="editMoumoa.docType"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn loại văn bản
-                                  </option>
-                                  <option value="MOU">MOU</option>
-                                  <option value="MOA">MOA</option>
-                                  <option value="Letter of intend">
-                                    Letter of intend
-                                  </option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Nội dung văn bản</label
-                                >
-                                <textarea
-                                  v-model="editMoumoa.docDetail"
-                                  class="form-control"
-                                  row="5"
-                                  placeholder="Nhập nội dung văn bản"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Văn bản đính kèm</label
-                                >
-                                <input
-                                  type="file"
-                                  class="form-control"
-                                  ref="attachedDoc1"
-                                  @change="handlePdfChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handlePdfUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editMoumoa.attachedDocName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editMoumoa.message != ''">
-                                  {{ editMoumoa.message }}
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Phân loại/học phần</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editMoumoa.partnerUni"
-                                  placeholder="Nhập phân loại/học phần"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian ký kết</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editMoumoa.signingTime"
-                                  placeholder="Nhập thời gian ký kết"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian hết hạn</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editMoumoa.expireTime"
-                                  placeholder="Nhập Thời gian hết hạn"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea
-                                  class="form-control"
-                                  rows="5"
-                                  v-model="editMoumoa.note"
-                                  placeholder="Nhập ghi chú"
-                                ></textarea>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label">Loại văn bản</label>
+                            <select
+                              v-model="editMoumoa.docType"
+                              class="form-select"
+                              tabindex="-1"
                             >
-                              Chỉnh sửa
-                            </a>
+                              <option value="" disabled selected>
+                                Chọn loại văn bản
+                              </option>
+                              <option value="MOU">MOU</option>
+                              <option value="MOA">MOA</option>
+                              <option value="Letter of intend">
+                                Letter of intend
+                              </option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Nội dung văn bản</label>
+                            <textarea
+                              v-model="editMoumoa.docDetail"
+                              class="form-control"
+                              row="5"
+                              placeholder="Nhập nội dung văn bản"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Văn bản đính kèm</label>
+                            <input
+                              type="file"
+                              class="form-control"
+                              ref="attachedDoc1"
+                              @change="handlePdfChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handlePdfUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editMoumoa.attachedDocName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editMoumoa.message != ''">
+                              {{ editMoumoa.message }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Phân loại/học phần</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editMoumoa.partnerUni"
+                              placeholder="Nhập phân loại/học phần"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian ký kết</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editMoumoa.signingTime"
+                              placeholder="Nhập thời gian ký kết"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian hết hạn</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editMoumoa.expireTime"
+                              placeholder="Nhập Thời gian hết hạn"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Ghi chú</label>
+                            <textarea
+                              class="form-control"
+                              rows="5"
+                              v-model="editMoumoa.note"
+                              placeholder="Nhập ghi chú"
+                            ></textarea>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -676,9 +666,7 @@ export default {
     return { toast };
   },
 
-
   methods: {
-
     handlePdfUpload() {
       this.$refs.attachedDoc.click();
     },
@@ -745,17 +733,24 @@ export default {
       this.$refs.importMOUMOAsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importMOUMOAsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importMOUMOAsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importMOUMOAsDoc = file;
-      this.importMOUMOAsDocName = file.name
+      this.importMOUMOAsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -805,12 +800,14 @@ export default {
     },
 
     onEdit(item) {
-      let signingTime = item.signingTime
-      let expireTime = item.expireTime
-      let a_signingTime = signingTime.split("/")
-      let a_expireTime = expireTime.split("/")
-      signingTime = a_signingTime[2] + "-" + a_signingTime[1] + "-" + a_signingTime[0]
-      expireTime = a_expireTime[2] + "-" + a_expireTime[1] + "-" + a_expireTime[0]
+      let signingTime = item.signingTime;
+      let expireTime = item.expireTime;
+      let a_signingTime = signingTime.split("/");
+      let a_expireTime = expireTime.split("/");
+      signingTime =
+        a_signingTime[2] + "-" + a_signingTime[1] + "-" + a_signingTime[0];
+      expireTime =
+        a_expireTime[2] + "-" + a_expireTime[1] + "-" + a_expireTime[0];
       this.editMoumoa.nation = item.nation;
       this.editMoumoa.docType = item.docType;
       this.editMoumoa.docDetail = item.docDetail;
@@ -870,7 +867,9 @@ export default {
       console.log(item);
       try {
         if (confirm("Xóa văn bản này?")) {
-          const result = await instance.delete(`/api/delete-moumoa/${item._id}`);
+          const result = await instance.delete(
+            `/api/delete-moumoa/${item._id}`
+          );
           console.log(result);
           // alert(result.data.message)
           this.toast.warning(result.data.message);
@@ -882,48 +881,48 @@ export default {
     },
     async getExcelFile() {
       try {
-        const result = await instance.get('/api/export-excel-moumoas')
-        const excelFilePath = result.data.path
-        console.log(excelFilePath, "excelFilePath getExcelFile()")
-        location.href = excelFilePath
+        const result = await instance.get("/api/export-excel-moumoas");
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
       } catch (error) {
-        console.log(error, "/api/export-excel-moumoas catch block error")
+        console.log(error, "/api/export-excel-moumoas catch block error");
       }
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-moumoas-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-moumoas-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-moumoas-template catch block error"
-        );
+        console.log(error, "/api/get-moumoas-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("moumoas-import-file", this.importMOUMOAsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-moumoas-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("moumoas-import-file", this.importMOUMOAsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-moumoas-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importMOUMOAsDoc = null;
-          this.importMOUMOAsDocName = ""
-          this.displayModalTwo = false
+          this.importMOUMOAsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-moumoas-data catch block error");
       }

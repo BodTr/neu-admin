@@ -483,27 +483,28 @@
                     >
                   </template>
                   <template v-slot:suggestUnit="item">
-                    <a v-if="item.row.suggestUnitLink !== 'undefined'"
+                    <a
+                      v-if="item.row.suggestUnitLink !== 'undefined'"
                       :href="item.row.suggestUnitLink"
                     >
                       {{ item.row.suggestUnitName }}
                     </a>
                   </template>
                   <template v-slot:decisionNumber="item">
-                    <a v-if="item.row.decisionNumberLink !== 'undefined'"
+                    <a
+                      v-if="item.row.decisionNumberLink !== 'undefined'"
                       :href="item.row.decisionNumberLink"
                     >
                       {{ item.row.decisionNumberName }}
                     </a>
                   </template>
                   <template v-slot:attachedFile="item">
-
-                    <a v-if="item.row.attachedFileLink !== 'undefined'"
+                    <a
+                      v-if="item.row.attachedFileLink !== 'undefined'"
                       :href="item.row.attachedFileLink"
                     >
                       {{ item.row.attachedFileName }}
                     </a>
-
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -564,273 +565,265 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.name"
+                              placeholder="Nhập họ và tên sinh viên"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Họ và tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.name"
-                                  placeholder="Nhập họ và tên sinh viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ngày sinh</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editExtendVisa.birthday"
-                                  placeholder="Nhập ngày sinh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Giới tính</label>
-                                <select
-                                  v-model="editExtendVisa.sex"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn giới tính
-                                  </option>
-                                  <option value="Nam">Nam</option>
-                                  <option value="Nữ">Nữ</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Quốc tịch</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.nationality"
-                                  placeholder="Nhập quốc tịch"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số hộ chiếu</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.visaCode"
-                                  placeholder="Nhập "
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số điện thoại</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.phoneNumber"
-                                  placeholder="Nhập số điện thoại"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Nghề nghiệp</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.job"
-                                  placeholder="Nhập nghề nghiệp"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Mục đích</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.purpose"
-                                  placeholder="Nhập mục đích"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Mã số sinh viên</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.studentCode"
-                                  placeholder="Nhập mã số sinh viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số giấy phép lao động</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.workPermit"
-                                  placeholder="Nhập số giấy phép lao động"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Loại hộ chiếu</label>
-                                <select
-                                  v-model="editExtendVisa.visaType"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn loại visa
-                                  </option>
-                                  <option value="Một lần">Một lần</option>
-                                  <option value="Nhiều lần">Nhiều lần</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Địa chỉ tạm trú</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editExtendVisa.address"
-                                  placeholder="Nhập địa chỉ tạm trú"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Từ ngày</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editExtendVisa.visaBeginDay"
-                                  placeholder="Nhập ngày visa bắt đầu hiệu lực"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đến ngày</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editExtendVisa.visaEndDay"
-                                  placeholder="Nhập ngày visa hết hiệu lực"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị đề nghị</label>
-                                <input
-                                  type="file"
-                                  class="form-control"
-                                  ref="suggestUnit1"
-                                  @change="handleSuggestUnitChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handleSuggestUnitUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExtendVisa.suggestUnitName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editExtendVisa.uMessage != ''">
-                                  {{ editExtendVisa.uMessage }}
-                                </div>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số quyết định</label>
-                                <input
-                                  type="file"
-                                  ref="decisionNumber1"
-                                  class="form-control"
-                                  @change="handleDecisionNumberChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handleDecisionNumberUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExtendVisa.decisionNumberName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editExtendVisa.eMessage != ''">
-                                  {{ editExtendVisa.eMessage }}
-                                </div>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Upload ảnh hoặc Pdf</label
-                                >
-                                <input
-                                  type="file"
-                                  ref="attachedFile1"
-                                  class="form-control"
-                                  @change="handleFileChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handleFileUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExtendVisa.fileName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editExtendVisa.sMessage != ''">
-                                  {{ editExtendVisa.sMessage }}
-                                </div>
-                              </div>
-                            </div>
+                          <div class="mb-3">
+                            <label class="form-label">Ngày sinh</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editExtendVisa.birthday"
+                              placeholder="Nhập ngày sinh"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label">Giới tính</label>
+                            <select
+                              v-model="editExtendVisa.sex"
+                              class="form-select"
+                              tabindex="-1"
                             >
-                              Chỉnh sửa
-                            </a>
+                              <option value="" disabled selected>
+                                Chọn giới tính
+                              </option>
+                              <option value="Nam">Nam</option>
+                              <option value="Nữ">Nữ</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Quốc tịch</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.nationality"
+                              placeholder="Nhập quốc tịch"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số hộ chiếu</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.visaCode"
+                              placeholder="Nhập "
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.phoneNumber"
+                              placeholder="Nhập số điện thoại"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Nghề nghiệp</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.job"
+                              placeholder="Nhập nghề nghiệp"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Mục đích</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.purpose"
+                              placeholder="Nhập mục đích"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Mã số sinh viên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.studentCode"
+                              placeholder="Nhập mã số sinh viên"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số giấy phép lao động</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.workPermit"
+                              placeholder="Nhập số giấy phép lao động"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Loại hộ chiếu</label>
+                            <select
+                              v-model="editExtendVisa.visaType"
+                              class="form-select"
+                              tabindex="-1"
+                            >
+                              <option value="" disabled selected>
+                                Chọn loại visa
+                              </option>
+                              <option value="Một lần">Một lần</option>
+                              <option value="Nhiều lần">Nhiều lần</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Địa chỉ tạm trú</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editExtendVisa.address"
+                              placeholder="Nhập địa chỉ tạm trú"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Từ ngày</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editExtendVisa.visaBeginDay"
+                              placeholder="Nhập ngày visa bắt đầu hiệu lực"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đến ngày</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editExtendVisa.visaEndDay"
+                              placeholder="Nhập ngày visa hết hiệu lực"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị đề nghị</label>
+                            <input
+                              type="file"
+                              class="form-control"
+                              ref="suggestUnit1"
+                              @change="handleSuggestUnitChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handleSuggestUnitUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExtendVisa.suggestUnitName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editExtendVisa.uMessage != ''">
+                              {{ editExtendVisa.uMessage }}
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số quyết định</label>
+                            <input
+                              type="file"
+                              ref="decisionNumber1"
+                              class="form-control"
+                              @change="handleDecisionNumberChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handleDecisionNumberUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExtendVisa.decisionNumberName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editExtendVisa.eMessage != ''">
+                              {{ editExtendVisa.eMessage }}
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Upload ảnh hoặc Pdf</label
+                            >
+                            <input
+                              type="file"
+                              ref="attachedFile1"
+                              class="form-control"
+                              @change="handleFileChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handleFileUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExtendVisa.fileName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editExtendVisa.sMessage != ''">
+                              {{ editExtendVisa.sMessage }}
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1105,17 +1098,24 @@ export default {
       }
     },
     handleExcelChange() {
-      const file = this.$refs.importVisasDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importVisasDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importVisasDoc = file;
-      this.importVisasDocName = file.name
+      this.importVisasDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     showModal() {
@@ -1333,38 +1333,34 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-visas-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-visas-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-visas-template catch block error"
-        );
+        console.log(error, "/api/get-visas-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("visas-import-file", this.importVisasDoc)
-        formData.append("programId", this.id)
+        formData.append("visas-import-file", this.importVisasDoc);
+        formData.append("programId", this.id);
         const result = await instance.post("/api/import-visas-data", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log(result, "result importFile()")
+          },
+        });
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importVisasDoc = null;
-          this.importVisasDocName = ""
-          this.displayModalTwo = false
+          this.importVisasDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-visas-data catch block error");
       }

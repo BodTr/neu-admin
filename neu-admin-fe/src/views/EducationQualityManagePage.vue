@@ -464,184 +464,175 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa quy trình</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <h3>Cơ chế đảm bảo chất lượng đào tạo</h3>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa quy trình</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <h3>Cơ chế đảm bảo chất lượng đào tạo</h3>
 
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Hình thức kiểm tra đánh giá</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="3"
-                                  v-model="editEduQuality.evaluationForm"
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Khảo sát đánh giá chất lượng chương
-                                  trình</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="3"
-                                  v-model="
-                                    editEduQuality.evaluateProgramQuality
-                                  "
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                            </div>
-
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Các quy trình tự đảm bảo chất lượng đào
-                                tạo</label
-                              >
-                              <div class="table-responsive">
-                                <table class="table mb-0">
-                                  <thead>
-                                    <tr class="g-2 align-items-center">
-                                      <th>Quy trình</th>
-                                      <th style="width: 60%">
-                                        Nội dung quy trình
-                                      </th>
-                                      <th>Thao tác</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <textarea
-                                          class="form-control"
-                                          row="1"
-                                          placeholder="Nhập tên quy trình"
-                                          v-model="editEduQuality.processName"
-                                        ></textarea>
-                                      </td>
-                                      <td>
-                                        <textarea
-                                          class="form-control"
-                                          row="1"
-                                          placeholder="Nhập nội dung quy trình"
-                                          v-model="editEduQuality.processDetail"
-                                        ></textarea>
-                                      </td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          @click="plusResult1()"
-                                          class="btn btn-azure btn-icon"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
-                                          >
-                                            <path
-                                              stroke="none"
-                                              d="M0 0h24v24H0z"
-                                              fill="none"
-                                            />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                          </svg>
-                                        </a>
-                                      </td>
-                                    </tr>
-                                    <tr
-                                      v-for="(
-                                        item, index
-                                      ) in editEduQuality.processes"
-                                      :key="index"
-                                    >
-                                      <td>{{ item.processName }}</td>
-                                      <td>{{ item.processDetail }}</td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          @click="deleteResult1(index)"
-                                          class="btn btn-ghost-danger btn-icon"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-                                          >
-                                            <path
-                                              stroke="none"
-                                              d="M0 0h24v24H0z"
-                                              fill="none"
-                                            />
-                                            <path d="M4 7l16 0" />
-                                            <path d="M10 11l0 6" />
-                                            <path d="M14 11l0 6" />
-                                            <path
-                                              d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
-                                            />
-                                            <path
-                                              d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
-                                            />
-                                          </svg>
-                                        </a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Hình thức kiểm tra đánh giá</label
                             >
-                              Chỉnh sửa
-                            </a>
+                            <textarea
+                              class="form-control"
+                              rows="3"
+                              v-model="editEduQuality.evaluationForm"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Khảo sát đánh giá chất lượng chương trình</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="3"
+                              v-model="editEduQuality.evaluateProgramQuality"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Các quy trình tự đảm bảo chất lượng đào tạo</label
+                          >
+                          <div class="table-responsive">
+                            <table class="table mb-0">
+                              <thead>
+                                <tr class="g-2 align-items-center">
+                                  <th>Quy trình</th>
+                                  <th style="width: 60%">Nội dung quy trình</th>
+                                  <th>Thao tác</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <textarea
+                                      class="form-control"
+                                      row="1"
+                                      placeholder="Nhập tên quy trình"
+                                      v-model="editEduQuality.processName"
+                                    ></textarea>
+                                  </td>
+                                  <td>
+                                    <textarea
+                                      class="form-control"
+                                      row="1"
+                                      placeholder="Nhập nội dung quy trình"
+                                      v-model="editEduQuality.processDetail"
+                                    ></textarea>
+                                  </td>
+                                  <td>
+                                    <a
+                                      href="#"
+                                      @click="plusResult1()"
+                                      class="btn btn-azure btn-icon"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
+                                      >
+                                        <path
+                                          stroke="none"
+                                          d="M0 0h24v24H0z"
+                                          fill="none"
+                                        />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                      </svg>
+                                    </a>
+                                  </td>
+                                </tr>
+                                <tr
+                                  v-for="(
+                                    item, index
+                                  ) in editEduQuality.processes"
+                                  :key="index"
+                                >
+                                  <td>{{ item.processName }}</td>
+                                  <td>{{ item.processDetail }}</td>
+                                  <td>
+                                    <a
+                                      href="#"
+                                      @click="deleteResult1(index)"
+                                      class="btn btn-ghost-danger btn-icon"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                      >
+                                        <path
+                                          stroke="none"
+                                          d="M0 0h24v24H0z"
+                                          fill="none"
+                                        />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path
+                                          d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                                        />
+                                        <path
+                                          d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+                                        />
+                                      </svg>
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -740,17 +731,24 @@ export default {
       this.$refs.importProcessesDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importProcessesDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importProcessesDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importProcessesDoc = file;
-      this.importProcessesDocName = file.name
+      this.importProcessesDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     plusResult() {
@@ -902,38 +900,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-processes-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-processes-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-processes-template catch block error"
-        );
+        console.log(error, "/api/get-processes-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("processes-import-file", this.importProcessesDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-processes-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("processes-import-file", this.importProcessesDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-processes-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importProcessesDoc = null;
-          this.importProcessesDocName = ""
-          this.displayModalTwo = false
+          this.importProcessesDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-processes-data catch block error");
       }

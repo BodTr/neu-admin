@@ -362,93 +362,88 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="mb-3">
+                          <label class="form-label">Tên tiếng Việt</label>
+                          <textarea
+                            class="form-control"
+                            row="1"
+                            v-model="editProgram.name"
+                            placeholder="Nhập tên chương trình"
+                          ></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Tên tiếng Anh</label>
+                          <textarea
+                            class="form-control"
+                            row="1"
+                            v-model="editProgram.name_en"
+                            placeholder="Nhập tên chương trình"
+                          ></textarea>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Tên thương hiệu</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editProgram.degreeType"
+                              placeholder="Nhập tên thương hiệu"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="mb-3">
-                              <label class="form-label">Tên tiếng Việt</label>
-                              <textarea
-                                class="form-control"
-                                row="1"
-                                v-model="editProgram.name"
-                                placeholder="Nhập tên chương trình"
-                              ></textarea>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label">Tên tiếng Anh</label>
-                              <textarea
-                                class="form-control"
-                                row="1"
-                                v-model="editProgram.name_en"
-                                placeholder="Nhập tên chương trình"
-                              ></textarea>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên thương hiệu</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editProgram.degreeType"
-                                  placeholder="Nhập tên thương hiệu"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Tên văn bằng</label>
-                                <textarea
-                                  class="form-control"
-                                  row="1"
-                                  v-model="editProgram.degreeName"
-                                  placeholder="Nhập tên văn bằng"
-                                ></textarea>
-                              </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Tên văn bằng</label>
+                            <textarea
+                              class="form-control"
+                              row="1"
+                              v-model="editProgram.degreeName"
+                              placeholder="Nhập tên văn bằng"
+                            ></textarea>
+                          </div>
 
-                              <div class="mb-3">
-                                <label class="form-label">Nơi cấp</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editProgram.issuedBy"
-                                  placeholder="Nhập nơi cấp"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                          <div class="mb-3">
+                            <label class="form-label">Nơi cấp</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editProgram.issuedBy"
+                              placeholder="Nhập nơi cấp"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -562,17 +557,24 @@ export default {
       this.$refs.importTransProgDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importTransProgDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importTransProgDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importTransProgDoc = file;
-      this.importTransProgDocName = file.name
+      this.importTransProgDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.message = "";
       } else {
-        this.message = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.message =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -622,7 +624,6 @@ export default {
     },
 
     async onSubmit() {
-
       try {
         const data = {
           name: this.editProgram.name,
@@ -686,8 +687,8 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-trans-programs-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-trans-programs-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
@@ -700,29 +701,31 @@ export default {
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("trans-programs-import-file", this.importTransProgDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-trans-programs-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("trans-programs-import-file", this.importTransProgDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-trans-programs-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importTransProgDoc = null;
-          this.importTransProgDocName = ""
-          this.displayModalTwo = false
+          this.importTransProgDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-trans-programs-data catch block error");
       }
     },
-
   },
 };
 </script>

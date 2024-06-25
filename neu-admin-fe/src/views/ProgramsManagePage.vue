@@ -46,7 +46,27 @@
                   @click="getExcelFile()"
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"
+                    />
+                    <path d="M3 10h18" />
+                    <path d="M10 3v18" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16l3 3l-3 3" />
+                  </svg>
                   Export excel
                 </a>
                 <a
@@ -158,7 +178,6 @@
                           placeholder="Nhập tên chuyên ngành"
                         />
                       </div>
-
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
@@ -313,7 +332,9 @@
                     <span v-else>{{ item.row.agency }}</span>
                   </template>
                   <template v-slot:agencyPhoneNumber="item">
-                    <span v-if="!item.row.agencyPhoneNumber">Chưa liên kết</span>
+                    <span v-if="!item.row.agencyPhoneNumber"
+                      >Chưa liên kết</span
+                    >
                     <span v-else>{{ item.row.agencyPhoneNumber }}</span>
                   </template>
                   <template v-slot:status="item">
@@ -322,10 +343,14 @@
                       class="badge bg-green text-green-fg"
                       >Đang hoạt động</span
                     >
-                    <span v-else-if="item.row.status === 3" class="badge bg-red text-red-fg"
+                    <span
+                      v-else-if="item.row.status === 3"
+                      class="badge bg-red text-red-fg"
                       >Đã hết hạn</span
                     >
-                    <span v-else-if="item.row.status === 2" class="badge bg-yellow text-red-fg"
+                    <span
+                      v-else-if="item.row.status === 2"
+                      class="badge bg-yellow text-red-fg"
                       >Sắp hết hạn</span
                     >
                   </template>
@@ -335,19 +360,24 @@
                     </div>
                     <div v-else>
                       <div v-for="(ele, index) in item.row.decisionsArray">
-                        <span
-                          >
-                          <a
-                            :href="ele.decisionLink"
-                          >
+                        <span>
+                          <a :href="ele.decisionLink">
                             {{ ele.decisionName }}
                           </a>
                         </span>
                       </div>
-                    </div>
-                  </template>`
+                    </div> </template
+                  >`
                   <template v-slot:name="item">
-                    <div v-on:click="setProgram(item.row)" class="btn btn-ghost-purple" data-toggle="tooltip" data-placement="bottom" title="Quản lý chương trình">{{ item.row.name }}</div>
+                    <div
+                      v-on:click="setProgram(item.row)"
+                      class="btn btn-ghost-purple"
+                      data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Quản lý chương trình"
+                    >
+                      {{ item.row.name }}
+                    </div>
                   </template>
                   <template v-slot:tool="item">
                     <span class="d-sm-inline">
@@ -408,79 +438,78 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa chương trình</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa chương trình</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Tên chương trình</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editprogram.name"
+                              placeholder="Nhập tên chương trình"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên chương trình</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.name"
-                                  placeholder="Nhập tên chương trình"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Quốc gia</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.nation"
-                                  placeholder="Nhập quốc gia"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Trường đối tác</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.parterUni"
-                                  placeholder="Nhập tên trường đối tác"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chuyên ngành</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.major"
-                                  placeholder="Nhập tên chuyên ngành"
-                                />
-                              </div>
-
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Năm</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editprogram.year"
-                                  placeholder="Nhập năm"
-                                />
-                              </div>
-                              <!-- <div class="mb-3 row row-cards">
+                          <div class="mb-3">
+                            <label class="form-label">Quốc gia</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editprogram.nation"
+                              placeholder="Nhập quốc gia"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Trường đối tác</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editprogram.parterUni"
+                              placeholder="Nhập tên trường đối tác"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chuyên ngành</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editprogram.major"
+                              placeholder="Nhập tên chuyên ngành"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Năm</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editprogram.year"
+                              placeholder="Nhập năm"
+                            />
+                          </div>
+                          <!-- <div class="mb-3 row row-cards">
                                 <div class="col-md-10">
                                   <label class="form-label">Đơn vị quản lý</label>
                                   <input
@@ -497,50 +526,43 @@
                                   </a>
                                 </div>
                               </div> -->
-                              <div class="mb-3">
-                                <label class="form-label">Chỉ tiêu</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editprogram.quota"
-                                  placeholder="Nhập chỉ tiêu"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ngày hết hạn</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editprogram.expiry"
-                                  placeholder="Nhập ngày hết hạn"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trình độ đào tạo</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editprogram.level"
-                                  placeholder="Nhập trình độ đào tạo"
-                                />
-                              </div>
-                            </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chỉ tiêu</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editprogram.quota"
+                              placeholder="Nhập chỉ tiêu"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                          <div class="mb-3">
+                            <label class="form-label">Ngày hết hạn</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editprogram.expiry"
+                              placeholder="Nhập ngày hết hạn"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Trình độ đào tạo</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editprogram.level"
+                              placeholder="Nhập trình độ đào tạo"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -661,17 +683,24 @@ export default {
       this.$refs.importProgramsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importProgramsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importProgramsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importProgramsDoc = file;
-      this.importProgramsDocName = file.name
+      this.importProgramsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -716,17 +745,17 @@ export default {
       }
     },
 
-    setProgram(item){
-      localStorage.setItem("progId", item._id)
-      localStorage.setItem("programName", item.name)
-      router.push('/general-infor/trans-program/')
+    setProgram(item) {
+      localStorage.setItem("progId", item._id);
+      localStorage.setItem("programName", item.name);
+      router.push("/general-infor/trans-program/");
     },
 
     onEdit(item) {
-      let expiry = item.expiry
-      let a_expiry = expiry.split("/")
-      console.log(a_expiry, "a_expiry onEdit")
-      expiry = a_expiry[2] + "-" + a_expiry[1] + "-" + a_expiry[0]
+      let expiry = item.expiry;
+      let a_expiry = expiry.split("/");
+      console.log(a_expiry, "a_expiry onEdit");
+      expiry = a_expiry[2] + "-" + a_expiry[1] + "-" + a_expiry[0];
       this.editprogram.name = item.name;
       this.editprogram.year = item.year;
       this.editprogram.nation = item.nation;
@@ -799,47 +828,47 @@ export default {
     },
     async getExcelFile() {
       try {
-        const result = await instance.get('/api/export-excel')
-        const excelFilePath = result.data.path
-        console.log(excelFilePath, "excelFilePath getExcelFile()")
-        location.href = excelFilePath
+        const result = await instance.get("/api/export-excel");
+        const excelFilePath = result.data.path;
+        console.log(excelFilePath, "excelFilePath getExcelFile()");
+        location.href = excelFilePath;
       } catch (error) {
-        console.log(error, "/api/export-excel catch block error")
+        console.log(error, "/api/export-excel catch block error");
       }
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-programs-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-programs-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-programs-template catch block error"
-        );
+        console.log(error, "/api/get-programs-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("programs-import-file", this.importProgramsDoc)
-        const result = await instance.post("/api/import-programs-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("programs-import-file", this.importProgramsDoc);
+        const result = await instance.post(
+          "/api/import-programs-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importProgramsDoc = null;
-          this.importProgramsDocName = ""
-          this.displayModalTwo = false
+          this.importProgramsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-programs-data catch block error");
       }

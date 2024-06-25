@@ -324,50 +324,47 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa đơn vị</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <div class="mb-3">
-                              <label class="form-label">Đơn vị công tác </label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                v-model="editUnit.unit"
-                                placeholder="Nhập tên đơn vị công tác"
-                              />
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </template>
                 </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa đơn vị</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="mb-3">
+                          <label class="form-label">Đơn vị công tác </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="editUnit.unit"
+                            placeholder="Nhập tên đơn vị công tác"
+                          />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -453,17 +450,24 @@ export default {
       this.$refs.importUnitsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importUnitsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importUnitsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importUnitsDoc = file;
-      this.importUnitsDocName = file.name
+      this.importUnitsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -564,38 +568,34 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-units-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-units-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-units-template catch block error"
-        );
+        console.log(error, "/api/get-units-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("units-import-file", this.importUnitsDoc)
-        formData.append("programId", this.id)
+        formData.append("units-import-file", this.importUnitsDoc);
+        formData.append("programId", this.id);
         const result = await instance.post("/api/import-units-data", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log(result, "result importFile()")
+          },
+        });
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importUnitsDoc = null;
-          this.importUnitsDocName = ""
-          this.displayModalTwo = false
+          this.importUnitsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-units-data catch block error");
       }

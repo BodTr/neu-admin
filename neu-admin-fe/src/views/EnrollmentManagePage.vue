@@ -491,215 +491,212 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Năm học</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.year"
+                              placeholder="Nhập năm học"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Năm học</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.year"
-                                  placeholder="Nhập năm học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Chỉ tiêu tuyển sinh</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.enrollmentCount"
-                                  placeholder="Nhập chỉ tiêu tuyển sinh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên nhập học</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.admissionCount"
-                                  placeholder="Nhập số sinh viên nhập học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên chuyển tiếp</label
-                                >
-                                <input
-                                  type="number"
-                                  v-model="editEnroll.transferStudents"
-                                  class="form-control"
-                                  placeholder="Nhập số sinh viên chuyển tiếp"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên tốt nghiệp</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.graduatedCount"
-                                  placeholder="Nhập tên văn bằng"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Quy mô tuyển sinh theo đề án</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.applicantsCount"
-                                  placeholder="Nhập Quy mô tuyển sinh theo đề án"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên trúng tuyển</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.admittedStudents"
-                                  placeholder="Nhập số sinh viên trúng tuyển"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên thôi học</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.dropoutCount"
-                                  placeholder="Nhập số sinh viên thôi học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số sinh viên bảo lưu</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.reservedStudents"
-                                  placeholder="Nhập số sinh viên bảo lưu"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tổng số sinh viên đang đào tạo</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editEnroll.trainingStudents"
-                                  placeholder="Nhập số sinh viên đang đào tạo"
-                                />
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div class="form-label required">
-                                Các quyết định liên quan đến tuyển sinh
-                              </div>
-                              <input
-                                type="file"
-                                name="docs"
-                                class="form-control"
-                                ref="enrollmentDocs1"
-                                @change="handleFilesUpload1()"
-                                style="display: none"
-                                id="docs_file"
-                                multiple
-                              />
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Chỉ tiêu tuyển sinh</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.enrollmentCount"
+                              placeholder="Nhập chỉ tiêu tuyển sinh"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên nhập học</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.admissionCount"
+                              placeholder="Nhập số sinh viên nhập học"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên chuyển tiếp</label
+                            >
+                            <input
+                              type="number"
+                              v-model="editEnroll.transferStudents"
+                              class="form-control"
+                              placeholder="Nhập số sinh viên chuyển tiếp"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên tốt nghiệp</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.graduatedCount"
+                              placeholder="Nhập tên văn bằng"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Quy mô tuyển sinh theo đề án</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.applicantsCount"
+                              placeholder="Nhập Quy mô tuyển sinh theo đề án"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên trúng tuyển</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.admittedStudents"
+                              placeholder="Nhập số sinh viên trúng tuyển"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên thôi học</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.dropoutCount"
+                              placeholder="Nhập số sinh viên thôi học"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số sinh viên bảo lưu</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.reservedStudents"
+                              placeholder="Nhập số sinh viên bảo lưu"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Tổng số sinh viên đang đào tạo</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editEnroll.trainingStudents"
+                              placeholder="Nhập số sinh viên đang đào tạo"
+                            />
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <div class="form-label required">
+                            Các quyết định liên quan đến tuyển sinh
+                          </div>
+                          <input
+                            type="file"
+                            name="docs"
+                            class="form-control"
+                            ref="enrollmentDocs1"
+                            @change="handleFilesUpload1()"
+                            style="display: none"
+                            id="docs_file"
+                            multiple
+                          />
 
-                              <div id="filesUploadControl1" class="card">
-                                <a
-                                  id="btnF"
-                                  @click="handleDocsUpload1()"
-                                  class="btn btn-outline-primary w-100"
-                                  >Choose Files</a
-                                >
-                                <div
-                                  v-for="(doc, index) in editEnroll.docs"
-                                  :key="index"
-                                  class="list-group card-list-group"
-                                >
-                                  <div class="list-group-item">
-                                    <div class="row g-2 align-items-center">
-                                      <div class="col">
-                                        {{ doc.name }}
-                                        <div
-                                          class="text-muted"
-                                          v-if="doc.invalidMessage"
-                                        >
-                                          {{ doc.invalidMessage }}
-                                        </div>
-                                      </div>
-                                      <div class="col-auto">
-                                        <button
-                                          class="btn btn-pinterest w-100 btn-icon"
-                                          @click="deleteDoc1(index)"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            fill="currentColor"
-                                            class="bi bi-x-lg"
-                                            viewBox="0 0 16 16"
-                                          >
-                                            <path
-                                              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
-                                            />
-                                          </svg>
-                                        </button>
-                                      </div>
+                          <div id="filesUploadControl1" class="card">
+                            <a
+                              id="btnF"
+                              @click="handleDocsUpload1()"
+                              class="btn btn-outline-primary w-100"
+                              >Choose Files</a
+                            >
+                            <div
+                              v-for="(doc, index) in editEnroll.docs"
+                              :key="index"
+                              class="list-group card-list-group"
+                            >
+                              <div class="list-group-item">
+                                <div class="row g-2 align-items-center">
+                                  <div class="col">
+                                    {{ doc.name }}
+                                    <div
+                                      class="text-muted"
+                                      v-if="doc.invalidMessage"
+                                    >
+                                      {{ doc.invalidMessage }}
                                     </div>
+                                  </div>
+                                  <div class="col-auto">
+                                    <button
+                                      class="btn btn-pinterest w-100 btn-icon"
+                                      @click="deleteDoc1(index)"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-x-lg"
+                                        viewBox="0 0 16 16"
+                                      >
+                                        <path
+                                          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                        />
+                                      </svg>
+                                    </button>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
-                          </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -861,17 +858,24 @@ export default {
       this.$refs.importEnrollmentsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importEnrollmentsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importEnrollmentsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importEnrollmentsDoc = file;
-      this.importEnrollmentsDocName = file.name
+      this.importEnrollmentsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     validate(doc) {
@@ -1188,38 +1192,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-enrollments-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-enrollments-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-enrollments-template catch block error"
-        );
+        console.log(error, "/api/get-enrollments-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("enrollments-import-file", this.importEnrollmentsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-enrollments-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("enrollments-import-file", this.importEnrollmentsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-enrollments-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importEnrollmentsDoc = null;
-          this.importEnrollmentsDocName = ""
-          this.displayModalTwo = false
+          this.importEnrollmentsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-enrollments-data catch block error");
       }

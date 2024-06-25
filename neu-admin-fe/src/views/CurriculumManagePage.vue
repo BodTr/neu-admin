@@ -373,103 +373,98 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">
-                              Chỉnh sửa khung chương trình
-                            </h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Khung chương trình theo đề án</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editCurriculum.name"
-                                  placeholder="Nhập khung chương trình"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Năm học/học kỳ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editCurriculum.year"
-                                  placeholder="Nhập năm học/học kỳ"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Địa điểm đào tạo</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editCurriculum.location"
-                                  placeholder="Nhập địa điểm đào tạo"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Giảng dạy theo giáo trình của bên nào</label
-                                >
-                                <select
-                                  v-model="editCurriculum.subjectType"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn giáo trình
-                                  </option>
-                                  <option value="NEU">NEU</option>
-                                  <option value="Đối tác">Đối tác</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số tín chỉ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editCurriculum.creditsCount"
-                                  placeholder="Nhập số tín chỉ"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">
+                          Chỉnh sửa khung chương trình
+                        </h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Khung chương trình theo đề án</label
                             >
-                              Chỉnh sửa
-                            </a>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editCurriculum.name"
+                              placeholder="Nhập khung chương trình"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Năm học/học kỳ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editCurriculum.year"
+                              placeholder="Nhập năm học/học kỳ"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Địa điểm đào tạo</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editCurriculum.location"
+                              placeholder="Nhập địa điểm đào tạo"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Giảng dạy theo giáo trình của bên nào</label
+                            >
+                            <select
+                              v-model="editCurriculum.subjectType"
+                              class="form-select"
+                              tabindex="-1"
+                            >
+                              <option value="" disabled selected>
+                                Chọn giáo trình
+                              </option>
+                              <option value="NEU">NEU</option>
+                              <option value="Đối tác">Đối tác</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số tín chỉ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editCurriculum.creditsCount"
+                              placeholder="Nhập số tín chỉ"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -572,17 +567,24 @@ export default {
       this.$refs.importCurriculumsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importCurriculumsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importCurriculumsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importCurriculumsDoc = file;
-      this.importCurriculumsDocName = file.name
+      this.importCurriculumsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -696,38 +698,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-curriculums-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-curriculums-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-curriculums-template catch block error"
-        );
+        console.log(error, "/api/get-curriculums-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("curriculums-import-file", this.importCurriculumsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-curriculums-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("curriculums-import-file", this.importCurriculumsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-curriculums-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importCloseDecisionsDoc = null;
-          this.importCloseDecisionsDocName = ""
-          this.displayModalTwo = false
+          this.importCloseDecisionsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-curriculums-data catch block error");
       }

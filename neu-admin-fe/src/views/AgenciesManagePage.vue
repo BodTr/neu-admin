@@ -475,204 +475,199 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị thực hiện</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Nhập đơn vị thực hiện"
+                              v-model="editAgency.unit"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Đơn vị thực hiện</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Nhập đơn vị thực hiện"
-                                  v-model="editAgency.unit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Lãnh đạo phụ trách chương trình</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editAgency.progLeaderName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editAgency.progLeaderPosition"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số điện thoại</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Số điện thoại"
-                                  v-model="editAgency.progLeaderPhoneNumber"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editAgency.progLeaderEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editAgency.progLeaderUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Chủ nhiệm chương trình</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editAgency.progManagementName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editAgency.progManagementPosition"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số điện thoại</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Số điện thoại"
-                                  v-model="editAgency.progManagementPhoneNumber"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editAgency.progManagementEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editAgency.progManagementUnit"
-                                />
-                              </div>
-                            </div>
-                            <h3>Điều phối viên chương trình</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Họ tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Họ tên"
-                                  v-model="editAgency.coordinatorName"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chức vụ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Chức vụ"
-                                  v-model="editAgency.coordinatorPosition"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số điện thoại</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Số điện thoại"
-                                  v-model="editAgency.coordinatorPhoneNumber"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  v-model="editAgency.coordinatorEmail"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Đơn vị</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Đơn vị"
-                                  v-model="editAgency.coordinatorUnit"
-                                />
-                              </div>
-                            </div>
+                        </div>
+                        <h3>Lãnh đạo phụ trách chương trình</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editAgency.progLeaderName"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editAgency.progLeaderPosition"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Số điện thoại"
+                              v-model="editAgency.progLeaderPhoneNumber"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editAgency.progLeaderEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editAgency.progLeaderUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Chủ nhiệm chương trình</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editAgency.progManagementName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editAgency.progManagementPosition"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Số điện thoại"
+                              v-model="editAgency.progManagementPhoneNumber"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editAgency.progManagementEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editAgency.progManagementUnit"
+                            />
+                          </div>
+                        </div>
+                        <h3>Điều phối viên chương trình</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Họ tên"
+                              v-model="editAgency.coordinatorName"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Chức vụ"
+                              v-model="editAgency.coordinatorPosition"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Số điện thoại"
+                              v-model="editAgency.coordinatorPhoneNumber"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Email"
+                              v-model="editAgency.coordinatorEmail"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Đơn vị"
+                              v-model="editAgency.coordinatorUnit"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -802,17 +797,24 @@ export default {
       this.$refs.importAgenciesDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importAgenciesDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importAgenciesDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importAgenciesDoc = file;
-      this.importAgenciesDocName = file.name
+      this.importAgenciesDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -985,8 +987,8 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-agencies-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-agencies-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
@@ -999,24 +1001,27 @@ export default {
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("agencies-import-file", this.importAgenciesDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-angencies-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("agencies-import-file", this.importAgenciesDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-angencies-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importAgenciesDoc = null;
-          this.importAgenciesDocName = ""
-          this.displayModalTwo = false
+          this.importAgenciesDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-trans-programs-data catch block error");
       }

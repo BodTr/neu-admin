@@ -394,128 +394,121 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Tên môn học</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editSubject.name"
+                              placeholder="Nhập tên văn bản liên kết đào tạo"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Tên môn học</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.name"
-                                  placeholder="Nhập tên văn bản liên kết đào tạo"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Giảng viên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.lecturer"
-                                  placeholder="Nhập giảng viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Trợ giảng</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.teachingAssistant"
-                                  placeholder="Nhập trợ giảng"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian học - từ</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editSubject.timeFrom"
-                                  placeholder="Nhập Thời gian học - từ"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Năm học</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.year"
-                                  placeholder="Nhập năm học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Mã môn học</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editSubject.subjectCode"
-                                  placeholder="Nhập mã môn học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Điều tra đánh giá</label
-                                >
-                                <select
-                                  v-model="editSubject.review"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Đánh giá
-                                  </option>
-                                  <option value="Có">Có</option>
-                                  <option value="Không">Không</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian học - đến</label
-                                >
-                                <input
-                                  type="date"
-                                  v-model="editSubject.timeTo"
-                                  class="form-control"
-                                  placeholder="Nhập Thời gian học - đến"
-                                />
-                              </div>
-                            </div>
+                          <div class="mb-3">
+                            <label class="form-label">Giảng viên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editSubject.lecturer"
+                              placeholder="Nhập giảng viên"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label">Trợ giảng</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editSubject.teachingAssistant"
+                              placeholder="Nhập trợ giảng"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian học - từ</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editSubject.timeFrom"
+                              placeholder="Nhập Thời gian học - từ"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Năm học</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editSubject.year"
+                              placeholder="Nhập năm học"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Mã môn học</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editSubject.subjectCode"
+                              placeholder="Nhập mã môn học"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Điều tra đánh giá</label>
+                            <select
+                              v-model="editSubject.review"
+                              class="form-select"
+                              tabindex="-1"
                             >
-                              Chỉnh sửa
-                            </a>
+                              <option value="" disabled selected>
+                                Đánh giá
+                              </option>
+                              <option value="Có">Có</option>
+                              <option value="Không">Không</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Thời gian học - đến</label
+                            >
+                            <input
+                              type="date"
+                              v-model="editSubject.timeTo"
+                              class="form-control"
+                              placeholder="Nhập Thời gian học - đến"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -630,17 +623,24 @@ export default {
       this.$refs.importSubjectsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importSubjectsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importSubjectsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importSubjectsDoc = file;
-      this.importSubjectsDocName = file.name
+      this.importSubjectsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -769,38 +769,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-subjects-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-subjects-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-subjects-template catch block error"
-        );
+        console.log(error, "/api/get-subjects-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("subjects-import-file", this.importSubjectsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-subjects-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("subjects-import-file", this.importSubjectsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-subjects-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importSubjectsDoc = null;
-          this.importSubjectsDocName = ""
-          this.displayModalTwo = false
+          this.importSubjectsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-subjects-data catch block error");
       }

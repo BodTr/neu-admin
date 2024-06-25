@@ -651,394 +651,374 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div
-                        class="modal-dialog modal-dialog-scrollable modal-xl"
-                        role="document"
-                      >
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Sửa sinh viên</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-scrollable modal-xl"
+                    role="document"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Sửa sinh viên</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3 row row-cards">
+                          <div class="col-md-4">
+                            <div class="mb-3">
+                              <label class="form-label">Họ và tên</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.name"
+                                placeholder="Nhập họ và tên sinh viên"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Ngày sinh</label>
+                              <input
+                                type="date"
+                                class="form-control"
+                                v-model="editExStudent.birthday"
+                                placeholder="Nhập ngày sinh"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Giới tính</label>
+                              <select
+                                v-model="editExStudent.sex"
+                                class="form-select"
+                                tabindex="-1"
+                              >
+                                <option value="" disabled selected>
+                                  Chọn giới tính
+                                </option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Khoa/Viện đào tạo</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.department"
+                                placeholder="Nhập khoa/viện đào tạo"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Khóa</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.academicYear"
+                                placeholder="Nhập khoa/viện đào tạo"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Lớp chuyên ngành</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.major"
+                                placeholder="Nhập chuyên ngành"
+                              />
+                            </div>
                           </div>
-                          <div class="modal-body">
-                            <div class="mb-3 row row-cards">
-                              <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label class="form-label">Họ và tên</label>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.name"
-                                    placeholder="Nhập họ và tên sinh viên"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label">Ngày sinh</label>
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    v-model="editExStudent.birthday"
-                                    placeholder="Nhập ngày sinh"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label">Giới tính</label>
-                                  <select
-                                    v-model="editExStudent.sex"
-                                    class="form-select"
-                                    tabindex="-1"
-                                  >
-                                    <option value="" disabled selected>
-                                      Chọn giới tính
-                                    </option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                  </select>
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Khoa/Viện đào tạo</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.department"
-                                    placeholder="Nhập khoa/viện đào tạo"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label">Khóa</label>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.academicYear"
-                                    placeholder="Nhập khoa/viện đào tạo"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Lớp chuyên ngành</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.major"
-                                    placeholder="Nhập chuyên ngành"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label class="form-label">Mã sinh viên</label>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.studentCode"
-                                    placeholder="Nhập mã sinh viên"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Năm học trao đổi</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.exchangeYear"
-                                    placeholder="Nhập năm học trao đổi"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Thời gian trao đổi</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.exchangeTime"
-                                    placeholder="Nhập Thời gian trao đổi"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Quốc gia tiếp nhận</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.receivingCountry"
-                                    placeholder="Nhập quốc gia tiếp nhận"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Trường đối tác</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.partnerUni"
-                                    placeholder="Nhập Trường đối tác"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Môn học tại trường đối tác</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.subject"
-                                    placeholder="Nhập môn học tại trường đối tác"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Kết quả học tập</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.result"
-                                    placeholder="Nhập kết quả học tập"
-                                  />
-                                </div>
+                          <div class="col-md-4">
+                            <div class="mb-3">
+                              <label class="form-label">Mã sinh viên</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.studentCode"
+                                placeholder="Nhập mã sinh viên"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Năm học trao đổi</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.exchangeYear"
+                                placeholder="Nhập năm học trao đổi"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Thời gian trao đổi</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.exchangeTime"
+                                placeholder="Nhập Thời gian trao đổi"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Quốc gia tiếp nhận</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.receivingCountry"
+                                placeholder="Nhập quốc gia tiếp nhận"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Trường đối tác</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.partnerUni"
+                                placeholder="Nhập Trường đối tác"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Môn học tại trường đối tác</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.subject"
+                                placeholder="Nhập môn học tại trường đối tác"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="mb-3">
+                              <label class="form-label">Kết quả học tập</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.result"
+                                placeholder="Nhập kết quả học tập"
+                              />
+                            </div>
 
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Quyết định cử đi</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.exchangeDecision"
-                                    placeholder="Nhập Quyết định cử đi"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Điểm số được quy đổi</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editExStudent.convertedScore"
-                                    placeholder="Nhập điểm được quy đổi"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Quyết định cử đi đính kèm</label
-                                  >
-                                  <input
-                                    type="file"
-                                    ref="attachedExchangeDoc1"
-                                    class="form-control"
-                                    @change="handleExchangePdfChange1()"
-                                    style="display: none"
-                                  />
-                                  <div class="card">
-                                    <button
-                                      @click="handleExchangePdfUpload1()"
-                                      class="btn btn-outline-primary w-100"
-                                    >
-                                      Choose File
-                                    </button>
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      v-model="editExStudent.attachedExDocName"
-                                      disabled
-                                    />
-                                  </div>
-                                  <div v-if="editExStudent.eMessage != ''">
-                                    {{ editExStudent.eMessage }}
-                                  </div>
-                                </div>
-                                <div class="mb-3">
-                                  <label class="form-label"
-                                    >Quyết định quy đổi điểm số đính kèm</label
-                                  >
-                                  <input
-                                    type="file"
-                                    ref="attachedScoreDoc1"
-                                    class="form-control"
-                                    @change="handleScorePdfChange1()"
-                                    style="display: none"
-                                  />
-                                  <div class="card">
-                                    <button
-                                      @click="handleScorePdfUpload1()"
-                                      class="btn btn-outline-primary w-100"
-                                    >
-                                      Choose File
-                                    </button>
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      v-model="
-                                        editExStudent.attachedScoreDocName
-                                      "
-                                      disabled
-                                    />
-                                  </div>
-                                  <div v-if="editExStudent.sMessage != ''">
-                                    {{ editExStudent.sMessage }}
-                                  </div>
-                                </div>
+                            <div class="mb-3">
+                              <label class="form-label">Quyết định cử đi</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.exchangeDecision"
+                                placeholder="Nhập Quyết định cử đi"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Điểm số được quy đổi</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExStudent.convertedScore"
+                                placeholder="Nhập điểm được quy đổi"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Quyết định cử đi đính kèm</label
+                              >
+                              <input
+                                type="file"
+                                ref="attachedExchangeDoc1"
+                                class="form-control"
+                                @change="handleExchangePdfChange1()"
+                                style="display: none"
+                              />
+                              <div class="card">
+                                <button
+                                  @click="handleExchangePdfUpload1()"
+                                  class="btn btn-outline-primary w-100"
+                                >
+                                  Choose File
+                                </button>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editExStudent.attachedExDocName"
+                                  disabled
+                                />
+                              </div>
+                              <div v-if="editExStudent.eMessage != ''">
+                                {{ editExStudent.eMessage }}
                               </div>
                             </div>
                             <div class="mb-3">
                               <label class="form-label"
-                                >Công nhận kết quả học tập</label
+                                >Quyết định quy đổi điểm số đính kèm</label
                               >
-                              <div class="table-responsive">
-                                <table class="table mb-0">
-                                  <thead>
-                                    <tr class="g-2 align-items-center">
-                                      <th style="width: 60%">Tên môn học</th>
-                                      <th>Số tín chỉ</th>
-                                      <th>Điểm quy đổi</th>
-                                      <th>Thao tác</th>
-                                    </tr>
-                                  </thead>
-
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <textarea
-                                          class="form-control"
-                                          row="1"
-                                          placeholder="Nhập tên môn học"
-                                          v-model="editExStudent.resultSubject"
-                                        ></textarea>
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="number"
-                                          class="form-control"
-                                          placeholder="Nhập số tín chỉ"
-                                          v-model="
-                                            editExStudent.resultCreditsCount
-                                          "
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="number"
-                                          class="form-control"
-                                          placeholder="Nhập điểm quy đổi"
-                                          v-model="editExStudent.resultPoint"
-                                        />
-                                      </td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          @click="plusResult1()"
-                                          class="btn btn-azure btn-icon"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
-                                          >
-                                            <path
-                                              stroke="none"
-                                              d="M0 0h24v24H0z"
-                                              fill="none"
-                                            />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                          </svg>
-                                        </a>
-                                      </td>
-                                    </tr>
-                                    <tr
-                                      v-for="(
-                                        item, index
-                                      ) in editExStudent.results"
-                                    >
-                                      <td>{{ item.subjectName }}</td>
-                                      <td>{{ item.creditsCount }}</td>
-                                      <td>{{ item.point }}</td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          @click="deleteResult1(index)"
-                                          class="btn btn-ghost-danger btn-icon"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-                                          >
-                                            <path
-                                              stroke="none"
-                                              d="M0 0h24v24H0z"
-                                              fill="none"
-                                            />
-                                            <path d="M4 7l16 0" />
-                                            <path d="M10 11l0 6" />
-                                            <path d="M14 11l0 6" />
-                                            <path
-                                              d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
-                                            />
-                                            <path
-                                              d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
-                                            />
-                                          </svg>
-                                        </a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                              <input
+                                type="file"
+                                ref="attachedScoreDoc1"
+                                class="form-control"
+                                @change="handleScorePdfChange1()"
+                                style="display: none"
+                              />
+                              <div class="card">
+                                <button
+                                  @click="handleScorePdfUpload1()"
+                                  class="btn btn-outline-primary w-100"
+                                >
+                                  Choose File
+                                </button>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="editExStudent.attachedScoreDocName"
+                                  disabled
+                                />
+                              </div>
+                              <div v-if="editExStudent.sMessage != ''">
+                                {{ editExStudent.sMessage }}
                               </div>
                             </div>
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Công nhận kết quả học tập</label
+                          >
+                          <div class="table-responsive">
+                            <table class="table mb-0">
+                              <thead>
+                                <tr class="g-2 align-items-center">
+                                  <th style="width: 60%">Tên môn học</th>
+                                  <th>Số tín chỉ</th>
+                                  <th>Điểm quy đổi</th>
+                                  <th>Thao tác</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <textarea
+                                      class="form-control"
+                                      row="1"
+                                      placeholder="Nhập tên môn học"
+                                      v-model="editExStudent.resultSubject"
+                                    ></textarea>
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Nhập số tín chỉ"
+                                      v-model="editExStudent.resultCreditsCount"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Nhập điểm quy đổi"
+                                      v-model="editExStudent.resultPoint"
+                                    />
+                                  </td>
+                                  <td>
+                                    <a
+                                      href="#"
+                                      @click="plusResult1()"
+                                      class="btn btn-azure btn-icon"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus"
+                                      >
+                                        <path
+                                          stroke="none"
+                                          d="M0 0h24v24H0z"
+                                          fill="none"
+                                        />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                      </svg>
+                                    </a>
+                                  </td>
+                                </tr>
+                                <tr
+                                  v-for="(item, index) in editExStudent.results"
+                                >
+                                  <td>{{ item.subjectName }}</td>
+                                  <td>{{ item.creditsCount }}</td>
+                                  <td>{{ item.point }}</td>
+                                  <td>
+                                    <a
+                                      href="#"
+                                      @click="deleteResult1(index)"
+                                      class="btn btn-ghost-danger btn-icon"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                      >
+                                        <path
+                                          stroke="none"
+                                          d="M0 0h24v24H0z"
+                                          fill="none"
+                                        />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path
+                                          d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                                        />
+                                        <path
+                                          d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+                                        />
+                                      </svg>
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1298,17 +1278,24 @@ export default {
       this.$refs.importExStudentsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importExStudentsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importExStudentsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importExStudentsDoc = file;
-      this.importExStudentsDocName = file.name
+      this.importExStudentsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -1513,37 +1500,37 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-exstudents-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-exstudents-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-exstudents-template catch block error"
-        );
+        console.log(error, "/api/get-exstudents-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("exstudents-import-file", this.importExStudentsDoc)
-        const result = await instance.post("/api/import-exstudents-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("exstudents-import-file", this.importExStudentsDoc);
+        const result = await instance.post(
+          "/api/import-exstudents-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importExStudentsDoc = null;
-          this.importExStudentsDocName = ""
-          this.displayModalTwo = false
+          this.importExStudentsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-exstudents-data catch block error");
       }

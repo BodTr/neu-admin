@@ -442,171 +442,163 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Năm</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editPlan.year"
+                              placeholder="Nhập năm"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Năm</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editPlan.year"
-                                  placeholder="Nhập năm"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Điều kiện giảng viên</label
-                                >
-                                <textarea
-                                  v-model="editPlan.qualifiedLecturer"
-                                  row="1"
-                                  class="form-control"
-                                  placeholder="Nhập điều kiện giảng viên"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Điều kiện tuyển sinh</label
-                                >
-                                <textarea
-                                  v-model="editPlan.qualifiedStudent"
-                                  row="1"
-                                  class="form-control"
-                                  placeholder="Nhập điều kiện tuyển sinh"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Quy mô và địa điểm đào tạo</label
-                                >
-                                <textarea
-                                  v-model="editPlan.ecoManage"
-                                  row="1"
-                                  class="form-control"
-                                  placeholder="Quy mô và địa điểm đào tạo"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Hình thức liên kết đào tạo</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  row="1"
-                                  v-model="editPlan.planStructure"
-                                  placeholder="Nhập hình thức liên kết đào tạo"
-                                ></textarea>
-                              </div>
-
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Điều kiện cơ sở vật chất, thiết bị</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  row="1"
-                                  v-model="editPlan.infraCondition"
-                                  placeholder="Nhập nội dung phụ trách"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Mẫu văn bằng</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPlan.diploma"
-                                  placeholder="Nhập mẫu văn bằng"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Ngôn ngữ giảng dạy</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editPlan.language"
-                                  placeholder="Nhập ngôn ngữ giảng dạy"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Học phí</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Nhập học phí"
-                                  v-model="editPlan.tuition"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Văn bằng chứng chỉ</label
-                                >
-                                <input
-                                  type="file"
-                                  ref="planDoc1"
-                                  class="form-control"
-                                  @change="handlePdfChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handlePdfUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editPlan.attachedDocName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editPlan.message != ''">
-                                  {{ editPlan.message }}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Điều kiện giảng viên</label
                             >
-                              Chỉnh sửa
-                            </a>
+                            <textarea
+                              v-model="editPlan.qualifiedLecturer"
+                              row="1"
+                              class="form-control"
+                              placeholder="Nhập điều kiện giảng viên"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Điều kiện tuyển sinh</label
+                            >
+                            <textarea
+                              v-model="editPlan.qualifiedStudent"
+                              row="1"
+                              class="form-control"
+                              placeholder="Nhập điều kiện tuyển sinh"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Quy mô và địa điểm đào tạo</label
+                            >
+                            <textarea
+                              v-model="editPlan.ecoManage"
+                              row="1"
+                              class="form-control"
+                              placeholder="Quy mô và địa điểm đào tạo"
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Hình thức liên kết đào tạo</label
+                            >
+                            <textarea
+                              class="form-control"
+                              row="1"
+                              v-model="editPlan.planStructure"
+                              placeholder="Nhập hình thức liên kết đào tạo"
+                            ></textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Điều kiện cơ sở vật chất, thiết bị</label
+                            >
+                            <textarea
+                              class="form-control"
+                              row="1"
+                              v-model="editPlan.infraCondition"
+                              placeholder="Nhập nội dung phụ trách"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Mẫu văn bằng</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPlan.diploma"
+                              placeholder="Nhập mẫu văn bằng"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Ngôn ngữ giảng dạy</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editPlan.language"
+                              placeholder="Nhập ngôn ngữ giảng dạy"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Học phí</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Nhập học phí"
+                              v-model="editPlan.tuition"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Văn bằng chứng chỉ</label>
+                            <input
+                              type="file"
+                              ref="planDoc1"
+                              class="form-control"
+                              @change="handlePdfChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handlePdfUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editPlan.attachedDocName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editPlan.message != ''">
+                              {{ editPlan.message }}
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -776,17 +768,24 @@ export default {
       }
     },
     handleExcelChange() {
-      const file = this.$refs.importPlansDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importPlansDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importPlansDoc = file;
-      this.importPlansDocName = file.name
+      this.importPlansDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -930,38 +929,34 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-plans-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-plans-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-plans-template catch block error"
-        );
+        console.log(error, "/api/get-plans-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("plans-import-file", this.importPlansDoc)
-        formData.append("programId", this.id)
+        formData.append("plans-import-file", this.importPlansDoc);
+        formData.append("programId", this.id);
         const result = await instance.post("/api/import-plans-data", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log(result, "result importFile()")
+          },
+        });
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importPlansDoc = null;
-          this.importPlansDocName = ""
-          this.displayModalTwo = false
+          this.importPlansDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-plans-data catch block error");
       }

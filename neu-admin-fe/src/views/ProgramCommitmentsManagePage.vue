@@ -397,135 +397,128 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa qui trình</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trách nhiệm của NEU</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="2"
-                                  v-model="editProgramCommitment.neuCommitment"
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trách nhiệm với học viên</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="2"
-                                  v-model="
-                                    editProgramCommitment.responsibilityToStudents
-                                  "
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trách nhiệm của trường đối tác</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="2"
-                                  v-model="
-                                    editProgramCommitment.partnerCommitment
-                                  "
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Quản lý rủi ro chấm dứt liên kết</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="2"
-                                  v-model="editProgramCommitment.riskManagement"
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <h3>Các cam kết với đối tác</h3>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số lượng học viên tối thiểu</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  placeholder="Nhập số lượng học viên tối thiểu"
-                                  v-model="editProgramCommitment.minStudents"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Quy định về bảo mật</label
-                                >
-                                <textarea
-                                  class="form-control"
-                                  rows="2"
-                                  v-model="
-                                    editProgramCommitment.securityRegulation
-                                  "
-                                  placeholder="Nhập nội dung"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Quy định về sở hữu trí tuệ</label
-                              >
-                              <textarea
-                                class="form-control"
-                                rows="2"
-                                v-model="
-                                  editProgramCommitment.intellectualPropertyRegulation
-                                "
-                                placeholder="Nhập nội dung"
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </template>
                 </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa qui trình</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Trách nhiệm của NEU</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="2"
+                              v-model="editProgramCommitment.neuCommitment"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Trách nhiệm với học viên</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="2"
+                              v-model="
+                                editProgramCommitment.responsibilityToStudents
+                              "
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Trách nhiệm của trường đối tác</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="2"
+                              v-model="editProgramCommitment.partnerCommitment"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Quản lý rủi ro chấm dứt liên kết</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="2"
+                              v-model="editProgramCommitment.riskManagement"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                        </div>
+                        <h3>Các cam kết với đối tác</h3>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số lượng học viên tối thiểu</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              placeholder="Nhập số lượng học viên tối thiểu"
+                              v-model="editProgramCommitment.minStudents"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Quy định về bảo mật</label
+                            >
+                            <textarea
+                              class="form-control"
+                              rows="2"
+                              v-model="editProgramCommitment.securityRegulation"
+                              placeholder="Nhập nội dung"
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Quy định về sở hữu trí tuệ</label
+                          >
+                          <textarea
+                            class="form-control"
+                            rows="2"
+                            v-model="
+                              editProgramCommitment.intellectualPropertyRegulation
+                            "
+                            placeholder="Nhập nội dung"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -629,17 +622,24 @@ export default {
       this.$refs.importProgramCommitmentsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importProgramCommitmentsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importProgramCommitmentsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importProgramCommitmentsDoc = file;
-      this.importProgramCommitmentsDocName = file.name
+      this.importProgramCommitmentsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -769,8 +769,10 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-program-commitments-template")
-        const templateLink = result.data.path
+        const result = await instance.get(
+          "/api/get-program-commitments-template"
+        );
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
@@ -783,26 +785,35 @@ export default {
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("program-commitments-import-file", this.importProgramCommitmentsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-program-commitments-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append(
+          "program-commitments-import-file",
+          this.importProgramCommitmentsDoc
+        );
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-program-commitments-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importProgramCommitmentsDoc = null;
-          this.importProgramCommitmentsDocName = ""
-          this.displayModalTwo = false
+          this.importProgramCommitmentsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
-        console.log(error, "/api/import-program-commitments-data catch block error");
+        console.log(
+          error,
+          "/api/import-program-commitments-data catch block error"
+        );
       }
     },
   },

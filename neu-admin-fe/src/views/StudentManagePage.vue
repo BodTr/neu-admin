@@ -614,331 +614,316 @@
                         />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.name"
+                              placeholder="Nhập họ và tên sinh viên"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Họ và tên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.name"
-                                  placeholder="Nhập họ và tên sinh viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Mã sinh viên</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.studentCode"
-                                  placeholder="Nhập mã sinh viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ngày sinh</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editStudent.birthday"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Giới tính</label>
-                                <select
-                                  v-model="editStudent.sex"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Chọn giới tính
-                                  </option>
-                                  <option value="Nam">Nam</option>
-                                  <option value="Nữ">Nữ</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Quốc tịch</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.nation"
-                                  placeholder="Nhập quốc tịch"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Khóa</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.schoolYear"
-                                  placeholder="Nhập khóa"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Nơi ở</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.tempResidence"
-                                  placeholder="Nhập nơi ở"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Diện</label>
-                                <select
-                                  v-model="editStudent.dien"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="Hiệp định">Hiệp định</option>
-                                  <option value="CLMV">CLMV</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Chuyên ngành</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.major"
-                                  placeholder="Nhập chuyên ngành"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label">Khóa học</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.courseDuration"
-                                  placeholder="Nhập năm bắt đầu - kết thúc  của khóa học"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số tháng</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.monthCount"
-                                  placeholder="Nhập số tháng"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số QĐ tiếp nhận của BGD&ĐT</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.bgdReceiveNumber"
-                                  placeholder="Nhập ngày"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Ngày QĐ tiếp nhận của BGD&ĐT</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editStudent.bgdReceiveDate"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Số QĐ tiếp nhận của trường</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.neuReceiveNumber"
-                                  placeholder="Nhập số quyết định"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Ngày QĐ tiếp nhận của trường</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editStudent.neuReceiveDate"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Số QĐ gia hạn</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.decisionNumber"
-                                  placeholder="Nhập số quyết định gia hạn"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Ngày gia hạn</label>
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  v-model="editStudent.decisionDate"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Thời gian gia hạn</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editStudent.decisionTime"
-                                  placeholder="Nhập thời gian gia hạn"
-                                />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Chi thường xuyên</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.expenses"
-                                  placeholder="Nhập khoản chi thường xuyên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">SHP</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.shp"
-                                  placeholder="Nhập tiền SHP"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">KPCK</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.kpck"
-                                  placeholder="Nhập tiền KPCK"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tiền quốc khánh</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.nationalDayExpenses"
-                                  placeholder="Nhập tiền quốc khánh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Tiền tết VN</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.tetVnExpenses"
-                                  placeholder="Nhập tiền quốc khánh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tiền tết Lào, Cam</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.tetLaoCamExpenses"
-                                  placeholder="Nhập tiền quốc khánh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Tiền đi lại</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.travelExpenses"
-                                  placeholder="Nhập tiền đi lại"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Trang cấp ban đầu</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editStudent.initExpenses"
-                                  placeholder="Nhập tiền đi lại"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Quyết định gia hạn</label
-                                >
-                                <input
-                                  type="file"
-                                  ref="decisionDoc1"
-                                  class="form-control"
-                                  @change="handlePdfChange1()"
-                                  style="display: none"
-                                />
-                                <div class="card">
-                                  <button
-                                    @click="handlePdfUpload1()"
-                                    class="btn btn-outline-primary w-100"
-                                  >
-                                    Choose File
-                                  </button>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="editStudent.attachedDocName"
-                                    disabled
-                                  />
-                                </div>
-                                <div v-if="editStudent.message != ''">
-                                  {{ editStudent.message }}
-                                </div>
-                              </div>
-                            </div>
+                          <div class="mb-3">
+                            <label class="form-label">Mã sinh viên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.studentCode"
+                              placeholder="Nhập mã sinh viên"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label">Ngày sinh</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editStudent.birthday"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Giới tính</label>
+                            <select
+                              v-model="editStudent.sex"
+                              class="form-select"
+                              tabindex="-1"
                             >
-                              Chỉnh sửa
-                            </a>
+                              <option value="" disabled selected>
+                                Chọn giới tính
+                              </option>
+                              <option value="Nam">Nam</option>
+                              <option value="Nữ">Nữ</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Quốc tịch</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.nation"
+                              placeholder="Nhập quốc tịch"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Khóa</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.schoolYear"
+                              placeholder="Nhập khóa"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Nơi ở</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.tempResidence"
+                              placeholder="Nhập nơi ở"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Diện</label>
+                            <select
+                              v-model="editStudent.dien"
+                              class="form-select"
+                              tabindex="-1"
+                            >
+                              <option value="Hiệp định">Hiệp định</option>
+                              <option value="CLMV">CLMV</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Chuyên ngành</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.major"
+                              placeholder="Nhập chuyên ngành"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Khóa học</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.courseDuration"
+                              placeholder="Nhập năm bắt đầu - kết thúc  của khóa học"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số tháng</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.monthCount"
+                              placeholder="Nhập số tháng"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số QĐ tiếp nhận của BGD&ĐT</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.bgdReceiveNumber"
+                              placeholder="Nhập ngày"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Ngày QĐ tiếp nhận của BGD&ĐT</label
+                            >
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editStudent.bgdReceiveDate"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Số QĐ tiếp nhận của trường</label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.neuReceiveNumber"
+                              placeholder="Nhập số quyết định"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Ngày QĐ tiếp nhận của trường</label
+                            >
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editStudent.neuReceiveDate"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Số QĐ gia hạn</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.decisionNumber"
+                              placeholder="Nhập số quyết định gia hạn"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Ngày gia hạn</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="editStudent.decisionDate"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Thời gian gia hạn</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editStudent.decisionTime"
+                              placeholder="Nhập thời gian gia hạn"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Chi thường xuyên</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.expenses"
+                              placeholder="Nhập khoản chi thường xuyên"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">SHP</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.shp"
+                              placeholder="Nhập tiền SHP"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">KPCK</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.kpck"
+                              placeholder="Nhập tiền KPCK"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Tiền quốc khánh</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.nationalDayExpenses"
+                              placeholder="Nhập tiền quốc khánh"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Tiền tết VN</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.tetVnExpenses"
+                              placeholder="Nhập tiền quốc khánh"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Tiền tết Lào, Cam</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.tetLaoCamExpenses"
+                              placeholder="Nhập tiền quốc khánh"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Tiền đi lại</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.travelExpenses"
+                              placeholder="Nhập tiền đi lại"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Trang cấp ban đầu</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editStudent.initExpenses"
+                              placeholder="Nhập tiền đi lại"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Quyết định gia hạn</label>
+                            <input
+                              type="file"
+                              ref="decisionDoc1"
+                              class="form-control"
+                              @change="handlePdfChange1()"
+                              style="display: none"
+                            />
+                            <div class="card">
+                              <button
+                                @click="handlePdfUpload1()"
+                                class="btn btn-outline-primary w-100"
+                              >
+                                Choose File
+                              </button>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editStudent.attachedDocName"
+                                disabled
+                              />
+                            </div>
+                            <div v-if="editStudent.message != ''">
+                              {{ editStudent.message }}
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1149,17 +1134,24 @@ export default {
       }
     },
     handleExcelChange() {
-      const file = this.$refs.importStudentsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importStudentsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importStudentsDoc = file;
-      this.importStudentsDocName = file.name
+      this.importStudentsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
 
@@ -1421,38 +1413,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-students-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-students-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-students-template catch block error"
-        );
+        console.log(error, "/api/get-students-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("students-import-file", this.importStudentsDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-students-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("students-import-file", this.importStudentsDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-students-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importStudentsDoc = null;
-          this.importStudentsDocName = ""
-          this.displayModalTwo = false
+          this.importStudentsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-students-data catch block error");
       }

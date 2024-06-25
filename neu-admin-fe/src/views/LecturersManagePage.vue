@@ -417,157 +417,119 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa văn bản</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa văn bản</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Họ tên giảng viên</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editLecturer.name"
+                              placeholder="Nhập họ tên giảng viên"
+                            />
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Họ tên giảng viên</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editLecturer.name"
-                                  placeholder="Nhập họ tên giảng viên"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Quốc tịch</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editLecturer.nationality"
-                                  placeholder="Nhập tên văn bằng"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Đơn vị công tác</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editLecturer.unit"
-                                  placeholder="Nhập tên đơn vị công tác"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tình trạng hợp đồng</label
-                                >
-                                <select
-                                  v-model="editLecturer.contractStatus"
-                                  class="form-select"
-                                  tabindex="-1"
-                                >
-                                  <option value="" disabled selected>
-                                    Tình trạng hợp đồng
-                                  </option>
-                                  <option value="Cơ hữu">Cơ hữu</option>
-                                  <option value="Kiêm giảng">Kiêm giảng</option>
-                                  <option value="Hợp đồng ngoài trường">
-                                    Hợp đồng ngoài trường
-                                  </option>
-                                  <option value="Thỉnh giảng">
-                                    Thỉnh giảng
-                                  </option>
-                                  <option value="Trợ giảng">Trợ giảng</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Năm sinh</label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  v-model="editLecturer.birthyear"
-                                  placeholder="Nhập năm sinh"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Trình độ</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editLecturer.level"
-                                  placeholder="Nhập trình độ"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Tên môn học giảng dạy</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="editLecturer.subject"
-                                  placeholder="Nhập tên môn học"
-                                />
-                              </div>
-                              <!-- <div class="mb-3">
-                                <div
-                                  style="margin-top: 3rem; margin-left: 3rem"
-                                >
-                                  <label class="form-check form-check-inline">
-                                    <input
-                                      class="form-check-input"
-                                      type="radio"
-                                      value="Mới"
-                                      v-model="editLecturer.experience"
-                                    />
-                                    <span class="form-check-label">Mới</span>
-                                  </label>
-                                  <label
-                                    class="form-check form-check-inline"
-                                    style="margin-left: 3rem"
-                                  >
-                                    <input
-                                      class="form-check-input"
-                                      type="radio"
-                                      value="Thâm niên"
-                                      v-model="editLecturer.experience"
-                                    />
-                                    <span class="form-check-label"
-                                      >Thâm niên</span
-                                    >
-                                  </label>
-                                </div>
-                              </div> -->
-                            </div>
+                          <div class="mb-3">
+                            <label class="form-label">Quốc tịch</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editLecturer.nationality"
+                              placeholder="Nhập tên văn bằng"
+                            />
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
+                          <div class="mb-3">
+                            <label class="form-label">Đơn vị công tác</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editLecturer.unit"
+                              placeholder="Nhập tên đơn vị công tác"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Tình trạng hợp đồng</label
                             >
-                              Chỉnh sửa
-                            </a>
+                            <select
+                              v-model="editLecturer.contractStatus"
+                              class="form-select"
+                              tabindex="-1"
+                            >
+                              <option value="" disabled selected>
+                                Tình trạng hợp đồng
+                              </option>
+                              <option value="Cơ hữu">Cơ hữu</option>
+                              <option value="Kiêm giảng">Kiêm giảng</option>
+                              <option value="Hợp đồng ngoài trường">
+                                Hợp đồng ngoài trường
+                              </option>
+                              <option value="Thỉnh giảng">Thỉnh giảng</option>
+                              <option value="Trợ giảng">Trợ giảng</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label">Năm sinh</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              v-model="editLecturer.birthyear"
+                              placeholder="Nhập năm sinh"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Trình độ</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editLecturer.level"
+                              placeholder="Nhập trình độ"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Tên môn học giảng dạy</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="editLecturer.subject"
+                              placeholder="Nhập tên môn học"
+                            />
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -683,17 +645,24 @@ export default {
       this.$refs.importLecturersDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importLecturersDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importLecturersDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importLecturersDoc = file;
-      this.importLecturersDocName = file.name
+      this.importLecturersDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -812,38 +781,38 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-lecturers-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-lecturers-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-lecturers-template catch block error"
-        );
+        console.log(error, "/api/get-lecturers-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("lecturers-import-file", this.importLecturersDoc)
-        formData.append("programId", this.id)
-        const result = await instance.post("/api/import-lecturers-data", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        formData.append("lecturers-import-file", this.importLecturersDoc);
+        formData.append("programId", this.id);
+        const result = await instance.post(
+          "/api/import-lecturers-data",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-        console.log(result, "result importFile()")
+        );
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importLecturersDoc = null;
-          this.importLecturersDocName = ""
-          this.displayModalTwo = false
+          this.importLecturersDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-lecturers-data catch block error");
       }

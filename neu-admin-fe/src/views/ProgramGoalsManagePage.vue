@@ -365,93 +365,90 @@
                         <path d="M16 5l3 3" />
                       </svg>
                     </a>
-                    <div
-                      v-if="displayModalOne"
-                      class="modal modal-blur fade show"
-                      id="modal-report-one"
-                      tabindex="-1"
-                      style="display: block"
-                      aria-modal="true"
-                    >
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Chỉnh sửa mục tiêu</h5>
-                            <button
-                              @click="hideModal1()"
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                  </template>
+                </v-server-table>
+                <div
+                  v-if="displayModalOne"
+                  class="modal modal-blur fade show"
+                  id="modal-report-one"
+                  tabindex="-1"
+                  style="display: block"
+                  aria-modal="true"
+                >
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa mục tiêu</h5>
+                        <button
+                          @click="hideModal1()"
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body row row-cards">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Mục tiêu chương trình liên kết
+                            </label>
+                            <textarea
+                              class="form-control"
+                              rows="5"
+                              v-model="editGoal.programGoal"
+                              placeholder="Nhập mục tiêu chương trình liên kết đào tạo"
+                            ></textarea>
                           </div>
-                          <div class="modal-body row row-cards">
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Mục tiêu chương trình liên kết
-                                </label>
-                                <textarea
-                                  class="form-control"
-                                  rows="5"
-                                  v-model="editGoal.programGoal"
-                                  placeholder="Nhập mục tiêu chương trình liên kết đào tạo"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label"
-                                  >Nội dung tự đánh giá
-                                </label>
-                                <textarea
-                                  class="form-control"
-                                  rows="5"
-                                  v-model="editGoal.testDetail"
-                                  placeholder="Nhập nội dung kiểm định"
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div>
-                                <label class="form-check form-check-inline">
-                                  <input
-                                    class="form-check-input"
-                                    type="radio"
-                                    value="Mục tiêu chương trình"
-                                    v-model="editGoal.goalFrom"
-                                  />
-                                  <span class="form-check-label"
-                                    >Mục tiêu chương trình</span
-                                  >
-                                </label>
-                                <label class="form-check form-check-inline">
-                                  <input
-                                    class="form-check-input"
-                                    type="radio"
-                                    value="Mục tiêu nhà trường"
-                                    v-model="editGoal.goalFrom"
-                                  />
-                                  <span class="form-check-label"
-                                    >Mục tiêu nhà trường</span
-                                  >
-                                </label>
-                              </div>
-                            </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="form-label"
+                              >Nội dung tự đánh giá
+                            </label>
+                            <textarea
+                              class="form-control"
+                              rows="5"
+                              v-model="editGoal.testDetail"
+                              placeholder="Nhập nội dung kiểm định"
+                            ></textarea>
                           </div>
-                          <div class="modal-footer">
-                            <a
-                              @click="onSubmit()"
-                              class="btn btn-primary ms-auto"
-                            >
-                              Chỉnh sửa
-                            </a>
+                        </div>
+                        <div class="mb-3">
+                          <div>
+                            <label class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                value="Mục tiêu chương trình"
+                                v-model="editGoal.goalFrom"
+                              />
+                              <span class="form-check-label"
+                                >Mục tiêu chương trình</span
+                              >
+                            </label>
+                            <label class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                value="Mục tiêu nhà trường"
+                                v-model="editGoal.goalFrom"
+                              />
+                              <span class="form-check-label"
+                                >Mục tiêu nhà trường</span
+                              >
+                            </label>
                           </div>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <a @click="onSubmit()" class="btn btn-primary ms-auto">
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
-                  </template>
-                </v-server-table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -542,17 +539,24 @@ export default {
       this.$refs.importGoalsDoc.click();
     },
     handleExcelChange() {
-      const file = this.$refs.importGoalsDoc.files[0]
-      console.log(file, "file handleExcelChange()")
-      const allowedTypes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+      const file = this.$refs.importGoalsDoc.files[0];
+      console.log(file, "file handleExcelChange()");
+      const allowedTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
       const MAX_SIZE = 20 * 1024 * 1024;
       const tooLarge = file.size > MAX_SIZE;
       this.importGoalsDoc = file;
-      this.importGoalsDocName = file.name
+      this.importGoalsDocName = file.name;
       if (allowedTypes.includes(file.type) && !tooLarge) {
         this.importDocMessage = "";
       } else {
-        this.importDocMessage = tooLarge && allowedTypes.includes(file.type) ? `File quá nặng, giới hạn kích thước là ${MAX_SIZE / (1024 * 1024)}Mb` : "Định dạng file không phù hợp, file phải có đuôi .xlsx"
+        this.importDocMessage =
+          tooLarge && allowedTypes.includes(file.type)
+            ? `File quá nặng, giới hạn kích thước là ${
+                MAX_SIZE / (1024 * 1024)
+              }Mb`
+            : "Định dạng file không phù hợp, file phải có đuôi .xlsx";
       }
     },
     async submitForm() {
@@ -655,38 +659,34 @@ export default {
     },
     async downloadTemplate() {
       try {
-        const result = await instance.get("/api/get-goals-template")
-        const templateLink = result.data.path
+        const result = await instance.get("/api/get-goals-template");
+        const templateLink = result.data.path;
         console.log(templateLink, "templateLink downloadTemplate()");
         location.href = templateLink;
       } catch (error) {
-        console.log(
-          error,
-          "/api/get-goals-template catch block error"
-        );
+        console.log(error, "/api/get-goals-template catch block error");
       }
     },
     async importFile() {
       try {
         let formData = new FormData();
-        formData.append("goals-import-file", this.importGoalsDoc)
-        formData.append("programId", this.id)
+        formData.append("goals-import-file", this.importGoalsDoc);
+        formData.append("programId", this.id);
         const result = await instance.post("/api/import-goals-data", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log(result, "result importFile()")
+          },
+        });
+        console.log(result, "result importFile()");
         if (result.data.error === true) {
           this.toast.error(result.data.message);
         } else {
           this.toast.success(result.data.message);
           this.$refs.table.refresh();
           this.importGoalsDoc = null;
-          this.importGoalsDocName = ""
-          this.displayModalTwo = false
+          this.importGoalsDocName = "";
+          this.displayModalTwo = false;
         }
-
       } catch (error) {
         console.log(error, "/api/import-goals-data catch block error");
       }
