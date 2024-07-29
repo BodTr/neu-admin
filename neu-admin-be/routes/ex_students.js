@@ -148,7 +148,7 @@ router.put('/api/edit-ex-student/:id', uploadFileFields1, async(req, res) => {
         let newAttachedExDocLink = ''
         let newAttachedScoreDocLink = ''
         if (attachedExchangeDocArr) {
-            if (attachedExDocLink === "") {
+            if (attachedExDocLink === "" || attachedExDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-ex-student api')
             } else {
                 const oldExFileKey = attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -169,7 +169,7 @@ router.put('/api/edit-ex-student/:id', uploadFileFields1, async(req, res) => {
         }
 
         if (attachedScoreDocArr) {
-            if (attachedScoreDocLink === "") {
+            if (attachedScoreDocLink === "" || attachedScoreDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-ex-student api')
             } else {
                 const oldExFileKey = attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -230,7 +230,7 @@ router.delete('/api/delete-ex-student/:id', async(req, res) => {
         const delStudent = await ExStudentSchema.findOne({ _id: id })
         const attachedScoreDocLink = delStudent.attachedScoreDocLink
         const attachedExDocLink = delStudent.attachedExDocLink
-        if (attachedScoreDocLink === "") {
+        if (attachedScoreDocLink === "" || attachedScoreDocLink === undefined) {
             console.log('ko có link ảnh attachedScoreDocLink cũ delete-ex-student api')
         } else {
             const delStudentKey2 = delStudent.attachedScoreDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -243,7 +243,7 @@ router.delete('/api/delete-ex-student/:id', async(req, res) => {
             console.log(result2,  ":::result2, delete api:::")
         }
 
-        if (attachedExDocLink === "") {
+        if (attachedExDocLink === "" || attachedExDocLink === undefined) {
             console.log('ko có link ảnh attachedExDocLink cũ delete-ex-student api')
         } else {
             const delStudentKey1 = delStudent.attachedExDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

@@ -107,7 +107,7 @@ router.put('/api/edit-htqt/:id', upload.single("attachedHTQTDoc1"), async(req, r
         console.log(req.body, "req.body put api")
         let newAttachedDocLink = ''
         if (attachedDoc1) {
-            if (attachedDocLink === "") {
+            if (attachedDocLink === "" || attachedDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-htqt api')
             } else {
                 const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -154,7 +154,7 @@ router.delete('/api/delete-htqt/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const delHtqt = await HTQTSchema.findOne({ _id: id })
         const attachedDocLink = delHtqt.attachedDocLink
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
             console.log('ko có link ảnh cũ delete-htqt api')
         } else {
             const delHtqtKey = delHtqt.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

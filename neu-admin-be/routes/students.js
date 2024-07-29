@@ -154,7 +154,7 @@ router.put('/api/edit-student/:id', upload.single("decisionDoc1"), async(req, re
         const attachedDoc = req.file
         let newAttachedDocLink = ''
         if (attachedDoc) {
-            if (attachedDocLink === "") {
+            if (attachedDocLink === "" || attachedDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-student api')
             } else {
                 const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -217,7 +217,7 @@ router.delete('/api/delete-student/:id', async(req, res) => {
         console.log(id, "::id delete api::")
         const deletingStudent = await StudentSchema.findOneAndDelete({ _id: id })
         const attachedDocLink = deletingStudent.attachedDocLink
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
             console.log('ko có link ảnh cũ delete-student api')
         } else {
             const delDecisionKey = deletingStudent.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

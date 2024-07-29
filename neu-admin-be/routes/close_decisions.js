@@ -106,7 +106,7 @@ router.put('/api/edit-close-decision/:id',  upload.single("closeDecisionDoc1"), 
         console.log(closeDecisionDoc1, "closeDecisionDoc1 put api")
         let newAttachedDocLink = ''
         if(closeDecisionDoc1) {
-            if (attachedDocLink === "") {
+            if (attachedDocLink === "" || attachedDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-close-decision api')
             } else {
                 const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -151,7 +151,7 @@ router.delete('/api/delete-close-decision/:id', async(req, res) => {
         const deletingDecision = await CloseDecisionSchema.findOne({ _id: id })
         console.log(deletingDecision, "deletingDecision")
         const attachedDocLink = deletingDecision.attachedDocLink
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
             console.log('ko có link ảnh cũ delete-close-decision api')
         } else {
             const delDecisionKey = deletingDecision.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

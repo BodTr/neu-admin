@@ -119,7 +119,7 @@ router.put('/api/edit-decision/:id',  upload.single("approvalDecisionDoc1"), asy
         let newAttachedDocLink = ''
         if(attachedDoc1){
             console.log(attachedDoc1, "attachedDoc, post api")
-            if (attachedDocLink === "") {
+            if (attachedDocLink === "" || attachedDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-decision api')
             } else {
                 const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

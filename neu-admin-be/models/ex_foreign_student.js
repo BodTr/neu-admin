@@ -17,7 +17,11 @@ const ExForeignStudentSchema = new mongoose.Schema({
         type: String,
         require: false
     },
-    receptionTime: {
+    receptionTimeFrom: {
+        type: String,
+        require: false
+    },
+    receptionTimeTo: {
         type: String,
         require: false
     },
@@ -30,6 +34,22 @@ const ExForeignStudentSchema = new mongoose.Schema({
         require: false
     },
     sex: {
+        type: String,
+        require: false
+    },
+    nationality: {
+        type: String,
+        require: false
+    },
+    passportCode: {
+        type: String,
+        require: false
+    },
+    email: {
+        type: String,
+        require: false
+    },
+    neuAccount: {
         type: String,
         require: false
     },

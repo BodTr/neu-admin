@@ -153,7 +153,7 @@ router.put(
             const attachedDoc = req.file;
             console.log(attachedDoc, "attachedDoc put api")
             if (attachedDoc) {
-                if (attachedDocLink === "") {
+                if (attachedDocLink === "" || attachedDocLink === undefined) {
                     console.log('ko có link ảnh cũ edit-document api')
                 } else {
                     const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -213,7 +213,7 @@ router.delete("/api/delete-document/:id", async (req, res) => {
         });
         const attachedDocLink = deletingDocument.attachedDocLink
 
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
             console.log('ko có link ảnh cũ delete-close-decision api')
         } else {
             const delDocKey = deletingDocument.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

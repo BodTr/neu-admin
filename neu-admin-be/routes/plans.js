@@ -107,7 +107,7 @@ router.put('/api/edit-plan/:id', upload.single("planDoc1"), async(req, res) => {
         let newAttachedDocLink = ''
         if (attachedDoc) {
 
-            if (attachedDocLink === "") {
+            if (attachedDocLink === "" || attachedDocLink === undefined) {
                 console.log('ko có link ảnh cũ edit-plan api')
             } else {
                 const oldFileKey = attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")
@@ -155,7 +155,7 @@ router.delete('/api/delete-plan/:id', async(req, res) => {
         const deletingPlan = await PlanSchema.findOne({ _id: id })
         const attachedDocLink = deletingPlan.attachedDocLink
 
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
             console.log('ko có link ảnh cũ delete-plan api')
         } else {
             const delPlanKey = deletingPlan.attachedDocLink.replace("https://acvnapps.s3.ap-southeast-1.amazonaws.com/", "")

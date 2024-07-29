@@ -182,46 +182,39 @@
                           </select>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">Chức vụ</label>
-                          <select
-                            v-model="position"
-                            class="form-select"
-                            tabindex="-1"
-                          >
-                            <option value="" disabled selected>
-                              Chọn chức vụ
-                            </option>
-                            <option value="Giảng viên">Giảng viên</option>
-                            <option value="Sinh viên">Sinh viên</option>
-                          </select>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label"
-                            >Bậc học (Trường đối tác)</label
-                          >
-                          <select
-                            v-model="educationLevel"
-                            class="form-select"
-                            tabindex="-1"
-                          >
-                            <option value="" disabled selected>
-                              Chọn bậc học
-                            </option>
-                            <option value="Cử nhân">Cử nhân</option>
-                            <option value="Thạc sỹ">Thạc sỹ</option>
-                            <option value="Tiến sỹ">Tiến sỹ</option>
-                            <option value="Sau tiến sỹ">Sau tiến sỹ</option>
-                          </select>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label"
-                            >Chuyên ngành (Trường đối tác)</label
-                          >
+                          <label class="form-label">Quốc tịch</label>
                           <input
                             type="text"
                             class="form-control"
-                            v-model="major"
-                            placeholder="Nhập chuyên ngành"
+                            v-model="nationality"
+                            placeholder="Nhập quốc tịch"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Số hộ chiếu</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="passportCode"
+                            placeholder="Nhập số hộ chiếu"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Địa chỉ email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            v-model="email"
+                            placeholder="Nhập địa chỉ email"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Tài khoản NEU</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="neuAccount"
+                            placeholder="Nhập tài khoản NEU"
                           />
                         </div>
                       </div>
@@ -259,15 +252,67 @@
                             placeholder="Nhập quyết định tiếp nhận"
                           />
                         </div>
+                        <div class="mb-3">
+                          <label class="form-label">Chức vụ</label>
+                          <select
+                            v-model="position"
+                            class="form-select"
+                            tabindex="-1"
+                          >
+                            <option value="" disabled selected>
+                              Chọn chức vụ
+                            </option>
+                            <option value="Giảng viên">Giảng viên</option>
+                            <option value="Sinh viên">Sinh viên</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Bậc học (Trường đối tác)</label
+                          >
+                          <select
+                            v-model="educationLevel"
+                            class="form-select"
+                            tabindex="-1"
+                          >
+                            <option value="" disabled selected>
+                              Chọn bậc học
+                            </option>
+                            <option value="Cử nhân">Cử nhân</option>
+                            <option value="Thạc sỹ">Thạc sỹ</option>
+                            <option value="Tiến sỹ">Tiến sỹ</option>
+                            <option value="Sau tiến sỹ">Sau tiến sỹ</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Trường Đối tác</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="major"
+                            placeholder="Nhập chuyên ngành"
+                          />
+                        </div>
                       </div>
                       <div class="col-md-4">
                         <div class="mb-3">
-                          <label class="form-label">Thời gian tiếp nhận</label>
+                          <label class="form-label"
+                            >Thời gian tiếp nhận - Từ</label
+                          >
                           <input
                             type="date"
                             class="form-control"
-                            v-model="receptionTime"
-                            placeholder="Nhập thời gian tiếp nhận"
+                            v-model="receptionTimeFrom"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >Thời gian tiếp nhận - Đến</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            v-model="receptionTimeTo"
                           />
                         </div>
                         <div class="mb-3">
@@ -517,6 +562,7 @@
         </div>
       </div>
       <div class="page-body">
+        
         <div class="container-xl">
           <div class="row row-deck row-cards">
             <div class="col-12">
@@ -528,6 +574,7 @@
                   :columns="columns"
                   :options="options"
                   ref="table"
+                  @loaded="onLoaded"
                 >
                   <template v-slot:attachedDoc="item">
                     <a
@@ -657,46 +704,39 @@
                               </select>
                             </div>
                             <div class="mb-3">
-                              <label class="form-label">Chức vụ</label>
-                              <select
-                                v-model="editExForeignStudent.position"
-                                class="form-select"
-                                tabindex="-1"
-                              >
-                                <option value="" disabled selected>
-                                  Chọn chức vụ
-                                </option>
-                                <option value="Giảng viên">Giảng viên</option>
-                                <option value="Sinh viên">Sinh viên</option>
-                              </select>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Bậc học (Trường đối tác)</label
-                              >
-                              <select
-                                v-model="editExForeignStudent.educationLevel"
-                                class="form-select"
-                                tabindex="-1"
-                              >
-                                <option value="" disabled selected>
-                                  Chọn bậc học
-                                </option>
-                                <option value="Cử nhân">Cử nhân</option>
-                                <option value="Thạc sỹ">Thạc sỹ</option>
-                                <option value="Tiến sỹ">Tiến sỹ</option>
-                                <option value="Sau tiến sỹ">Sau tiến sỹ</option>
-                              </select>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Chuyên ngành (Trường đối tác)</label
-                              >
+                              <label class="form-label">Quốc tịch</label>
                               <input
                                 type="text"
                                 class="form-control"
-                                v-model="editExForeignStudent.major"
-                                placeholder="Nhập chuyên ngành"
+                                v-model="editExForeignStudent.nationality"
+                                placeholder="Nhập họ và tên sinh viên"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Số hộ chiếu</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExForeignStudent.passportCode"
+                                placeholder="Nhập số hộ chiếu"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Địa chỉ email</label>
+                              <input
+                                type="email"
+                                class="form-control"
+                                v-model="editExForeignStudent.email"
+                                placeholder="Nhập địa chỉ email"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Tài khoản NEU</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExForeignStudent.neuAccount"
+                                placeholder="Nhập tài khoản NEU"
                               />
                             </div>
                           </div>
@@ -734,8 +774,60 @@
                                 placeholder="Nhập quyết định tiếp nhận"
                               />
                             </div>
+                            <div class="mb-3">
+                              <label class="form-label">Chức vụ</label>
+                              <select
+                                v-model="editExForeignStudent.position"
+                                class="form-select"
+                                tabindex="-1"
+                              >
+                                <option value="" disabled selected>
+                                  Chọn chức vụ
+                                </option>
+                                <option value="Giảng viên">Giảng viên</option>
+                                <option value="Sinh viên">Sinh viên</option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Bậc học (Trường đối tác)</label
+                              >
+                              <select
+                                v-model="editExForeignStudent.educationLevel"
+                                class="form-select"
+                                tabindex="-1"
+                              >
+                                <option value="" disabled selected>
+                                  Chọn bậc học
+                                </option>
+                                <option value="Cử nhân">Cử nhân</option>
+                                <option value="Thạc sỹ">Thạc sỹ</option>
+                                <option value="Tiến sỹ">Tiến sỹ</option>
+                                <option value="Sau tiến sỹ">Sau tiến sỹ</option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Trường Đối tác</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="editExForeignStudent.major"
+                                placeholder="Nhập chuyên ngành"
+                              />
+                            </div>
                           </div>
                           <div class="col-md-4">
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Thời gian tiếp nhận - Từ</label
+                              >
+                              <input
+                                type="date"
+                                class="form-control"
+                                v-model="editExForeignStudent.receptionTimeFrom"
+                                placeholder="Nhập thời gian tiếp nhận - Từ"
+                              />
+                            </div>
                             <div class="mb-3">
                               <label class="form-label"
                                 >Thời gian tiếp nhận</label
@@ -743,8 +835,8 @@
                               <input
                                 type="date"
                                 class="form-control"
-                                v-model="editExForeignStudent.receptionTime"
-                                placeholder="Nhập thời gian tiếp nhận"
+                                v-model="editExForeignStudent.receptionTimeTo"
+                                placeholder="Nhập thời gian tiếp nhận - Đến"
                               />
                             </div>
                             <div class="mb-3">
@@ -927,6 +1019,7 @@
 <script>
 import instance from "../instance";
 // import { ref } from 'vue'
+// import { onMounted } from 'vue'
 import VerticalNavbar from "../components/VerticalNavbar.vue";
 import { useToast } from "vue-toastification";
 
@@ -936,12 +1029,19 @@ export default {
     VerticalNavbar,
   },
 
+  // created() {
+  //   console.log('aBcc')
+  //   // document.querySelector('label[for="VueTables__search_h1ION"]').textContent = 'aBC'
+  // },
+
+
   data() {
     return {
       columns: [
         "stt",
         "name",
         "studentCode",
+        "receptionYear",
         "position",
         "educationLevel",
         "major",
@@ -953,9 +1053,10 @@ export default {
         headings: {
           name: "Họ và tên",
           studentCode: "MSSV (NEU)",
+          receptionYear: "Năm học tiếp nhận",
           position: "Chức vụ",
           educationLevel: "Bậc học (Trường đối tác)",
-          major: "Chuyên ngành (Trường đối tác)",
+          major: "Trường Đối tác",
           unit: "Đơn vị tiếp nhận (NEU)",
           attachedDoc: "Văn bản đính kèm",
           tool: "Thao tác",
@@ -965,10 +1066,15 @@ export default {
       studentCode: "",
       position: "",
       educationLevel: "",
-      receptionTime: "",
+      receptionTimeFrom: "",
+      receptionTimeTo: "",
       receptionYear: "",
       birthday: "",
       sex: "",
+      nationality: "",
+      passportCode: "",
+      email: "",
+      neuAccount: "",
       major: "",
       unit: "",
       receptionDecision: "",
@@ -995,10 +1101,15 @@ export default {
         studentCode: "",
         position: "",
         educationLevel: "",
-        receptionTime: "",
+        receptionTimeFrom: "",
+        receptionTimeTo: "",
         receptionYear: "",
         birthday: "",
         sex: "",
+        nationality: "",
+        passportCode: "",
+        neuAccount: "",
+        email: "",
         major: "",
         unit: "",
         receptionDecision: "",
@@ -1015,12 +1126,23 @@ export default {
   },
 
   setup() {
+
     // get toast interface
     const toast = useToast();
     return { toast };
   },
 
+
+
   methods: {
+    
+    onLoaded() {
+      document.getElementsByClassName("VueTables__search__input form-control")[0].placeholder = 'Search theo năm học tiếp nhận'
+      document.getElementsByClassName("VueTables__search__input form-control")[0].style.width = '250px'
+      console.log(document.getElementsByClassName("VueTables__search__input form-control"), 'on table loaded')
+      // document.querySelector('label[for="VueTables__search_h1ION"]').textContent = 'aBC'
+    },
+
     handlePdfUpload() {
       this.$refs.attachedDoc.click();
     },
@@ -1113,10 +1235,15 @@ export default {
       formData.append("studentCode", this.studentCode);
       formData.append("position", this.position);
       formData.append("educationLevel", this.educationLevel);
-      formData.append("receptionTime", this.receptionTime);
+      formData.append("receptionTimeFrom", this.receptionTimeFrom);
+      formData.append("receptionTimeTo", this.receptionTimeTo);
       formData.append("receptionYear", this.receptionYear);
       formData.append("birthday", this.birthday);
       formData.append("sex", this.sex);
+      formData.append("nationality", this.nationality);
+      formData.append("passportCode", this.passportCode);
+      formData.append("email", this.email);
+      formData.append("neuAccount", this.neuAccount);
       formData.append("major", this.major);
       formData.append("unit", this.unit);
       formData.append("receptionDecision", this.receptionDecision);
@@ -1150,11 +1277,16 @@ export default {
           this.name = "";
           this.position = "";
           this.studentCode = "";
-          this.receptionTime = "";
+          this.receptionTimeFrom = "";
+          this.receptionTimeTo = "";
           this.receptionYear = "";
           this.educationLevel = "";
           this.birthday = "";
           this.sex = "";
+          this.nationality = "";
+          this.passportCode = "";
+          this.email = "";
+          this.neuAccount = "";
           this.major = "";
           this.unit = "";
           this.receptionDecision = "";
@@ -1168,22 +1300,27 @@ export default {
     },
 
     onEdit(item) {
-      // let receptionTime = item.receptionTime
+      // let receptionTimeFrom = item.receptionTimeFrom
       // let birthday = item.birthday
-      // let a_receptionTime = receptionTime.split("/")
+      // let a_receptionTimeFrom = receptionTimeFrom.split("/")
       // let a_birthday = birthday.split("/")
-      // receptionTime = a_receptionTime[2] + "-" + a_receptionTime[1] + "-" + a_receptionTime[0]
+      // receptionTimeFrom = a_receptionTimeFrom[2] + "-" + a_receptionTimeFrom[1] + "-" + a_receptionTimeFrom[0]
       // birthday = a_birthday[2] + "-" + a_birthday[1] + "-" + a_birthday[0]
 
       console.log(item.results, "item.results onEdit");
       this.editExForeignStudent.name = item.name;
       this.editExForeignStudent.position = item.position;
       this.editExForeignStudent.studentCode = item.studentCode;
-      this.editExForeignStudent.receptionTime = item.receptionTime;
+      this.editExForeignStudent.receptionTimeFrom = item.receptionTimeFrom;
+      this.editExForeignStudent.receptionTimeTo = item.receptionTimeTo;
       this.editExForeignStudent.receptionYear = item.receptionYear;
       this.editExForeignStudent.educationLevel = item.educationLevel;
       this.editExForeignStudent.birthday = item.birthday;
       this.editExForeignStudent.sex = item.sex;
+      this.editExForeignStudent.nationality = item.nationality;
+      this.editExForeignStudent.passportCode = item.passportCode;
+      this.editExForeignStudent.email = item.email;
+      this.editExForeignStudent.neuAccount = item.neuAccount;
       this.editExForeignStudent.major = item.major;
       this.editExForeignStudent.unit = item.unit;
       this.editExForeignStudent.receptionDecision = item.receptionDecision;
@@ -1207,10 +1344,21 @@ export default {
         "educationLevel",
         this.editExForeignStudent.educationLevel
       );
-      formData.append("receptionTime", this.editExForeignStudent.receptionTime);
+      formData.append(
+        "receptionTimeFrom",
+        this.editExForeignStudent.receptionTimeFrom
+      );
+      formData.append(
+        "receptionTimeTo",
+        this.editExForeignStudent.receptionTimeTo
+      );
       formData.append("receptionYear", this.editExForeignStudent.receptionYear);
       formData.append("birthday", this.editExForeignStudent.birthday);
       formData.append("sex", this.editExForeignStudent.sex);
+      formData.append("nationality", this.editExForeignStudent.nationality);
+      formData.append("passportCode", this.editExForeignStudent.passportCode);
+      formData.append("email", this.editExForeignStudent.email);
+      formData.append("neuAccount", this.editExForeignStudent.neuAccount);
       formData.append("major", this.editExForeignStudent.major);
       formData.append("unit", this.editExForeignStudent.unit);
       formData.append(
@@ -1365,4 +1513,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+  /* .VueTables__search__input {
+    width: 250px;
+  } */
+  .VueTables__search__input {
+    width: 250px;
+    margin: 10px;
+}
+</style>

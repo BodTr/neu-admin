@@ -31,14 +31,15 @@ router.get("/api/get-all-ex-f-students", async (req, res) => {
   try {
     let { page, limit, query } = req.query;
     let skip = (parseInt(page) - 1) * parseInt(limit);
+
     const students = await ExForeignStudentSchema.find({
-      name: { $regex: query },
+      receptionYear: { $regex: query },
     })
       .lean()
       .sort({ _id: -1 })
       .skip(skip)
       .limit(limit);
-    let count = await ExForeignStudentSchema.estimatedDocumentCount();
+    let count = await ExForeignStudentSchema.countDocuments({receptionYear: { $regex: query }});
     let stt = 0;
     const aStudents = students.map((doc) => {
       stt++;
@@ -73,10 +74,15 @@ router.post(
         studentCode,
         position,
         educationLevel,
-        receptionTime,
+        receptionTimeFrom,
+        receptionTimeTo,
         receptionYear,
         birthday,
         sex,
+        nationality,
+        passportCode,
+        email,
+        neuAccount,
         major,
         unit,
         receptionDecision,
@@ -103,7 +109,12 @@ router.post(
         studentCode: studentCode,
         position: position,
         educationLevel: educationLevel,
-        receptionTime: receptionTime,
+        receptionTimeFrom: receptionTimeFrom,
+        receptionTimeTo: receptionTimeTo,
+        passportCode: passportCode,
+        email: email,
+        neuAccount: neuAccount,
+        nationality: nationality,
         birthday: birthday,
         sex: sex,
         receptionYear: receptionYear,
@@ -140,10 +151,15 @@ router.put(
         studentCode,
         position,
         educationLevel,
-        receptionTime,
+        receptionTimeFrom,
+        receptionTimeTo,
         receptionYear,
         birthday,
         sex,
+        nationality,
+        passportCode,
+        email,
+        neuAccount,
         major,
         unit,
         receptionDecision,
@@ -157,7 +173,7 @@ router.put(
       console.log(req.body, "req.body put api");
       let newAttachedDocLink = "";
       if (attachedDoc1) {
-        if (attachedDocLink === "") {
+        if (attachedDocLink === "" || attachedDocLink === undefined) {
           console.log("ko có link ảnh cũ edit-ex-f-student api");
         } else {
           const oldFileKey = attachedDocLink.replace(
@@ -183,7 +199,12 @@ router.put(
         studentCode: studentCode,
         position: position,
         educationLevel: educationLevel,
-        receptionTime: receptionTime,
+        receptionTimeFrom: receptionTimeFrom,
+        nationality: nationality,
+        passportCode: passportCode,
+        email: email,
+        neuAccount: neuAccount,
+        receptionTimeTo: receptionTimeTo,
         receptionYear: receptionYear,
         birthday: birthday,
         sex: sex,
@@ -216,7 +237,7 @@ router.delete("/api/delete-ex-f-student/:id", async (req, res) => {
     console.log(id, "::id delete api::");
     const delStudent = await ExForeignStudentSchema.findOne({ _id: id });
     const attachedDocLink = delStudent.attachedDocLink;
-    if (attachedDocLink === "") {
+    if (attachedDocLink === "" || attachedDocLink === undefined) {
       console.log("ko có link ảnh cũ delete-ex-f-student api");
     } else {
       const delStudentKey = delStudent.attachedDocLink.replace(
@@ -296,6 +317,10 @@ router.get("/api/export-excel-exfstudents", async (req, res) => {
       { header: "MSSV (NEU)", key: "studentCode", width: 30 }, //attachedDocName
       { header: "NGÀY SINH", key: "birthday", width: 40 },
       { header: "GIỚI TÍNH", key: "sex", width: 30 },
+      { header: "QUỐC TỊCH", key: "nationality", width: 30 },
+      { header: "SỐ HỘ CHIẾU", key: "passportCode", width: 30 },
+      { header: "ĐỊA CHỈ EMAIL", key: "email", width: 30 },
+      { header: "TÀI KHOẢN NEU", key: "neuAccount", width: 30 },
       { header: "ĐƠN VỊ TIẾP NHẬN (NEU)", key: "unit", width: 30 },
       {
         header: "QUYẾT ĐỊNH TIẾP NHẬN (NEU)",
@@ -306,7 +331,8 @@ router.get("/api/export-excel-exfstudents", async (req, res) => {
       { header: "CHỨC VỤ", key: "position", width: 30 },
       { header: "BẬC HỌC (TRƯỜNG ĐỐI TÁC)", key: "educationLevel", width: 30 },
       { header: "CHUYÊN NGÀNH (TRƯỜNG ĐỐI TÁC)", key: "major", width: 30 },
-      { header: "THỜI GIAN TIẾP NHẬN", key: "receptionTime", width: 30 },
+      { header: "THỜI GIAN TIẾP NHẬN-TỪ", key: "receptionTimeFrom", width: 30 },
+      { header: "THỜI GIAN TIẾP NHẬN-TỚI", key: "receptionTimeTo", width: 30 },
       { header: "NĂM HỌC TIẾP NHẬN", key: "receptionYear", width: 30 },
       { header: "TÊN VĂN BẢN ĐÍNH KÈM", key: "attachedDocName", width: 30 },
       { header: "LINK VĂN BẢN ĐÍNH KÈM", key: "attachedDocLink", width: 50 },
@@ -341,12 +367,17 @@ router.get("/api/export-excel-exfstudents", async (req, res) => {
         studentCode: exfstudent.studentCode,
         birthday: exfstudent.birthday,
         sex: exfstudent.sex,
+        nationality: exfstudent.nationality,
+        passportCode: exfstudent.passportCode,
+        email: exfstudent.email,
+        neuAccount: exfstudent.neuAccount,
         unit: exfstudent.unit,
         receptionDecision: exfstudent.receptionDecision,
         position: exfstudent.position,
         educationLevel: exfstudent.educationLevel,
         major: exfstudent.major,
-        receptionTime: exfstudent.receptionTime,
+        receptionTimeFrom: exfstudent.receptionTimeFrom,
+        receptionTimeTo: exfstudent.receptionTimeTo,
         receptionYear: exfstudent.receptionYear,
         attachedDocName: exfstudent.attachedDocName,
         attachedDocLink: exfstudent.attachedDocLink,
@@ -412,13 +443,18 @@ router.post(
             studentCode: row.values[3],
             birthday: row.values[4],
             sex: row.values[5],
-            unit: row.values[6],
-            receptionDecision: row.values[7],
-            position: row.values[8],
-            educationLevel: row.values[9],
-            major: row.values[10],
-            receptionTime: row.values[11],
-            receptionYear: row.values[12],
+            nationality: row.values[6],
+            passportCode: row.values[7],
+            email: row.values[8],
+            neuAccount: row.values[9],
+            unit: row.values[10],
+            receptionDecision: row.values[11],
+            position: row.values[12],
+            educationLevel: row.values[13],
+            major: row.values[14],
+            receptionTimeFrom: row.values[15],
+            receptionTimeTo: row.values[16],
+            receptionYear: row.values[17],
 
           });
         }
