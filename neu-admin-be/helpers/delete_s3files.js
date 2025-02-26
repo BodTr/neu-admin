@@ -1,13 +1,7 @@
 const { S3Client, DeleteObjectsCommand, ListObjectsV2Command } = require('@aws-sdk/client-s3')
 
 const config = {
-    version: 'latest',
-    region: 'ap-southeast-1',
-    endpoint: 'https://s3.ap-southeast-1.amazonaws.com',
-    credentials: {
-        accessKeyId: 'AKIAJWV2UWBGOU7M53TA',
-        secretAccessKey: '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',
-    },
+    // credential
 }
 
 const s3 = new S3Client(config)

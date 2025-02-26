@@ -8,13 +8,7 @@ const allowedType2 = ["application/vnd.openxmlformats-officedocument.spreadsheet
 const MAX_SIZE = 20 * 1024 * 1024
 
 const config = {
-    version: 'latest',
-    region: 'ap-southeast-1',
-    endpoint: 'https://s3.ap-southeast-1.amazonaws.com',
-    credentials: {
-        accessKeyId: 'AKIAJWV2UWBGOU7M53TA',
-        secretAccessKey: '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',
-    },
+    // credential
 }
 
 const s3 = new S3Client(config)
